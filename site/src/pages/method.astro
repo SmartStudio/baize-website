@@ -94,3 +94,22 @@ const steps = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Method has 5 flow stages, but the shared .bz-flow is built for 3 columns.
+     On desktop lay all 5 in one row so 诊断 → 接入 → 工程 → 交付 → 沉淀 reads as
+     one linear path and the dashed connector spans all five node centers
+     (10% inset = half of a 20% column). Mobile keeps the base stacked layout.
+     Astro scopes this style to this page, so the homepage 3-node flow is untouched. */
+  @media (min-width: 901px) {
+    #method .bz-flow {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(16px, 2.2vw, 36px);
+    }
+
+    #method .bz-flow::before {
+      left: 10%;
+      right: 10%;
+    }
+  }
+</style>
