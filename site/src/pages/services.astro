@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+
+const services = [
+  { name: 'Codex 中转站搭建', desc: '给团队一个稳定、可控、可审计的 Codex 使用入口。' },
+  { name: 'LLM API 网关设计', desc: '团队所有 AI 调用的统一入口：鉴权、路由、限流、成本和审计一处管好。' },
+  { name: 'AI 研发流设计', desc: '把 AI 编程纳入需求、实现、测试、评审、文档的真实流程。' },
+  { name: 'Loop Engineering 设计', desc: '让 AI 像有经验的工程师一样，先自查再交付，每一轮都更准。' },
+  { name: '想法到产品端到端交付设计', desc: '一条从想法到可用产品、每步都能验收的路线图。' },
+];
+const jsonLd = services.map((s) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.name,
+  description: s.desc,
+  provider: { '@type': 'Organization', name: '白泽明理 Baize Tech' },
+}));
+---
+
+<BaseLayout
+  title="企业 AI 落地，不止是买工具"
+  description="白泽五项服务串成接入→工程→交付的价值阶梯，只做设计不下场。含交付物设计口径、四类受众映射与合作边界。"
+  path="/services"
+  jsonLd={jsonLd}
+>
+  <section class="bz-product-hero">
+    <div class="bz-product-hero__grid">
+      <div class="bz-product-hero__copy">
+        <div class="bz-eyebrow">Formal eXplainable AI</div>
+        <h1 class="bz-product-title">企业 AI 落地，不止是买工具。</h1>
+        <p class="bz-product-lead">白泽明理是设计型 AI 咨询：从接入、工程到交付，帮团队设计一条可验证、可复用的 AI 使用路径。我们只给方案、规范与蓝图，落地执行留给你的团队。</p>
+        <div class="hero-actions">
+          <a class="bz-button bz-button--primary" href={`${base}contact`}>预约 AI 落地诊断</a>
+          <a class="bz-button bz-button--secondary" href={`${base}method`}>查看方法论</a>
+        </div>
+      </div>
+      <div class="bz-product-hero__media">
+        <div class="media-panel">
+          <img src={`${base}baize-mark.png`} alt="白泽明理 Baize Tech 标识" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section bz-rail-section--alt">
+    <div class="bz-rail-grid">
+      <aside>
+        <div class="bz-rail-label">Services</div>
+        <div class="bz-rail-bar"></div>
+      </aside>
+      <div class="bz-home-intro">
+        <div>
+          <h2 class="rail-title">五项服务，一条从接入到交付的阶梯。</h2>
+          <p class="rail-lead">先把 AI 稳定可控地接进来，再把它变成可验证的工程能力，最后设计出从想法到产品的交付路径。每项都标注交付物，全部是设计口径，白泽不下场代做。</p>
+        </div>
+        <div class="bz-tier">
+          <div class="bz-tier__head">
+            <span class="bz-tier__step">01 · 接入 Access</span>
+            <h3 class="bz-tier__name">先把 AI 稳定、可控、可审计地接进来。</h3>
+          </div>
+          <div class="bz-cell-grid bz-cell-grid--3" aria-label="接入层服务">
+            <article class="bz-cell">
+              <div class="bz-cell__n">01</div>
+              <h3 class="bz-cell__t">Codex 中转站搭建</h3>
+              <p class="bz-cell__b">给团队一个稳定、可控、可审计的 Codex 使用入口，不用各自找账号。</p>
+              <div class="bz-cell__out">交付物 · 接入架构 + 权限规则 + 落地指导</div>
+            </article>
+            <article class="bz-cell">
+              <div class="bz-cell__n">02</div>
+              <h3 class="bz-cell__t">LLM API 网关设计</h3>
+              <p class="bz-cell__b">团队所有 AI 调用的统一入口：鉴权、路由、限流、成本和审计一处管好。</p>
+              <div class="bz-cell__out">交付物 · 网关蓝图 + 路由降级策略 + 审计设计</div>
+            </article>
+          </div>
+        </div>
+        <div class="bz-tier">
+          <div class="bz-tier__head">
+            <span class="bz-tier__step">02 · 工程 Engineering</span>
+            <h3 class="bz-tier__name">再把 AI 变成可迭代、可验证的工程能力。</h3>
+          </div>
+          <div class="bz-cell-grid bz-cell-grid--3" aria-label="工程层服务">
+            <article class="bz-cell">
+              <div class="bz-cell__n">03</div>
+              <h3 class="bz-cell__t">AI 研发流设计</h3>
+              <p class="bz-cell__b">把 AI 编程纳入需求、实现、测试、评审、文档的真实流程，而不是个人自由发挥。</p>
+              <div class="bz-cell__out">交付物 · 研发 SOP + 使用规范 + 验收标准</div>
+            </article>
+            <article class="bz-cell">
+              <div class="bz-cell__n">04</div>
+              <h3 class="bz-cell__t">Loop Engineering 设计</h3>
+              <p class="bz-cell__b">让 AI 像有经验的工程师一样，先自查再交付，每一轮都比上一轮更准。</p>
+              <div class="bz-cell__out">交付物 · 回路架构 + 评估体系 + 可复用模板</div>
+            </article>
+          </div>
+        </div>
+        <div class="bz-tier bz-tier--end">
+          <div class="bz-tier__head">
+            <span class="bz-tier__step">03 · 交付 Delivery</span>
+            <h3 class="bz-tier__name">最终把能力设计成真实产品与增长路径。</h3>
+          </div>
+          <div class="bz-cell-grid" aria-label="交付层服务">
+            <article class="bz-cell">
+              <div class="bz-cell__n">05</div>
+              <h3 class="bz-cell__t">想法到产品端到端交付设计</h3>
+              <p class="bz-cell__b">一条从想法到可用产品、每一步都能验收的路线图；白泽只做设计，执行交给你的团队。</p>
+              <div class="bz-cell__out">交付物 · 交付蓝图 + 里程碑 + 验收标准</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section">
+    <div class="bz-rail-grid">
+      <aside>
+        <div class="bz-rail-label">Who</div>
+        <div class="bz-rail-bar"></div>
+      </aside>
+      <div class="bz-home-intro">
+        <div>
+          <h2 class="rail-title">四类团队，从不同的一层进入同一条阶梯。</h2>
+          <p class="rail-lead">管理者看增长与风险，研发看规范与质量，小团队看低门槛起步，个体看持续学习。白泽把同一套方法，翻译成每类人各自的落点。</p>
+        </div>
+        <div class="bz-cell-grid bz-cell-grid--4" aria-label="适用受众">
+          <article class="bz-cell">
+            <div class="bz-cell__n">01</div>
+            <h3 class="bz-cell__t">企业管理者</h3>
+            <p class="bz-cell__b">关心 AI 是否真能提效、投入优先级与风险边界。从一次落地诊断看清方向。</p>
+            <div class="bz-cell__out">主入口 · 接入 · 交付</div>
+          </article>
+          <article class="bz-cell">
+            <div class="bz-cell__n">02</div>
+            <h3 class="bz-cell__t">研发负责人</h3>
+            <p class="bz-cell__b">AI 编程缺规范，质量、评审、测试和安全边界难管。用 SOP 把它纳入流程。</p>
+            <div class="bz-cell__out">主入口 · 接入 · 工程</div>
+          </article>
+          <article class="bz-cell">
+            <div class="bz-cell__n">03</div>
+            <h3 class="bz-cell__t">小团队负责人</h3>
+            <p class="bz-cell__b">人少必须靠 AI 提效，但不知从何起步。从最小可验证工作流开始。</p>
+            <div class="bz-cell__out">主入口 · 工程 · 交付</div>
+          </article>
+          <article class="bz-cell">
+            <div class="bz-cell__n">04</div>
+            <h3 class="bz-cell__t">个体开发者</h3>
+            <p class="bz-cell__b">想系统掌握 AI 编程、提升个人生产力。随工工作坊与明理笔记持续学习。</p>
+            <div class="bz-cell__out">主入口 · 培训 · 内容</div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section bz-rail-section--alt">
+    <div class="bz-rail-grid">
+      <aside>
+        <div class="bz-rail-label">How</div>
+        <div class="bz-rail-bar"></div>
+      </aside>
+      <div class="bz-home-intro">
+        <div>
+          <h2 class="rail-title">怎么合作：诊断，给方案，带落地。</h2>
+          <p class="rail-lead">白泽是设计型咨询，交付的是可执行的方法与蓝图，不接管你的代码库和运维。方法沉淀成资产，能力留在你的团队里。</p>
+        </div>
+        <div class="bz-proof-strip" aria-label="合作方式">
+          <div class="bz-proof-strip__item">
+            <div class="bz-proof-strip__k">01 / Diagnose</div>
+            <div class="bz-proof-strip__v">先诊断</div>
+            <p class="bz-proof-strip__b">看清团队现在怎么用 AI、卡在哪，给出落地优先级与风险边界。</p>
+          </div>
+          <div class="bz-proof-strip__item">
+            <div class="bz-proof-strip__k">02 / Design</div>
+            <div class="bz-proof-strip__v">给方案</div>
+            <p class="bz-proof-strip__b">交付架构、SOP、蓝图与规范。白泽只做设计，不代开发、不代运维。</p>
+          </div>
+          <div class="bz-proof-strip__item">
+            <div class="bz-proof-strip__k">03 / Enable</div>
+            <div class="bz-proof-strip__v">带落地</div>
+            <p class="bz-proof-strip__b">陪跑指导团队执行，把有效方法沉淀成可复用的 Skills 与规范。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section">
+    <div class="bz-shell">
+      <div class="bz-home-contact">
+        <div>
+          <h2 class="bz-home-contact__title">从一次 AI 落地诊断开始。</h2>
+          <p class="bz-home-contact__body">如果团队已经在用 Codex、Claude Code、Cursor 或内部知识库，但缺少统一方法，白泽可以先帮你拆出最小可验证路径。</p>
+        </div>
+        <a class="bz-button bz-button--primary bz-button--lg" href={`${base}contact`}>联系白泽明理</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .media-panel {
+    display: grid;
+    min-height: 320px;
+    place-items: center;
+    border: 1px solid var(--bz-border-subtle);
+    background:
+      linear-gradient(var(--bz-grid-line-warm) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bz-grid-line-warm) 1px, transparent 1px),
+      var(--bz-paper-0);
+    background-size: 32px 32px;
+  }
+  .media-panel img {
+    display: block;
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 18px 32px rgba(7, 30, 91, .1));
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .rail-title {
+    margin: 0;
+    color: var(--bz-text-primary);
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .rail-lead {
+    max-width: 680px;
+    margin: 20px 0 0;
+    color: var(--bz-text-secondary);
+    font-size: 16px;
+    line-height: 1.95;
+  }
+</style>
