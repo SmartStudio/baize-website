@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+
+const svgOpen =
+  '<svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+
+const steps = [
+  {
+    stage: 'Diagnose',
+    title: '诊断',
+    desc: '团队现在怎么用 AI，有哪些真实阻塞。',
+    out: '产出 · 落地优先级与风险边界',
+    icon: `${svgOpen}<circle cx="11" cy="11" r="7" /><path d="M16 16l6 6" /></svg>`,
+  },
+  {
+    stage: 'Access',
+    title: '接入',
+    desc: '设计工具、网关、中转与安全边界。',
+    out: '产出 · 接入架构与权限规则',
+    icon: `${svgOpen}<path d="M9 4H5a1 1 0 00-1 1v16a1 1 0 001 1h4" /><path d="M12 17l5-4-5-4" /><path d="M17 13H8" /></svg>`,
+  },
+  {
+    stage: 'Engineer',
+    title: '工程',
+    desc: '设计研发流与迭代回路 Loop。',
+    out: '产出 · SOP、模板与验收标准',
+    icon: `${svgOpen}<path d="M5 13a8 8 0 0113.9-5.4" /><path d="M20 4v5h-5" /><path d="M21 13a8 8 0 01-13.9 5.4" /><path d="M6 22v-5h5" /></svg>`,
+  },
+  {
+    stage: 'Deliver',
+    title: '交付',
+    desc: '设计从想法到产品的端到端路径。',
+    out: '产出 · 交付蓝图与里程碑',
+    icon: `${svgOpen}<path d="M24 3L13 14" /><path d="M24 3l-7 21-4-10-10-4z" /></svg>`,
+  },
+  {
+    stage: 'Compound',
+    title: '沉淀',
+    desc: '形成 Skills、SOP 与知识资产。',
+    out: '产出 · 团队知识资产',
+    icon: `${svgOpen}<path d="M13 3l10 5-10 5-10-5z" /><path d="M3 13l10 5 10-5" /><path d="M3 18l10 5 10-5" opacity="0.55" /></svg>`,
+  },
+];
+---
+
+<BaseLayout
+  title="白泽方法论：一条 AI 落地路径"
+  description="诊断、接入、工程、交付、沉淀，五步把零散尝鲜变成可验证、可复用的组织 AI 能力。"
+  path="/method"
+>
+  <section id="method" class="bz-rail-section">
+    <div class="bz-rail-grid">
+      <aside aria-label="Method section label">
+        <div class="bz-rail-label">Method</div>
+        <div class="bz-rail-bar"></div>
+      </aside>
+      <div class="bz-home-intro">
+        <div>
+          <h1 class="bz-home-heading">先明理，再落地。先边界，再自动化。</h1>
+          <p class="bz-home-lead">
+            白泽明理不是零散服务的集合，而是一条从诊断到沉淀的 AI 落地路径：先把能做什么、不能做什么、谁来审查讲清楚，再谈自动化收益。
+          </p>
+        </div>
+        <div class="bz-flow" aria-label="白泽明理方法论流程">
+          {
+            steps.map((step) => (
+              <div class="bz-flow__step">
+                <span class="bz-flow__node" set:html={step.icon} />
+                <span class="bz-flow__stage">{step.stage}</span>
+                <h3 class="bz-flow__title">{step.title}</h3>
+                <p class="bz-flow__desc">{step.desc}</p>
+                <span class="bz-flow__out">{step.out}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section bz-rail-section--alt">
+    <div class="bz-shell">
+      <div class="bz-home-contact">
+        <div>
+          <h2 class="bz-home-contact__title">从一次 AI 落地诊断开始。</h2>
+          <p class="bz-home-contact__body">
+            如果团队已经在使用 Codex、Claude Code、Cursor 或内部知识库，但缺少统一方法，白泽明理可以先帮你拆出最小可验证路径。
+          </p>
+        </div>
+        <a class="bz-button bz-button--primary" href={`${base}contact`}>预约方法论咨询</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
