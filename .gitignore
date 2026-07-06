@@ -6,3 +6,4 @@ site/.astro/
 .dev.vars
 .wrangler/
 .playwright-mcp/
+.superpowers/
