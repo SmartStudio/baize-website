@@ -1676,7 +1676,12 @@ a {
   outline-offset: 2px;
 }
 
-@media (max-width: 720px) {
+/* Breakpoint matches the pre-existing fugu rule at
+   `@media (max-width: 900px)` that hides `.bz-topbar__nav a:not(.bz-topbar__cta)`.
+   Keeping the same 900px boundary guarantees no width band exists where BOTH
+   the nav links and the toggle are hidden (fixes the 721-899px dead zone, e.g.
+   iPad portrait 768px). */
+@media (max-width: 900px) {
   .bz-topbar:has(.bz-topbar__toggle) {
     position: relative;
   }
