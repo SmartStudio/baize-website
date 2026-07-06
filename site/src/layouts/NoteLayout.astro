@@ -1,0 +1,140 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  category: string;
+  author: string;
+  relatedService?: string;
+  path: string;
+}
+
+const { title, description, pubDate, updatedDate, category, author, relatedService, path } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const dateStr = pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+  author: { '@type': 'Organization', name: author },
+  articleSection: category,
+};
+
+const SERVICE_CTA: Record<string, string> = {
+  services: '五项工程服务总览',
+  'dev-workflow': 'AI 研发流设计',
+  'loop-engineering': 'Loop Engineering 设计',
+  delivery: '想法到产品端到端交付设计',
+  gateway: 'LLM API 网关设计',
+};
+const serviceLabel = (relatedService && SERVICE_CTA[relatedService]) || '五项工程服务';
+---
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd}>
+  <article class="bz-rail-section">
+    <div class="bz-shell bz-note">
+      <p class="bz-eyebrow">{category} · {dateStr}</p>
+      <h1 class="bz-note__title">{title}</h1>
+      <p class="bz-product-lead">{description}</p>
+
+      <div class="bz-note__body">
+        <slot />
+      </div>
+
+      <div class="bz-note__cta">
+        <p class="bz-card__eyebrow">下一步</p>
+        <h2 class="bz-note__cta-title">想把「{serviceLabel}」落到你的团队？</h2>
+        <p class="bz-card__body">白泽明理提供设计、规范、蓝图与指导，不下场代做，帮你把这条路径走稳。</p>
+        <div class="bz-note__cta-actions">
+          <a class="bz-button bz-button--primary" href={`${base}contact`}>预约咨询</a>
+          <a class="bz-text-link" href={`${base}services`}>查看服务详情 <span class="bz-text-link__arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .bz-note {
+    max-width: var(--bz-read-max);
+  }
+
+  .bz-note__title {
+    margin: 20px 0 0;
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .bz-note__body :global(p) {
+    margin: 0 0 22px;
+    color: var(--bz-text-secondary);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .bz-note__body :global(h2) {
+    margin: 44px 0 16px;
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: 24px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .bz-note__body :global(h3) {
+    margin: 34px 0 14px;
+    color: var(--bz-text-primary);
+    font-size: 19px;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .bz-note__body :global(ul),
+  .bz-note__body :global(ol) {
+    margin: 0 0 22px;
+    padding-left: 22px;
+    color: var(--bz-text-secondary);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .bz-note__body :global(a) {
+    color: var(--bz-accent-strong);
+  }
+
+  .bz-note__cta {
+    margin-top: 56px;
+    border-top: 1px solid var(--bz-border-subtle);
+    padding-top: 40px;
+  }
+
+  .bz-note__cta-title {
+    margin: 10px 0 0;
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .bz-note__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+</style>

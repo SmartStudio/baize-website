@@ -1,0 +1,115 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+
+const CATEGORIES = ['AI普及', 'AI编程', '企业落地', '安全可信', 'Loop与方法论', '案例复盘'];
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout
+  title="明理笔记"
+  description="白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。"
+  path="/notes"
+>
+  <section class="bz-product-hero">
+    <div class="bz-product-hero__grid">
+      <div class="bz-product-hero__copy">
+        <p class="bz-eyebrow">Baize Notes</p>
+        <h1 class="bz-product-title">明理笔记</h1>
+        <p class="bz-product-lead">
+          关于 AI 接入、工程与落地的笔记，帮你把零散尝鲜变成可验证、可复用的组织能力。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bz-rail-section">
+    <div class="bz-shell">
+      <div class="bz-section-header">
+        <p class="bz-section-header__eyebrow">按话题筛选</p>
+      </div>
+
+      <div class="bz-notes-filter" role="group" aria-label="按分类筛选笔记">
+        <button type="button" class="bz-badge bz-badge--vermilion" data-filter="all" aria-pressed="true">全部</button>
+        {CATEGORIES.map((c) => (
+          <button type="button" class="bz-badge bz-badge--neutral" data-filter={c} aria-pressed="false">{c}</button>
+        ))}
+      </div>
+
+      <div class="bz-notes-grid" id="notes-grid">
+        {notes.map((note) => (
+          <NoteCard
+            title={note.data.title}
+            description={note.data.description}
+            pubDate={note.data.pubDate}
+            category={note.data.category}
+            slug={note.id}
+          />
+        ))}
+      </div>
+
+      <p class="bz-card__body" id="notes-empty" hidden>该分类暂时还没有笔记，欢迎先看看其他话题。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .bz-notes-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 24px 0 36px;
+  }
+
+  .bz-notes-filter button {
+    border: none;
+    cursor: pointer;
+    transition: color var(--bz-transition-fast), background-color var(--bz-transition-fast);
+  }
+
+  .bz-notes-filter button:focus-visible {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bz-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  #notes-empty {
+    margin-top: 32px;
+  }
+</style>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll('.bz-notes-filter button'));
+  const cards = Array.from(document.querySelectorAll('#notes-grid [data-category]'));
+  const empty = document.getElementById('notes-empty');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bz-badge--vermilion', active);
+        b.classList.toggle('bz-badge--neutral', !active);
+      });
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
+
+      if (empty) empty.hidden = visible !== 0;
+    });
+  });
+</script>
