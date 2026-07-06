@@ -1591,3 +1591,127 @@ a {
     transition: none;
   }
 }
+
+/* ---------- Site footer (multi-page shell) ---------- */
+.bz-footer {
+  border-top: 1px solid var(--bz-border-subtle);
+  background: var(--bz-bg-alt);
+}
+
+.bz-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 40px var(--bz-page-gutter);
+}
+
+.bz-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bz-footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.bz-footer__qr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bz-footer__qr img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border: 1px solid var(--bz-border-subtle);
+  border-radius: var(--bz-radius-8);
+  background: var(--bz-bg-page);
+}
+
+.bz-footer__meta {
+  margin: 0;
+  padding: 0 var(--bz-page-gutter) 28px;
+  color: var(--bz-text-muted);
+  font-family: var(--bz-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 720px) {
+  .bz-footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ---------- Mobile nav toggle (multi-page site header hamburger) ----------
+   `.bz-topbar__toggle` and `.bz-topbar__nav.is-open` are new: the fugu
+   single-page template (index-fugu.html) has no toggle button, so every
+   rule below is scoped with :has(.bz-topbar__toggle) and never touches
+   that page's existing ≤900px "hide nav links, keep CTA" behavior. */
+.bz-topbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--bz-border-subtle);
+  border-radius: var(--bz-radius-8);
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--bz-ink-900);
+  cursor: pointer;
+}
+
+.bz-topbar__toggle:focus-visible {
+  outline: 3px solid var(--bz-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .bz-topbar:has(.bz-topbar__toggle) {
+    position: relative;
+  }
+
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__toggle {
+    display: inline-flex;
+  }
+
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--bz-page-gutter) 16px;
+    background: var(--bz-bg-page);
+    border-bottom: 1px solid var(--bz-border-subtle);
+    z-index: 20;
+  }
+
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__nav.is-open {
+    display: flex;
+  }
+
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__nav a,
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__nav a:not(.bz-topbar__cta) {
+    display: block;
+    padding: 12px 4px;
+  }
+
+  .bz-topbar:has(.bz-topbar__toggle) .bz-topbar__cta {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}

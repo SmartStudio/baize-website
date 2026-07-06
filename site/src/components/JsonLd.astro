@@ -1,0 +1,6 @@
+---
+interface Props { schema: object | object[]; }
+const { schema } = Astro.props;
+const list = Array.isArray(schema) ? schema : [schema];
+---
+{list.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}

@@ -1,0 +1,33 @@
+---
+const base = import.meta.env.BASE_URL;
+const NAV = [
+  { href: 'index.html', label: '首页' },
+  { href: 'services', label: '服务' },
+  { href: 'notes', label: '明理笔记' },
+  { href: 'method', label: '方法论' },
+  { href: 'cases', label: '案例' },
+  { href: 'about', label: '关于白泽' },
+  { href: 'contact', label: '联系我们' },
+];
+const link = (h: string) => (h === 'index.html' ? base : `${base}${h}`);
+---
+<header class="bz-topbar">
+  <a class="bz-topbar__brand" href={base}>
+    <img class="bz-topbar__logo" src={`${base}baize-mark.png`} alt="白泽明理" />
+    <span class="bz-topbar__wm bz-logotype">白泽明理</span>
+    <span class="bz-topbar__eyebrow">Formal eXplainable AI</span>
+  </a>
+  <button class="bz-topbar__toggle" aria-label="菜单" aria-expanded="false">≡</button>
+  <nav class="bz-topbar__nav" aria-label="主导航">
+    {NAV.map((n) => <a href={link(n.href)}>{n.label}</a>)}
+    <a class="bz-topbar__cta bz-button bz-button--secondary bz-button--sm" href={`${base}contact`}>预约咨询</a>
+  </nav>
+</header>
+<script>
+  const btn = document.querySelector('.bz-topbar__toggle');
+  const nav = document.querySelector('.bz-topbar__nav');
+  btn?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

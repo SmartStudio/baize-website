@@ -1,0 +1,23 @@
+---
+interface Props { title: string; description: string; path: string; ogImage?: string; }
+const { title, description, path, ogImage = '/og-default.png' } = Astro.props;
+const site = import.meta.env.SITE;
+const canonical = new URL(path, site).href;
+const ogUrl = new URL(ogImage, site).href;
+const noindex = import.meta.env.PUBLIC_DEPLOY_TARGET === 'ghpages';
+const fullTitle = path === '/' ? title : `${title} · 白泽明理`;
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogUrl} />
+<meta property="og:site_name" content="白泽明理 Baize Tech" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogUrl} />

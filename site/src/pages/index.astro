@@ -1,11 +1,14 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<!doctype html>
-<html lang="zh-CN">
-  <head><meta charset="utf-8" /><title>Baize scaffold check</title></head>
-  <body>
+<BaseLayout
+  title="白泽明理 · Formal eXplainable AI"
+  description="白泽明理：从 AI 接入到工程化再到端到端交付的纯咨询服务。"
+  path="/"
+>
+  <section class="bz-shell" style="padding: 64px 0;">
     <h1 class="bz-logotype">白泽明理</h1>
-    <a class="bz-btn bz-btn--primary" href="#">token 生效检查</a>
-  </body>
-</html>
+    <p>外壳占位内容 — Task 3 将替换为正式首页。</p>
+    <a class="bz-button bz-button--primary" href="#">token 生效检查</a>
+  </section>
+</BaseLayout>
