@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages (mirror)
+
+# GitHub Pages 是镜像站：构建时注入 PUBLIC_DEPLOY_TARGET=ghpages，
+# 页面带 noindex，canonical 恒指向 CF 主域，避免与主站重复内容。
+# pnpm 通过 Node 自带的 corepack 按 package.json 的 packageManager 字段激活，
+# 不引入第三方 action（无需 pnpm/action-setup）。
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+        env:
+          PUBLIC_DEPLOY_TARGET: ghpages
+          # 换成真实 CF 主域名（canonical 指向它）
+          PUBLIC_SITE_URL: https://baize.example.com
+          # 项目站挂在 /<repo>/ 子路径；换成真实仓库名，或用自定义域名时改为 /
+          PUBLIC_GH_BASE: /baize-website/
+          # 表单打到 CF 主站的 Pages Function（跨源，Function 需放行本镜像 origin）
+          PUBLIC_FORM_ENDPOINT: https://baize.example.com/api/contact
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

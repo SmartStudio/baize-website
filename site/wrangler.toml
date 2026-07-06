@@ -1,0 +1,7 @@
+# Cloudflare Pages 配置（主站）。
+# 项目在仓库子目录 site/，在 CF Pages 项目设置里把 "Root directory" 设为 site。
+# 机密（FEISHU_APP_ID / FEISHU_APP_SECRET / BITABLE_APP_TOKEN / BITABLE_TABLE_ID /
+# ALLOWED_ORIGIN）在 CF Pages 项目的环境变量里配置，绝不写进本文件。
+name = "baize-website"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-07-01"
