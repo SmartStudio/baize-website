@@ -1,0 +1,33 @@
+<!-- @dsCard group="Type" viewport="760x320" name="Typography Scale" subtitle="Poppins + Noto Sans SC · restrained scale, light leads, tight display tracking" -->
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .type-stage { display: grid; gap: 14px; padding: 28px; background: var(--bz-bg-page); font-family: var(--bz-font-sans); }
+    .label { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bz-text-muted); }
+    .display { margin: 0; font-family: var(--bz-font-display); font-size: 47px; line-height: 1.02; letter-spacing: -0.02em; font-weight: 600; color: var(--bz-ink-900); }
+    .heading { margin: 0; font-family: var(--bz-font-display); font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 700; color: var(--bz-ink-900); }
+    .lead { margin: 0; font-family: var(--bz-font-display); font-size: 22px; font-weight: 300; line-height: 1.45; color: var(--bz-text-secondary); }
+    .body { max-width: 560px; margin: 0; color: var(--bz-text-secondary); font-size: var(--bz-type-body-size); line-height: var(--bz-type-body-line); }
+    .an { font-family: var(--bz-font-mono); font-size: 11px; color: var(--bz-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="type-stage">
+    <div class="label">Label · mono 12 / 0.14em</div>
+    <h1 class="display">让复杂 AI 变得可解释</h1>
+    <div class="an">Display / H1 · Poppins 47px · 600 · -0.02em</div>
+    <h2 class="heading">先明理，再落地</h2>
+    <div class="an">H2 · 30px · 700 · -0.01em</div>
+    <p class="lead">极细副标题，冲击靠符号与留白，不靠字重。</p>
+    <div class="an">Lead · 22px · 300 light</div>
+    <p class="body">正文：把 AI 能做什么、不能做什么、谁来审查、如何复用讲清楚。个人经验沉淀成团队可复用的 Skills。</p>
+    <div class="an">Body · 16px · 400 · 1.65</div>
+  </div>
+</body>
+</html>

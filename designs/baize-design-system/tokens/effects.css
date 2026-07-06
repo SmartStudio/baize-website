@@ -1,0 +1,26 @@
+:root {
+  /* ============================================================
+     BAIZE DESIGN SYSTEM · EFFECTS
+     Sharp corners everywhere (Sakana buttons measured at radius 0).
+     Depth comes from background steps + hairlines, not shadow.
+     ============================================================ */
+  --bz-radius-0: 0px;
+  --bz-radius-4: 0px;
+  --bz-radius-8: 0px;
+  --bz-radius-16: 0px;
+  --bz-radius-pill: 999px;      /* utility chips only */
+  --bz-border: 1px solid var(--bz-border-subtle);
+  --bz-border-strong-line: 1px solid var(--bz-border-strong);
+
+  /* Elevation — used sparingly */
+  --bz-shadow-none: none;
+  --bz-shadow-soft: 0 8px 28px rgba(17, 24, 39, 0.05);
+  --bz-shadow-pop: 0 16px 44px rgba(17, 24, 39, 0.08);
+  --bz-shadow-mark: 0 24px 60px rgba(7, 30, 91, 0.09);
+
+  /* Motion */
+  --bz-ease: cubic-bezier(0.2, 0, 0, 1);
+  --bz-transition-fast: 140ms var(--bz-ease); /* @kind other */
+  --bz-transition-base: 220ms var(--bz-ease); /* @kind other */
+  --bz-transition-slow: 480ms var(--bz-ease); /* @kind other */
+}

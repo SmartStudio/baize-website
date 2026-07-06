@@ -1,0 +1,86 @@
+:root {
+  /* ============================================================
+     BAIZE DESIGN SYSTEM · COLOR
+     Discipline lifted from Sakana (getComputedStyle ground truth):
+     cool near-black UI on white, brand hues confined to the mark,
+     a single accent spark. Slate values match #111827 / #6B7280 /
+     #D1D5DB / #E5E7EB (Sakana Fugu's measured palette).
+     ============================================================ */
+
+  /* --- Brand marks — used ONLY in the logo / illustration --- */
+  --bz-logo-navy: #071E5B;
+  --bz-logo-blue: #0F62B5;
+  --bz-logo-sky: #28A8DF;
+  --bz-logo-orange: #E9961A;
+
+  /* --- Cool neutral scale (Sakana-grade) --- */
+  --bz-white: #FFFFFF;
+  --bz-paper-0: #FFFFFF;   /* card / raised surface */
+  --bz-paper-50: #FDFDFD;  /* page ground */
+  --bz-paper-100: #F7F8FA; /* faint cool alt band */
+  --bz-paper-200: #F0F2F5;
+
+  --bz-ink-900: #111827;   /* primary text + dark UI (measured) */
+  --bz-ink-800: #1F2937;
+  --bz-ink-700: #374151;
+  --bz-gray-500: #6B7280;  /* secondary text (measured) */
+  --bz-gray-400: #9CA3AF;  /* muted / captions */
+  --bz-gray-300: #D1D5DB;  /* strong border (measured) */
+  --bz-gray-200: #E5E7EB;  /* hairline border (measured) */
+  --bz-gray-100: #F3F4F6;
+
+  /* --- Accent — one orange spark (Baize's answer to Sakana red) --- */
+  --bz-orange: #E9961A;
+  --bz-orange-ink: #B4740B; /* legible orange text on white */
+  --bz-orange-100: #FBEACF;
+  --bz-navy-100: #DCE4F3;
+
+  /* --- Semantic roles --- */
+  --bz-bg-page: var(--bz-white);
+  --bz-bg-alt: var(--bz-paper-100);
+  --bz-bg-card: var(--bz-white);
+  --bz-text-primary: var(--bz-ink-900);
+  --bz-text-secondary: var(--bz-gray-500);
+  --bz-text-muted: var(--bz-gray-400);
+  --bz-border-subtle: var(--bz-gray-200);
+  --bz-border-strong: var(--bz-gray-300);
+  --bz-grid-line: rgba(17, 24, 39, 0.06);
+  --bz-grid-line-warm: rgba(17, 24, 39, 0.045);
+  --bz-doodle-line: #E5E7EB;
+  --bz-action-primary: var(--bz-ink-900);
+  --bz-action-primary-hover: #000000;
+  --bz-action-trust: var(--bz-logo-navy);
+  --bz-accent: var(--bz-orange);
+  --bz-accent-strong: var(--bz-orange-ink);
+  --bz-focus-ring: rgba(233, 150, 26, 0.32);
+
+  /* --- Back-compat aliases (keep old names valid) --- */
+  --bz-navy: var(--bz-logo-navy);
+  --bz-blue: var(--bz-logo-blue);
+  --bz-sky: var(--bz-logo-sky);
+  --bz-warm-600: var(--bz-gray-500);
+  --bz-warm-500: var(--bz-gray-400);
+  --bz-warm-400: var(--bz-gray-300);
+  --bz-line-300: var(--bz-gray-200);
+  --bz-line-200: var(--bz-gray-100);
+  --bz-neutral-600: var(--bz-gray-500);
+  --bz-neutral-500: var(--bz-gray-400);
+  --bz-neutral-400: var(--bz-gray-300);
+  --bz-neutral-300: var(--bz-gray-200);
+  --bz-neutral-200: var(--bz-gray-100);
+  --bz-neutral-100: var(--bz-paper-100);
+  --bz-rice-50: var(--bz-white);
+  --bz-jade-800: var(--bz-logo-navy);
+  --bz-jade-700: var(--bz-logo-blue);
+  --bz-jade-100: var(--bz-navy-100);
+  --bz-vermilion-700: var(--bz-orange-ink);
+  --bz-vermilion-600: var(--bz-orange);
+  --bz-vermilion-100: var(--bz-orange-100);
+  --bz-gold-600: var(--bz-orange-ink);
+  --bz-gold-500: var(--bz-orange);
+  --bz-gold-100: var(--bz-orange-100);
+  --bz-blue-700: var(--bz-logo-blue);
+  --bz-blue-100: var(--bz-navy-100);
+  --bz-orange-pop: var(--bz-orange);
+  --bz-fugu-red: #E10600; /* retired */
+}

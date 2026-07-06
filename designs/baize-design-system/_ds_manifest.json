@@ -1,0 +1,787 @@
+{
+  "namespace": "BaizeDesignSystem_51d865",
+  "components": [
+    {
+      "name": "Badge",
+      "sourcePath": "components/core/Badge.jsx",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode"
+        },
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "vermilion",
+            "jade",
+            "gold"
+          ]
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "sourcePath": "components/core/Button.jsx",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode"
+        },
+        {
+          "name": "variant",
+          "values": [
+            "primary",
+            "secondary",
+            "ghost"
+          ]
+        },
+        {
+          "name": "size",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        },
+        {
+          "name": "as",
+          "values": [
+            "button",
+            "a"
+          ]
+        },
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "values": [
+            "button",
+            "submit",
+            "reset"
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "Card",
+      "sourcePath": "components/core/Card.jsx",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode"
+        },
+        {
+          "name": "action",
+          "type": "ReactNode"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "ContactForm",
+      "sourcePath": "components/core/ContactForm.jsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "services",
+          "type": "string[]"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "SectionHeader",
+      "sourcePath": "components/core/SectionHeader.jsx",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "SiteHeader",
+      "sourcePath": "components/core/SiteHeader.jsx",
+      "props": [
+        {
+          "name": "navItems",
+          "type": "SiteHeaderNavItem[]"
+        },
+        {
+          "name": "ctaLabel",
+          "type": "string"
+        },
+        {
+          "name": "ctaHref",
+          "type": "string"
+        },
+        {
+          "name": "logoSrc",
+          "type": "string | null"
+        },
+        {
+          "name": "logoAlt",
+          "type": "string"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "startingPoints": [
+    {
+      "name": "Button",
+      "path": "components/core/Button.jsx",
+      "previewPath": "components/core/core.card.html",
+      "kind": "component",
+      "section": "Components",
+      "subtitle": "CTA, secondary, and ghost button states",
+      "viewport": "700x220"
+    },
+    {
+      "name": "website-home",
+      "path": "ui_kits/website-home/index.html",
+      "previewPath": "ui_kits/website-home/index.html",
+      "kind": "screen",
+      "section": "Website",
+      "subtitle": "Sakana/Fugu-inspired Baize Tech brand homepage",
+      "viewport": "1180x760"
+    }
+  ],
+  "cards": [
+    {
+      "path": "guidelines/brand.card.html",
+      "group": "Brand",
+      "viewport": "700x300",
+      "subtitle": "Official lockup and usage guidance",
+      "name": "Baize Logo"
+    },
+    {
+      "path": "guidelines/colors.card.html",
+      "group": "Colors",
+      "viewport": "700x230",
+      "subtitle": "Sakana-inspired white, ink, hairline, and Baize logo accents",
+      "name": "Brand Palette"
+    },
+    {
+      "path": "components/core/core.card.html",
+      "group": "Components",
+      "viewport": "700x700",
+      "subtitle": "Sakana/Fugu-style header, buttons, grid cells, and form primitives",
+      "name": "Core Components"
+    },
+    {
+      "path": "guidelines/spacing.card.html",
+      "group": "Spacing",
+      "viewport": "700x210",
+      "subtitle": "Spacing tokens used for cards, sections, and page bands",
+      "name": "Spacing Rhythm"
+    },
+    {
+      "path": "guidelines/typography.card.html",
+      "group": "Type",
+      "viewport": "700x270",
+      "subtitle": "CJK-first system font scale for website pages",
+      "name": "Typography Scale"
+    },
+    {
+      "path": "ui_kits/website-home/home.card.html",
+      "group": "Website",
+      "viewport": "1180x760",
+      "subtitle": "Sakana/Fugu-inspired first viewport: centered mark, sparse nav, utility footer",
+      "name": "Brand Homepage"
+    },
+    {
+      "path": "ui_kits/website-home/service-page.card.html",
+      "group": "Website",
+      "viewport": "1180x860",
+      "subtitle": "Fugu-inspired long-page structure with rail labels and 1px cell grids",
+      "name": "Service Long Page"
+    }
+  ],
+  "globalCssPaths": [
+    "tokens/colors.css",
+    "tokens/typography.css",
+    "tokens/spacing.css",
+    "tokens/effects.css",
+    "tokens/components.css",
+    "styles.css"
+  ],
+  "tokens": [
+    {
+      "name": "--bz-logo-navy",
+      "value": "#071E5B",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-logo-blue",
+      "value": "#0F62B5",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-logo-sky",
+      "value": "#28A8DF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-logo-orange",
+      "value": "#E9961A",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-fugu-red",
+      "value": "#E10600",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-ink-900",
+      "value": "#111827",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-ink-800",
+      "value": "#1F2937",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-ink-700",
+      "value": "#374151",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-600",
+      "value": "#6B7280",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-500",
+      "value": "#9CA3AF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-400",
+      "value": "#D1D5DB",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-300",
+      "value": "#E1DED6",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-200",
+      "value": "#ECE8DE",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-neutral-100",
+      "value": "#F7F5EF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-rice-50",
+      "value": "#FFFFFF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-paper-0",
+      "value": "#FFFFFF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-vermilion-700",
+      "value": "#C9790B",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-vermilion-600",
+      "value": "var(--bz-logo-orange)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-vermilion-100",
+      "value": "#FBEACF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-jade-800",
+      "value": "#0A3C78",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-jade-700",
+      "value": "var(--bz-logo-blue)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-jade-100",
+      "value": "#DDEDF8",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-gold-600",
+      "value": "#B8720F",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-gold-500",
+      "value": "var(--bz-logo-orange)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-gold-100",
+      "value": "#FBEACF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-blue-700",
+      "value": "var(--bz-logo-blue)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-blue-100",
+      "value": "#DDEDF8",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-bg-page",
+      "value": "#FFFFFF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-bg-alt",
+      "value": "#F9FAFB",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-bg-card",
+      "value": "var(--bz-paper-0)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-text-primary",
+      "value": "var(--bz-ink-900)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-text-secondary",
+      "value": "var(--bz-neutral-600)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-text-muted",
+      "value": "var(--bz-neutral-500)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-border-subtle",
+      "value": "var(--bz-neutral-300)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-action-primary",
+      "value": "var(--bz-fugu-red)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-action-primary-hover",
+      "value": "#B90500",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-action-trust",
+      "value": "var(--bz-jade-700)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-focus-ring",
+      "value": "rgba(233, 150, 26, 0.28)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bz-font-display",
+      "value": "\"Poppins\", \"Heiti SC\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--bz-font-sans",
+      "value": "\"Poppins\", \"Heiti SC\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--bz-font-mono",
+      "value": "\"JetBrains Mono\", \"SF Mono\", \"Menlo\", \"Cascadia Code\", ui-monospace, monospace",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--bz-type-display-size",
+      "value": "86px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-display-line",
+      "value": "0.98",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-h1-size",
+      "value": "56px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h1-line",
+      "value": "1.04",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-h2-size",
+      "value": "40px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h2-line",
+      "value": "1.18",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-h3-size",
+      "value": "18px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h3-line",
+      "value": "1.5",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-body-size",
+      "value": "16px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-body-line",
+      "value": "1.9",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-small-size",
+      "value": "14px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-small-line",
+      "value": "1.65",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-caption-size",
+      "value": "12px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-caption-line",
+      "value": "1.4",
+      "kind": "other",
+      "definedIn": "tokens/typography.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-type-display-size",
+      "value": "50px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h1-size",
+      "value": "40px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h2-size",
+      "value": "30px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-type-h3-size",
+      "value": "21px",
+      "kind": "spacing",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--bz-space-4",
+      "value": "4px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-8",
+      "value": "8px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-12",
+      "value": "12px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-16",
+      "value": "16px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-20",
+      "value": "20px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-24",
+      "value": "24px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-32",
+      "value": "32px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-40",
+      "value": "40px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-48",
+      "value": "48px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-56",
+      "value": "56px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-72",
+      "value": "72px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-space-104",
+      "value": "104px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-page-max",
+      "value": "1280px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-read-max",
+      "value": "760px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-page-gutter",
+      "value": "48px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-page-gutter",
+      "value": "20px",
+      "kind": "spacing",
+      "definedIn": "tokens/spacing.css"
+    },
+    {
+      "name": "--bz-radius-4",
+      "value": "4px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-radius-8",
+      "value": "0px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-radius-16",
+      "value": "0px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-border",
+      "value": "1px solid var(--bz-border-subtle)",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-shadow-soft",
+      "value": "0 8px 24px rgba(15, 23, 42, 0.06)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-shadow-pop",
+      "value": "0 12px 32px rgba(15, 23, 42, 0.12)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bz-transition-fast",
+      "value": "120ms ease",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-transition-base",
+      "value": "180ms ease",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--bz-transition-slow",
+      "value": "320ms ease",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    }
+  ],
+  "themes": [],
+  "fonts": [],
+  "brandFonts": [],
+  "source": "spa"
+}

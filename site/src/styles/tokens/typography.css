@@ -1,0 +1,60 @@
+:root {
+  /* ============================================================
+     BAIZE DESIGN SYSTEM · TYPOGRAPHY
+     Poppins-led (Sakana's measured display + body face), paired
+     with Noto Sans SC for CJK. Restrained scale: Sakana's hero h1
+     measured at 46.8px / weight 500 / -1.4px tracking, body 13.5–16.
+     Impact comes from the mark + whitespace, NOT from huge bold type.
+     ============================================================ */
+  --bz-font-display: "Poppins", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
+  --bz-font-sans: "Poppins", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
+  --bz-font-serif: "Songti SC", "Noto Serif SC", serif; /* optional, unused by default @kind font */
+  --bz-font-mono: "JetBrains Mono", "SF Mono", "Menlo", ui-monospace, monospace; /* @kind font */
+
+  /* Weights */
+  --bz-w-light: 300;
+  --bz-w-regular: 400;
+  --bz-w-medium: 500;
+  --bz-w-semibold: 600;
+  --bz-w-bold: 700;
+
+  /* Type scale (restrained, Sakana-accurate) */
+  --bz-type-display-size: 64px;   /* brand-title contexts */
+  --bz-type-display-line: 1.0; /* @kind other */
+  --bz-type-display-track: -0.02em; /* @kind other */
+  --bz-type-h1-size: 47px;
+  --bz-type-h1-line: 1.04; /* @kind other */
+  --bz-type-h1-track: -0.02em; /* @kind other */
+  --bz-type-h2-size: 30px;
+  --bz-type-h2-line: 1.2; /* @kind other */
+  --bz-type-h2-track: -0.01em; /* @kind other */
+  --bz-type-h3-size: 19px;
+  --bz-type-h3-line: 1.45; /* @kind other */
+  --bz-type-body-size: 16px;
+  --bz-type-body-line: 1.65; /* @kind other */
+  --bz-type-small-size: 14px;
+  --bz-type-small-line: 1.6; /* @kind other */
+  --bz-type-caption-size: 13px;
+  --bz-type-caption-line: 1.4; /* @kind other */
+  --bz-type-label-size: 12px;   /* mono technical labels */
+  --bz-type-label-track: 0.12em; /* @kind other */
+
+  /* Logotype — 白泽明理 custom wordmark tuning.
+     Turns the 4 Hanzi from "set text" into one designed unit:
+     - weight: brand display weight (semibold)
+     - track: negative letter-spacing pulls the glyphs together
+     - stroke: optical weight so strokes read as "cut", not "printed"
+     - the recipe also applies "palt" so CJK uses natural glyph widths */
+  --bz-logotype-weight: 600;
+  --bz-logotype-track: -0.03em; /* @kind other */
+  --bz-logotype-stroke: 0.4px; /* @kind other */
+}
+
+@media (max-width: 767px) {
+  :root {
+    --bz-type-display-size: 44px;
+    --bz-type-h1-size: 34px;
+    --bz-type-h2-size: 25px;
+    --bz-type-h3-size: 18px;
+  }
+}

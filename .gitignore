@@ -1,0 +1,8 @@
+node_modules/
+site/dist/
+site/.astro/
+.DS_Store
+*.log
+.dev.vars
+.wrangler/
+.playwright-mcp/
