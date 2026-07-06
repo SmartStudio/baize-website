@@ -1,0 +1,33 @@
+# 白泽明理 Baize Tech
+
+> 设计型 AI 咨询：帮团队把 AI 接入、工程化、交付这三层，设计成可验证、可复用的组织能力。只给方案、规范与蓝图，只设计不下场，落地执行留给你的团队。
+
+## 服务（三层阶梯，五项服务）
+
+- 01 · 接入 Access：先把 AI 稳定、可控、可审计地接进来
+  - Codex 中转站搭建：给团队一个稳定、可控、可审计的 Codex 使用入口
+  - LLM API 网关设计：团队所有 AI 调用的统一入口，鉴权、路由、限流、审计一处管好
+- 02 · 工程 Engineering：再把 AI 变成可迭代、可验证的工程能力
+  - AI 研发流设计：把 AI 编程纳入需求、实现、测试、评审、文档的真实研发流程
+  - Loop Engineering 设计：让 AI 先自查再交付，每一轮都比上一轮更准
+- 03 · 交付 Delivery：最终把能力设计成真实产品与增长路径
+  - 想法到产品端到端交付设计：一条从想法到可用产品、每一步都能验收的路线图
+
+## 关键页面
+
+- / 首页：白泽明理是谁、三层服务阶梯速览、如何开始一次诊断
+- /services 服务：五项服务的完整阶梯，交付物、受众映射与合作边界
+- /method 方法论：诊断、接入、工程、交付、沉淀，五步落地路径
+- /cases 场景案例：示意性场景说明白泽能解决的问题类型（不虚构客户）
+- /about 关于白泽：白泽明理名字的由来与 Formal eXplainable AI 工作标准
+- /notes 明理笔记：关于 AI 接入、工程与落地的笔记
+- /contact 联系：预约一次 AI 落地诊断
+
+## 明理笔记 Notes
+
+- /notes/why-not-just-buy-ai-accounts 企业为什么不能只买 AI 账号？
+- /notes/what-llm-gateway-solves 安全可信的 LLM API 网关到底解决什么？
+- /notes/what-is-loop-engineering 什么是 Loop Engineering：让 AI 先自查再交付
+- /notes/codex-into-real-workflow Codex 真正进入研发流程，需要解决哪些问题？
+- /notes/design-first-ai-dev-workflow 小团队如何设计第一套 AI 编程工作流？
+- /notes/idea-to-product-delivery 想法到产品，AI 端到端交付路径怎么设计？
