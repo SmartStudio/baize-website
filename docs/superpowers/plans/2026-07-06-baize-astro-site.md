@@ -15,6 +15,7 @@
 - 输出语言禁用 em-dash（`—`）；用逗号、冒号、句号。文案气质克制、可信，禁用「颠覆/赋能万物/一站式」等营销词与「账号代购/代理」等违禁词。
 - 品牌色：navy `#071E5B`/蓝/天蓝仅出现在 logo 与插画；唯一 UI 强调色橙 `#E9961A`；圆角 0。
 - Mono 字体（JetBrains Mono）只用于纯英文/数字，CJK 不进 mono。
+- 真实组件类名以 `site/src/styles/tokens/components.css` 为准，不要臆造，动手前先 grep 确认：按钮 `.bz-button`（`--primary/--secondary/--ghost/--lg/--sm`，**不是** `.bz-btn`）；页头 `.bz-topbar`（`__brand/__logo/__wm/__eyebrow/__nav/__cta`）；表单 `.bz-contact-form`（内含 `.bz-section-header` + 多个 `.bz-field`，每个 field = `label` + `input/select/textarea`），提交按钮 `.bz-button bz-button--primary bz-button--lg`；流程 `.bz-flow`（`__node/__step/__stage/__title/__desc/__out`）；容器 `.bz-shell`。
 - canonical 恒指向 CF 主域，与构建目标无关；镜像（ghpages）构建注入 `noindex`。
 - 联系方式：邮箱 `fxai.labs@gmail.com`、微信二维码 `contact/微信二维码.jpg`、飞书表单三通路并存。
 - 单语 zh-CN；`output: 'static'`；不引入前端框架 island（仅 `.astro` + 少量 vanilla JS）。
@@ -282,7 +283,7 @@ const list = Array.isArray(schema) ? schema : [schema];
 
 - [ ] **Step 3: 写 SiteHeader.astro（sticky 导航 + 移动端汉堡）**
 
-要求：读取 `index-fugu.html` 里 `bz-topbar` / header 的 class 结构，复刻为组件。导航项用下列常量；桌面横排、移动端汉堡切换（vanilla JS）。品牌名用 `.bz-logotype`。
+要求：**读取 `index-fugu.html` 里 `bz-topbar` 的真实 markup 复刻为组件**。真实结构：`.bz-topbar__brand` 包 `img.bz-topbar__logo` + `span.bz-topbar__wm.bz-logotype` + `span.bz-topbar__eyebrow`；`nav.bz-topbar__nav` 内是链接 + 末尾 `.bz-topbar__cta.bz-button.bz-button--secondary.bz-button--sm`。导航用下列 7 项常量（覆盖真实模板里的 4 项）；桌面横排、移动端汉堡切换（`.bz-topbar__toggle` 是新增元素 + vanilla JS）。先把 `designs/baize-design-system/assets/baize-mark.png` 拷到 `site/public/baize-mark.png`。
 
 ```astro
 ---
@@ -299,14 +300,19 @@ const NAV = [
 const link = (h: string) => (h === 'index.html' ? base : `${base}${h}`);
 ---
 <header class="bz-topbar">
-  <a class="bz-logotype" href={base}>白泽明理</a>
-  <button class="bz-nav-toggle" aria-label="菜单" aria-expanded="false">≡</button>
-  <nav class="bz-topbar__nav">
+  <a class="bz-topbar__brand" href={base}>
+    <img class="bz-topbar__logo" src={`${base}baize-mark.png`} alt="白泽明理" />
+    <span class="bz-topbar__wm bz-logotype">白泽明理</span>
+    <span class="bz-topbar__eyebrow">Formal eXplainable AI</span>
+  </a>
+  <button class="bz-topbar__toggle" aria-label="菜单" aria-expanded="false">≡</button>
+  <nav class="bz-topbar__nav" aria-label="主导航">
     {NAV.map((n) => <a href={link(n.href)}>{n.label}</a>)}
+    <a class="bz-topbar__cta bz-button bz-button--secondary bz-button--sm" href={`${base}contact`}>预约咨询</a>
   </nav>
 </header>
 <script>
-  const btn = document.querySelector('.bz-nav-toggle');
+  const btn = document.querySelector('.bz-topbar__toggle');
   const nav = document.querySelector('.bz-topbar__nav');
   btn?.addEventListener('click', () => {
     const open = nav?.classList.toggle('is-open');
@@ -314,7 +320,7 @@ const link = (h: string) => (h === 'index.html' ? base : `${base}${h}`);
   });
 </script>
 ```
-（若 `bz-topbar__nav.is-open` / `bz-nav-toggle` 样式在 components.css 中不存在，在 `components.css` 末尾补一段移动端展开样式，并在任务末尾 `npm run tokens:push` 回灌设计系统。）
+（`.bz-topbar__toggle` 与 `.bz-topbar__nav.is-open` 是新增的移动端样式，components.css 中没有：在 `site/src/styles/tokens/components.css` 末尾补一段（默认桌面隐藏 toggle、显示 nav；窄屏隐藏 nav、显示 toggle、`.is-open` 时展开），改完在任务末尾 `npm run tokens:push` 回灌设计系统，保持两处一致。）
 
 - [ ] **Step 4: 写 SiteFooter.astro（含三条联系通路 + 全站 CTA）**
 
@@ -511,7 +517,7 @@ git add -A && git commit -m "feat: services page (v2)"
 
 - [ ] **Step 1: 写方法论页**
 
-用 `bz-rail-section` + `bz-flow`，五段：诊断 → 接入 → 工程 → 交付 → 沉淀（需求 §5.5 文案）。每段一句话解释。结尾挂咨询 CTA。用 `bz-flow__out` 呈现每段产出（设计口径）。
+用 `bz-rail-section` + `bz-flow`，五段：诊断 → 接入 → 工程 → 交付 → 沉淀（需求 §5.5 文案）。每段一句话解释。结尾挂咨询 CTA。**先读 `designs/baize-design-system/ui_kits/website-home/index-fugu.html` 里 `bz-flow` 的真实 markup 复刻结构**，真实子类为 `.bz-flow__node/__step/__stage/__title/__desc/__out`（`__out` 呈现每段产出，设计口径）。CTA 按钮用 `.bz-button bz-button--primary`。
 
 ```astro
 ---
@@ -720,33 +726,40 @@ Expected: `OK`（列表、RSS、文章结构化数据都在）。
 
 **Interfaces:**
 - Consumes: `BaseLayout`。
-- Produces（**与 Task 10 的字段契约，务必一致**）：表单 POST 到 `/api/contact`，JSON body 字段：
-  `{ name: string; org: string; contact: string; problem: string; service: string; _hp: string }`
+- Produces（**与 Task 10 的字段契约，务必一致**）：表单 POST 到 `/api/contact`，JSON body 字段（字段名对齐设计系统 `ContactForm.jsx` 的 `name` 属性）：
+  `{ name: string; company: string; contact: string; problem: string; service: string; _hp: string }`
   其中 `_hp` 是蜜罐（隐藏字段，正常用户为空）。`service` 取值集合：`诊断 | 培训 | 中转站/网关 | Loop/交付`。成功响应 `{ ok: true }`，失败 `{ ok: false, error: string }`。
 
 - [ ] **Step 1: 写 ContactForm.astro（bz token 原生表单）**
 
-字段（需求 §5.8）：姓名 `name` / 公司团队 `org` / 联系方式 `contact` / 当前最想解决的问题 `problem` / 感兴趣的服务 `service`（下拉四类）+ 隐藏蜜罐 `_hp`。用现有表单 class（见 components.css 的 contact form 段）。提交用 vanilla JS `fetch`，展示「已收到，1-2 个工作日内联系」（需求 §8）。
+**必须复用设计系统的真实表单结构**（见 `designs/baize-design-system/components/core/ContactForm.jsx` 与 components.css `.bz-contact-form`/`.bz-field` 规则）：`<form class="bz-contact-form">` 内含一个 `.bz-section-header`（eyebrow/title/body），随后每个字段是一个 `.bz-field`（`<label>` + 控件）。字段（需求 §5.8）：姓名 `name` / 公司团队 `company` / 联系方式 `contact` / 感兴趣的服务 `service`（下拉四类，取值见下）/ 当前最想解决的问题 `problem`（textarea）+ 隐藏蜜罐 `_hp`。提交按钮 `.bz-button bz-button--primary bz-button--lg`。状态提示用一个 `.bz-field` 尾部的 `<p data-status>`（无专用 class，行内即可）。提交用 vanilla JS `fetch`，成功展示「已收到需求，我们会在 1-2 个工作日内联系你」（需求 §8）。
 
 ```astro
-<form class="bz-form" id="contact-form">
-  <input class="bz-form__field" name="name" required placeholder="姓名" />
-  <input class="bz-form__field" name="org" placeholder="公司 / 团队" />
-  <input class="bz-form__field" name="contact" required placeholder="联系方式（邮箱/微信/电话）" />
-  <textarea class="bz-form__field" name="problem" required placeholder="当前最想解决的问题"></textarea>
-  <select class="bz-form__field" name="service">
-    <option value="诊断">预约 AI 落地诊断</option>
-    <option value="培训">企业培训合作</option>
-    <option value="中转站/网关">中转站 / 网关服务咨询</option>
-    <option value="Loop/交付">Loop / 端到端交付路径共创</option>
-  </select>
+<form class="bz-contact-form" id="contact-form">
+  <div class="bz-section-header">
+    <div class="bz-section-header__eyebrow">Contact</div>
+    <h2 class="bz-section-header__title">预约 AI 落地诊断</h2>
+    <p class="bz-section-header__body">告诉我们团队现状和最想解决的问题，我们判断适合从哪里开始。</p>
+  </div>
+  <div class="bz-field"><label for="cf-name">姓名</label><input id="cf-name" name="name" autocomplete="name" required /></div>
+  <div class="bz-field"><label for="cf-company">公司 / 团队</label><input id="cf-company" name="company" autocomplete="organization" /></div>
+  <div class="bz-field"><label for="cf-contact">联系方式</label><input id="cf-contact" name="contact" autocomplete="email" required /></div>
+  <div class="bz-field"><label for="cf-service">感兴趣的服务</label>
+    <select id="cf-service" name="service">
+      <option value="诊断">预约 AI 落地诊断</option>
+      <option value="培训">企业培训合作</option>
+      <option value="中转站/网关">中转站 / 网关服务咨询</option>
+      <option value="Loop/交付">Loop / 端到端交付路径共创</option>
+    </select>
+  </div>
+  <div class="bz-field"><label for="cf-problem">当前最想解决的问题</label><textarea id="cf-problem" name="problem" required></textarea></div>
   <input name="_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
-  <button class="bz-btn bz-btn--primary" type="submit">提交咨询</button>
-  <p class="bz-form__status" hidden></p>
+  <button class="bz-button bz-button--primary bz-button--lg" type="submit">提交咨询需求</button>
+  <p data-status hidden></p>
 </form>
 <script>
   const form = document.getElementById('contact-form');
-  const status = form.querySelector('.bz-form__status');
+  const status = form.querySelector('[data-status]');
   const API = import.meta.env.PUBLIC_FORM_ENDPOINT || '/api/contact';
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -802,7 +815,7 @@ import { mapFields, getTenantToken } from './_feishu';
 
 describe('mapFields', () => {
   it('把表单字段映射为 Bitable fields 列名', () => {
-    const out = mapFields({ name: '张三', org: '白泽', contact: 'a@b.com', problem: '想接入 Codex', service: '诊断', _hp: '' });
+    const out = mapFields({ name: '张三', company: '白泽', contact: 'a@b.com', problem: '想接入 Codex', service: '诊断', _hp: '' });
     expect(out).toEqual({
       '姓名': '张三', '公司团队': '白泽', '联系方式': 'a@b.com',
       '最想解决的问题': '想接入 Codex', '感兴趣的服务': '诊断',
@@ -829,13 +842,13 @@ Run：`cd site && pnpm test` → Expected: FAIL（`_feishu` 未定义）。
 
 ```ts
 export interface ContactBody {
-  name: string; org: string; contact: string; problem: string; service: string; _hp?: string;
+  name: string; company: string; contact: string; problem: string; service: string; _hp?: string;
 }
 
 export function mapFields(b: ContactBody): Record<string, string> {
   return {
     '姓名': b.name ?? '',
-    '公司团队': b.org ?? '',
+    '公司团队': b.company ?? '',
     '联系方式': b.contact ?? '',
     '最想解决的问题': b.problem ?? '',
     '感兴趣的服务': b.service ?? '',

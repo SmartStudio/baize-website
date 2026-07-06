@@ -7,3 +7,6 @@ site/.astro/
 .wrangler/
 .playwright-mcp/
 .superpowers/
+.claude/
+*-375.png
+*-desktop.png
