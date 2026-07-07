@@ -11,3 +11,4 @@ site/.astro/
 *-375.png
 *-desktop.png
 qa-*.png
+.playwright*
