@@ -1,0 +1,27 @@
+---
+title: 如何把网站免费部署到 Cloudflare Pages？手把手四步上线
+description: 连接 GitHub 仓库、填好构建命令、绑定自定义域名，几步就能把静态网站免费部署到 Cloudflare Pages，自带全球 CDN 加速和免费 HTTPS 证书。
+pubDate: 2026-07-07
+category: AI编程
+relatedService: delivery
+draft: false
+---
+
+用 AI 把网站的代码写好之后，下一步就是把它发布到公网。过去这一步要买服务器、装 Nginx、申请 SSL 证书，现在用 Cloudflare Pages，几步点击就能完成，而且对个人和小团队完全免费。只要你已经用 Astro、Next.js、Vite 或任意框架把静态网站做好并推到了 GitHub，下面这套流程能让它十分钟内上线，还自带全球 CDN 加速和免费 HTTPS。
+
+## 为什么选 Cloudflare Pages
+
+它把「静态网站托管 + 全球 CDN + 免费 SSL 证书 + 持续部署」打包成了一件事。你把代码推到 GitHub，它就自动构建、自动发布；访问速度由 Cloudflare 遍布全球的边缘节点兜底；还能用 Pages Functions 加一层轻量的 Serverless 后端（比如接住联系表单、调用第三方 API），全程不用自己维护服务器。免费额度对绝大多数官网、博客、作品集来说绰绰有余。
+
+## 四步把网站部署上线
+
+1. **连接仓库**：登录 Cloudflare 控制台，进入 Workers & Pages，切到 Pages 标签页，点 Connect to Git，授权并选中你的 GitHub 仓库。
+2. **配置构建**：选好框架预设（如 Astro），填写构建命令（通常是 npm run build 或 pnpm build）和输出目录（常见是 dist）。如果工程在仓库子目录里，记得把根目录（Root directory）指到那个子目录。
+3. **首次部署**：点击 Save and Deploy，Cloudflare 会拉取代码、安装依赖、执行构建，几十秒后你的网站就上线在一个 pages.dev 的免费二级域名上了。
+4. **绑定自定义域名**：在项目的 Custom domains 里添加你的域名，Cloudflare 自动配好 DNS 记录并签发免费 HTTPS 证书。之后每次往主分支推代码，都会自动触发重新部署——这就是持续部署。
+
+## 顺手还能做两件事
+
+一是加 Serverless 能力：在工程里放一个 functions 目录、写一个处理函数，就能免服务器地接住表单提交、代理外部接口，不必为了一个小后端去租一台机器。二是持续部署已经默认开好，你只管写内容、写代码，push 之后剩下的构建与发布全交给平台。
+
+部署从「一道门槛」变成「一步操作」，意味着团队可以把精力放回真正重要的地方：内容、产品和体验本身。在白泽明理看来，好的工程化落地，恰恰是让这些基础设施尽量「隐形」，让人专注在创造上。
