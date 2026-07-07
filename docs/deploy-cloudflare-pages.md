@@ -45,6 +45,8 @@ CF Pages 一旦在构建根目录发现 `wrangler.toml`,就把它当作配置的
 
 **务必配到「生产」环境**(不是「预览」;两个环境分开)。改完变量**必须重新部署**才生效(变量在部署那一刻绑定进 deployment)。
 
+> 提醒:`baize-website.pages.dev`(以及自定义域名)= **生产**环境;`<hash>.baize-website.pages.dev` = **预览**环境。测哪个 URL,就得保证对应环境配了变量。
+
 > ⚠️ **实测重点:生产环境的变量全部选「文本」类型,不要选「密钥」类型。**
 > 在当前(Workers 化后的)CF 后台,把这些变量存成「密钥/加密」类型时,Pages Function 运行时**读不到**(表现为空值 → `feishu auth failed: invalid param` 之类);全部改成「文本」类型后即正常。代价:`FEISHU_APP_SECRET` 等会以明文显示在 dashboard 里,因此务必**限制该 CF 项目的访问人员**。
 
@@ -107,8 +109,69 @@ CF Pages 一旦在构建根目录发现 `wrangler.toml`,就把它当作配置的
 - [ ] 提交一次联系表单 → 飞书多维表格新增一行 → 验证后删掉测试行。
 - [ ] 375px 宽度下首页与服务页无溢出、无错位。
 
-## 附:与 GitHub Pages 镜像的联动
+## 7. 排障:表单「提交失败」(HTTP 500)怎么定位
 
-- 镜像站在另一个源,表单要跨源打到主站:GH workflow 设 `PUBLIC_FORM_ENDPOINT=https://fxai.ai/api/contact`。
-- 主站 CF 的 `ALLOWED_ORIGIN` 要包含镜像站域名,CORS 才放行。
-- 私有仓库启用 GitHub Pages 需 Pro/Team 付费方案;否则镜像站需改公开仓库或另找托管(CF 主站不受此限)。
+前端只显示脱敏的通用文案(防止泄露后端细节),真实原因在服务端。按这个顺序查,几分钟能定位:
+
+**① 直接打端点看真实状态码**(绕过前端):
+```bash
+curl -i -X POST 'https://fxai.ai/api/contact' \
+  -H 'content-type: application/json' \
+  --data '{"name":"诊断","company":"x","contact":"x@x.com","problem":"x","service":"诊断"}'
+```
+- `404` → Function 没部署(检查 Root directory / 构建产物 / 是否误走了 Workers 流程)。
+- `500` → Function 跑了但内部抛错 → 看 ②。
+- `200 {"ok":true}` → 通了。
+
+**② 看 CF 实时日志**:CF Pages 项目 → 对应部署 → **Functions / 实时日志(Real-time Logs)** → 再提交一次 → 找 `contact submission failed:` 那行,后面就是飞书返回的真实错误码(见下表)。
+
+**③ 用本地 `.dev.vars` 的值直连飞书 API 对照**——若直连能成功(换 token `code=0`、写记录 `code=0`),说明**值本身有效、问题在 CF 侧**(变量没配对/类型错/环境错);若直连也失败,才是凭据或表本身的问题。
+```bash
+# 换 token
+curl -X POST 'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal' \
+  -H 'content-type: application/json' \
+  --data '{"app_id":"<APP_ID>","app_secret":"<APP_SECRET>"}'
+# 用返回的 token 写一条(字段名须与表头一致)
+curl -X POST 'https://open.feishu.cn/open-apis/bitable/v1/apps/<APP_TOKEN>/tables/<TABLE_ID>/records?user_id_type=open_id' \
+  -H 'content-type: application/json' -H 'authorization: Bearer <TOKEN>' \
+  --data '{"fields":{"姓名":"诊断-可删除"}}'
+```
+
+### 飞书错误码速查(本项目真实遇到过)
+
+| 日志里的错误 | 含义 | 根因 / 修法 |
+|---|---|---|
+| `feishu auth failed: invalid param` | 换 token 时 app_id/app_secret 为空 | 运行时读到 undefined:变量配在了「预览」而非「生产」、或用了「密钥」类型、或仓库里有 `wrangler.toml` 架空了 dashboard |
+| `feishu write failed: code=91402 msg=NOTEXIST` | 目标多维表格/数据表不存在 | `BITABLE_APP_TOKEN` / `BITABLE_TABLE_ID` 值填错或**填反**(`tbl` 开头的是 table_id) |
+| `feishu write failed: code=91403` | 无权限 | 飞书应用没被加为该多维表格的「可编辑」协作者 |
+
+> 排障心法:每一步都拿**真实返回码/日志**取证,靠错误信息的变化(`invalid param` → `91402` → 直连 `code=0`)一层层剥离,而不是猜。本项目就是这样在四个叠加的坑里逐个定位的。
+
+## 8. GitHub Pages 镜像(可选)
+
+镜像是带 `noindex` 的冗余站,canonical 指向主站,不抢 SEO。
+
+### ⚠️ 私有仓库发不了 Pages
+**GitHub Free 方案下,私有仓库无法发布 GitHub Pages。** 症状:`deploy-pages@v4` 报
+```
+Error: Failed to create deployment (status: 404) ... Ensure GitHub Pages has been enabled
+```
+(构建本身是成功的,artifact 已生成,只是没有可发布的 Pages 目标。)两条出路:**把仓库改公开**(免费),或升级 GitHub Team/Pro(付费)。本仓库已选择**公开**。
+> 日志里那句 "Node 20 is being deprecated..." 是 GitHub 层面的**非致命警告**,与此错误无关,不用管。
+
+### 启用步骤
+1. (若改公开)先清理仓库里的真实凭据:`site/.dev.vars.example` 别留真实 `app_token/table_id`(改成占位符);用 `git grep '<app_secret>' $(git rev-list --all)` 确认 `app_secret`/`app_id` 从未入库。
+2. 仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**(不是 "Deploy from a branch")。
+3. **Actions → 最近一次 "Deploy to GitHub Pages (mirror)" → Re-run all jobs**(启用前的运行会卡在 deploy 步失败,启用后重跑即可成功)。
+4. 镜像地址:`https://smartstudio.github.io/baize-website/`。
+
+### workflow 里的构建变量(`.github/workflows/deploy-ghpages.yml`)
+| 变量 | 值 | 说明 |
+|---|---|---|
+| `PUBLIC_DEPLOY_TARGET` | `ghpages` | 注入 noindex + 启用子路径 base |
+| `PUBLIC_SITE_URL` | `https://fxai.ai` | canonical 恒指向主站 |
+| `PUBLIC_GH_BASE` | `/baize-website/` | 项目站子路径;若给镜像配了自定义域名则改 `/` |
+| `PUBLIC_FORM_ENDPOINT` | `https://fxai.ai/api/contact` | 表单跨源打到主站 Function |
+
+### 让镜像的表单也能提交
+镜像在 `https://smartstudio.github.io`,与主站不同源。要让镜像上的表单也能写飞书,主站 CF 的 `ALLOWED_ORIGIN`(生产、文本类型)必须**包含 `https://smartstudio.github.io`**,CORS 才放行。不配的话主站表单照常工作,只是镜像表单会被浏览器 CORS 挡下(镜像本就是备用,可选)。
