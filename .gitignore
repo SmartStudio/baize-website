@@ -10,3 +10,4 @@ site/.astro/
 .claude/
 *-375.png
 *-desktop.png
+qa-*.png
