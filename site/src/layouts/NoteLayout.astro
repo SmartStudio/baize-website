@@ -9,15 +9,16 @@ interface Props {
   category: string;
   author: string;
   relatedService?: string;
+  howto?: { name: string; steps: { name: string; text: string }[] };
   path: string;
 }
 
-const { title, description, pubDate, updatedDate, category, author, relatedService, path } = Astro.props;
+const { title, description, pubDate, updatedDate, category, author, relatedService, howto, path } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const dateStr = pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-const jsonLd = {
+const blogLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: title,
@@ -27,6 +28,23 @@ const jsonLd = {
   author: { '@type': 'Organization', name: author },
   articleSection: category,
 };
+
+const howToLd = howto
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: howto.name,
+      description,
+      step: howto.steps.map((s, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: s.name,
+        text: s.text,
+      })),
+    }
+  : null;
+
+const jsonLd = howToLd ? [blogLd, howToLd] : blogLd;
 
 const SERVICE_CTA: Record<string, string> = {
   services: '五项工程服务总览',

@@ -5,6 +5,17 @@ pubDate: 2026-07-07
 category: AI编程
 relatedService: delivery
 draft: false
+howto:
+  name: 把网站免费部署到 Cloudflare Pages
+  steps:
+    - name: 连接仓库
+      text: "登录 Cloudflare 控制台，进入 Workers & Pages，切到 Pages 标签页，点 Connect to Git，授权并选中你的 GitHub 仓库。"
+    - name: 配置构建
+      text: "选好框架预设，填写构建命令（如 pnpm build）和输出目录（如 dist）；工程在子目录时把 Root directory 指到该子目录。"
+    - name: 首次部署
+      text: "点击 Save and Deploy，Cloudflare 会拉取代码、安装依赖、执行构建，几十秒后网站上线在一个 pages.dev 免费二级域名上。"
+    - name: 绑定自定义域名
+      text: "在 Custom domains 里添加你的域名，Cloudflare 自动配置 DNS 并签发免费 HTTPS 证书；之后每次推代码都会自动重新部署。"
 ---
 
 用 AI 把网站的代码写好之后，下一步就是把它发布到公网。过去这一步要买服务器、装 Nginx、申请 SSL 证书，现在用 Cloudflare Pages，几步点击就能完成，而且对个人和小团队完全免费。只要你已经用 Astro、Next.js、Vite 或任意框架把静态网站做好并推到了 GitHub，下面这套流程能让它十分钟内上线，还自带全球 CDN 加速和免费 HTTPS。

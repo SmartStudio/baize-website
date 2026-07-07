@@ -13,6 +13,12 @@ const notes = defineCollection({
     cover: z.string().optional(),
     author: z.string().default('白泽明理'),
     draft: z.boolean().default(false),
+    howto: z
+      .object({
+        name: z.string(),
+        steps: z.array(z.object({ name: z.string(), text: z.string() })).min(2),
+      })
+      .optional(),
   }),
 });
 

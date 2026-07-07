@@ -18,6 +18,7 @@ const { Content } = await render(note);
   category={note.data.category}
   author={note.data.author}
   relatedService={note.data.relatedService}
+  howto={note.data.howto}
   path={`/notes/${note.id}`}
 >
   <Content />
