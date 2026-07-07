@@ -34,12 +34,12 @@ jobs:
       - run: pnpm build
         env:
           PUBLIC_DEPLOY_TARGET: ghpages
-          # 换成真实 CF 主域名（canonical 指向它）
-          PUBLIC_SITE_URL: https://baize.example.com
+          # CF 主域名（canonical 指向它）
+          PUBLIC_SITE_URL: https://fxai.ai
           # 项目站挂在 /<repo>/ 子路径；换成真实仓库名，或用自定义域名时改为 /
           PUBLIC_GH_BASE: /baize-website/
-          # 表单打到 CF 主站的 Pages Function（跨源，Function 需放行本镜像 origin）
-          PUBLIC_FORM_ENDPOINT: https://baize.example.com/api/contact
+          # 表单打到 CF 主站的 Pages Function（跨源，CF 的 ALLOWED_ORIGIN 需放行本镜像 origin https://smartstudio.github.io）
+          PUBLIC_FORM_ENDPOINT: https://fxai.ai/api/contact
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/dist
