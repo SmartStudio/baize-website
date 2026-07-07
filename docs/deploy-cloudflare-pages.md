@@ -43,28 +43,30 @@ CF Pages 一旦在构建根目录发现 `wrangler.toml`,就把它当作配置的
 
 ## 3. 环境变量(Settings → 变量和密钥 → 生产 Production)
 
-分两类,**务必配到「生产」环境**(不是「预览」;两个环境分开)。改完变量**必须重新部署**才生效(变量在部署那一刻绑定进 deployment)。
+**务必配到「生产」环境**(不是「预览」;两个环境分开)。改完变量**必须重新部署**才生效(变量在部署那一刻绑定进 deployment)。
 
-### 构建期变量 → 用「纯文本」类型
-构建期变量在 `pnpm build` 时被烤进静态产物,**必须是纯文本**(加密密钥在构建期读不到,会导致 canonical 落回占位域名)。
+> ⚠️ **实测重点:生产环境的变量全部选「文本」类型,不要选「密钥」类型。**
+> 在当前(Workers 化后的)CF 后台,把这些变量存成「密钥/加密」类型时,Pages Function 运行时**读不到**(表现为空值 → `feishu auth failed: invalid param` 之类);全部改成「文本」类型后即正常。代价:`FEISHU_APP_SECRET` 等会以明文显示在 dashboard 里,因此务必**限制该 CF 项目的访问人员**。
 
+全部用「文本」类型,分两组理解:
+
+**构建期变量**(`pnpm build` 时烤进静态产物):
 | 变量 | 值 |
 |---|---|
 | `PUBLIC_SITE_URL` | `https://fxai.ai`(无末尾斜杠) |
 | `PUBLIC_DEPLOY_TARGET` | `cloudflare` |
 
-### 运行期机密 → 用「密钥 / 加密」类型
-由 Pages Function 每次请求读取。
-
+**运行期变量**(Pages Function 每次请求读取):
 | 变量 | 值 |
 |---|---|
 | `FEISHU_APP_ID` | `cli_...` |
 | `FEISHU_APP_SECRET` | (你的 secret) |
-| `BITABLE_APP_TOKEN` | (多维表格 app_token) |
-| `BITABLE_TABLE_ID` | `tbl...` |
+| `BITABLE_APP_TOKEN` | 多维表格 app_token(`Wzo` 开头,27 位) |
+| `BITABLE_TABLE_ID` | `tbl...`(16 位) |
 | `ALLOWED_ORIGIN` | `https://<GH 镜像域名>`,暂无可留空 |
 
 > 这几个值就是本地 `site/.dev.vars` 里那几行,原样搬过来。变量名逐字符核对、**首尾无空格**;值**无引号、无空格、无换行**。
+> **`BITABLE_APP_TOKEN` 与 `BITABLE_TABLE_ID` 别填反**——`tbl` 开头的是 table_id,填反会让写入报 `feishu write failed: code=91402 msg=NOTEXIST`(指向了不存在的表)。
 > 主站**不要设** `PUBLIC_FORM_ENDPOINT`(留空即走同源 `/api/contact`),也不要设 `PUBLIC_GH_BASE`(GH 镜像才用)。
 > 前置校验:飞书应用必须已被加为该多维表格的「可编辑」协作者(否则写入报 `91403`)。
 
@@ -95,7 +97,7 @@ CF Pages 一旦在构建根目录发现 `wrangler.toml`,就把它当作配置的
 
 1. 先把所有环境变量配齐并保存(尤其生产环境的 `PUBLIC_SITE_URL`)。
 2. 再 **Deployments → Retry / Create deployment** 触发一次构建(或往 `master` 推一个 commit,已开自动部署)。
-3. `PUBLIC_*` 是构建期烤进 HTML 的,改了必须重构建;机密是运行期读的,改了也要重部署才绑定到新 deployment。
+3. `PUBLIC_*` 是构建期烤进 HTML 的,改了必须重构建;运行期变量(飞书那几个)是每次请求读的,改了也要重部署才绑定到新 deployment。
 
 ## 6. 上线后自查
 
