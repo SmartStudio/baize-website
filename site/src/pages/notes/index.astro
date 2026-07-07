@@ -14,20 +14,14 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
   description="白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。"
   path="/notes"
 >
-  <section class="bz-product-hero">
-    <div class="bz-product-hero__grid">
-      <div class="bz-product-hero__copy">
-        <p class="bz-eyebrow">Baize Notes</p>
-        <h1 class="bz-product-title">明理笔记</h1>
-        <p class="bz-product-lead">
-          关于 AI 接入、工程与落地的笔记，帮你把零散尝鲜变成可验证、可复用的组织能力。
-        </p>
-      </div>
-    </div>
-  </section>
-
   <section class="bz-rail-section">
     <div class="bz-shell">
+      <header class="notes-head">
+        <p class="bz-eyebrow">Baize Notes</p>
+        <h1 class="bz-product-title">明理笔记</h1>
+        <p class="bz-product-lead">关于 AI 接入、工程与落地的笔记，帮你把零散尝鲜变成可验证、可复用的组织能力。</p>
+      </header>
+
       <div class="bz-section-header">
         <p class="bz-section-header__eyebrow">按话题筛选</p>
       </div>
@@ -57,6 +51,10 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 </BaseLayout>
 
 <style>
+  .notes-head {
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+
   .bz-notes-filter {
     display: flex;
     flex-wrap: wrap;
