@@ -10,7 +10,7 @@
 FEISHU_APP_ID=cli_xxxxxxxxxxxx
 FEISHU_APP_SECRET=你的AppSecret
 # app_token = 多维表格 URL 里 base/ 后面那段；table_id = URL 里 ?table= 后面那段
-BITABLE_APP_TOKEN=WzoKb297zaHLxssoh9ncN5monOh
-BITABLE_TABLE_ID=tblkZVDRXzHmT3Bd
+BITABLE_APP_TOKEN=你的多维表格_app_token
+BITABLE_TABLE_ID=tbl你的table_id
 # GitHub Pages 镜像站的 origin（供跨源表单提交时 CORS 放行）；CF 主站同源可留空
 ALLOWED_ORIGIN=https://<user>.github.io
