@@ -136,23 +136,48 @@ const base = import.meta.env.BASE_URL;
               </svg>
             </span>
             <span class="bz-flow__stage">Diagnose</span>
-            <h3 class="bz-flow__title">诊断团队当前 AI 使用状态</h3>
-            <p class="bz-flow__desc">识别工具分散、流程断点、权限风险和知识不可复用的问题。</p>
-            <span class="bz-flow__out">输出 · 落地优先级与风险边界</span>
+            <h3 class="bz-flow__title">诊断</h3>
+            <p class="bz-flow__desc">团队现在怎么用 AI，有哪些真实阻塞。</p>
+            <span class="bz-flow__out">产出 · 落地优先级与风险边界</span>
           </div>
           <div class="bz-flow__step">
             <span class="bz-flow__node">
               <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="8" height="8" />
-                <rect x="15" y="3" width="8" height="8" />
-                <rect x="3" y="15" width="8" height="8" />
-                <rect x="15" y="15" width="8" height="8" />
+                <path d="M9 4H5a1 1 0 00-1 1v16a1 1 0 001 1h4" />
+                <path d="M12 17l5-4-5-4" />
+                <path d="M17 13H8" />
               </svg>
             </span>
-            <span class="bz-flow__stage">Build</span>
-            <h3 class="bz-flow__title">搭建最小可用的组织级工作流</h3>
-            <p class="bz-flow__desc">把 AI 接入真实研发、内容、运营或知识处理任务，而不是另起一套演示流程。</p>
-            <span class="bz-flow__out">输出 · SOP、模板与验收标准</span>
+            <span class="bz-flow__stage">Access</span>
+            <h3 class="bz-flow__title">接入</h3>
+            <p class="bz-flow__desc">设计工具、网关、中转与安全边界。</p>
+            <span class="bz-flow__out">产出 · 接入架构与权限规则</span>
+          </div>
+          <div class="bz-flow__step">
+            <span class="bz-flow__node">
+              <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 13a8 8 0 0113.9-5.4" />
+                <path d="M20 4v5h-5" />
+                <path d="M21 13a8 8 0 01-13.9 5.4" />
+                <path d="M6 22v-5h5" />
+              </svg>
+            </span>
+            <span class="bz-flow__stage">Engineer</span>
+            <h3 class="bz-flow__title">工程</h3>
+            <p class="bz-flow__desc">设计研发流与迭代回路 Loop。</p>
+            <span class="bz-flow__out">产出 · SOP、模板与验收标准</span>
+          </div>
+          <div class="bz-flow__step">
+            <span class="bz-flow__node">
+              <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M24 3L13 14" />
+                <path d="M24 3l-7 21-4-10-10-4z" />
+              </svg>
+            </span>
+            <span class="bz-flow__stage">Deliver</span>
+            <h3 class="bz-flow__title">交付</h3>
+            <p class="bz-flow__desc">设计从想法到产品的端到端路径。</p>
+            <span class="bz-flow__out">产出 · 交付蓝图与里程碑</span>
           </div>
           <div class="bz-flow__step">
             <span class="bz-flow__node">
@@ -163,9 +188,9 @@ const base = import.meta.env.BASE_URL;
               </svg>
             </span>
             <span class="bz-flow__stage">Compound</span>
-            <h3 class="bz-flow__title">把有效方法沉淀成可复用资产</h3>
-            <p class="bz-flow__desc">将团队经验写成 Skills、工作流说明和项目上下文，让每次使用都能继承已有方法。</p>
-            <span class="bz-flow__out">输出 · 团队知识资产</span>
+            <h3 class="bz-flow__title">沉淀</h3>
+            <p class="bz-flow__desc">形成 Skills、SOP 与知识资产。</p>
+            <span class="bz-flow__out">产出 · 团队知识资产</span>
           </div>
         </div>
       </div>
@@ -213,3 +238,20 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Homepage method preview mirrors the /method page: 5 steps in one linear
+     row on desktop (connector inset 10% = half a 20% column), stacked on mobile.
+     Astro scopes this to index.astro, so other flows stay untouched. */
+  @media (min-width: 901px) {
+    #method .bz-flow {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(16px, 2.2vw, 36px);
+    }
+
+    #method .bz-flow::before {
+      left: 10%;
+      right: 10%;
+    }
+  }
+</style>

@@ -18,7 +18,7 @@ const { Content } = await render(note);
   category={note.data.category}
   author={note.data.author}
   relatedService={note.data.relatedService}
-  path={`/notes/${note.id}/`}
+  path={`/notes/${note.id}`}
 >
   <Content />
 </NoteLayout>
