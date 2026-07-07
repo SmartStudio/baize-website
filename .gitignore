@@ -11,4 +11,7 @@ site/.astro/
 *-375.png
 *-desktop.png
 qa-*.png
+# 根目录不放图片（站点/设计资源都在 site/ designs/ contact/ 子目录下）；开发期截图别进仓库
+/*.png
+/*.jpg
 .playwright*

@@ -8,7 +8,7 @@
 
 - 用户提供的品牌 brief：Formal eXplainable AI（白泽明理）、使命、核心服务与内容宣传需求。
 - 参考网站：[Sakana AI](https://sakana.ai/) 与 Sakana Fugu 产品页的极简品牌首屏、可交互图形场、克制导航、强符号表达、红色主强调、产品页 rail/grid 信息结构。
-- 用户提供的正式 Logo：`/Users/zouyanjian/other-try/prepare/baize/website/白泽明理.png`。
+- 用户提供的正式 Logo：仓库根目录 [`../../白泽明理.png`](../../白泽明理.png)。
 - 设计系统已派生 `assets/baize-logo-lockup.png` 与 `assets/baize-mark.png`，分别用于对外物料锁定图和网页品牌符号场景。
 
 ## Product Context
