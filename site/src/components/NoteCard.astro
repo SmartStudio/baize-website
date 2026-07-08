@@ -1,17 +1,27 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
   category: string;
   slug: string;
+  cover?: ImageMetadata;
+  coverAlt?: string;
 }
-const { title, description, pubDate, category, slug } = Astro.props;
+const { title, description, pubDate, category, slug, cover, coverAlt } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const href = `${base}notes/${slug}/`;
 const dateStr = pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 ---
-<article class="bz-card" data-category={category}>
+<article class:list={['bz-card', 'bz-note-card', { 'bz-note-card--has-cover': cover }]} data-category={category}>
+  {cover && (
+    <a class="bz-note-card__cover" href={href} tabindex="-1" aria-hidden="true">
+      <Image src={cover} alt={coverAlt ?? ''} widths={[320, 640]} sizes="(max-width: 640px) 100vw, 360px" class="bz-note-card__img" />
+    </a>
+  )}
   <p class="bz-card__eyebrow">{category} · {dateStr}</p>
   <h3 class="bz-card__title"><a href={href}>{title}</a></h3>
   <p class="bz-card__body">{description}</p>
@@ -26,5 +36,37 @@ const dateStr = pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2
 
   .bz-card__title a:hover {
     color: var(--bz-accent-strong);
+  }
+
+  /* Cover bleeds to the card edges (cancels the card's 28px/26px padding),
+     sits above a hairline divider. No cover → card renders as the old text card. */
+  .bz-note-card__cover {
+    display: block;
+    margin: -28px -26px 4px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--bz-paper-100);
+    border-bottom: 1px solid var(--bz-border-subtle);
+  }
+
+  .bz-note-card__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--bz-transition-base);
+  }
+
+  .bz-note-card--has-cover:hover .bz-note-card__img {
+    transform: scale(1.03);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-note-card__img {
+      transition: none;
+    }
+    .bz-note-card--has-cover:hover .bz-note-card__img {
+      transform: none;
+    }
   }
 </style>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="'Poppins','Noto Sans SC','PingFang SC','Hiragino Sans GB',sans-serif">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9CA3AF"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1040" height="500" fill="#FDFDFD"/>
+
+  <!-- column captions -->
+  <text x="135" y="56" text-anchor="middle" fill="#9CA3AF" font-size="13" font-weight="600" letter-spacing="1.4">业务应用</text>
+  <text x="520" y="56" text-anchor="middle" fill="#B4740B" font-size="13" font-weight="600" letter-spacing="1.4">LLM API 网关</text>
+  <text x="905" y="56" text-anchor="middle" fill="#9CA3AF" font-size="13" font-weight="600" letter-spacing="1.4">模型供应商</text>
+
+  <!-- connectors: apps -> gateway -->
+  <line x1="230" y1="130" x2="418" y2="130" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="230" y1="250" x2="418" y2="250" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="230" y1="370" x2="418" y2="370" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- connectors: gateway -> providers -->
+  <line x1="622" y1="130" x2="810" y2="130" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="622" y1="250" x2="810" y2="250" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="622" y1="370" x2="810" y2="370" stroke="#D1D5DB" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- left: apps -->
+  <g font-size="16" fill="#111827">
+    <rect x="45" y="98" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="135" y="136" text-anchor="middle">客服机器人</text>
+    <rect x="45" y="218" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="135" y="256" text-anchor="middle">代码助手</text>
+    <rect x="45" y="338" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="135" y="376" text-anchor="middle">数据分析</text>
+  </g>
+
+  <!-- center: gateway -->
+  <rect x="420" y="80" width="200" height="360" fill="#FFFFFF" stroke="#111827" stroke-width="1.5"/>
+  <rect x="490" y="104" width="12" height="12" fill="#E9961A"/>
+  <text x="520" y="132" text-anchor="middle" fill="#111827" font-size="19" font-weight="600">统一入口</text>
+  <g font-size="15" fill="#374151">
+    <text x="520" y="196" text-anchor="middle">统一鉴权</text>
+    <text x="520" y="240" text-anchor="middle">智能路由 · 降级</text>
+    <text x="520" y="284" text-anchor="middle">限流 · 配额</text>
+    <text x="520" y="328" text-anchor="middle">审计 · 计费日志</text>
+  </g>
+  <line x1="452" y1="360" x2="588" y2="360" stroke="#E5E7EB"/>
+  <text x="520" y="392" text-anchor="middle" fill="#9CA3AF" font-size="13">可观测 · 可计费 · 可追溯</text>
+
+  <!-- right: providers -->
+  <g font-size="16" fill="#111827">
+    <rect x="815" y="98" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="905" y="136" text-anchor="middle">OpenAI</text>
+    <rect x="815" y="218" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="905" y="256" text-anchor="middle">Anthropic</text>
+    <rect x="815" y="338" width="180" height="64" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <text x="905" y="376" text-anchor="middle">自建 / 开源模型</text>
+  </g>
+</svg>

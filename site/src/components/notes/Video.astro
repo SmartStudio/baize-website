@@ -1,0 +1,33 @@
+---
+/**
+ * Video — 原生 <video>,用于演示类内容。
+ * autoplay=true 时:静音 + 循环 + 内联播放、默认隐藏控件(像 GIF,但体积小得多);
+ * autoplay=false 时:默认带控件,可手动播放。
+ * 视频文件放 public/notes-media/ 下(Astro 不优化视频),src 传其绝对路径。
+ */
+interface Props {
+  src: string;
+  poster?: string;
+  caption?: string;
+  autoplay?: boolean;
+  controls?: boolean;
+  width?: 'content' | 'wide' | 'full' | 'bleed';
+}
+
+const { src, poster, caption, autoplay = false, controls, width = 'content' } = Astro.props;
+const showControls = controls ?? !autoplay;
+---
+<figure class:list={['bz-media', `bz-media--${width}`]}>
+  <video
+    class="bz-media__video"
+    src={src}
+    poster={poster}
+    playsinline
+    preload="metadata"
+    muted={autoplay}
+    loop={autoplay}
+    autoplay={autoplay}
+    controls={showControls}
+  ></video>
+  {caption && <figcaption class="bz-figcap">{caption}</figcaption>}
+</figure>

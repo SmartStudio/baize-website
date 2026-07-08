@@ -41,6 +41,8 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
             pubDate={note.data.pubDate}
             category={note.data.category}
             slug={note.id}
+            cover={note.data.cover}
+            coverAlt={note.data.coverAlt}
           />
         ))}
       </div>

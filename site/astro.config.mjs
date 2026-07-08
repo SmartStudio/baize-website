@@ -11,6 +11,10 @@ export default defineConfig({
   site: SITE,
   base: target === 'ghpages' ? GH_BASE : '/',
   trailingSlash: 'ignore',
+  // 代码块用浅色 Shiki 主题,贴合站点「冷黑字/纯白底」的基调(背景再由 NoteLayout 统一压成 paper-100)。
+  markdown: {
+    shikiConfig: { theme: 'github-light', wrap: false },
+  },
   integrations: [mdx(), sitemap()],
   vite: {
     define: {
