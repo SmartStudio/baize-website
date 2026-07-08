@@ -230,6 +230,13 @@ a {
   transition: border-color var(--bz-transition-base), background var(--bz-transition-base);
 }
 
+/* `display:flex` above overrides the UA `[hidden]{display:none}` (author beats UA origin),
+   so the JS notes filter's `card.hidden = true` wouldn't actually hide cards.
+   This higher-specificity rule restores hide-on-[hidden]. */
+.bz-card[hidden] {
+  display: none;
+}
+
 .bz-card:hover {
   border-color: var(--bz-ink-900);
 }
