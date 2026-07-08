@@ -32,6 +32,10 @@ howto:
 3. **首次部署**：点击 Save and Deploy，Cloudflare 会拉取代码、安装依赖、执行构建，几十秒后你的网站就上线在一个 pages.dev 的免费二级域名上了。
 4. **绑定自定义域名**：在项目的 Custom domains 里添加你的域名，Cloudflare 自动配好 DNS 记录并签发免费 HTTPS 证书。之后每次往主分支推代码，都会自动触发重新部署——这就是持续部署。
 
+import cfFig from './media/deploy-website-to-cloudflare-fig.png'
+
+<Figure src={cfFig} alt="Cloudflare Pages 四步部署流水线示意:连接仓库、配置构建、首次部署、绑定域名" caption="图：把网站部署到 Cloudflare Pages 的四步——连接仓库、配置构建、首次部署、绑定域名，一条流水线走完。" width="wide" border />
+
 ## 顺手还能做两件事
 
 一是加 Serverless 能力：在工程里放一个 functions 目录、写一个处理函数，就能免服务器地接住表单提交、代理外部接口，不必为了一个小后端去租一台机器。比如下面这个文件放到 `functions/api/hello.ts`，部署后就有了一个 `/api/hello` 接口，全程无需自己维护服务器：

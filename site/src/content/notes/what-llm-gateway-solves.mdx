@@ -12,10 +12,12 @@ draft: false
 
 LLM API 网关要解决的，正是把这些分散的问题收敛到一处。统一鉴权意味着密钥不再散落在各个业务代码里，而是由网关统一签发和吊销；统一路由意味着可以按任务把请求分配给最合适的模型，某个模型出问题时能自动降级到备用方案，而不是让业务直接报错。
 
+import gatewayFig from './media/what-llm-gateway-solves-fig.png'
+
 <Figure
-  src="/notes-media/llm-gateway.svg"
-  alt="LLM API 网关架构:左侧业务应用经网关统一鉴权、路由、限流、审计后，再分发到右侧多个模型供应商"
-  caption="图 1：网关是业务应用与模型供应商之间的唯一入口，把鉴权、路由、限流、审计收敛到一处。"
+  src={gatewayFig}
+  alt="LLM API 网关作为统一入口:业务调用经鉴权、路由、限流后分发到多个模型供应商"
+  caption="图：网关是业务应用与模型供应商之间的唯一入口，把鉴权、路由、限流收敛到一处。"
   width="wide"
   border
 />
