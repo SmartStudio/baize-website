@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "tokens:push": "node scripts/tokens-push.mjs",
+    "favicon:gen": "node scripts/gen-favicon.mjs",
     "test": "vitest run"
   },
   "dependencies": {
