@@ -1,4 +1,9 @@
 ---
+// path 必须是「直接返回 200 的终态地址」,不能靠这里自动补斜杠:
+//   - 目录索引页(services/index.html)→ 终态是 /services/,不带斜杠会被 308;
+//   - 根级 .html 文件(404.html)     → 终态是 /404,带斜杠反而会被 308。
+// canonical 指向一个 308 不会让 Google 判错,但白白浪费抓取预算,也和 sitemap 里
+// 的地址对不上。所以由页面自己声明,不在这里做猜测。
 interface Props { title: string; description: string; path: string; ogImage?: string; noindex?: boolean; }
 const { title, description, path, ogImage = '/og-default.png', noindex: forceNoindex = false } = Astro.props;
 const site = import.meta.env.SITE;
