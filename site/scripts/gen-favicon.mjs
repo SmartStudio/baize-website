@@ -1,5 +1,5 @@
 /**
- * 从 public/baize-mark.png(白泽兽首线稿)生成站点 favicon 与 apple-touch-icon。
+ * 从 src/assets/baize-mark.png(白泽兽首线稿)生成站点 favicon 与 apple-touch-icon。
  *
  * 为什么不能直接缩放 logo:兽首是细线勾勒,线宽约占图幅 1.4%。缩到 32px 后
  * 线宽只剩 0.3 物理像素,抗锯齿会把它抹成灰雾。所以小尺寸必须主动加粗笔画,
@@ -18,7 +18,7 @@ import { writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SRC = join(ROOT, 'public', 'baize-mark.png');
+const SRC = join(ROOT, 'src', 'assets', 'baize-mark.png');
 const PUBLIC = join(ROOT, 'public');
 
 const NAVY = '#071E5B'; // --bz-logo-navy

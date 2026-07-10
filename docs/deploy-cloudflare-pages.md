@@ -108,6 +108,32 @@ CF Pages 一旦在构建根目录发现 `wrangler.toml`,就把它当作配置的
 - [ ] `https://fxai.ai/sitemap-index.xml`、`/robots.txt`、`/rss.xml` 可访问。
 - [ ] 提交一次联系表单 → 飞书多维表格新增一行 → 验证后删掉测试行。
 - [ ] 375px 宽度下首页与服务页无溢出、无错位。
+- [ ] `curl -s https://fxai.ai/ | grep -c email-decode` 返回 `0`(见 §6.1)。
+- [ ] `curl -sI https://fxai.ai/_astro/<任一文件> | grep cache-control` 含 `immutable`(见 §6.2)。
+
+### 6.1 CF 的 Email Address Obfuscation 会插一个关键路径脚本
+
+Scrape Shield 的「Email Address Obfuscation」默认开启:它把页面里的 `mailto:` 改写成
+`/cdn-cgi/l/email-protection#<hex>`,并注入 `/cdn-cgi/scripts/.../email-decode.min.js`。
+代价有两层:一是这个脚本进了 HTML 的关键请求链(实测 +208ms);二是**人类**看不到邮箱
+(禁用 JS 时彻底失效),而 JSON-LD 里的 `email` 字段因为在 `<script>` 里 CF 不碰,机器照样读得到——
+正好反了。
+
+本仓库的做法是用 CF 官方的 opt-out 注释包住邮箱链接(见 `SiteFooter.astro` / `contact.astro`):
+
+```html
+<!--email_off--><a href="mailto:...">...</a><!--/email_off-->
+```
+
+页面里没有任何邮箱被混淆时,CF 就不再注入那个脚本。**新增邮箱链接时别忘了照样包。**
+(也可以在 Scrape Shield 面板整体关掉,但注释式 opt-out 是随代码走的,换 zone 不会丢。)
+
+### 6.2 `_headers` 修 `/_astro/*` 的缓存
+
+CF Pages 对所有静态资源默认发 `max-age=14400, must-revalidate`(4 小时)。而 `/_astro/*`
+是内容哈希命名的——文件名一变就是新 URL,内容永不改变,4 小时的 revalidate 纯属浪费。
+`site/public/_headers` 把它们提到 `max-age=31536000, immutable`。GH Pages 不支持
+`_headers`,会当成一个普通静态文件,无害。
 
 ## 7. 排障:表单「提交失败」(HTTP 500)怎么定位
 

@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import mark from '../assets/baize-mark.png';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -22,7 +24,8 @@ const base = import.meta.env.BASE_URL;
     </div>
 
     <div class="bz-hero-split__visual" aria-hidden="true">
-      <img class="bz-hero-split__mark" src={`${base}baize-mark.png`} alt="" />
+      {/* 首页 LCP 元素:priority 会带上 loading=eager + fetchpriority=high */}
+      <Image class="bz-hero-split__mark" src={mark} alt="" priority />
       <span class="bz-hero-split__doodle bz-hero-split__doodle--cloud">
         <svg viewBox="0 0 120 56" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 42c-6 0-8-9-1-12 1-9 14-11 19-4 3-10 20-9 22 1 5-6 17-4 16 5 9-1 13 8 5 11z" /></svg>
       </span>

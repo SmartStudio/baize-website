@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import qr from '../assets/wechat-qr.png';
+
 const base = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
 ---
@@ -9,9 +12,9 @@ const year = new Date().getFullYear();
       <p class="bz-eyebrow">Formal eXplainable AI</p>
     </div>
     <div class="bz-footer__contact">
-      <a class="bz-text-link" href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a>
+      <!--email_off--><a class="bz-text-link" href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
       <div class="bz-footer__qr">
-        <img src={`${base}wechat-qr.jpg`} alt="白泽明理微信二维码" width="96" height="96" loading="lazy" />
+        <Image src={qr} alt="白泽明理微信二维码" format="png" quality={90} loading="lazy" />
         <span class="bz-eyebrow">微信扫码咨询</span>
       </div>
     </div>

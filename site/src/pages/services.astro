@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import mark from '../assets/baize-mark.png';
 
 const base = import.meta.env.BASE_URL;
 
@@ -38,7 +40,7 @@ const jsonLd = services.map((s) => ({
       </div>
       <div class="bz-product-hero__media">
         <div class="media-panel">
-          <img src={`${base}baize-mark.png`} alt="白泽明理 Baize Tech 标识" />
+          <Image src={mark} alt="白泽明理 Baize Tech 标识" />
         </div>
       </div>
     </div>

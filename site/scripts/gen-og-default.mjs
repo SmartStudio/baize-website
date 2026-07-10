@@ -1,7 +1,7 @@
 // Generates public/og-default.png (1200x630), the default OG/share image and
 // Organization logo referenced by Seo.astro / BaseLayout.astro.
 //
-// Composites the brand mark (public/baize-mark.png) onto a white 1200x630
+// Composites the brand mark (src/assets/baize-mark.png) onto a white 1200x630
 // canvas alongside the wordmark and tagline, using the same brand tokens as
 // src/styles/tokens/colors.css and typography.css.
 //
@@ -45,7 +45,7 @@ const ORANGE = '#E9961A';
 const FONT = 'PingFang SC, Noto Sans SC, Poppins, sans-serif';
 
 async function main() {
-  const markPath = path.join(root, 'public', 'baize-mark.png');
+  const markPath = path.join(root, 'src', 'assets', 'baize-mark.png');
   const outPath = path.join(root, 'public', 'og-default.png');
 
   const markHeight = 360;

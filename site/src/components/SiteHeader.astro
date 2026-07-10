@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import mark from '../assets/baize-mark.png';
+
 const base = import.meta.env.BASE_URL;
 const NAV = [
   { href: 'index.html', label: '首页' },
@@ -12,7 +15,9 @@ const link = (h: string) => (h === 'index.html' ? base : `${base}${h}`);
 ---
 <header class="bz-topbar">
   <a class="bz-topbar__brand" href={base}>
-    <img class="bz-topbar__logo" src={`${base}baize-mark.png`} alt="白泽明理" />
+    {/* 34px 展示,单独出一档小图:SEO 流量直接落在笔记页,那里没有 hero 大图可复用。
+        eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它(且首屏图懒加载会被 Lighthouse 扣分)。 */}
+    <Image class="bz-topbar__logo" src={mark} alt="白泽明理" width={96} height={126} loading="eager" />
     <span class="bz-topbar__wm bz-logotype">白泽明理</span>
     <span class="bz-topbar__eyebrow">Formal eXplainable AI</span>
   </a>

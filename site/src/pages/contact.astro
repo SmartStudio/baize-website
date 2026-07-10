@@ -1,7 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
-const base = import.meta.env.BASE_URL;
+import qr from '../assets/wechat-qr.png';
 ---
 <BaseLayout
   title="联系我们"
@@ -22,18 +23,12 @@ const base = import.meta.env.BASE_URL;
         <p class="bz-card__body">
           也可以直接发邮件，或加微信附上你的团队现状和最想解决的问题，我们会更快判断适合从哪里开始。
         </p>
-        <a class="bz-text-link" href="mailto:fxai.labs@gmail.com">
+        <!--email_off--><a class="bz-text-link" href="mailto:fxai.labs@gmail.com">
           fxai.labs@gmail.com
           <span class="bz-text-link__arrow" aria-hidden="true">→</span>
-        </a>
+        </a><!--/email_off-->
         <div class="contact-qr">
-          <img
-            src={`${base}wechat-qr.jpg`}
-            alt="白泽明理微信二维码"
-            width="160"
-            height="160"
-            loading="lazy"
-          />
+          <Image src={qr} alt="白泽明理微信二维码" format="png" quality={90} loading="lazy" />
           <span class="bz-eyebrow">微信扫码咨询</span>
         </div>
       </aside>
