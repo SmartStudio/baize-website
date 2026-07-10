@@ -1,0 +1,45 @@
+---
+// 没有这个页面时,CF Pages 会把任意不存在的 URL 回落到 index.html 并返回 200
+// —— 对 Google 就是 soft 404:每个失效链接都被当成一个真实页面收录,白白吃掉抓取预算。
+// 只要 dist 里存在 404.html,CF Pages 就会用它并返回真正的 404 状态码。
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="页面不存在"
+  description="这个链接指向的页面不存在或已经移动。"
+  path="/404"
+  noindex
+>
+  <section class="nf">
+    <p class="bz-eyebrow">404</p>
+    <h1 class="bz-product-title">这里没有页面</h1>
+    <p class="bz-product-lead">链接可能已经失效，或者地址打错了一个字。</p>
+    <div class="nf__actions">
+      <a class="bz-button bz-button--primary bz-button--lg" href={base}>回到首页</a>
+      <a class="bz-button bz-button--secondary bz-button--lg" href={`${base}notes`}>读明理笔记</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--bz-space-16);
+    min-height: 52vh;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--bz-space-64) var(--bz-space-24);
+  }
+
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--bz-space-12);
+    margin-top: var(--bz-space-16);
+  }
+</style>

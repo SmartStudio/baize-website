@@ -1,10 +1,11 @@
 ---
-interface Props { title: string; description: string; path: string; ogImage?: string; }
-const { title, description, path, ogImage = '/og-default.png' } = Astro.props;
+interface Props { title: string; description: string; path: string; ogImage?: string; noindex?: boolean; }
+const { title, description, path, ogImage = '/og-default.png', noindex: forceNoindex = false } = Astro.props;
 const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
 const ogUrl = new URL(ogImage, site).href;
-const noindex = import.meta.env.PUBLIC_DEPLOY_TARGET === 'ghpages';
+// GH 镜像整站 noindex(去重指向 CF 主站);404 页则无论在哪个 target 都不该被收录
+const noindex = forceNoindex || import.meta.env.PUBLIC_DEPLOY_TARGET === 'ghpages';
 const fullTitle = path === '/' ? title : `${title} · 白泽明理`;
 ---
 <title>{fullTitle}</title>
