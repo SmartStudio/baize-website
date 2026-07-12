@@ -5,6 +5,7 @@ import Figure from '../../components/notes/Figure.astro';
 import Figures from '../../components/notes/Figures.astro';
 import Video from '../../components/notes/Video.astro';
 import Callout from '../../components/notes/Callout.astro';
+import NoteLink from '../../components/notes/NoteLink.astro';
 
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) => !data.draft);
@@ -14,8 +15,8 @@ export async function getStaticPaths() {
 const { note } = Astro.props;
 const { Content } = await render(note);
 
-// 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>,无需逐篇 import。
-const mdxComponents = { Figure, Figures, Video, Callout };
+// 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>/<NoteLink>,无需逐篇 import。
+const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
 ---
 <NoteLayout
   title={note.data.title}

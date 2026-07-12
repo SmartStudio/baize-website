@@ -1,0 +1,16 @@
+---
+/**
+ * NoteLink — 正文里链到另一篇明理笔记。
+ *
+ * 不要在 mdx 里直接写 `[文字](/notes/xxx/)`:那是硬编码的绝对路径,
+ * 在 GH Pages 镜像(base=/baize-website/)下会丢掉 base 前缀,直接断链。
+ * 这里统一拼 base,并保证是带尾斜杠的终态地址(少一个斜杠 CF 就会 308)。
+ */
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const href = `${import.meta.env.BASE_URL}notes/${slug}/`;
+---
+<a class="bz-text-link" href={href}><slot /></a>
