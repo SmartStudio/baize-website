@@ -5,8 +5,18 @@ import JsonLd from '../components/JsonLd.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 
-interface Props { title: string; description: string; path: string; ogImage?: string; jsonLd?: object | object[]; noindex?: boolean; }
-const { title, description, path, ogImage, jsonLd, noindex } = Astro.props;
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+  article?: { published: string; modified?: string; section?: string; author?: string };
+  jsonLd?: object | object[];
+  noindex?: boolean;
+}
+const { title, description, path, ogImage, ogImageAlt, ogType, article, jsonLd, noindex } = Astro.props;
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -30,7 +40,16 @@ const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} sizes="32x32" />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
-    <Seo title={title} description={description} path={path} ogImage={ogImage} noindex={noindex} />
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
+      ogType={ogType}
+      article={article}
+      noindex={noindex}
+    />
     <JsonLd schema={schema} />
   </head>
   <body>

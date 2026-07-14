@@ -2,17 +2,54 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NoteCard from '../../components/NoteCard.astro';
+import { CATEGORIES, categorySlug } from '../../lib/notes';
 
-const CATEGORIES = ['AI普及', 'AI编程', '企业落地', '安全可信', 'Loop与方法论', '案例复盘'];
+const base = import.meta.env.BASE_URL;
+const site = import.meta.env.SITE;
 
 const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+// 空分类不出归档页(见 category/[category].astro),所以筛选条也只列有笔记的分类——
+// 免得点进去是个空页面。
+const liveCategories = CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
+
+const description =
+  '白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。';
+
+const blogLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: '明理笔记',
+  description,
+  url: new URL('/notes/', site).href,
+  inLanguage: 'zh-CN',
+  publisher: { '@type': 'Organization', name: '白泽明理 Baize Tech' },
+  blogPost: notes.map((n) => ({
+    '@type': 'BlogPosting',
+    headline: n.data.title,
+    description: n.data.description,
+    url: new URL(`/notes/${n.id}/`, site).href,
+    datePublished: n.data.pubDate.toISOString(),
+    articleSection: n.data.category,
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', site).href },
+    { '@type': 'ListItem', position: 2, name: '明理笔记' },
+  ],
+};
 ---
 <BaseLayout
   title="明理笔记"
-  description="白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。"
+  description={description}
   path="/notes/"
+  jsonLd={[blogLd, breadcrumbLd]}
 >
   <section class="bz-rail-section">
     <div class="bz-shell">
@@ -26,12 +63,17 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
         <p class="bz-section-header__eyebrow">按话题筛选</p>
       </div>
 
-      <div class="bz-notes-filter" role="group" aria-label="按分类筛选笔记">
-        <button type="button" class="bz-badge bz-badge--vermilion" data-filter="all" aria-pressed="true">全部</button>
-        {CATEGORIES.map((c) => (
-          <button type="button" class="bz-badge bz-badge--neutral" data-filter={c} aria-pressed="false">{c}</button>
+      {/* 筛选项是真链接,不是纯 JS 按钮:
+          - 抓取器顺着它发现分类归档页(否则归档页只有 sitemap 能找到,近乎孤儿);
+          - 无 JS 时点击直接跳归档页,功能不丢;
+          - 有 JS 时拦下来做即时筛选,并把地址栏同步成归档页地址——刷新会真的落到
+            那一页,而内容与筛选结果一致,不会出现「URL 说 A、内容是 B」。 */}
+      <nav class="bz-notes-filter" aria-label="按分类筛选笔记">
+        <a class="bz-badge bz-badge--vermilion" href={`${base}notes/`} data-filter="all" aria-current="page">全部</a>
+        {liveCategories.map((c) => (
+          <a class="bz-badge bz-badge--neutral" href={`${base}notes/category/${categorySlug(c)}/`} data-filter={c}>{c}</a>
         ))}
-      </div>
+      </nav>
 
       <div class="bz-notes-grid" id="notes-grid">
         {notes.map((note) => (
@@ -64,13 +106,14 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
     margin: 24px 0 36px;
   }
 
-  .bz-notes-filter button {
+  .bz-notes-filter a {
     border: none;
     cursor: pointer;
+    text-decoration: none;
     transition: color var(--bz-transition-fast), background-color var(--bz-transition-fast);
   }
 
-  .bz-notes-filter button:focus-visible {
+  .bz-notes-filter a:focus-visible {
     outline: 3px solid var(--bz-focus-ring);
     outline-offset: 2px;
   }
@@ -87,19 +130,25 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 </style>
 
 <script>
-  const buttons = Array.from(document.querySelectorAll('.bz-notes-filter button'));
-  const cards = Array.from(document.querySelectorAll('#notes-grid [data-category]'));
+  // 渐进增强:链接本身已经能用(直接跳分类归档页),这里把它升级成不刷新的即时筛选。
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.bz-notes-filter a'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#notes-grid [data-category]'));
   const empty = document.getElementById('notes-empty');
 
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter || 'all';
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // 新标签页/中键打开等修饰键点击不拦截,让浏览器照常走真链接。
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e as MouseEvent).button !== 0) return;
+      e.preventDefault();
 
-      buttons.forEach((b) => {
-        const active = b === btn;
-        b.setAttribute('aria-pressed', String(active));
-        b.classList.toggle('bz-badge--vermilion', active);
-        b.classList.toggle('bz-badge--neutral', !active);
+      const filter = link.dataset.filter || 'all';
+
+      links.forEach((l) => {
+        const active = l === link;
+        l.toggleAttribute('aria-current', active);
+        if (active) l.setAttribute('aria-current', 'page');
+        l.classList.toggle('bz-badge--vermilion', active);
+        l.classList.toggle('bz-badge--neutral', !active);
       });
 
       let visible = 0;
@@ -110,6 +159,9 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
       });
 
       if (empty) empty.hidden = visible !== 0;
+
+      // 地址栏同步到归档页地址:刷新/分享都会落到那一页,内容与当前筛选一致。
+      history.replaceState(null, '', link.getAttribute('href'));
     });
   });
 </script>

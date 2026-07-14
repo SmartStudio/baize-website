@@ -6,13 +6,18 @@ import Figures from '../../components/notes/Figures.astro';
 import Video from '../../components/notes/Video.astro';
 import Callout from '../../components/notes/Callout.astro';
 import NoteLink from '../../components/notes/NoteLink.astro';
+import { relatedNotes } from '../../lib/notes';
 
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) => !data.draft);
-  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+  // 相关笔记要在这里算好:布局层拿不到 collection,而每篇的推荐都依赖「其他所有篇」。
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note, related: relatedNotes(note, notes) },
+  }));
 }
 
-const { note } = Astro.props;
+const { note, related } = Astro.props;
 const { Content } = await render(note);
 
 // 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>/<NoteLink>,无需逐篇 import。
@@ -30,6 +35,7 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
   cover={note.data.cover}
   coverAlt={note.data.coverAlt}
   path={`/notes/${note.id}/`}
+  related={related}
 >
   <Content components={mdxComponents} />
 </NoteLayout>
