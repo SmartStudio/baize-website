@@ -1,0 +1,159 @@
+---
+title: Sub2API 企业私有 Codex 中转站搭建指南
+description: 使用美国 VPS 和 Docker Compose 部署 Sub2API，把账号调度、员工 Key、限流和审计收回企业内部，为 Codex CLI 提供统一的 OpenAI 兼容端点。
+pubDate: 2026-07-15
+category: 安全可信
+relatedService: gateway
+cover: ./media/ai-coding-compute-sourcing-cover.png
+draft: false
+---
+
+企业自建中转站，可以把网关、账号调度、员工 Key 和访问日志留在自有基础设施中，避免商业中转商接触提示词和代码上下文。实际请求仍会发送给 OpenAI，自建网关解决的是中间链路风险，不会改变上游的数据处理规则。
+
+[Sub2API](https://github.com/Wei-Shaw/sub2api) 是开源 AI API 网关，支持池化多个 OpenAI 或 ChatGPT 订阅账号，对外提供统一的 OpenAI 兼容端点，可接入 Codex CLI 等编码工具。
+
+import boundaryFig from './media/ai-coding-compute-sourcing-fig-1.png'
+
+<Figure
+  src={boundaryFig}
+  alt="商业中转与私有网关两条请求链路都连接上游模型，私有网关把鉴权和审计留在企业边界内"
+  caption="图：自建网关移除的是商业中转商，不是 OpenAI。请求仍会到达上游模型，鉴权、员工密钥和审计回到企业手里。"
+  width="wide"
+  border
+/>
+
+## 1. 购买美国 VPS
+
+OpenAI 的风控会检查 IP 地域和信誉。如果上游账号按美国区注册和使用，服务器出口也要固定在美国。腾讯云国际版有可用的北美节点时可以直接选用，也可以使用 Vultr、Hetzner、AWS Lightsail 等提供美国节点的云服务商。供应商名称不能代表 IP 一定干净，开通后仍要核验出口位置和历史信誉。
+
+最低配置建议为 2 vCPU、4 GB RAM、50 GB SSD。购买后记录公网 IP，并在云平台安全组开放 TCP 8080 端口。初始化完成并启用 HTTPS 反向代理后，应关闭 8080 的公网入口，只保留 443 端口。
+
+## 2. 安装 Docker 并调整系统配置
+
+通过 SSH 登录服务器，先更新系统：
+
+```bash
+apt update && apt upgrade -y
+```
+
+安装 Docker 和 Docker Compose：
+
+```bash
+apt install -y ca-certificates curl gnupg
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt update
+apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+systemctl enable --now docker
+```
+
+开放 SSH 和初始化端口：
+
+```bash
+ufw allow 22/tcp
+ufw allow 8080/tcp
+ufw enable
+```
+
+生产环境还要安装 Nginx，用于反向代理和 HTTPS 接入。
+
+## 3. 使用 Docker Compose 部署 Sub2API
+
+创建部署目录，运行官方部署脚本，然后启动服务：
+
+```bash
+mkdir -p /opt/sub2api-deploy && cd /opt/sub2api-deploy
+curl -sSL https://raw.githubusercontent.com/Wei-Shaw/sub2api/main/deploy/docker-deploy.sh | bash
+docker compose up -d
+```
+
+脚本会下载 Compose 配置，生成 `.env`，创建数据目录，并自动生成 `JWT_SECRET`、`TOTP_ENCRYPTION_KEY` 和 `POSTGRES_PASSWORD`。
+
+查看日志并提取初始管理员密码：
+
+```bash
+docker compose logs sub2api | grep "admin password"
+```
+
+浏览器访问 `http://VPS_IP:8080`，按页面提示完成初始化。
+
+## 4. 修改生产环境配置
+
+部署脚本已经在 `.env` 中生成强随机密钥，通常不需要手动替换。需要修改服务端口时，编辑 `SERVER_PORT` 字段，再重启容器。
+
+生产环境应配置 Nginx 反向代理和 Let's Encrypt HTTPS。使用 Codex CLI 时，还要在 Nginx 的 `http` 块中加入：
+
+```nginx
+underscores_in_headers on;  # Codex CLI 粘性会话需要保留 session_id 请求头
+```
+
+Nginx 默认会丢弃名称中包含下划线的请求头，导致多账号场景下的粘性会话失效。完成反向代理后，在云平台安全组和 UFW 中关闭 8080 的公网访问，只允许 Nginx 在服务器内部连接该端口。
+
+并发上限、速率限制和额度控制可在 Sub2API 后台按账号或员工 Key 配置。
+
+import deployStackFig from './media/ai-coding-compute-sourcing-fig-2.png'
+
+<Figure
+  src={deployStackFig}
+  alt="美国 VPS 内从 HTTPS 入口、网关服务、容器运行到数据备份的部署层级"
+  caption="图：生产流量从 HTTPS 入口进入，Sub2API 网关运行在容器中，数据目录单独备份。VPS 是部署边界，不代表请求不会发送给上游模型。"
+  width="wide"
+  border
+/>
+
+## 5. 注册 ChatGPT 账号并开通订阅
+
+账号注册、订阅和后续使用应保持地区、设备和支付信息一致：
+
+- 使用真实姓名和地址信息注册。
+- 不要批量注册、共享凭证或伪装使用模式。
+- 使用 OpenAI 支持的支付方式开通 Pro 或 Plus。
+- 仅在 OpenAI 服务条款和企业内部合规要求允许时，将订阅账号接入共享网关。
+
+Sub2API 支持通过 OAuth 添加 ChatGPT 订阅账号。每个账号都要设置并发上限和速率限制，并持续监控账号健康。发现授权失效、限流异常或账号状态变化时，立即停止调度该账号。
+
+<Callout type="warning" title="账号边界">
+固定 IP、限流和健康监控只能降低异常触发概率，不能绕过 OpenAI 的服务条款或风控。核心开发链路不能依赖随时可能被限制的个人订阅账号池，企业应准备合规的官方 API 或其他备用链路。
+</Callout>
+
+## 6. 配置 Sub2API
+
+登录后台后按顺序操作：
+
+1. 打开分组管理，新建 `codex-openai` 分组。
+2. 打开账号管理，添加 OpenAI 账号并关联到该分组，通过 OAuth 完成授权，再测试连通性。
+3. 打开 API Key 管理，为每位员工创建独立 Key，绑定 `codex-openai` 分组，并设置 token 额度、并发数和过期时间。
+
+配置完成后，Sub2API 会按分组调度账号，记录 token 用量并转发请求。员工使用独立 Key，企业可以按人追踪用量、撤销权限和调整额度。
+
+import accountPoolFig from './media/ai-coding-compute-sourcing-fig-3.png'
+
+<Figure
+  src={accountPoolFig}
+  alt="多个员工密钥经过统一分组调度到账号池，并记录用量审计"
+  caption="图：每位员工使用独立密钥，网关按分组把请求调度到账号池，并把用量收进统一审计。"
+  width="wide"
+  border
+/>
+
+## 7. 修改 Codex 配置
+
+在 Codex CLI 或其他支持自定义 OpenAI 端点的编码工具中设置：
+
+- Base URL：`https://your-domain.com/v1`。生产环境使用域名和 HTTPS。
+- API Key：填写 Sub2API 生成的 `sk-` 开头密钥。
+
+保存配置后发起一次代码补全或对话请求。工具日志没有连接错误，且 Sub2API 后台出现对应的使用记录，说明链路已经接通。使用 Nginx 反向代理时，确认 `underscores_in_headers` 已开启。
+
+## 企业加固与使用边界
+
+- 使用域名和 HTTPS，对管理后台增加 IP 白名单、VPN 或单点登录限制。
+- 使用 Sub2API 的并发、速率和日志能力做额度控制与调用审计。
+- 定期备份 `/opt/sub2api-deploy/data`、`postgres_data` 和 `redis_data` 目录，并测试恢复流程。
+- 定期轮换员工 Key，员工离职或设备丢失后立即撤销对应 Key。
+- 为核心开发链路准备独立的备用上游，不让单个账号或单个服务商成为故障点。
+
+自建中转站消除的是商业中转商这一层风险。提示词和代码上下文仍会发送给上游模型提供方，OpenAI 的服务条款、数据处理规则和风控继续有效。企业在上线前还要完成内部合规审查，明确哪些代码可以发送到外部模型，哪些仓库只能使用私有化模型。
+
+部署完成后，员工可以使用企业分配的独立 Key 调用统一端点，不再依赖外部中转商。管理员可以在一处管理账号、额度、并发和审计记录。
