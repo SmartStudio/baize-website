@@ -1,0 +1,81 @@
+---
+title: 企业 Agent 的记忆架构：Markdown 是真值，数据库只是能丢弃的缓存
+description: GBrain 是 Y Combinator 总裁兼 CEO Garry Tan 开源并自用的 Agent 记忆系统，把知识管理当成编译问题而非存储问题：Markdown 加 Git 是唯一真值源，数据库只是可以整份丢弃重建的派生索引。看懂这个选择，才看懂企业级 Agent 上下文该怎么搭。
+pubDate: 2026-07-17
+category: 企业落地
+relatedService: loop-engineering
+cover: ./media/gbrain-markdown-truth-source-cover.png
+draft: false
+---
+
+把知识管理当成「存储问题」，思路会一直是：选一个数据库，把文档灌进去，查询方便就行。把它当成「编译问题」，思路完全不同：原始信号只有一份，数据库只是持续从它编译出来的产物，坏了可以整个丢掉、从头重建。
+
+[GBrain](https://github.com/garrytan/gbrain) 是 Y Combinator 总裁兼 CEO Garry Tan 开源、并且真的拿来跑自己生产环境的 Agent 记忆系统——不是演示项目，是他自己每天靠它做会议准备、邮件跟进、投资笔记的那套系统。它选的是「编译」这条路，而且把这个选择贯彻到了每一层设计里。这恰好是大多数企业给 Agent 搭「记忆」时会跳过不想的那道判断题：出问题时，你信任的到底是数据库里的一行记录，还是能重新推导出这行记录的原始材料？
+
+## 真值只有一个，数据库不是它
+
+GBrain 的系统真相源原则很直接：所有用户知识必须先落在 Markdown 文件里（frontmatter 或约定的正文小节），才允许进入系统。直接写用户知识表被 CI 硬性拦截——这不是文档里写的建议，是代码库里真的有一条检查脚本在拦。
+
+好处不是「整洁」，是**可恢复性**。数据库崩了、schema 迁移错了、索引脏了，运维动作只有一句命令：`gbrain rebuild --confirm-destructive`——删掉全部派生表，从 Git 里的 Markdown 重新抽取一遍。你不需要精心备份数据库，因为数据库本来就不是需要备份的那样东西，它是缓存。
+
+架构因此分成三层，越往下越「贵」也越不容易丢：
+
+1. **Brain Repo**：Git 管理的 Markdown 文件，系统的唯一真值源，人可以直接读、直接改、直接 `git diff` 看 Agent 昨晚学到了什么。
+2. **Retrieval Index**：Postgres（单机场景用 PGLite，一个跑在进程内、无需装服务端的 WASM 版 Postgres）加 pgvector，存 pages、chunks、links、timeline 等派生数据——可以整体重建。
+3. **Self-wiring Knowledge Graph**：每次写页面时，用正则和字符串匹配从 Markdown 的 wikilink 语法里抽出实体和关系边（`works_at`、`invested_in`、`founded`、`advises` 等），**零 LLM 调用**——这层图谱同样是派生数据，同样可以重建。
+
+import layersFig from './media/gbrain-markdown-truth-source-fig-1.png'
+
+<Figure
+  src={layersFig}
+  alt="Brain Repo 作为不可丢弃的真值源，向上派生出可重建的检索索引与知识图谱"
+  caption="图：只有最底层的 Markdown 仓库不能丢，上面两层无论出什么问题，都能从它重新编译出来。"
+  width="wide"
+  border
+/>
+
+## 页面结构：可重写的认知，加只追加的证据
+
+光有「真值在 Markdown」还不够，一个人的档案页如果只是往下堆时间线，六个月后就是两百条记录——想知道「这个人现在什么状况」，得从头翻到第 147 条才找得到答案。
+
+GBrain 给每个页面定了两个固定区域：顶部是 **Compiled Truth**（当前最佳理解，随新证据出现而整段重写），底部是 **Timeline**（只追加的证据链，从不删改）。更新一条信息时，时间线永远追加一行新记录，附上来源和时间戳；顶部的综合判断则读取旧版本、揉进新信息、重写成新的一段话。规则很硬：**Compiled Truth 里的每一句判断，都必须能在 Timeline 里找到支撑它的原始记录**——这就是「可依赖」在页面级别的落地：结论和证据分层放，但结论永远可以被证据追溯，而不是悬在空中。
+
+## 检索：向量之外，还要看「事实上连不连得上」
+
+检索是四种策略叠加：向量检索（HNSW 索引）和关键词检索（BM25）并行跑，用 RRF（倒数排名融合）把两路结果合并，再叠加图谱遍历信号做增强，最后过一层重排。GBrain 自己的 BrainBench 测试显示：关掉图谱层，P@5（前 5 条里有多少条真正相关）约 18%；打开图谱层，跳到 49.1%，R@5（真正相关的结果里有多少条被召回）到 97.9%。
+
+差距的原因不难理解：向量检索找的是「语义相近」的内容，图谱找的是「事实上有关联」的内容——两者经常是不同的结果集。问「谁在 Acme 工作」，向量检索只能找到语义上提过「Acme」和「工作」的段落；图谱可以直接顺着 `works_at` 这条边走过去，即使那段原文从没把两个词放在同一句话里。
+
+import retrievalFig from './media/gbrain-markdown-truth-source-fig-2.png'
+
+<Figure
+  src={retrievalFig}
+  alt="向量检索与关键词检索并行后经 RRF 融合，再叠加知识图谱信号与重排的四段式检索流程"
+  caption="图：语义相近和事实关联是两种不同的信号，图谱层补的是向量检索天生找不到的那一半。"
+  width="wide"
+  border
+/>
+
+<Callout type="tip" title="配套阅读">
+Compiled Truth 靠证据支撑结论，是「可依赖」在页面级别的具体做法；GBrain 的 Dream Cycle（去重、修复引用、检测矛盾）则是「写入之后自动检查一遍」的回路，思路上和 <NoteLink slug="what-is-loop-engineering">Loop Engineering</NoteLink> 相通。两者合起来才是 <NoteLink slug="enterprise-context-engineering">企业上下文管理</NoteLink> 里说的那根「可依赖」支柱该怎么落地的一份具体参考答案。
+</Callout>
+
+## 公司脑：多 Source、按人授权、隔离到 SQL 层
+
+个人用的「脑」只有一个 Source、一个用户。GBrain 把这个模型扩展成公司脑的方式，是在同一个数据库实例（Brain）里挂多个独立的 Source——共享 wiki、客户笔记、内部文档各是一个 Git 仓库，互不干扰。
+
+权限通过 OAuth Client 落地：`--source` 决定这个 Client 能往哪个 Source 写，`--federated-read` 决定它能读哪些 Source。隔离在数据库层强制执行，不是应用层的一个 if 判断——跨 Source 读取在 SQL 这一层就被拒绝。官方对搜索、列表、多 Source 读取这几条路径都做过 fuzz 测试，宣称零泄露。
+
+这套模型官方给的建议场景是 10 到 50 人的团队，再往上就需要自己拆更多 Source、叠加更细粒度的权限。诚实地说，这不是一个跟 Salesforce、Jira 原生权限模型打通、有完整 SOC2 认证的企业级方案——专门做团队记忆的产品在那个维度上更成熟。GBrain 的强项是另一条轴：Markdown 可审计、Agent 原生读写、图谱零 LLM 调用、Git 协作友好。选哪一个，取决于你更在意哪一层风险。
+
+## Markdown 画不了的图，GBrain 怎么办
+
+Markdown 是文本优先的格式，原生表达不了精确的流程图、架构图、依赖关系图——GBrain 接受这个限制，而不是绕开它硬上二进制图片。
+
+实际处理分两条路：真正需要人眼看的复杂视觉图，存成附件或外链，但页面正文要用文字把关键节点和关系描述清楚——GBrain 索引的是这段文字，不是图片本身；日常场景则优先用 diagrams-as-code（Mermaid、PlantUML、Graphviz DOT），把图形写成代码嵌进 Markdown 的代码块里。源文件仍然是纯文本，可以被全文检索、可以被 Agent 读懂、可以被 Git diff，人类打开支持渲染的编辑器就能看到图。GBrain 内部那套知识图谱，本质是给多跳查询用的类型化实体关系，不是画图工具——这条边界划得很清楚，没有勉强让 Markdown 干它干不了的事。
+
+## 从哪里开始
+
+给 Agent 搭「记忆」，大多数团队的第一反应是选一个好用的向量数据库，把文档灌进去——这一步做完，看起来能跑，但真值到底在哪，其实从没被认真回答过。数据库挂了要不要紧？谁能读到什么，是应用层的一个判断，还是数据库结构本身就保证不了越界？这些问题不会在演示阶段暴露，只会在生产环境用久了、数据出了一次事故之后才浮出水面。
+
+GBrain 的选择不是唯一答案，但它把这道判断题摆得很清楚：先决定什么是不能丢的真值、什么是可以随时重建的缓存，再决定检索和权限怎么搭在这个骨架上。这正是白泽明理在做企业 Agent 上下文与 Loop 设计时反复要回答的同一类问题——先想清楚真值源在哪、边界画在哪，再谈用什么工具，顺序不能反。
