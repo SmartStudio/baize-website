@@ -1,0 +1,89 @@
+---
+title: Codex 配 subagent：判断力留给主线程，重复交给便宜档
+description: OpenAI 今年 7 月发布的 GPT-5.6 把模型分成 Sol、Terra、Luna 三档，Codex CLI 也原生支持给不同角色配不同模型。这篇笔记整理一套实际能跑的配置——主线程留最强判断力，范围明确的重复子任务交给更省的档位，并顺手纠正一个容易配错的细节：推理力度只有五档，没有「max」也没有「ultra」。
+pubDate: 2026-08-02
+category: AI编程
+relatedService: dev-workflow
+cover: ./media/codex-subagent-model-tiers-cover.png
+draft: false
+---
+
+OpenAI 今年 7 月发布的 [GPT-5.6](https://openai.com/index/gpt-5-6/) 把模型分成了 Sol、Terra、Luna 三档——Sol 判断力最强，Luna 最快最便宜。同一时间，Codex CLI 也原生支持给不同角色的 subagent 配不同模型。这两件事凑在一起，把「要不要用最强模型」变成了「每个角色该配多重的判断力」——这是个需要动手配置的问题，不是凭感觉能决定的。
+
+import hubFig from './media/codex-subagent-model-tiers-fig-1.png'
+
+<Figure
+  src={hubFig}
+  alt="主线程作为发光的中心枢纽，通过三条连接线分别连向探索、执行、兜底三个同等大小但更暗淡的子任务节点"
+  caption="图：主线程是唯一的亮核心，负责判断和统筹；探索、执行、兜底这几类子任务体量相同、亮度更低——它们该配的是够用的档位，不是最贵的档位。"
+  width="wide"
+  border
+/>
+
+## 主线程管判断，子任务跑执行
+
+主线程做的是范围界定、任务拆解、结果整合——这几步一旦判断错了，后面所有子任务都在替错误的判断背书，所以配最贵最强的档位划算。子任务接的是范围明确、可重复、可并行的活，Codex 内置的三个默认角色就是这个思路的现成例子：`explorer` 做读密集型的代码库探索，`worker` 做执行导向的实现与修复，`default` 是通用兜底。这类任务单次出错代价小，但走量大，该省的是速度和成本，不是判断力。
+
+这跟判断「谁该有多大权限」是同一套逻辑：<NoteLink slug="agent-governance-before-scale">Agent 治理</NoteLink> 里讨论的是生产环境该把哪些决策留给人、哪些交给 Agent 自主执行；换到本地开发工具上，问题变成哪些决策该留给判断力最强的主线程、哪些可以外包给便宜的执行档位——判断的成本和后果决定资源该往哪配，逻辑是一样的。
+
+## 两层配置：全局默认 + 按角色定制
+
+全局默认写在 `~/.codex/config.toml`（个人）或项目根目录 `.codex/config.toml`（项目）：
+
+```toml
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+
+[agents]
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "xhigh"
+max_concurrent_threads_per_session = 6
+max_depth = 1
+```
+
+按角色定制则是独立的 TOML 文件，放进 `~/.codex/agents/`（个人）或 `.codex/agents/`（项目）就会被自动发现，不需要在 `config.toml` 里额外注册。`name`、`description`、`developer_instructions` 三个字段必填；`model`、`model_reasoning_effort`、`sandbox_mode` 是可选的，不写就继承 `[agents]` 的默认值。
+
+`.codex/agents/luna-worker.toml`：
+
+```toml
+name = "luna_worker"
+description = "范围明确、可重复、可并行的子任务，优先派给它。"
+developer_instructions = """
+按分配到的任务范围精确执行。
+只返回结果或简要证据，不要扩大范围。
+"""
+model = "gpt-5.6-luna"
+model_reasoning_effort = "xhigh"
+sandbox_mode = "workspace-write"
+```
+
+写完之后要重启 Codex 或开新对话才会生效——改 `config.toml` 或 `agents/` 目录不会热加载。
+
+## 生效优先级
+
+四层配置会叠加，优先级从高到低：
+
+1. spawn 时显式指定的 model；
+2. 该角色自定义 agent 文件里写的 `model` / `model_reasoning_effort`；
+3. `[agents]` 里的 `default_subagent_model` / `default_subagent_reasoning_effort`；
+4. 父会话（主线程）自己的档位。
+
+想跳过配置文件、单次临时覆盖，用 CLI flag：
+
+```bash
+codex -m gpt-5.6-sol -c model_reasoning_effort=high exec "review this diff for correctness"
+```
+
+`-m` 覆盖模型，`-c` 用 `key=value` 覆盖任意配置项，两者都只对这一次调用生效。
+
+## 一个容易配错的地方：推理力度没有「max」和「ultra」
+
+`model_reasoning_effort` 的合法取值只有五档：`minimal`、`low`、`medium`、`high`、`xhigh`。没有 `max`，也没有 `ultra`——想让某个角色尽力推理，该写的是 `xhigh`，写成不存在的档位不会生效。
+
+<Callout type="warning" title="档位不是越贵越好">
+`xhigh` 该配给谁，看的是任务本身，不是模型档位。批量的重复子任务哪怕换成 Sol，也不该无脑顶到 `xhigh`——多数时候 `low` 或 `medium` 已经够用，走量场景省下来的是实打实的延迟和成本。`max_depth` 默认就是 `1`（子任务能被派生，但子任务自己不能再往下派生），上面配置里显式写出来，只是让这道防线看得见，不是新开的限制。
+</Callout>
+
+## 配还是不配，差的是钱和时间
+
+把所有角色都塞进最贵最强的档位，浪费的是钱和延迟；反过来图省事全用最省的档位，判断质量会跟着往下掉——尤其是主线程做范围拆解和结果整合的时候。分层配置解决的不是「AI 编程工具好不好用」，而是把贵的判断力和便宜的执行力分别用在该用的地方，这件事本身花不了十分钟，但省下来的是接下来每一次调用的成本。Codex 从「个人顺手用一用」到「团队研发流程的一部分」还要跨过边界、验证、协作这几道坎，见 <NoteLink slug="codex-into-real-workflow">Codex 真正进入研发流程，需要解决哪些问题？</NoteLink>。
