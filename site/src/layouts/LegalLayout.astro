@@ -7,16 +7,18 @@ import JsonLd from '../components/JsonLd.astro';
 const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
 
 interface Props {
-  title: string;
-  description: string;
-  path: string;
-  lang: 'zh-CN' | 'en';
-  docTitle: string;
-  altPath: string;
-  effectiveDate: string;
+  frontmatter: {
+    title: string;
+    description: string;
+    path: string;
+    lang: 'zh-CN' | 'en';
+    docTitle: string;
+    altPath: string;
+    effectiveDate: string;
+  };
 }
 
-const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props.frontmatter || {};
+const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props.frontmatter;
 
 const isZh = lang === 'zh-CN';
 const titleSuffix = isZh ? '· 白泽明理' : '· Baize Tech';
