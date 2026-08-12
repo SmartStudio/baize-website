@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - 路由终态(`trailingSlash: 'always'`):`/fxai/terms/`、`/fxai/terms/en/`、`/fxai/privacy/`、`/fxai/privacy/en/`。
-- 任何邮箱文本/链接必须用 `<!--email_off-->...<!--/email_off-->` 包裹(CLAUDE.md 强制约定,防止 CF Email Obfuscation 注入解码脚本)。
+- 任何邮箱文本/链接必须用 `<!--email_off-->...<!--/email_off-->` 包裹(CLAUDE.md 强制约定,防止 CF Email Obfuscation 注入解码脚本)。**MDX(JSX 方言)不支持字面 HTML 注释语法**,写 `<!--...-->` 会直接报语法错误,写成 `{`<!--...-->`}` 会被转成转义可见文本——都不满足要求。正确做法是通过 `site/src/components/EmailLink.astro` 组件承载(普通 `.astro` 文件里的字面注释会原样直通),MDX 正文里 `import EmailLink from '.../components/EmailLink.astro'` 后用 `<EmailLink email="fxai.labs@gmail.com" />` 引用。
 - 联系邮箱统一使用 `fxai.labs@gmail.com`(设计文档已确认,不是待定占位)。
 - `Seo.astro` 的改动必须向后兼容:新增 prop 均为可选且有默认值,不改变现有 13 个页面在不传新 prop 时的渲染输出。
 - 4 个正文页面为独立 MDX page route(`src/pages/fxai/...`),不进 content collection。
@@ -144,11 +144,26 @@ git commit -m "feat(seo): Seo.astro 支持多语言(lang/titleSuffix/alternates)
 
 **Files:**
 - Create: `site/src/layouts/LegalLayout.astro`
+- Create: `site/src/components/EmailLink.astro`(承载 `<!--email_off-->`,MDX 里不能写字面 HTML 注释,见 Global Constraints)
 - Create: `site/src/pages/fxai/terms.mdx`
 
 **Interfaces:**
 - Consumes:`Seo.astro` 的 `lang`/`titleSuffix`/`alternates` prop(Task 1 产出)。
-- Produces:`LegalLayout.astro` 的 Props —— `title: string`、`description: string`、`path: string`、`lang: 'zh-CN' | 'en'`、`docTitle: string`、`altPath: string`、`effectiveDate: string`。后续 3 个正文页面都通过 MDX frontmatter 的 `layout` 字段 + 这些字段名接入。
+- Produces:`LegalLayout.astro` 的 Props —— `frontmatter: { title: string; description: string; path: string; lang: 'zh-CN' | 'en'; docTitle: string; altPath: string; effectiveDate: string }`(注意是嵌套在 `frontmatter` 里,不是平铺在 `Astro.props` 上——这是 Astro MDX layout 的固定约定)。后续 3 个正文页面都通过 MDX frontmatter 的 `layout` 字段 + 这些字段名接入。`EmailLink.astro` 的 Props —— `email: string`,后续 4 篇正文都用 `<EmailLink email="fxai.labs@gmail.com" />` 引用。
+
+- [ ] **Step 0: 创建 `site/src/components/EmailLink.astro`**
+
+MDX(JSX 方言)不支持字面 HTML 注释语法——直接写 `<!--...-->` 会报语法错误,写成 `{`<!--...-->`}` 会被当成字符串输出、转义成肉眼可见的 `&lt;!--...--&gt;`。这个小组件是普通 `.astro` 文件,注释在它的模板里会原样直通,MDX 正文只需要 `import` 它、当组件用:
+
+```astro
+---
+interface Props {
+  email: string;
+}
+const { email } = Astro.props;
+---
+<!--email_off--><a href={`mailto:${email}`}>{email}</a><!--/email_off-->
+```
 
 - [ ] **Step 1: 创建 `LegalLayout.astro`**
 
@@ -161,17 +176,22 @@ import JsonLd from '../components/JsonLd.astro';
 
 const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
 
+// Astro 的 MDX layout 约定:frontmatter 字段不会平铺在 Astro.props 上,
+// 而是嵌套在 Astro.props.frontmatter 里(连同 url/file/headings 等元信息)。
+// Props 接口按实际运行时形状声明,不要写成平铺字段——那样类型和实际值对不上。
 interface Props {
-  title: string;
-  description: string;
-  path: string;
-  lang: 'zh-CN' | 'en';
-  docTitle: string;
-  altPath: string;
-  effectiveDate: string;
+  frontmatter: {
+    title: string;
+    description: string;
+    path: string;
+    lang: 'zh-CN' | 'en';
+    docTitle: string;
+    altPath: string;
+    effectiveDate: string;
+  };
 }
 
-const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props;
+const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props.frontmatter;
 
 const isZh = lang === 'zh-CN';
 const titleSuffix = isZh ? '· 白泽明理' : '· Baize Tech';
@@ -387,7 +407,9 @@ altPath: /fxai/terms/en/
 effectiveDate: '[EFFECTIVE_DATE — 待确认]'
 ---
 
-api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认]("我们"、"白泽明理")运营。当你注册、访问或使用本服务时，即表示你同意本用户协议（以下简称"本协议"）的全部条款。如果你不同意本协议的任何内容，请不要使用本服务。
+import EmailLink from '../../components/EmailLink.astro';
+
+api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认] ("我们"、"白泽明理")运营。当你注册、访问或使用本服务时，即表示你同意本用户协议（以下简称"本协议"）的全部条款。如果你不同意本协议的任何内容，请不要使用本服务。
 
 ## 1. 服务说明
 
@@ -453,7 +475,7 @@ api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认]("我们"、"
 
 ## 11. 终止
 
-你可以随时通过 <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off--> 联系我们终止账号；终止前已产生的费用仍需结清。我们也可能在你违反本协议时暂停或终止你的账号；因你违约导致的终止，未使用额度不予退还。因我们自身原因终止服务的，未使用额度将按合理方式处理。
+你可以随时通过 <EmailLink email="fxai.labs@gmail.com" /> 联系我们终止账号；终止前已产生的费用仍需结清。我们也可能在你违反本协议时暂停或终止你的账号；因你违约导致的终止，未使用额度不予退还。因我们自身原因终止服务的，未使用额度将按合理方式处理。
 
 ## 12. 适用法律与争议解决
 
@@ -465,7 +487,7 @@ api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认]("我们"、"
 
 ## 14. 联系方式
 
-如对本协议有任何疑问，请联系：<!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
+如对本协议有任何疑问，请联系：<EmailLink email="fxai.labs@gmail.com" />
 ```
 
 - [ ] **Step 3: 构建并核对该页面产物**
@@ -514,6 +536,8 @@ docTitle: api.fxai.ai Terms of Service
 altPath: /fxai/terms/
 effectiveDate: '[EFFECTIVE_DATE — TBD]'
 ---
+
+import EmailLink from '../../../components/EmailLink.astro';
 
 api.fxai.ai (the "Service") is operated by [ENTITY_NAME — TBD] ("we", "us", "Baize Tech"). By registering for, accessing, or using the Service, you agree to these Terms of Service (these "Terms"). If you do not agree, please do not use the Service.
 
@@ -581,7 +605,7 @@ You agree to indemnify us, within a reasonable scope, against third-party claims
 
 ## 11. Termination
 
-You may terminate your account at any time by contacting <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->; charges incurred before termination remain payable. We may suspend or terminate your account if you breach these Terms; unused credits are non-refundable in that case. If we terminate the Service for reasons on our part, unused credits will be handled in a reasonable manner.
+You may terminate your account at any time by contacting <EmailLink email="fxai.labs@gmail.com" />; charges incurred before termination remain payable. We may suspend or terminate your account if you breach these Terms; unused credits are non-refundable in that case. If we terminate the Service for reasons on our part, unused credits will be handled in a reasonable manner.
 
 ## 12. Governing Law and Dispute Resolution
 
@@ -593,7 +617,7 @@ We may update these Terms from time to time. For changes that materially affect 
 
 ## 14. Contact
 
-If you have questions about these Terms, please contact: <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
+If you have questions about these Terms, please contact: <EmailLink email="fxai.labs@gmail.com" />
 ```
 
 - [ ] **Step 2: 构建并核对中英文互指**
@@ -641,7 +665,9 @@ altPath: /fxai/privacy/en/
 effectiveDate: '[EFFECTIVE_DATE — 待确认]'
 ---
 
-本隐私政策说明 api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认]("我们")在你使用本服务过程中，如何收集、使用、共享和保护你的个人信息。使用本服务即表示你同意本隐私政策所述的处理方式。
+import EmailLink from '../../components/EmailLink.astro';
+
+本隐私政策说明 api.fxai.ai(以下简称"本服务")由 [ENTITY_NAME — 待确认] ("我们")在你使用本服务过程中，如何收集、使用、共享和保护你的个人信息。使用本服务即表示你同意本隐私政策所述的处理方式。
 
 ## 1. 我们收集哪些信息
 
@@ -671,7 +697,7 @@ effectiveDate: '[EFFECTIVE_DATE — 待确认]'
 
 ## 6. 你的权利与选择
 
-你可以通过 <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off--> 向我们申请访问、更正或删除你的个人信息，或要求我们提供你数据的副本。我们会在收到申请后的合理时间内响应。你也可以随时联系我们退订营销邮件。
+你可以通过 <EmailLink email="fxai.labs@gmail.com" /> 向我们申请访问、更正或删除你的个人信息，或要求我们提供你数据的副本。我们会在收到申请后的合理时间内响应。你也可以随时联系我们退订营销邮件。
 
 ## 7. 数据安全
 
@@ -695,7 +721,7 @@ effectiveDate: '[EFFECTIVE_DATE — 待确认]'
 
 ## 12. 联系我们
 
-如对本隐私政策有任何疑问或希望行使你的数据权利，请联系：<!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
+如对本隐私政策有任何疑问或希望行使你的数据权利，请联系：<EmailLink email="fxai.labs@gmail.com" />
 ```
 
 - [ ] **Step 2: 构建并核对该页面产物**
@@ -739,6 +765,8 @@ altPath: /fxai/privacy/
 effectiveDate: '[EFFECTIVE_DATE — TBD]'
 ---
 
+import EmailLink from '../../../components/EmailLink.astro';
+
 This Privacy Policy explains how [ENTITY_NAME — TBD] ("we", "us") collects, uses, shares, and protects your personal data when you use api.fxai.ai (the "Service"). By using the Service, you agree to the practices described in this Privacy Policy.
 
 ## 1. Information We Collect
@@ -769,7 +797,7 @@ We retain personal data only for as long as necessary to fulfill the purposes de
 
 ## 6. Your Rights and Choices
 
-You may request access to, correction of, or deletion of your personal data, or request a copy of your data, by contacting <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->. We will respond within a reasonable time. You may also unsubscribe from marketing emails at any time.
+You may request access to, correction of, or deletion of your personal data, or request a copy of your data, by contacting <EmailLink email="fxai.labs@gmail.com" />. We will respond within a reasonable time. You may also unsubscribe from marketing emails at any time.
 
 ## 7. Data Security
 
@@ -793,7 +821,7 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 
 ## 12. Contact Us
 
-If you have questions about this Privacy Policy or wish to exercise your data rights, please contact: <!--email_off--><a href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
+If you have questions about this Privacy Policy or wish to exercise your data rights, please contact: <EmailLink email="fxai.labs@gmail.com" />
 ```
 
 - [ ] **Step 2: 构建**
@@ -825,7 +853,7 @@ cd site && npx astro dev
 - 页面外壳只有 logo + 语言切换链接 + 版权行,没有中文导航栏和咨询 CTA
 - 点击右上角语言切换链接能正确跳到对应语言版本
 - 正文里的方括号占位字段清晰可见,没有被误渲染成别的内容
-- 邮箱链接可点击,查看页面源码确认 `<!--email_off-->` 注释确实包在 `<a href="mailto:...">` 外层
+- 邮箱链接可点击,查看页面源码确认 `EmailLink.astro` 渲染出的 `<!--email_off-->` 是字面注释(不是 `&lt;!--email_off--&gt;` 转义文本),且 `<a href="mailto:...">` 没有被嵌套包了两层
 
 确认完毕后:
 
