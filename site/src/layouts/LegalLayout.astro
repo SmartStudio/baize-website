@@ -1,0 +1,221 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/baize-mark.png';
+import Seo from '../components/Seo.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  lang: 'zh-CN' | 'en';
+  docTitle: string;
+  altPath: string;
+  effectiveDate: string;
+}
+
+const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props.frontmatter || {};
+
+const isZh = lang === 'zh-CN';
+const titleSuffix = isZh ? '· 白泽明理' : '· Baize Tech';
+const altLabel = isZh ? 'EN' : '中文';
+const selfHreflang = isZh ? 'zh-Hans' : 'en';
+const altHreflang = isZh ? 'en' : 'zh-Hans';
+
+// base 恒以 / 结尾(CF 主站是 '/',GH 镜像是 '/baize-website/');
+// altPath 是不含 base 前缀的站点绝对路径(供 Seo 拼 canonical/hreflang 用),
+// 这里再拼一份跳转链接实际可点的相对地址。
+const base = import.meta.env.BASE_URL;
+const altHref = altPath ? `${base}${altPath.replace(/^\//, '')}` : '#';
+
+const alternates = [
+  { hreflang: selfHreflang, path },
+];
+if (altPath) {
+  alternates.push({ hreflang: altHreflang, path: altPath });
+  alternates.push({ hreflang: 'x-default', path: isZh ? path : altPath });
+}
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '白泽明理 Baize Tech',
+  alternateName: 'Baize Tech',
+  slogan: 'Formal eXplainable AI',
+  url: import.meta.env.SITE,
+  logo: new URL('/og-default.png', import.meta.env.SITE).href,
+  email: 'fxai.labs@gmail.com',
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    {import.meta.env.PROD && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+        <script define:vars={{ GA_MEASUREMENT_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', GA_MEASUREMENT_ID);
+        </script>
+      </>
+    )}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={`${base}favicon.ico`} sizes="32x32" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      lang={lang}
+      titleSuffix={titleSuffix}
+      alternates={alternates}
+    />
+    <JsonLd schema={org} />
+  </head>
+  <body>
+    <header class="bz-legal-topbar">
+      <a class="bz-legal-topbar__brand" href={base}>
+        <Image class="bz-legal-topbar__logo" src={mark} alt="白泽明理" width={56} loading="eager" />
+        <span class="bz-legal-topbar__wm bz-logotype">白泽明理</span>
+      </a>
+      <a class="bz-legal-topbar__switch" href={altHref}>{altLabel}</a>
+    </header>
+    <main class="bz-legal">
+      <div class="bz-shell bz-legal__inner">
+        <h1 class="bz-legal__title">{docTitle}</h1>
+        <p class="bz-legal__date bz-eyebrow">{isZh ? '生效日期' : 'Effective date'}: {effectiveDate}</p>
+        <div class="bz-legal__body">
+          <slot />
+        </div>
+      </div>
+    </main>
+    <footer class="bz-legal-footer">
+      <p>© {new Date().getFullYear()} 白泽明理 Baize Tech</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .bz-legal-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--bz-space-24) var(--bz-page-gutter);
+    border-bottom: var(--bz-border);
+  }
+
+  .bz-legal-topbar__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bz-space-12);
+    color: var(--bz-text-primary);
+    text-decoration: none;
+  }
+
+  .bz-legal-topbar__logo {
+    width: 28px;
+    height: auto;
+  }
+
+  .bz-legal-topbar__wm {
+    font-size: 17px;
+    color: var(--bz-text-primary);
+  }
+
+  .bz-legal-topbar__switch {
+    color: var(--bz-text-secondary);
+    font-family: var(--bz-font-mono);
+    font-size: var(--bz-type-small-size);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: var(--bz-border);
+    padding: 6px 14px;
+  }
+
+  .bz-legal-topbar__switch:hover {
+    color: var(--bz-text-primary);
+    border-color: var(--bz-border-strong);
+  }
+
+  .bz-legal {
+    padding: clamp(48px, 7vw, 88px) 0;
+  }
+
+  .bz-legal__inner {
+    max-width: var(--bz-read-max);
+  }
+
+  .bz-legal__title {
+    margin: 0;
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .bz-legal__date {
+    margin: var(--bz-space-16) 0 0;
+  }
+
+  .bz-legal__body {
+    margin-top: clamp(32px, 4vw, 48px);
+  }
+
+  .bz-legal__body :global(p) {
+    margin: 0 0 20px;
+    color: var(--bz-text-secondary);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .bz-legal__body :global(h2) {
+    margin: 40px 0 14px;
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: 22px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .bz-legal__body :global(ul),
+  .bz-legal__body :global(ol) {
+    margin: 0 0 20px;
+    padding-left: 22px;
+    color: var(--bz-text-secondary);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .bz-legal__body :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .bz-legal__body :global(a) {
+    color: var(--bz-accent-strong);
+  }
+
+  .bz-legal__body :global(code) {
+    font-family: var(--bz-font-mono);
+    font-size: 0.9em;
+    background: var(--bz-paper-100);
+    padding: 2px 6px;
+  }
+
+  .bz-legal-footer {
+    border-top: var(--bz-border);
+    padding: var(--bz-space-24) var(--bz-page-gutter);
+    text-align: center;
+  }
+
+  .bz-legal-footer p {
+    margin: 0;
+    color: var(--bz-text-muted);
+    font-size: var(--bz-type-caption-size);
+  }
+</style>
