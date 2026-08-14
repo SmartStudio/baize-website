@@ -1,0 +1,89 @@
+---
+title: 白泽 OpenAI 兼容 API：开源大模型，新用户送 10 美元额度
+description: 白泽 API 提供 OpenAI 兼容接口，统一接入 GLM、Qwen、DeepSeek、Kimi 等模型，按量计费并记录每次调用。2026 年 8 月新用户注册即送 10 美元 Token 额度。
+pubDate: 2026-08-14
+category: AI普及
+relatedService: gateway
+draft: false
+cover: ./media/baize-open-model-api-cover.png
+coverAlt: 一个 OpenAI 兼容 API 入口连接多种大模型并记录 Token 用量的示意图
+howto:
+  name: 使用 OpenAI SDK 接入白泽 API
+  steps:
+    - name: 注册并进入控制台
+      text: 访问 api.fxai.ai，完成邮箱注册并进入控制台。
+    - name: 创建 API Token
+      text: 在令牌页面创建访问 Token，并妥善保管完整密钥。
+    - name: 修改 Base URL 和模型名
+      text: 把 OpenAI 客户端的 Base URL 改为 https://api.fxai.ai/v1，再从模型广场复制当前模型 ID。
+---
+
+想测试 DeepSeek、Qwen、GLM 或 Kimi，不必分别注册多套平台、维护多组 API Key。白泽 API 把多种开源与开放生态模型放进一个 OpenAI 兼容接口，现有客户端只需要修改 Base URL 和模型名。
+
+截至 2026 年 8 月，新用户注册 [api.fxai.ai](https://api.fxai.ai/) 即可获得 **10 美元 Token 额度**。这笔额度可以直接用于真实 API 调用，适合先跑一轮代码生成、RAG、文档处理或批量推理，再决定后续用哪个模型。
+
+<Callout type="tip" title="新用户注册福利">
+注册后进入控制台创建 Token，即可使用 10 美元新用户额度。活动额度和可用模型以控制台实时显示为准。
+</Callout>
+
+## 一个 API Key 调用多种开源大模型
+
+开发者接入多个模型时，麻烦通常出在接口和账号。每家平台有自己的密钥、模型名、计费页面和调用记录，业务代码也要维护多套配置。
+
+白泽 API 目前提供 9 个已核验模型，覆盖 GLM、Qwen、DeepSeek 和 Kimi。一个 Token 管理访问，模型切换只改 `model` 参数。编码、长上下文、多模态、工具调用、高并发对话和 RAG 都有对应模型可选，具体模型 ID、上下文长度、价格和状态可以在 [模型广场](https://api.fxai.ai/models) 实时查看。
+
+这层统一入口的作用，可以参考 <NoteLink slug="what-llm-gateway-solves">安全可信的 LLM API 网关到底解决什么</NoteLink>。个人项目省掉的是接入时间，团队项目还会多出统一鉴权、成本记录和故障排查入口。
+
+## OpenAI 兼容 API，现有代码只改两处
+
+白泽 API 使用标准 OpenAI 请求格式，Base URL 为 `https://api.fxai.ai/v1`。已经在用 OpenAI Python SDK、Node.js SDK 或兼容客户端的项目，通常只需要替换接口地址和模型名。
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.fxai.ai/v1",
+    api_key="sk-your-token",
+)
+
+response = client.chat.completions.create(
+    model="qwen3.8-max",
+    messages=[
+        {"role": "user", "content": "为这个函数补充单元测试"},
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+示例中的模型名会随产品目录更新。正式接入前，从模型广场复制当前可用的模型 ID，避免把已经调整的名称写死在生产配置里。
+
+## 大模型 API 价格按实际用量计算
+
+白泽 API 按模型独立定价，并分别记录输入、输出和缓存 Token。控制台可以查看每次请求使用了哪个模型、消耗多少 Token、扣除多少额度，不需要等到账单出来再反推成本。
+
+开源模型的价格优势适合三类任务：调用频率高的客服与信息抽取，大批量的文档处理和 RAG，以及持续运行的编码 Agent。复杂推理可以选能力更强的模型，分类、摘要和格式转换可以换成更经济的型号。同一个 API Key 下切换模型，成本优化不需要重写接入层。
+
+文章不固定写某个模型的每百万 Token 单价。上游价格、缓存规则和模型版本会调整，[模型广场](https://api.fxai.ai/models) 展示的是当前价格，适合直接做大模型 API 价格对比。
+
+## 直连原厂上游，模型和用量都能核对
+
+白泽 API 的原厂直连指请求进入经过核验的官方上游渠道，不依赖个人订阅账号共享。上线前会核对上游返回的模型 ID、接口权限和实际连通性，模型目录只展示已验证的公开模型。
+
+每次请求都会生成调用记录，包含模型、状态、Token 用量和额度变化。遇到响应失败或成本异常时，可以按请求记录定位，不必只靠客户端报错猜原因。服务状态也可以通过 [状态接口](https://api.fxai.ai/api/status) 查询。
+
+## 哪些项目适合用白泽 API
+
+**AI 编程和 Agent**，可以按任务在代码生成、复杂推理和高并发模型之间切换，统一 Base URL 也方便在不同开发工具中复用配置。
+
+**RAG 与文档处理**，大量摘要、分类、检索增强和数据抽取对成本很敏感，先用 10 美元额度跑一批真实样本，比只看模型榜单更容易判断效果。
+
+聊天机器人、内部知识助手和工作流自动化也适合统一接入。业务只依赖一种请求格式，后续增加模型或调整路由时，应用层不需要跟着改一遍。
+
+## 三步开始调用
+
+1. 打开 [白泽 API 控制台](https://api.fxai.ai/console)，完成邮箱注册。
+2. 进入令牌页面创建 Token，在客户端中作为 API Key 使用。
+3. 把 Base URL 设置为 `https://api.fxai.ai/v1`，从模型广场选择模型并发起请求。
+
+新用户的 10 美元 Token 额度适合直接验证一个真实任务：准备一组代码、文档或业务问题，固定提示词，连续测试两到三个模型，再对比输出质量、响应速度和 Token 成本。模型选型有了自己的调用数据，后续充值才有依据。
