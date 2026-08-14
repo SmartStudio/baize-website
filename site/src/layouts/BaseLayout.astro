@@ -17,8 +17,24 @@ interface Props {
   article?: { published: string; modified?: string; section?: string; author?: string };
   jsonLd?: object | object[];
   noindex?: boolean;
+  lang?: 'zh-CN' | 'en';
+  titleSuffix?: string;
+  alternates?: { hreflang: string; path: string }[];
 }
-const { title, description, path, ogImage, ogImageAlt, ogType, article, jsonLd, noindex } = Astro.props;
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  ogImageAlt,
+  ogType,
+  article,
+  jsonLd,
+  noindex,
+  lang = 'zh-CN',
+  titleSuffix,
+  alternates,
+} = Astro.props;
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -36,7 +52,7 @@ const org = {
 const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : org;
 ---
 <!doctype html>
-<html lang="zh-CN">
+<html lang={lang}>
   <head>
     {import.meta.env.PROD && (
       <>
@@ -62,12 +78,15 @@ const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : 
       ogType={ogType}
       article={article}
       noindex={noindex}
+      lang={lang}
+      titleSuffix={titleSuffix}
+      alternates={alternates}
     />
     <JsonLd schema={schema} />
   </head>
   <body>
-    <SiteHeader />
+    <SiteHeader lang={lang} />
     <main><slot /></main>
-    <SiteFooter />
+    <SiteFooter lang={lang} />
   </body>
 </html>

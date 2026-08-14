@@ -7,7 +7,7 @@ import { CATEGORIES, categorySlug } from '../../lib/notes';
 const base = import.meta.env.BASE_URL;
 const site = import.meta.env.SITE;
 
-const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+const notes = (await getCollection('notes', ({ data }) => !data.draft && data.lang === 'zh-CN')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
@@ -33,6 +33,7 @@ const blogLd = {
     url: new URL(`/notes/${n.id}/`, site).href,
     datePublished: n.data.pubDate.toISOString(),
     articleSection: n.data.category,
+    inLanguage: n.data.lang,
   })),
 };
 
@@ -85,6 +86,7 @@ const breadcrumbLd = {
             slug={note.id}
             cover={note.data.cover}
             coverAlt={note.data.coverAlt}
+            lang={note.data.lang}
           />
         ))}
       </div>

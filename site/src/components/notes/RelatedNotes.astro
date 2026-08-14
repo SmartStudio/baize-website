@@ -9,22 +9,24 @@
  * 分类 + 标题 + 一句话,够读者判断要不要点进去即可。
  */
 import type { CollectionEntry } from 'astro:content';
+import { categoryLabel } from '../../lib/notes';
 
 interface Props {
   notes: CollectionEntry<'notes'>[];
+  lang?: 'zh-CN' | 'en';
 }
 
-const { notes } = Astro.props;
+const { notes, lang = 'zh-CN' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 {notes.length > 0 && (
-  <nav class="bz-related" aria-label="相关笔记">
-    <p class="bz-card__eyebrow">继续读</p>
+  <nav class="bz-related" aria-label={lang === 'en' ? 'Related notes' : '相关笔记'}>
+    <p class="bz-card__eyebrow">{lang === 'en' ? 'Keep reading' : '继续读'}</p>
     <ul class="bz-related__list">
       {notes.map((n) => (
         <li class="bz-related__item">
           <a class="bz-related__link" href={`${base}notes/${n.id}/`}>
-            <span class="bz-related__cat">{n.data.category}</span>
+            <span class="bz-related__cat">{categoryLabel(n.data.category, lang)}</span>
             <span class="bz-related__title">{n.data.title}</span>
             <span class="bz-related__desc">{n.data.description}</span>
           </a>

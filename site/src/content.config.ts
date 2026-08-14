@@ -9,10 +9,13 @@ const notes = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
+      lang: z.enum(['zh-CN', 'en']).default('zh-CN'),
+      alternatePath: z.string().regex(/^\/notes\/[^/]+\/$/).optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.enum(['AI普及', 'AI编程', '企业落地', '安全可信', 'Loop与方法论', '案例复盘']),
       relatedService: z.string().optional(),
+      ctaVariant: z.enum(['consulting', 'api']).default('consulting'),
       cover: image().optional(),
       coverAlt: z.string().optional(),
       author: z.string().default('白泽明理'),

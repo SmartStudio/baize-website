@@ -10,6 +10,17 @@ import { relatedNotes } from '../../lib/notes';
 
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) => !data.draft);
+  const notesByPath = new Map(notes.map((note) => [`/notes/${note.id}/`, note]));
+
+  for (const note of notes) {
+    if (!note.data.alternatePath) continue;
+    const alternate = notesByPath.get(note.data.alternatePath);
+    const expectedBacklink = `/notes/${note.id}/`;
+    if (!alternate || alternate.data.alternatePath !== expectedBacklink || alternate.data.lang === note.data.lang) {
+      throw new Error(`Invalid reciprocal translation link: ${expectedBacklink} <-> ${note.data.alternatePath}`);
+    }
+  }
+
   // 相关笔记要在这里算好:布局层拿不到 collection,而每篇的推荐都依赖「其他所有篇」。
   return notes.map((note) => ({
     params: { slug: note.id },
@@ -26,11 +37,14 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
 <NoteLayout
   title={note.data.title}
   description={note.data.description}
+  lang={note.data.lang}
+  alternatePath={note.data.alternatePath}
   pubDate={note.data.pubDate}
   updatedDate={note.data.updatedDate}
   category={note.data.category}
   author={note.data.author}
   relatedService={note.data.relatedService}
+  ctaVariant={note.data.ctaVariant}
   howto={note.data.howto}
   cover={note.data.cover}
   coverAlt={note.data.coverAlt}

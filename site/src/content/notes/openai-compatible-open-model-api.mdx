@@ -1,0 +1,122 @@
+---
+title: OpenAI-Compatible API for DeepSeek V4 Pro and Qwen 3.8 Max
+description: Call DeepSeek V4 Pro, Qwen 3.8 Max, and other open models through one OpenAI-compatible API. New accounts get $10 in starter credit.
+lang: en
+alternatePath: /notes/baize-open-model-api/
+pubDate: 2026-08-14
+category: AI普及
+relatedService: gateway
+ctaVariant: api
+author: Baize Tech
+draft: false
+cover: "./media/baize-open-model-api-cover.png"
+coverAlt: One OpenAI-compatible API connecting applications to multiple open models with token usage records
+howto:
+  name: Start using the Baize OpenAI-compatible API
+  steps:
+    - name: Create an account
+      text: Sign up at api.fxai.ai and open the console.
+    - name: Generate an API key
+      text: Create a token in the console and store the full key securely.
+    - name: Set the endpoint and model
+      text: Set the Base URL to https://api.fxai.ai/v1 and copy a current model ID from the Models page.
+---
+
+Testing a new model should not require a new SDK, another billing account, and a separate set of request logs. [Baize API](https://api.fxai.ai/) gives developers one OpenAI-compatible endpoint for DeepSeek, Qwen, GLM, Kimi, and other models in the open-model market.
+
+New accounts currently receive **$10 in starter credit**. You can use that credit for real API calls, compare models on your own prompts, and see the token cost of each request before adding funds.
+
+<Callout type="tip" title="$10 starter credit for new accounts">
+Create an account, generate an API key, and use the credit across the live model catalog. The offer and model availability shown in the console are the current source of truth.
+</Callout>
+
+## One OpenAI-compatible API for open models
+
+Baize API uses the standard OpenAI chat completions format at `https://api.fxai.ai/v1`. Existing projects that use the OpenAI Python SDK, Node.js SDK, or another compatible client can keep the same request structure. Change the Base URL, API key, and model ID.
+
+One endpoint makes model comparison practical. Your application can route a difficult coding task to DeepSeek V4 Pro, send a multimodal document task to Qwen 3.8 Max, and use a faster model for high-volume extraction. Each call appears in the same usage history.
+
+Developers searching for an open-source LLM API often need three things at once: current model access, predictable integration, and visible cost. A model list alone does not solve the account, billing, and observability work around it. Baize API puts those controls behind one key.
+
+## DeepSeek V4 Pro API for agentic coding and complex reasoning
+
+DeepSeek V4 Pro targets agentic coding, complex reasoning, and long-context work. DeepSeek's [official V4 release notes](https://api-docs.deepseek.com/news/news260424/) list a one-million-token context window, thinking and non-thinking modes, and support for OpenAI Chat Completions. The current Baize model ID is `deepseek-v4-pro`.
+
+Use it when a task needs repository-level context, multi-step debugging, planning, or tool calls. Smaller and faster models remain a better fit for short classification jobs, repetitive extraction, and latency-sensitive chat. You can switch models by changing one request field.
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.fxai.ai/v1",
+    api_key="sk-your-baize-token",
+)
+
+response = client.chat.completions.create(
+    model="deepseek-v4-pro",
+    messages=[
+        {
+            "role": "user",
+            "content": "Review this function, identify the bug, and write a regression test.",
+        }
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+Copy the live model ID from the [Baize Models page](https://api.fxai.ai/models) before you ship. Provider catalogs change, and a copied name from another platform may return an unknown-model error.
+
+## Qwen 3.8 Max API for long context, vision, and tools
+
+Baize API exposes Qwen 3.8 Max as `qwen3.8-max`. It is positioned for long-context work, multimodal input, tool use, coding, and general reasoning. That mix fits document review, screenshot analysis, research workflows, and applications that combine text with images.
+
+Alibaba's current documentation uses the upstream preview name `qwen3.8-max-preview` for its built-in tool plan. Baize uses its own catalog ID. Use `qwen3.8-max` when calling Baize, and verify capabilities on the Models page before relying on a specific input type or tool.
+
+## Connect DeepSeek Harness to Baize API
+
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) is an open-source agent framework in developer preview. Its model settings support custom providers with a Base URL, API protocol, credential, and model list. This lets you add Baize API without editing the Harness source code.
+
+1. Start the DeepSeek Harness web interface with `npx @deepseek-ai/dsh web`.
+2. Open **Settings**, choose **Models**, then select **Add a custom provider**.
+3. Set the Provider ID to `baize`, the Base URL to `https://api.fxai.ai/v1`, and the protocol to `openai-completions`.
+4. Enter your Baize API key. Fetch the model list or add `deepseek-v4-pro` and `qwen3.8-max` manually.
+5. Save the provider and select the model for a new session.
+
+DeepSeek Harness changes quickly because it remains in developer preview. Check its [provider guide](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md) if a field name changes.
+
+## DeepSeek V4 Pro 0813 and provider-specific model IDs
+
+If you arrived after searching for **DeepSeek V4 Pro 0813**, treat `0813` as a provider-specific release tag. Model IDs differ across providers. A suffix that appears in a benchmark, model host, or another API does not automatically work on Baize.
+
+As of August 14, 2026, the Baize catalog exposes the stable ID `deepseek-v4-pro`. It does not list `deepseek-v4-pro-0813`. Use the stable ID shown in the console and check the model details before comparing benchmark results tied to a dated snapshot.
+
+## Direct upstream API routes with request-level records
+
+Baize connects through verified official upstream API channels. It does not pool shared consumer subscriptions. Before a model appears in the public catalog, the route is checked for model ID, API access, and live connectivity.
+
+Every call creates a usage record with the model, request status, token totals, and credit change. That record gives developers a concrete place to investigate a failed response or an unexpected cost. The [status endpoint](https://api.fxai.ai/api/status) reports current service availability.
+
+## What makes an affordable LLM API useful in production
+
+A cheap LLM API can still waste budget when weak outputs cause retries, long responses burn tokens, or a team cannot trace an expensive request. Compare price per successful workload.
+
+Baize API uses model-specific, usage-based pricing. The console records the selected model, input and output tokens, cache usage, request status, and credit deduction. You can compare two models on the same prompt set and see both output quality and actual API cost.
+
+Live prices belong on a live page. Upstream rates, cache discounts, and model versions change. Use the [Models page](https://api.fxai.ai/models) for the current price per million tokens instead of relying on a rate copied into an old article.
+
+## Use the $10 credit to run a real model comparison
+
+The starter credit is most useful when you test a task that your product will run repeatedly. Prepare a small prompt set from your own code, documents, or support questions. Keep the system prompt and output format fixed. Run the same set through DeepSeek V4 Pro, Qwen 3.8 Max, and one faster model.
+
+Record four results: task success, response time, input tokens, and output tokens. The console already captures the usage data. Your review only needs to score whether each answer met the task. This gives you a model choice grounded in your workload instead of a public benchmark alone.
+
+## Start calling models in three steps
+
+1. [Create a Baize API account](https://api.fxai.ai/sign-up) and open the console.
+2. Generate an API key and store it in your secret manager or environment variables.
+3. Set the Base URL to `https://api.fxai.ai/v1`, choose a live model ID, and send your first request.
+
+The same endpoint works for coding agents, RAG pipelines, document processing, chat applications, and batch inference. Start with the $10 credit, measure one real workload, and fund the account after the model earns a place in your stack.
+
+<NoteLink slug="baize-open-model-api">Read the Chinese version of this guide.</NoteLink>

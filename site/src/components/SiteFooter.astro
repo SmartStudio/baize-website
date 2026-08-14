@@ -2,6 +2,12 @@
 import { Image } from 'astro:assets';
 import qr from '../assets/wechat-qr.png';
 
+interface Props {
+  lang?: 'zh-CN' | 'en';
+}
+
+const { lang = 'zh-CN' } = Astro.props;
+const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
 ---
@@ -14,11 +20,11 @@ const year = new Date().getFullYear();
     <div class="bz-footer__contact">
       <!--email_off--><a class="bz-text-link" href="mailto:fxai.labs@gmail.com">fxai.labs@gmail.com</a><!--/email_off-->
       <div class="bz-footer__qr">
-        <Image src={qr} alt="白泽明理微信二维码" format="png" quality={90} loading="lazy" />
-        <span class="bz-eyebrow">微信扫码咨询</span>
+        <Image src={qr} alt={isEnglish ? 'Baize Tech WeChat QR code' : '白泽明理微信二维码'} format="png" quality={90} loading="lazy" />
+        <span class="bz-eyebrow">{isEnglish ? 'Scan on WeChat' : '微信扫码咨询'}</span>
       </div>
     </div>
-    <a class="bz-button bz-button--primary" href={`${base}contact/`}>预约 AI 落地诊断</a>
+    <a class="bz-button bz-button--primary" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an API account' : '预约 AI 落地诊断'}</a>
   </div>
   <p class="bz-footer__meta">© {year} 白泽明理 Baize Tech · Formal eXplainable AI</p>
 </footer>

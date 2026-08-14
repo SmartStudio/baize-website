@@ -4,15 +4,19 @@ import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import RelatedNotes from '../components/notes/RelatedNotes.astro';
+import { categoryLabel } from '../lib/notes';
 
 interface Props {
   title: string;
   description: string;
+  lang?: 'zh-CN' | 'en';
+  alternatePath?: string;
   pubDate: Date;
   updatedDate?: Date;
-  category: string;
+  category: CollectionEntry<'notes'>['data']['category'];
   author: string;
   relatedService?: string;
+  ctaVariant?: 'consulting' | 'api';
   howto?: { name: string; steps: { name: string; text: string }[] };
   cover?: ImageMetadata;
   coverAlt?: string;
@@ -20,12 +24,41 @@ interface Props {
   related?: CollectionEntry<'notes'>[];
 }
 
-const { title, description, pubDate, updatedDate, category, author, relatedService, howto, cover, coverAlt, path, related = [] } = Astro.props;
+const {
+  title,
+  description,
+  lang = 'zh-CN',
+  alternatePath,
+  pubDate,
+  updatedDate,
+  category,
+  author,
+  relatedService,
+  ctaVariant = 'consulting',
+  howto,
+  cover,
+  coverAlt,
+  path,
+  related = [],
+} = Astro.props;
 const base = import.meta.env.BASE_URL;
 const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
+const isEnglish = lang === 'en';
+const displayCategory = categoryLabel(category, lang);
+const alternates = alternatePath
+  ? [
+      { hreflang: isEnglish ? 'en' : 'zh-Hans', path },
+      { hreflang: isEnglish ? 'zh-Hans' : 'en', path: alternatePath },
+      { hreflang: 'x-default', path: isEnglish ? alternatePath : path },
+    ]
+  : [];
 
-const dateStr = pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const dateStr = pubDate.toLocaleDateString(isEnglish ? 'en-US' : 'zh-CN', {
+  year: 'numeric',
+  month: isEnglish ? 'long' : '2-digit',
+  day: '2-digit',
+});
 
 // ---- 社交预览图 ----
 // 每篇笔记都有 guizang 出的封面,但此前 og:image 一直是站点默认图,封面只在页面里
@@ -62,16 +95,16 @@ const blogLd = {
   publisher,
   // 没有 image 就拿不到文章富媒体的大图卡片,只会是纯文字结果。
   ...(ogImageAbs ? { image: [ogImageAbs] } : {}),
-  articleSection: category,
-  inLanguage: 'zh-CN',
+  articleSection: displayCategory,
+  inLanguage: lang,
 };
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', site).href },
-    { '@type': 'ListItem', position: 2, name: '明理笔记', item: new URL('/notes/', site).href },
+    { '@type': 'ListItem', position: 1, name: isEnglish ? 'Home' : '首页', item: new URL('/', site).href },
+    { '@type': 'ListItem', position: 2, name: isEnglish ? 'Notes' : '明理笔记', item: new URL('/notes/', site).href },
     // 末项是当前页,按规范不再给 item。
     { '@type': 'ListItem', position: 3, name: title },
   ],
@@ -102,6 +135,36 @@ const SERVICE_CTA: Record<string, string> = {
   gateway: 'LLM API 网关设计',
 };
 const serviceLabel = (relatedService && SERVICE_CTA[relatedService]) || '五项工程服务';
+const isApiArticle = isEnglish && ctaVariant === 'api';
+const cta = isApiArticle
+  ? {
+      eyebrow: 'START BUILDING',
+      title: 'Run your first model call with $10 in starter credit.',
+      body: 'Create an API key, choose a live model ID, and keep your existing OpenAI SDK code.',
+      primaryLabel: 'Create an account',
+      primaryHref: 'https://api.fxai.ai/sign-up',
+      secondaryLabel: 'Compare models and pricing',
+      secondaryHref: 'https://api.fxai.ai/models',
+    }
+  : isEnglish
+    ? {
+        eyebrow: 'NEXT STEP',
+        title: 'Bring a reliable AI workflow into your team.',
+        body: 'Baize Tech provides architecture, specifications, delivery plans, and implementation guidance.',
+        primaryLabel: 'Book a consultation',
+        primaryHref: `${base}contact/`,
+        secondaryLabel: 'View services',
+        secondaryHref: `${base}services/`,
+      }
+    : {
+        eyebrow: '下一步',
+        title: `想把「${serviceLabel}」落到你的团队？`,
+        body: '白泽明理提供设计、规范、蓝图与指导，不下场代做，帮你把这条路径走稳。',
+        primaryLabel: '预约咨询',
+        primaryHref: `${base}contact/`,
+        secondaryLabel: '查看服务详情',
+        secondaryHref: `${base}services/`,
+      };
 ---
 <BaseLayout
   title={title}
@@ -114,13 +177,16 @@ const serviceLabel = (relatedService && SERVICE_CTA[relatedService]) || '五项�
   article={{
     published: pubDate.toISOString(),
     modified: (updatedDate ?? pubDate).toISOString(),
-    section: category,
+    section: displayCategory,
     author,
   }}
+  lang={lang}
+  titleSuffix={isEnglish ? '· Baize Tech' : undefined}
+  alternates={alternates}
 >
   <article class="bz-rail-section">
     <div class="bz-shell bz-note">
-      <p class="bz-eyebrow">{category} · {dateStr}</p>
+      <p class="bz-eyebrow">{displayCategory} · {dateStr}</p>
       <h1 class="bz-note__title">{title}</h1>
       <p class="bz-product-lead">{description}</p>
 
@@ -134,22 +200,22 @@ const serviceLabel = (relatedService && SERVICE_CTA[relatedService]) || '五项�
         <slot />
       </div>
 
-      <RelatedNotes notes={related} />
+      <RelatedNotes notes={related} lang={lang} />
 
       <div class="bz-note__cta">
-        <p class="bz-card__eyebrow">下一步</p>
-        <h2 class="bz-note__cta-title">想把「{serviceLabel}」落到你的团队？</h2>
-        <p class="bz-card__body">白泽明理提供设计、规范、蓝图与指导，不下场代做，帮你把这条路径走稳。</p>
+        <p class="bz-card__eyebrow">{cta.eyebrow}</p>
+        <h2 class="bz-note__cta-title">{cta.title}</h2>
+        <p class="bz-card__body">{cta.body}</p>
         <div class="bz-note__cta-actions">
-          <a class="bz-button bz-button--primary" href={`${base}contact/`}>预约咨询</a>
-          <a class="bz-text-link" href={`${base}services/`}>查看服务详情 <span class="bz-text-link__arrow">→</span></a>
+          <a class="bz-button bz-button--primary" href={cta.primaryHref}>{cta.primaryLabel}</a>
+          <a class="bz-text-link" href={cta.secondaryHref}>{cta.secondaryLabel} <span class="bz-text-link__arrow">→</span></a>
         </div>
       </div>
     </div>
   </article>
 
-  <div id="bz-lightbox" class="bz-lightbox" role="dialog" aria-modal="true" aria-label="放大查看图片" hidden>
-    <button type="button" class="bz-lightbox__close" aria-label="关闭">✕</button>
+  <div id="bz-lightbox" class="bz-lightbox" role="dialog" aria-modal="true" aria-label={isEnglish ? 'View enlarged image' : '放大查看图片'} hidden>
+    <button type="button" class="bz-lightbox__close" aria-label={isEnglish ? 'Close' : '关闭'}>✕</button>
     <img class="bz-lightbox__img" src="" alt="" />
     <p class="bz-lightbox__cap" hidden></p>
   </div>

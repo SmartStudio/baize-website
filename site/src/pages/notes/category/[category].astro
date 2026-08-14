@@ -13,7 +13,7 @@ import NoteCard from '../../../components/NoteCard.astro';
 import { CATEGORIES, CATEGORY_INTROS, categorySlug } from '../../../lib/notes';
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes', ({ data }) => !data.draft);
+  const notes = await getCollection('notes', ({ data }) => !data.draft && data.lang === 'zh-CN');
   const liveCategories = CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
 
   return liveCategories.map((category) => ({
@@ -93,6 +93,7 @@ const breadcrumbLd = {
             slug={note.id}
             cover={note.data.cover}
             coverAlt={note.data.coverAlt}
+            lang={note.data.lang}
           />
         ))}
       </div>

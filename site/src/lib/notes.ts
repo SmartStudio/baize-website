@@ -47,6 +47,18 @@ export const CATEGORY_INTROS = {
 
 export const categorySlug = (c: Category): string => CATEGORY_SLUGS[c];
 
+const CATEGORY_LABELS_EN = {
+  AI普及: 'AI Basics',
+  AI编程: 'AI Coding',
+  企业落地: 'Enterprise AI',
+  安全可信: 'AI Safety',
+  Loop与方法论: 'Loops and Methods',
+  案例复盘: 'Case Studies',
+} as const satisfies Record<Category, string>;
+
+export const categoryLabel = (c: Category, lang: 'zh-CN' | 'en' = 'zh-CN'): string =>
+  lang === 'en' ? CATEGORY_LABELS_EN[c] : c;
+
 /**
  * 相关笔记推荐。
  *
@@ -59,6 +71,7 @@ export function relatedNotes(current: Note, all: Note[], limit = 3): Note[] {
 
   const score = (n: Note): number => {
     let s = 0;
+    if (n.data.lang === current.data.lang) s += 4;
     if (current.data.relatedService && n.data.relatedService === current.data.relatedService) s += 2;
     if (n.data.category === current.data.category) s += 1;
     return s;

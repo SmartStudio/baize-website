@@ -2,6 +2,12 @@
 import { Image } from 'astro:assets';
 import mark from '../assets/baize-mark.png';
 
+interface Props {
+  lang?: 'zh-CN' | 'en';
+}
+
+const { lang = 'zh-CN' } = Astro.props;
+const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL; // 恒以 / 结尾
 // 片段带尾斜杠:构建产物是 services/index.html,少一个斜杠 CF/GH Pages 就会 308。
 // 首页用空片段,base 本身就是终态地址。
@@ -13,19 +19,26 @@ const NAV = [
   { href: 'about/', label: '关于白泽' },
   { href: 'contact/', label: '联系我们' },
 ];
+const NAV_EN = [
+  { href: 'https://api.fxai.ai/', label: 'API Home', external: true },
+  { href: 'https://api.fxai.ai/models', label: 'Models & Pricing', external: true },
+  { href: 'notes/', label: 'Chinese Notes', external: false },
+];
+const nav = isEnglish ? NAV_EN : NAV;
+const brandHref = isEnglish ? 'https://api.fxai.ai/' : base;
 ---
 <header class="bz-topbar">
-  <a class="bz-topbar__brand" href={base}>
+  <a class="bz-topbar__brand" href={brandHref}>
     {/* 34px 展示,单独出一档小图:SEO 流量直接落在笔记页,那里没有 hero 大图可复用。
         eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它(且首屏图懒加载会被 Lighthouse 扣分)。 */}
-    <Image class="bz-topbar__logo" src={mark} alt="白泽明理" width={96} height={126} loading="eager" />
+    <Image class="bz-topbar__logo" src={mark} alt={isEnglish ? 'Baize Tech' : '白泽明理'} width={96} height={126} loading="eager" />
     <span class="bz-topbar__wm bz-logotype">白泽明理</span>
     <span class="bz-topbar__eyebrow">Formal eXplainable AI</span>
   </a>
-  <button class="bz-topbar__toggle" aria-label="菜单" aria-expanded="false">≡</button>
-  <nav class="bz-topbar__nav" aria-label="主导航">
-    {NAV.map((n) => <a href={`${base}${n.href}`}>{n.label}</a>)}
-    <a class="bz-topbar__cta bz-button bz-button--secondary bz-button--sm" href={`${base}contact/`}>预约咨询</a>
+  <button class="bz-topbar__toggle" aria-label={isEnglish ? 'Menu' : '菜单'} aria-expanded="false">≡</button>
+  <nav class="bz-topbar__nav" aria-label={isEnglish ? 'Main navigation' : '主导航'}>
+    {nav.map((n) => <a href={'external' in n && n.external ? n.href : `${base}${n.href}`}>{n.label}</a>)}
+    <a class="bz-topbar__cta bz-button bz-button--secondary bz-button--sm" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an account' : '预约咨询'}</a>
   </nav>
 </header>
 <script>
