@@ -43,6 +43,7 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
       'https://www.linkedin.com/company/baize-mingli',
       'https://huggingface.co/spaces/zouyanjian/baize-mingli',
       'https://huggingface.co/datasets/zouyanjian/enterprise-ai-sop',
+      'https://about.me/yanjianzou',
     ],
     ...overrides,
   };
