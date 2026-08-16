@@ -1,0 +1,193 @@
+---
+title: 在 Mac 上用 Unsloth 本地跑 Qwen3.8-27B
+description: 按统一内存选 Unsloth Dynamic 量化，用 Desktop、Studio 或 llama.cpp 在 Apple Silicon 上跑 Qwen3.8-27B。32GB 选 UD-Q4_K_XL（约 17.9GB）。
+alternatePath: /notes/run-qwen38-mac-unsloth/
+pubDate: 2026-08-16
+category: AI编程
+relatedService: gateway
+ctaVariant: api
+cover: ./media/qwen38-mac-unsloth-cover.png
+coverAlt: 笔记本键盘上放着带橙色内核的模型方块，下方透明内存板连进方块，表示本机统一内存加载本地模型
+howto:
+  name: 在 Mac 上用 Unsloth 跑 Qwen3.8-27B
+  steps:
+    - name: 按统一内存选量化
+      text: 24GB 选 UD-Q3_K_XL 或 Q4_K_M；32GB 选 UD-Q4_K_XL；48GB 可选 UD-Q5_K_XL 或 Q6_K。16GB 不建议。
+    - name: 安装运行环境
+      text: Mac 首选 Unsloth Desktop。要 OpenAI 兼容接口时，用 Homebrew 安装 cmake 后编译 Metal 版 llama.cpp。
+    - name: 下载 Unsloth Dynamic GGUF
+      text: 从 Hugging Face 仓库 unsloth/Qwen3.8-27B-GGUF 下载对应量化，32GB 机器下载 UD-Q4_K_XL。
+    - name: 按思考模式采样参数开聊
+      text: 思考模式用 temperature 1.0、top_p 0.95、top_k 20。上下文先从 8192 起，再按剩余内存上调。
+---
+
+Qwen3.8-27B 可以在 Apple Silicon 的统一内存上本地跑。Unsloth 的 4-bit Dynamic GGUF 大约 18GB；24GB 机器能挤进去，32GB 更从容。官方步骤写在 [Unsloth 的 Qwen3.8 指南](https://unsloth.ai/docs/models/qwen3.8)，权重大小以 [unsloth/Qwen3.8-27B-GGUF](https://huggingface.co/unsloth/Qwen3.8-27B-GGUF) 当前文件列表为准。
+
+机器内存不够，或者只想先调模型、不想占一整块统一内存，可以用 [白泽 API](https://api.fxai.ai/) 的 OpenAI 兼容接口调 Qwen 3.8 Max，见文末。
+
+## 先按内存选量化
+
+| Mac 统一内存 | 推荐量化 | 权重大约 | 说明 |
+|---|---|---|---|
+| 16GB | 不建议 | 无 | 权重加上 KV cache，系统会先撑不住 |
+| 24GB | `UD-Q3_K_XL` 或 `Q4_K_M` | 13.4 到 17.1GB | 能跑，上下文别开太大 |
+| 32GB | `UD-Q4_K_XL` | 17.9GB | Unsloth 常用推荐，质量和速度比较均衡 |
+| 48GB | `UD-Q5_K_XL` 或 `Q6_K` | 20.2 到 22.9GB | 质量更好，上下文也能开长一些 |
+| 64GB 及以上 | `Q8_0` 或 BF16 | 29 到 54.7GB | 接近原精度，适合 Max / Studio |
+
+`UD-*` 是 Unsloth Dynamic 量化，同样 bit 下通常比普通 `Q4_K_M` 更准。上表体积来自该 GGUF 仓库 2026 年 8 月的文件列表，下载前再看一眼实际字节数。
+
+Qwen3.8-27B 带视觉和推理，原生上下文 256K，YaRN 可到 1M，也支持工具调用和 MTP。思考默认开着，可调 `reasoning_effort`：`xhigh`、`medium`、`low`、`none`。
+
+import fig from './media/qwen38-mac-unsloth-fig.png'
+
+<Figure
+  src={fig}
+  alt="四步流水线：看内存、选量化、本地加载、开聊"
+  caption="图：先看统一内存还剩多少，再选量化，再加载，最后开聊。上下文越大，KV cache 越吃内存。"
+  width="wide"
+  border
+/>
+
+## 方法 1：Unsloth Desktop
+
+图形界面，自动走 MLX 和 llama.cpp，不用自己编 Metal。Apple Silicon 上想先跑起来，用这条。
+
+1. 下载 [Unsloth Desktop for Mac](https://unsloth.ai/download/mac)（`.dmg`）。
+2. 拖到「应用程序」，打开。
+3. 顶部 **Select model / Model hub** 搜 `Qwen3.8`。
+4. 选量化（32GB 选 **UD-Q4_K_XL**），下载。
+5. 开聊。可切换 thinking、Preserve Thinking、`reasoning_effort`。
+
+Desktop 也支持微调、工具调用、代码执行和 MCP。
+
+## 方法 2：Unsloth Studio
+
+终端装 Web UI：
+
+```bash
+curl -fsSL https://unsloth.ai/install.sh | sh
+unsloth studio -H 127.0.0.1 -p 8888
+```
+
+浏览器打开 `http://127.0.0.1:8888`，首次设密码，搜 **Qwen3.8**，下载对应 quant。更新仍用同一条 `install.sh`。
+
+## 方法 3：llama.cpp + Unsloth GGUF
+
+适合要 OpenAI 兼容接口、接 Cursor / Continue，或接到自己的服务。
+
+### 装编译依赖
+
+Mac 用 Homebrew，不要套 Linux 的 apt：
+
+```bash
+brew install cmake git curl
+```
+
+### 编 Metal 版 llama.cpp
+
+```bash
+git clone https://github.com/ggerganov/llama.cpp
+cmake llama.cpp -B llama.cpp/build \
+  -DBUILD_SHARED_LIBS=OFF -DGGML_METAL=ON
+cmake --build llama.cpp/build --config Release -j \
+  --target llama-cli llama-server llama-mtmd-cli
+cp llama.cpp/build/bin/llama-* llama.cpp/
+```
+
+M 系列不要开 CUDA。Metal 默认可用。只有要 `IQ1_XXXS` 这类极低 bit，才需要 Unsloth 的 `iq1-narrow` 分支。
+
+### 下 Unsloth Dynamic GGUF
+
+```bash
+pip install -U "huggingface_hub[cli]"
+hf download unsloth/Qwen3.8-27B-GGUF \
+  --local-dir unsloth/Qwen3.8-27B-GGUF \
+  --include "*UD-Q4_K_XL*"
+```
+
+24GB 机器把最后一行改成 `"*UD-Q3_K_XL*"`。
+
+### 对话
+
+```bash
+./llama.cpp/llama-cli \
+  --model unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_XL.gguf \
+  --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 \
+  -c 8192 -ngl 99
+```
+
+`-ngl 99` 尽量把层放到 GPU。M 系列的 GPU 和 CPU 共用统一内存，上下文先从 `8192` 起，再往上加。
+
+### 开成本地 API
+
+```bash
+./llama.cpp/llama-server \
+  --model unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_XL.gguf \
+  --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 \
+  -c 8192 -ngl 99 --host 127.0.0.1 --port 8080
+```
+
+接口是 `http://127.0.0.1:8080/v1`，可直接当 OpenAI 兼容后端。
+
+## 采样参数
+
+| 参数 | 思考模式（默认） | 普通 Instruct |
+|---|---|---|
+| temperature | 1.0 | 0.7 |
+| top_p | 0.95 | 0.80 |
+| top_k | 20 | 20 |
+| min_p | 0.0 | 0.0 |
+| presence_penalty | 0.0 | 1.5 |
+
+思考模式不要把温度压到 0.2 到 0.5，质量会掉。参数来自 Qwen / Unsloth 对 Qwen3.8-27B 的建议。
+
+## 其他可选路径
+
+**LM Studio**，搜 `unsloth/Qwen3.8-27B`，选 GGUF 或 MLX。
+
+**Ollama** 侧目前能直接拉到的是社区包 `smtek/Qwen3.8-27B`（源是同一套 Unsloth GGUF）。官方是否已提供 `qwen3.8` 的 MLX 标签，以 Ollama 库当时的页面为准，不要抄过期的 tag。
+
+## Mac 上要注意的几件事
+
+先关掉吃内存的应用：浏览器标签、Xcode、Docker。24GB 机器尤其明显。
+
+不要一次开满 256K。KV cache 大约每 token 几十 KB，24GB 机器比较稳的区间大概是 8K 到 32K；48GB 可以试 64K 以上。
+
+Desktop 崩溃，或 MTP GGUF 行为异常，先升级 Desktop，或重跑 `install.sh`。视觉能力在 GGUF 路线上还要加载对应 `mmproj`；Desktop / MLX 通常少踩这一步。
+
+Mac 上微调优先用 Unsloth Desktop（走 MLX）。`pip install unsloth` 仍偏 CUDA，不适合当作 Apple Silicon 的默认训练入口。
+
+## 内存不够，或者只想先调模型
+
+本地这条路吃的是统一内存。24GB 开一点上下文就会紧，16GB 基本不用试。
+
+如果现在的目标只是调用 Qwen3.8，不必先换更大的 Mac。[白泽 API](https://api.fxai.ai/) 把 Qwen 3.8 Max 放在 OpenAI 兼容接口后面，Base URL 是 `https://api.fxai.ai/v1`，模型名用控制台里的 `qwen3.8-max`。已经在用 OpenAI Python SDK 或 Node SDK 的项目，改地址和模型名就能发请求。
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.fxai.ai/v1",
+    api_key="sk-your-token",
+)
+
+response = client.chat.completions.create(
+    model="qwen3.8-max",
+    messages=[{"role": "user", "content": "把这段报错缩成可执行的修复步骤"}],
+)
+
+print(response.choices[0].message.content)
+```
+
+截至 2026 年 8 月，新用户注册可获得 10 美元 Token 额度，适合先拿自己的任务跑一轮，再决定要不要继续本地部署。模型 ID 和价格以 [模型广场](https://api.fxai.ai/models) 为准。接入步骤见 <NoteLink slug="baize-open-model-api">白泽 OpenAI 兼容 API</NoteLink>。
+
+## 最短路径
+
+只想先跑起来：装 [Unsloth Desktop](https://unsloth.ai/download/mac)，搜 Qwen3.8，下 `UD-Q4_K_XL`。
+
+要接编辑器或自己的服务：`llama-server` 加同一个 Unsloth GGUF。
+
+本机内存不够，或要和团队共用同一套模型目录：走 [api.fxai.ai](https://api.fxai.ai/sign-up)。
+
+<NoteLink slug="run-qwen38-mac-unsloth">Read the English version.</NoteLink>
