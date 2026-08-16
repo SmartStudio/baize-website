@@ -30,12 +30,12 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
       '端到端交付',
     ],
     areaServed: [
-      { '@type': 'City', name: 'Shanghai' },
+      { '@type': 'City', name: 'Hangzhou' },
       { '@type': 'Country', name: 'CN' },
     ],
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Shanghai',
+      addressLocality: 'Hangzhou',
       addressCountry: 'CN',
     },
     sameAs: [
