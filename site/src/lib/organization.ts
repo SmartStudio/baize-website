@@ -38,7 +38,10 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
       addressLocality: 'Shanghai',
       addressCountry: 'CN',
     },
-    sameAs: ['https://github.com/SmartStudio'],
+    sameAs: [
+      'https://github.com/SmartStudio',
+      'https://www.linkedin.com/company/baize-mingli',
+    ],
     ...overrides,
   };
 }
