@@ -41,6 +41,8 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
     sameAs: [
       'https://github.com/SmartStudio',
       'https://www.linkedin.com/company/baize-mingli',
+      'https://huggingface.co/spaces/zouyanjian/baize-mingli',
+      'https://huggingface.co/datasets/zouyanjian/enterprise-ai-sop',
     ],
     ...overrides,
   };
