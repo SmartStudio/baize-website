@@ -4,6 +4,7 @@ import Seo from '../components/Seo.astro';
 import JsonLd from '../components/JsonLd.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { organizationJsonLd } from '../lib/organization';
 
 const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
 
@@ -35,20 +36,7 @@ const {
   titleSuffix,
   alternates,
 } = Astro.props;
-const org = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: '白泽明理 Baize Tech',
-  alternateName: 'Baize Tech',
-  slogan: 'Formal eXplainable AI',
-  url: import.meta.env.SITE,
-  logo: new URL('/og-default.png', import.meta.env.SITE).href,
-  email: 'fxai.labs@gmail.com',
-  description:
-    '白泽明理（Baize Tech）是面向企业的 AI 提效与经营流程重塑顾问，帮助企业把 AI 能力嵌入关键业务流程，形成可验证、可复用的组织效率。',
-  knowsAbout: ['企业 AI 落地', 'AI 提效', '经营流程重塑', '可解释 AI', 'AI 研发流程设计', '端到端交付'],
-  areaServed: 'CN',
-};
+const org = organizationJsonLd();
 const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : org;
 ---
 <!doctype html>

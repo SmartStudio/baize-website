@@ -25,7 +25,7 @@ const blogLd = {
   description,
   url: new URL('/notes/', site).href,
   inLanguage: 'zh-CN',
-  publisher: { '@type': 'Organization', name: '白泽明理 Baize Tech' },
+  publisher: { '@type': 'Organization', name: '白泽明理' },
   blogPost: notes.map((n) => ({
     '@type': 'BlogPosting',
     headline: n.data.title,

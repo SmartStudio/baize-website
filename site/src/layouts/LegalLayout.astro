@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import mark from '../assets/baize-mark.png';
 import Seo from '../components/Seo.astro';
 import JsonLd from '../components/JsonLd.astro';
+import { organizationJsonLd } from '../lib/organization';
 
 const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
 
@@ -41,16 +42,7 @@ if (altPath) {
   alternates.push({ hreflang: 'x-default', path: isZh ? path : altPath });
 }
 
-const org = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: '白泽明理 Baize Tech',
-  alternateName: 'Baize Tech',
-  slogan: 'Formal eXplainable AI',
-  url: import.meta.env.SITE,
-  logo: new URL('/og-default.png', import.meta.env.SITE).href,
-  email: 'contacts@fxai.ai',
-};
+const org = organizationJsonLd({ email: 'contacts@fxai.ai' });
 ---
 <!doctype html>
 <html lang={lang}>

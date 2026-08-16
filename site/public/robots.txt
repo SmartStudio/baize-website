@@ -27,7 +27,7 @@
 # BEGIN Cloudflare Managed content
 
 User-agent: *
-Content-Signal: search=yes,ai-train=no,use=reference
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 
 User-agent: Amazonbot
@@ -43,16 +43,16 @@ User-agent: CCBot
 Disallow: /
 
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
 
 User-agent: CloudflareBrowserRenderingCrawler
 Disallow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: meta-externalagent
 Disallow: /
