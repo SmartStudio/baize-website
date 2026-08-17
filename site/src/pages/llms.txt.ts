@@ -24,7 +24,7 @@ const INTRO = `白泽明理提供五项工程服务，按三层阶梯组织：
 02 · 工程 Engineering——再把 AI 变成可迭代、可验证的工程能力：AI 研发流设计、Loop Engineering 设计。
 03 · 交付 Delivery——最终把能力设计成真实产品与增长路径：想法到产品端到端交付设计。
 
-联系邮箱：fxai.labs@gmail.com`;
+联系邮箱：contacts@fxai.ai`;
 
 const PAGES: Array<[string, string, string]> = [
   ['/', '首页', '白泽明理是谁、三层服务阶梯速览、如何开始一次诊断'],

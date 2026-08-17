@@ -38,7 +38,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     // 详细错误只记服务端日志，不回传给客户端（避免泄露后端实现细节）
     console.error('contact submission failed:', e?.message ?? e);
     return new Response(
-      JSON.stringify({ ok: false, error: '提交失败，请稍后重试，或直接邮件联系 fxai.labs@gmail.com。' }),
+      JSON.stringify({ ok: false, error: '提交失败，请稍后重试，或直接邮件联系 contacts@fxai.ai。' }),
       { status: 500, headers },
     );
   }

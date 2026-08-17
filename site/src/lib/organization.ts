@@ -16,7 +16,7 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
     slogan: 'Formal eXplainable AI',
     url: site,
     logo: new URL('/og-default.png', site).href,
-    email: 'fxai.labs@gmail.com',
+    email: 'contacts@fxai.ai',
     description:
       '白泽明理（Formal eXplainable AI）是面向企业的 AI 提效与经营流程重塑顾问，帮助企业把 AI 从个人尝鲜做成可验证、可复用的组织能力。',
     knowsAbout: [
