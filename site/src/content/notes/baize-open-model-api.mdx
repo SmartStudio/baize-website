@@ -1,92 +1,153 @@
 ---
-title: 白泽 OpenAI 兼容 API：开源大模型，新用户送 10 美元额度
-description: 白泽 API 提供 OpenAI 兼容接口，统一接入 GLM、Qwen、DeepSeek、Kimi 等模型，按量计费并记录每次调用。2026 年 8 月新用户注册即送 10 美元 Token 额度。
+title: GLM 5.3 API 上线：Codex、DeepSeek Harness、OMP 配置指南
+description: 白泽 API 已支持 GLM 5.3。用一个 OpenAI 兼容 API Key 接入 Codex、DeepSeek Harness 和 Oh My Pi，新用户注册即获 10 美元 Token 额度。
 alternatePath: /notes/openai-compatible-open-model-api/
-pubDate: 2026-08-14
-category: AI普及
+pubDate: 2026-08-19
+category: AI编程
 relatedService: gateway
+ctaVariant: api
+author: 白泽明理
 draft: false
-cover: ./media/baize-open-model-api-cover.png
-coverAlt: 一个 OpenAI 兼容 API 入口连接多种大模型并记录 Token 用量的示意图
+cover: ./media/glm53-api-coding-cover.png
+coverAlt: 橙色模型核心连接终端、Agent 工作台与配置卡片的开发者工具主视觉
 howto:
-  name: 使用 OpenAI SDK 接入白泽 API
+  name: 使用 GLM 5.3 API 接入编码工具
   steps:
-    - name: 注册并进入控制台
-      text: 访问 api.fxai.ai，完成邮箱注册并进入控制台。
-    - name: 创建 API Token
-      text: 在令牌页面创建访问 Token，并妥善保管完整密钥。
-    - name: 修改 Base URL 和模型名
-      text: 把 OpenAI 客户端的 Base URL 改为 https://api.fxai.ai/v1，再从模型广场复制当前模型 ID。
+    - name: 注册并创建 Token
+      text: 访问 api.fxai.ai，注册后在控制台创建访问 Token。
+    - name: 使用 OpenAI 兼容地址
+      text: 在支持 Chat Completions 的工具中把 Base URL 设为 https://api.fxai.ai/v1。
+    - name: 选择 GLM 5.3
+      text: 将模型 ID 设为 glm-5.3，并以模型广场实时显示的可用状态为准。
 ---
 
-想测试 DeepSeek、Qwen、GLM 或 Kimi，不必分别注册多套平台、维护多组 API Key。白泽 API 把多种开源与开放生态模型放进一个 OpenAI 兼容接口，现有客户端只需要修改 Base URL 和模型名。
+GLM 5.3 已上线白泽 API。开发者可以用一个 OpenAI 兼容 API Key，在既有 SDK、DeepSeek Harness 和 Oh My Pi 里调用 `glm-5.3`，不必为每个工具重建接入层。新用户注册 [api.fxai.ai](https://api.fxai.ai/) 即可获得 **10 美元 Token 额度**，适合先把真实代码任务跑起来，再决定长期使用的模型组合。
 
-截至 2026 年 8 月，新用户注册 [api.fxai.ai](https://api.fxai.ai/) 即可获得 **10 美元 Token 额度**。这笔额度可以直接用于真实 API 调用，适合先跑一轮代码生成、RAG、文档处理或批量推理，再决定后续用哪个模型。
+白泽 API 的公开 Chat Completions 地址是 `https://api.fxai.ai/v1`。模型广场当前包含 GLM、DeepSeek、Qwen、Kimi 等经过核验的模型，模型 ID、价格与可用状态以 [模型广场](https://api.fxai.ai/models) 为准。
 
-<Callout type="tip" title="新用户注册福利">
-注册后进入控制台创建 Token，即可使用 10 美元新用户额度。活动额度和可用模型以控制台实时显示为准。
+<Callout type="tip" title="GLM 5.3 已可调用">
+创建 Token 后，将模型 ID 设为 `glm-5.3`。不要在代码仓库、截图或聊天记录中暴露完整 Token。
 </Callout>
 
-## 一个 API Key 调用多种开源大模型
+import glm53Fig from './media/glm53-api-coding-fig.png'
 
-开发者接入多个模型时，麻烦通常出在接口和账号。每家平台有自己的密钥、模型名、计费页面和调用记录，业务代码也要维护多套配置。
+<Figure
+  src={glm53Fig}
+  alt="一套 API 密钥经过 GLM 5.3 模型中心连接编码工具，并保留用量记录的示意"
+  caption="图：同一个 API Key 可以服务多个开发工具，模型切换、调用记录与额度消耗统一留在白泽 API 控制台。"
+  width="wide"
+  border
+/>
 
-白泽 API 目前提供 9 个已核验模型，覆盖 GLM、Qwen、DeepSeek 和 Kimi。一个 Token 管理访问，模型切换只改 `model` 参数。编码、长上下文、多模态、工具调用、高并发对话和 RAG 都有对应模型可选，具体模型 ID、上下文长度、价格和状态可以在 [模型广场](https://api.fxai.ai/models) 实时查看。
+## GLM 5.3 API：给编码工作流留出模型选择权
 
-这层统一入口的作用，可以参考 <NoteLink slug="what-llm-gateway-solves">安全可信的 LLM API 网关到底解决什么</NoteLink>。个人项目省掉的是接入时间，团队项目还会多出统一鉴权、成本记录和故障排查入口。
+编码 Agent 的模型选择不该绑死在某个 IDE、某个 SDK 或某个账单页面。代码补全、仓库级排障、测试补齐和重构评审会消耗不同长度的上下文，也需要不同的响应速度。白泽 API 用统一的 OpenAI 兼容入口把 GLM 5.3、DeepSeek V4 Pro、Qwen 3.8 Max 等模型放在同一套鉴权和用量记录下。
 
-## OpenAI 兼容 API，现有代码只改两处
+这让模型对比变得直接：固定同一组任务，在 `glm-5.3` 与其他候选模型之间切换，只改 `model` 字段，再对比任务完成度、耗时和 Token 消耗。10 美元新用户额度足够做一轮小范围验证，不需要先承诺长期预算。
 
-白泽 API 使用标准 OpenAI 请求格式，Base URL 为 `https://api.fxai.ai/v1`。已经在用 OpenAI Python SDK、Node.js SDK 或兼容客户端的项目，通常只需要替换接口地址和模型名。
+## OpenAI 兼容 API：Python 与 Node.js 直接调用 GLM 5.3
+
+已有 OpenAI SDK 的项目通常只需替换 Base URL、API Key 和模型 ID。下面的 Python 示例使用标准 Chat Completions 请求：
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="https://api.fxai.ai/v1",
-    api_key="sk-your-token",
+    api_key="sk-your-fxai-token",
 )
 
 response = client.chat.completions.create(
-    model="qwen3.8-max",
+    model="glm-5.3",
     messages=[
-        {"role": "user", "content": "为这个函数补充单元测试"},
+        {
+            "role": "user",
+            "content": "检查这个改动的边界条件，并补充最小回归测试。",
+        }
     ],
 )
 
 print(response.choices[0].message.content)
 ```
 
-示例中的模型名会随产品目录更新。正式接入前，从模型广场复制当前可用的模型 ID，避免把已经调整的名称写死在生产配置里。
+把 API Key 放进环境变量或密钥管理服务，不要写进仓库。模型目录会更新，部署前从 [模型广场](https://api.fxai.ai/models) 复制当前模型 ID，避免因旧名称导致未知模型错误。
 
-## 大模型 API 价格按实际用量计算
+## Codex 配置：使用 FXAI 的 Responses 兼容编码线路
 
-白泽 API 按模型独立定价，并分别记录输入、输出和缓存 Token。控制台可以查看每次请求使用了哪个模型、消耗多少 Token、扣除多少额度，不需要等到账单出来再反推成本。
+Codex CLI 与普通 Chat Completions 客户端不同，它使用 Responses 协议。白泽 API 的公开地址 `https://api.fxai.ai/v1` 适合 SDK、OMP 和 DeepSeek Harness。Codex 请使用控制台已开通的 FXAI 编码线路，并在 `~/.codex/config.toml` 中定义独立 Provider：
 
-开源模型的价格优势适合三类任务：调用频率高的客服与信息抽取，大批量的文档处理和 RAG，以及持续运行的编码 Agent。复杂推理可以选能力更强的模型，分类、摘要和格式转换可以换成更经济的型号。同一个 API Key 下切换模型，成本优化不需要重写接入层。
+```toml
+model_provider = "fxai-codex"
+model = "glm-5.3"
 
-文章不固定写某个模型的每百万 Token 单价。上游价格、缓存规则和模型版本会调整，[模型广场](https://api.fxai.ai/models) 展示的是当前价格，适合直接做大模型 API 价格对比。
+[model_providers.fxai-codex]
+name = "FXAI Codex"
+base_url = "https://codex-cn.fxai.ai/v1"
+env_key = "FXAI_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+```
 
-## 直连原厂上游，模型和用量都能核对
+在 shell 中保存 Key 后重启 Codex：
 
-白泽 API 的原厂直连指请求进入经过核验的官方上游渠道，不依赖个人订阅账号共享。上线前会核对上游返回的模型 ID、接口权限和实际连通性，模型目录只展示已验证的公开模型。
+```bash
+export FXAI_API_KEY="sk-your-fxai-token"
+codex --strict-config
+```
 
-每次请求都会生成调用记录，包含模型、状态、Token 用量和额度变化。遇到响应失败或成本异常时，可以按请求记录定位，不必只靠客户端报错猜原因。服务状态也可以通过 [状态接口](https://api.fxai.ai/api/status) 查询。
+如果控制台尚未显示编码线路或 `glm-5.3`，不要把公开 Chat Completions 地址伪装成 Responses 端点。先确认账号权限与模型目录，再修改 Codex 配置。这个区分能避免“能用 SDK、Codex 却报协议错误”的排障时间。
 
-## 哪些项目适合用白泽 API
+## DeepSeek Harness 配置：添加 GLM 5.3 自定义 Provider
 
-**AI 编程和 Agent**，可以按任务在代码生成、复杂推理和高并发模型之间切换，统一 Base URL 也方便在不同开发工具中复用配置。
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 支持在 Web UI 添加 OpenAI 兼容的自定义 Provider。启动 Harness 后，进入 **Settings → Models → Add a custom provider**，填写：
 
-**RAG 与文档处理**，大量摘要、分类、检索增强和数据抽取对成本很敏感，先用 10 美元额度跑一批真实样本，比只看模型榜单更容易判断效果。
+| 字段 | 填写内容 |
+| --- | --- |
+| Provider ID | `fxai` |
+| Display name | `Baize API` |
+| Base URL | `https://api.fxai.ai/v1` |
+| API protocol | `openai-completions` |
+| API key | 白泽 API Token |
+| Model | `glm-5.3` |
 
-聊天机器人、内部知识助手和工作流自动化也适合统一接入。业务只依赖一种请求格式，后续增加模型或调整路由时，应用层不需要跟着改一遍。
+保存前可以选择 **Fetch available models** 读取当前目录，或手动添加 `glm-5.3`。Harness 会把 Key 以凭证引用保存，不会在设置页回显明文。Provider、Base URL 和模型字段的最新含义以 [Harness 官方配置文档](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md) 为准。
 
-## 三步开始调用
+## OMP 配置：在 Oh My Pi 中加入 GLM 5.3
 
-1. 打开 [白泽 API 控制台](https://api.fxai.ai/console)，完成邮箱注册。
-2. 进入令牌页面创建 Token，在客户端中作为 API Key 使用。
-3. 把 Base URL 设置为 `https://api.fxai.ai/v1`，从模型广场选择模型并发起请求。
+Oh My Pi 可以通过自定义 OpenAI 兼容 Provider 使用白泽 API。将 Token 放到 `~/.omp/agent/.env`：
 
-新用户的 10 美元 Token 额度适合直接验证一个真实任务：准备一组代码、文档或业务问题，固定提示词，连续测试两到三个模型，再对比输出质量、响应速度和 Token 成本。模型选型有了自己的调用数据，后续充值才有依据。
+```bash
+FXAI_API_KEY="sk-your-fxai-token"
+```
+
+然后在 `~/.omp/agent/models.yml` 写入：
+
+```yaml
+providers:
+  fxai:
+    baseUrl: https://api.fxai.ai/v1
+    api: openai-completions
+    apiKey: FXAI_API_KEY
+    authHeader: true
+    disableStrictTools: true
+    discovery:
+      type: proxy
+```
+
+重启 OMP 后选择 `fxai/glm-5.3`。`discovery: proxy` 会读取端点当前返回的模型目录，适合模型更新频繁的团队环境。OMP 的 `models.yml` 自定义 Provider 语法与凭证优先级可查看 [官方 Providers 文档](https://github.com/can1357/oh-my-pi/blob/main/docs/providers.md)。
+
+## 用 GLM 5.3 做一次有意义的模型测试
+
+不要只用一句“写个排序函数”判断模型。选一个会反复出现的任务，比如修复边界条件、给 PR 做代码审查，或为现有模块补回归测试。固定上下文、提示词和验收标准，分别运行 GLM 5.3 与其他候选模型，记录四项结果：任务是否完成、人工返工量、响应时间和 Token 消耗。
+
+白泽控制台会记录模型、请求状态、输入输出 Token 与额度变化。你可以从一处定位异常调用，也可以根据真实任务决定何时使用 GLM 5.3，何时切换到 DeepSeek、Qwen 或其他型号。
+
+## 现在开始：一个 Key，多个开发工具
+
+1. [注册白泽 API](https://api.fxai.ai/sign-up)，领取新用户 10 美元 Token 额度。
+2. 在控制台创建 Token，并保存到环境变量或密钥管理服务。
+3. 先用 `glm-5.3` 跑一个真实编码任务，再接入 Codex、DeepSeek Harness 或 OMP。
+
+GLM 5.3 API、OpenAI 兼容 API、Codex 配置、DeepSeek Harness 配置和 OMP 配置都不必分散在多套账户里。用一套接入和可追踪的调用记录，把模型选择留在开发团队手里。
 
 <NoteLink slug="openai-compatible-open-model-api">Read the English version.</NoteLink>

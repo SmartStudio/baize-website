@@ -1,63 +1,69 @@
 ---
-title: OpenAI-Compatible API for DeepSeek V4 Pro and Qwen 3.8 Max
-description: Call DeepSeek V4 Pro, Qwen 3.8 Max, and other open models through one OpenAI-compatible API. New accounts get $10 in starter credit.
+title: GLM 5.3 API for Codex, DeepSeek Harness, and Oh My Pi
+description: GLM 5.3 is now available on Baize API. Configure the OpenAI-compatible API for Codex, DeepSeek Harness, and Oh My Pi. New accounts receive $10 in starter credit.
 lang: en
 alternatePath: /notes/baize-open-model-api/
-pubDate: 2026-08-14
-category: AI普及
+pubDate: 2026-08-19
+category: AI编程
 relatedService: gateway
 ctaVariant: api
 author: Baize Tech
 draft: false
-cover: "./media/baize-open-model-api-cover.png"
-coverAlt: One OpenAI-compatible API connecting applications to multiple open models with token usage records
+cover: ./media/glm53-api-coding-cover.png
+coverAlt: An orange model core connects a terminal, agent workbench, and configuration card
 howto:
-  name: Start using the Baize OpenAI-compatible API
+  name: Call GLM 5.3 through Baize API
   steps:
-    - name: Create an account
-      text: Sign up at api.fxai.ai and open the console.
-    - name: Generate an API key
-      text: Create a token in the console and store the full key securely.
-    - name: Set the endpoint and model
-      text: Set the Base URL to https://api.fxai.ai/v1 and copy a current model ID from the Models page.
+    - name: Create an API token
+      text: Sign up at api.fxai.ai and create a token in the console.
+    - name: Set the OpenAI-compatible endpoint
+      text: Use https://api.fxai.ai/v1 in tools that support Chat Completions.
+    - name: Select GLM 5.3
+      text: Set the model ID to glm-5.3 and confirm live availability on the Models page.
 ---
 
-Testing a new model should not require a new SDK, another billing account, and a separate set of request logs. [Baize API](https://api.fxai.ai/) gives developers one OpenAI-compatible endpoint for DeepSeek, Qwen, GLM, Kimi, and other models in the open-model market.
+GLM 5.3 is now available on Baize API. Use one OpenAI-compatible API key across your SDK, DeepSeek Harness, and Oh My Pi setup instead of rebuilding integrations for each coding workflow. New accounts at [api.fxai.ai](https://api.fxai.ai/) receive **$10 in starter credit**, enough to test a real coding task before committing budget.
 
-New accounts currently receive **$10 in starter credit**. You can use that credit for real API calls, compare models on your own prompts, and see the token cost of each request before adding funds.
+The public Chat Completions endpoint is `https://api.fxai.ai/v1`. Baize API keeps GLM, DeepSeek, Qwen, Kimi, and other verified models behind the same authentication and usage records. Check the [Models page](https://api.fxai.ai/models) for the live model ID, price, and availability before deployment.
 
-<Callout type="tip" title="$10 starter credit for new accounts">
-Create an account, generate an API key, and use the credit across the live model catalog. The offer and model availability shown in the console are the current source of truth.
+<Callout type="tip" title="GLM 5.3 is available now">
+Create a token in the console and call `glm-5.3`. Keep the full token in an environment variable or a secret manager, never in a repository or screenshot.
 </Callout>
 
-## One OpenAI-compatible API for open models
+import glm53Fig from './media/glm53-api-coding-fig.png'
 
-Baize API uses the standard OpenAI chat completions format at `https://api.fxai.ai/v1`. Existing projects that use the OpenAI Python SDK, Node.js SDK, or another compatible client can keep the same request structure. Change the Base URL, API key, and model ID.
+<Figure
+  src={glm53Fig}
+  alt="One API key enters a GLM 5.3 model hub and routes to coding tools with usage records"
+  caption="One API key can cover several developer tools while Baize API keeps model selection, request records, and credit usage in one console."
+  width="wide"
+  border
+/>
 
-One endpoint makes model comparison practical. Your application can route a difficult coding task to DeepSeek V4 Pro, send a multimodal document task to Qwen 3.8 Max, and use a faster model for high-volume extraction. Each call appears in the same usage history.
+## GLM 5.3 API access for coding workflows
 
-Developers searching for an open-source LLM API often need three things at once: current model access, predictable integration, and visible cost. A model list alone does not solve the account, billing, and observability work around it. Baize API puts those controls behind one key.
+Coding agents need different models for different tasks. Repository debugging, test coverage, code review, and focused edits do not use the same context or response budget. Baize API puts GLM 5.3, DeepSeek V4 Pro, Qwen 3.8 Max, and other model options behind one OpenAI-compatible integration, so your team can compare models without creating a new account or SDK path each time.
 
-## DeepSeek V4 Pro API for agentic coding and complex reasoning
+Run the same task with `glm-5.3` and your other candidates. Keep the context, prompt, and acceptance criteria fixed. Then compare task completion, review effort, latency, and token use. The starter credit makes this a small operational test instead of a purchase decision based on a benchmark alone.
 
-DeepSeek V4 Pro targets agentic coding, complex reasoning, and long-context work. DeepSeek's [official V4 release notes](https://api-docs.deepseek.com/news/news260424/) list a one-million-token context window, thinking and non-thinking modes, and support for OpenAI Chat Completions. The current Baize model ID is `deepseek-v4-pro`.
+## Call GLM 5.3 with an OpenAI-compatible API
 
-Use it when a task needs repository-level context, multi-step debugging, planning, or tool calls. Smaller and faster models remain a better fit for short classification jobs, repetitive extraction, and latency-sensitive chat. You can switch models by changing one request field.
+Existing OpenAI SDK projects usually need three changes: Base URL, API key, and model ID. This Python example uses standard Chat Completions:
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="https://api.fxai.ai/v1",
-    api_key="sk-your-baize-token",
+    api_key="sk-your-fxai-token",
 )
 
 response = client.chat.completions.create(
-    model="deepseek-v4-pro",
+    model="glm-5.3",
     messages=[
         {
             "role": "user",
-            "content": "Review this function, identify the bug, and write a regression test.",
+            "content": "Review the edge cases in this change and add the smallest regression test.",
         }
     ],
 )
@@ -65,58 +71,84 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-Copy the live model ID from the [Baize Models page](https://api.fxai.ai/models) before you ship. Provider catalogs change, and a copied name from another platform may return an unknown-model error.
+Keep the key in an environment variable or your secret manager. Model catalogs change, so copy the current ID from the [Baize Models page](https://api.fxai.ai/models) before shipping.
 
-## Qwen 3.8 Max API for long context, vision, and tools
+## Codex configuration for an FXAI coding route
 
-Baize API exposes Qwen 3.8 Max as `qwen3.8-max`. It is positioned for long-context work, multimodal input, tool use, coding, and general reasoning. That mix fits document review, screenshot analysis, research workflows, and applications that combine text with images.
+Codex CLI uses the Responses protocol. The public `https://api.fxai.ai/v1` endpoint is for Chat Completions clients such as SDKs, Oh My Pi, and DeepSeek Harness. For Codex, use an FXAI coding route that supports Responses and is enabled for your account. Add a dedicated provider in `~/.codex/config.toml`:
 
-Alibaba's current documentation uses the upstream preview name `qwen3.8-max-preview` for its built-in tool plan. Baize uses its own catalog ID. Use `qwen3.8-max` when calling Baize, and verify capabilities on the Models page before relying on a specific input type or tool.
+```toml
+model_provider = "fxai-codex"
+model = "glm-5.3"
 
-## Connect DeepSeek Harness to Baize API
+[model_providers.fxai-codex]
+name = "FXAI Codex"
+base_url = "https://codex-cn.fxai.ai/v1"
+env_key = "FXAI_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+```
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) is an open-source agent framework in developer preview. Its model settings support custom providers with a Base URL, API protocol, credential, and model list. This lets you add Baize API without editing the Harness source code.
+Store the key in your shell environment, then restart Codex:
 
-1. Start the DeepSeek Harness web interface with `npx @deepseek-ai/dsh web`.
-2. Open **Settings**, choose **Models**, then select **Add a custom provider**.
-3. Set the Provider ID to `baize`, the Base URL to `https://api.fxai.ai/v1`, and the protocol to `openai-completions`.
-4. Enter your Baize API key. Fetch the model list or add `deepseek-v4-pro` and `qwen3.8-max` manually.
-5. Save the provider and select the model for a new session.
+```bash
+export FXAI_API_KEY="sk-your-fxai-token"
+codex --strict-config
+```
 
-DeepSeek Harness changes quickly because it remains in developer preview. Check its [provider guide](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md) if a field name changes.
+If your console does not show the coding route or `glm-5.3`, confirm access before editing your configuration. A Chat Completions URL cannot be used as a Responses endpoint by changing its name in a config file.
 
-## DeepSeek V4 Pro 0813 and provider-specific model IDs
+## Add GLM 5.3 to DeepSeek Harness
 
-If you arrived after searching for **DeepSeek V4 Pro 0813**, treat `0813` as a provider-specific release tag. Model IDs differ across providers. A suffix that appears in a benchmark, model host, or another API does not automatically work on Baize.
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) can connect to an OpenAI-compatible company gateway through a custom provider. Start the Harness web UI, then open **Settings → Models → Add a custom provider**:
 
-As of August 14, 2026, the Baize catalog exposes the stable ID `deepseek-v4-pro`. It does not list `deepseek-v4-pro-0813`. Use the stable ID shown in the console and check the model details before comparing benchmark results tied to a dated snapshot.
+| Field | Value |
+| --- | --- |
+| Provider ID | `fxai` |
+| Display name | `Baize API` |
+| Base URL | `https://api.fxai.ai/v1` |
+| API protocol | `openai-completions` |
+| API key | Your Baize API token |
+| Model | `glm-5.3` |
 
-## Direct upstream API routes with request-level records
+Choose **Fetch available models** before saving to read the live catalog, or add `glm-5.3` manually. Harness stores the credential as a reference and does not return the literal key to the settings page. Its [provider guide](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md) is the source of truth for current field names.
 
-Baize connects through verified official upstream API channels. It does not pool shared consumer subscriptions. Before a model appears in the public catalog, the route is checked for model ID, API access, and live connectivity.
+## Configure GLM 5.3 in Oh My Pi
 
-Every call creates a usage record with the model, request status, token totals, and credit change. That record gives developers a concrete place to investigate a failed response or an unexpected cost. The [status endpoint](https://api.fxai.ai/api/status) reports current service availability.
+Oh My Pi supports custom OpenAI-compatible providers. Put your token in `~/.omp/agent/.env`:
 
-## What makes an affordable LLM API useful in production
+```bash
+FXAI_API_KEY="sk-your-fxai-token"
+```
 
-A cheap LLM API can still waste budget when weak outputs cause retries, long responses burn tokens, or a team cannot trace an expensive request. Compare price per successful workload.
+Then add this provider to `~/.omp/agent/models.yml`:
 
-Baize API uses model-specific, usage-based pricing. The console records the selected model, input and output tokens, cache usage, request status, and credit deduction. You can compare two models on the same prompt set and see both output quality and actual API cost.
+```yaml
+providers:
+  fxai:
+    baseUrl: https://api.fxai.ai/v1
+    api: openai-completions
+    apiKey: FXAI_API_KEY
+    authHeader: true
+    disableStrictTools: true
+    discovery:
+      type: proxy
+```
 
-Live prices belong on a live page. Upstream rates, cache discounts, and model versions change. Use the [Models page](https://api.fxai.ai/models) for the current price per million tokens instead of relying on a rate copied into an old article.
+Restart OMP and select `fxai/glm-5.3`. Proxy discovery reads the model catalog from the configured endpoint, which is useful when your team wants to adopt a new model without maintaining a duplicated static list. See the [Oh My Pi provider documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/providers.md) for its full provider schema and credential precedence.
 
-## Use the $10 credit to run a real model comparison
+## Use the $10 credit for a model test that matters
 
-The starter credit is most useful when you test a task that your product will run repeatedly. Prepare a small prompt set from your own code, documents, or support questions. Keep the system prompt and output format fixed. Run the same set through DeepSeek V4 Pro, Qwen 3.8 Max, and one faster model.
+Avoid testing with a toy prompt. Choose a recurring task from your own work: an edge-case fix, a pull-request review, or a regression test for an existing module. Keep the prompt and acceptance criteria constant, then record task success, reviewer rework, response time, and token use across GLM 5.3 and other candidates.
 
-Record four results: task success, response time, input tokens, and output tokens. The console already captures the usage data. Your review only needs to score whether each answer met the task. This gives you a model choice grounded in your workload instead of a public benchmark alone.
+Baize API records the selected model, request status, input and output tokens, and credit changes. You get one place to inspect an expensive or failed request, then choose when GLM 5.3 fits your team and when another model is the better route.
 
-## Start calling models in three steps
+## Start with one key and one real task
 
-1. [Create a Baize API account](https://api.fxai.ai/sign-up) and open the console.
-2. Generate an API key and store it in your secret manager or environment variables.
-3. Set the Base URL to `https://api.fxai.ai/v1`, choose a live model ID, and send your first request.
+1. [Create a Baize API account](https://api.fxai.ai/sign-up) and claim the $10 starter credit.
+2. Generate a token in the console and keep it in an environment variable or secret manager.
+3. Run one production-shaped task with `glm-5.3`, then connect Codex, DeepSeek Harness, or Oh My Pi.
 
-The same endpoint works for coding agents, RAG pipelines, document processing, chat applications, and batch inference. Start with the $10 credit, measure one real workload, and fund the account after the model earns a place in your stack.
+GLM 5.3 API access, OpenAI-compatible API setup, Codex configuration, DeepSeek Harness configuration, and OMP configuration do not need separate account sprawl. Use one integration and inspectable usage records while your team keeps control over model choice.
 
 <NoteLink slug="baize-open-model-api">Read the Chinese version of this guide.</NoteLink>
