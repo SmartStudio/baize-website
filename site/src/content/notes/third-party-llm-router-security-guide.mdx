@@ -1,0 +1,140 @@
+---
+title: "Third-Party LLM Router Security: Why Cheap Proxies Put Agent Credentials at Risk"
+description: "A practical guide to third-party LLM router risk, malicious model output, Agent Full Access, credential theft, sandboxing, and self-managed LLM gateways."
+lang: en
+alternatePath: /notes/third-party-llm-router-security/
+pubDate: 2026-08-23
+category: 安全可信
+relatedService: gateway
+ctaVariant: api
+author: Baize Tech
+draft: false
+cover: ./media/third-party-llm-router-security-cover.png
+coverAlt: An orange transparent gateway connects trusted nodes while a broken dark relay is isolated outside the path
+howto:
+  name: Create a minimum security boundary for untrusted model routes
+  steps:
+    - name: Stop privileged unattended execution
+      text: Turn off Full Access and unattended command execution. Require approval for terminal, network, and file actions.
+    - name: Move the Agent into a credential-free sandbox
+      text: Run it in an ephemeral container or separate VM with no SSH keys, cloud credentials, project secrets, or host configuration directories mounted.
+    - name: Route through a controlled gateway
+      text: Use a gateway you operate to call official model-provider APIs, issue scoped employee keys, enforce egress allowlists, and retain audit records.
+---
+
+import securityFig from './media/third-party-llm-router-security-fig-en.png'
+
+A “malware-infected proxy” story misses the real risk. A coding Agent can turn model output into activity on your computer. You may be looking for a cheaper API route. An attacker may be looking for SSH keys, cloud credentials, repository tokens, and business secrets in `.env` files. Those are not comparable values.
+
+In August 2026, a [V2EX post](https://v2ex.com/t/1233104) published observable evidence of this failure mode. While using a Codex relay with `full access` enabled, the author saw a command that attempted to enumerate SSH material, AWS, GCP, Kubernetes, Docker, GitHub CLI, package-manager configuration, `.env` files, Codex configuration, and shell history. The command sent its output to an external domain. The author later said the visible reasoning was framed as an “environment health check.”
+
+This is a public incident report, not completed attribution. The available evidence does not establish whether the relay operator inserted the script, an upstream provider was compromised, or another link in the chain was modified. The response does not depend on that answer: when you cannot trust a model or routing path, it must not control a privileged environment that contains real credentials.
+
+<Figure
+  src={securityFig}
+  alt="An English-labelled security pipeline showing untrusted output, an execution request, an isolated sandbox, and separated credentials"
+  caption="Model output can propose a tool call. It should not automatically receive the authority of the machine that executes it."
+  width="wide"
+  border
+/>
+
+## The attack surface changed: model output can be a payload
+
+Traditional application security often focuses on malicious input: forms, uploads, and network requests. Agents add a reverse path. Text from a model or a router, including reasoning displays and tool-call proposals, can influence terminals, browsers, filesystems, and network tools.
+
+When a client automatically converts that output into commands, or lets an Agent execute it without confirmation, model output stops being advice. It becomes an action-triggering payload. An attacker does not need to alter a package in your repository. They can disguise a command as a health check, dependency inspection, or routine tool use, then bypass defenses that only search for fixed signatures or blocked commands.
+
+Whether a client exposes a chain of thought or displays tool calls varies by product and provider. The security decision should not depend on that detail. If an untrusted upstream can influence an Agent's proposed actions, treat those proposals as untrusted input at the execution layer.
+
+## A cheap relay can cost much more than Tokens
+
+A small free or low-price relay may have an innocent business model. Price alone cannot prove intent. It should still change your threat model. If someone can influence the execution path, the highest-value target is often not one conversation. It is the long-lived identity and access material on the development machine.
+
+The public example attempted to collect several classes of high-value assets:
+
+- Cloud and cluster credentials, including AWS, GCP, Azure, Kubernetes, and Docker configuration.
+- Development and publishing tokens, such as GitHub CLI, npm, PyPI, and Cloudflare Wrangler configuration.
+- Private keys, environment files, and local traces, including `~/.ssh/`, `.env*`, Codex configuration, and shell history.
+
+One usable credential can extend the incident from a laptop to repositories, cloud resources, CI/CD, registries, production systems, or data stores. Saving money on API calls does not offset the cost of an exposed access path.
+
+## The failure condition: an untrusted upstream plus host-machine Full Access
+
+A third-party router is not automatically malicious, and an Agent is not automatically unsafe. The dangerous combination is an opaque external upstream that can shape output and an unattended tool with permission to read files, access the network, and run commands on a host that stores real credentials.
+
+`full access` makes work faster by removing the most important interruption. The Agent does not need to show what it proposes. It can act. That means an action suggested through an intermediate route can inherit the authority of your machine.
+
+NIST defines [least privilege](https://csrc.nist.gov/glossary/term/least_privilege) as granting a user or process only the minimum resources and authorizations needed for its task. Giving an untrusted reasoning stream broad shell, network, and credential-reading access fails that test.
+
+## Command blacklists cannot contain a changing payload
+
+Blocking `curl`, `POST`, one domain, or one file path can catch known samples. It cannot cover redirects, encodings, alternate interpreters, staged reads, or new exfiltration paths. The command shape changes. So does the attacker.
+
+Control the capabilities instead. Even if an Agent receives a malicious instruction, the environment should decide what it can read, write, contact, and export. Zero trust means that location alone does not create trust. NIST's [SP 800-207](https://csrc.nist.gov/pubs/sp/800/207/final) makes the same point: do not grant implicit trust because of network or asset location. Protect resources, services, workflows, and accounts.
+
+## P0 actions: do these first
+
+### 1. Stop unattended privileged execution
+
+For unofficial, unknown, or unreviewed APIs, turn off `full access`, auto-approval, and automatic execution. Terminal commands, network requests, file reads, writes, and deletions should stop at an explicit approval point. That small amount of friction separates a model suggestion from a real action.
+
+### 2. Run the Agent in an ephemeral credential-free sandbox
+
+Run Coding Agents that use untrusted routes in a disposable container or separate virtual machine. Do not mount:
+
+- `~/.ssh`, cloud-account configuration, Kubernetes configuration, Docker configuration, or browser profiles.
+- Package-publishing tokens, CI/CD tokens, production `.env` files, or password-manager exports.
+- Host directories, the Docker socket, an SSH agent socket, or long-lived persistent volumes.
+
+Give the sandbox only the minimum copy of code required for the task and scoped short-lived credentials when access is essential. Destroy the environment afterward. Use read-only, time-limited identities for private resources instead of copying a developer machine's long-lived identity into the sandbox.
+
+### 3. Restrict egress and rotate possible exposures
+
+Use egress allowlists for the sandbox. Permit only official model-provider APIs, source dependency registries, and targets the task actually needs. Unknown domains, arbitrary `POST` traffic, and unrestricted DNS egress should not be the default.
+
+If you previously used an unknown relay with high privileges, assume exposure is possible. Revoke or rotate SSH keys, cloud access keys, GitHub tokens, publishing tokens, and service environment variables. Review cloud audit logs, repository-access logs, and unusual network connections. Deleting a local file does not invalidate a key that may already have left the machine. Rotation does.
+
+<Callout type="warning" title="Approval is not rollback">
+Approval can stop the next action. It cannot undo an executed command, a file that has been read, or data that has already left the environment. Restrict high-risk actions before the run.
+</Callout>
+
+## The long-term answer: a controlled LLM gateway that calls model providers directly
+
+The answer is not moving everyone to another unfamiliar relay. Bring the routing layer under your own control. Your organization operates the gateway, provider credentials remain server-side, and the gateway connects to model providers through their official APIs. Do not add an opaque commercial relay to the request path.
+
+A secure LLM gateway needs at least these controls:
+
+- Issue distinct, revocable, short-lived or quota-limited keys to employees and applications. Do not distribute upstream long-lived credentials.
+- Configure only reviewed official provider endpoints, restrict administrative access, and retain route-change records.
+- Enforce identity, quotas, rate limits, and audit trails. Minimize sensitive prompt content in logs and follow internal data-classification rules.
+- Keep the Agent's execution environment separate from the gateway. A gateway governs model calls. It does not replace sandboxing, approval, or egress controls.
+
+<Callout type="tip" title="What a self-managed gateway actually solves">
+A self-managed gateway removes an opaque routing hop and keeps authentication, key issuance, and audit records inside your boundary. It does not replace the provider's own data-handling rules, and it does not make host execution safe by itself.
+</Callout>
+
+For the organizational role of authentication, routing, rate limiting, and audit, read <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>. For a broader model of Agent authority and accountability, see <NoteLink slug="agent-governance-before-scale">Agent governance before scale</NoteLink>.
+
+## Draw the path before you grant authority
+
+```text
+Developer or application
+        ↓
+Organization-controlled LLM gateway
+        ↓
+Official model-provider API
+        ↓
+Isolated Agent execution environment
+        ↓
+Approved least-privilege tools
+```
+
+This design has two separate boundaries. The gateway boundary answers where a request comes from, which trusted provider it reaches, who can call it, and how to investigate an incident. The execution boundary limits what a bad or altered model suggestion can touch. Neither boundary replaces the other.
+
+## The decision is straightforward
+
+An unknown relay combined with high-privilege host execution is an Agent-era supply-chain risk. The public report shows how data collection instructions can hide inside the language of a routine environment check, then use unattended execution to access local assets.
+
+Do not use “the relay is cheap” as a security decision. For untrusted model paths, keep unattended privileges off, run in a credential-free sandbox, and strictly limit outbound network access. When a team needs a shared entry point, operate or control an LLM gateway that connects directly to model providers, without another opaque relay in the path.
+
+<NoteLink slug="third-party-llm-router-security">Read the Chinese version.</NoteLink>
