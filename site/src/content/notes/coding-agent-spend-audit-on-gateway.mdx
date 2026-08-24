@@ -5,12 +5,18 @@ pubDate: 2026-08-24
 category: 安全可信
 relatedService: gateway
 ctaVariant: consulting
+cover: ./media/coding-agent-spend-audit-on-gateway-cover.png
+coverAlt: 个人钥匙散落在地，橙色线汇入中央组织账本机器
 draft: false
 ---
 
 团队都在用 Codex、Claude Code，月底财务问「这个月 AI 花了多少」，工程对不上、财务对不上、个人报销单也对不上。问题通常不在模型贵，而在账记在个人 key 上。
 
 这页不重复「别再买账号」。只讲三件事：谁对账、日志要留哪些字段、个人 key 为什么进不了公司账。
+
+import spendFig from './media/coding-agent-spend-audit-on-gateway-fig.png'
+
+<Figure src={spendFig} alt="个人钥匙、组织账单、调用日志汇入网关入口的示意" caption="图：对账发生在网关入口。个人钥匙、组织账单、调用日志必须对同一个入口，账才加得起来。" width="wide" border />
 
 ## 谁对账
 
