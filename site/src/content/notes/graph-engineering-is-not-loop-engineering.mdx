@@ -1,0 +1,27 @@
+---
+title: Graph Engineering 不是替代 Loop，是上面一层
+description: Loop 管一条回路怎么跑完。Graph 管多条回路怎么连。不是新词替换旧词。先有能验收的回路，再谈多 Agent 怎么编排。
+pubDate: 2026-08-25
+category: Loop与方法论
+relatedService: loop-engineering
+ctaVariant: consulting
+cover: ./media/graph-engineering-is-not-loop-engineering-cover.png
+coverAlt: 下层一条自环，上层多个节点用边连成图，图叠在回路之上而不是取消它
+draft: false
+---
+
+Loop Engineering 解决一条回路怎么跑完：计划、执行、观察、纠正，达标才交付。Graph Engineering 解决多条回路怎么连：谁先做、谁等谁、状态从哪条边传过去。一层管节点，一层管拓扑。不是新词替换旧词。
+
+公开讨论里有人把 Graph 写成 Loop 的升级版。升级错了。一条弱回路，画进再漂亮的图，也只是弱节点。Loop 没设计好就上 Graph，失败只会更大、更难查。
+
+import graphFig from './media/graph-engineering-is-not-loop-engineering-fig.png'
+
+<Figure src={graphFig} alt="左是一条回路，右是多条回路用边连起来，右边包含左边" caption="图：左是一条回路（计划→执行→观察→纠正），右是多条回路用边连起来。右边包含左边，不取消左边。" width="wide" border />
+
+## 差在哪一层
+
+Loop 问：这个 Agent 何时自查、何时停。Graph 问：几个 Agent、工具、人工卡点，按什么顺序、什么分支、共享什么状态。单节点自环是最小的图；多节点才需要单独设计边。
+
+所以「vs Loop」的答案是：不替代，是上面一层。先有能验收的回路，再谈多 Agent 怎么编排。白泽的顺序仍是先边界、再自动化：节点验不了，就不要先铺图。
+
+相关：<NoteLink slug="what-is-loop-engineering">什么是 Loop Engineering：让 AI 先自查再交付</NoteLink>
