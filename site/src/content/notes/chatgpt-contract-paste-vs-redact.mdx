@@ -1,0 +1,94 @@
+---
+title: 合同丢进 ChatGPT：直接丢进聊天框 vs 脱敏后再用
+description: 2026 年 1 月 Politico 报道，美国网安机构代理局长把标了「仅供官方使用」的采购合同丢进公开版 ChatGPT。合同原件进个人聊天框，不等于模型会替你看条款。公开版默认可能用于训练，付 Plus 仍是消费级；企业通道默认不训练。先拿掉专有名、金额、印章和账户，再让模型出疑点清单。
+pubDate: 2026-09-02
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/chatgpt-contract-paste-vs-redact-cover.png
+coverAlt: 合同原件被橙色遮挡条盖住专有信息后，送入模型立方体，而不是丢进个人聊天窗口
+howto:
+  name: 合同脱敏后再交给模型
+  steps:
+    - name: 拿掉专有信息
+      text: 先去掉当事方全称、金额、印章、账户和内部编号，再决定走哪条通道。
+    - name: 不用消费级聊天框
+      text: 公开版默认可能用于训练，个人 Plus 仍是消费级；合同走企业通道或 API，默认不训练。
+    - name: 只要疑点清单
+      text: 让模型列出漏项和待核对页码，不要还原打码内容，也不要给出法律意见。
+---
+
+法务最常听见的一句话是：把合同丢进 ChatGPT，让它先看一眼。省事。也正好踩在「AI 泄密 合同」这条线上。
+
+2026 年 1 月 Politico 报道，美国网安机构代理局长把标了「仅供官方使用」的采购合同丢进公开版 ChatGPT。合同原件进个人聊天框，不等于模型会替你看条款。公开版默认可能用于训练，付 Plus 仍是消费级；企业通道默认不训练。先拿掉专有名、金额、印章和账户，再让模型出疑点清单。
+
+import noteFig from './media/chatgpt-contract-paste-vs-redact-fig.png'
+
+<Figure src={noteFig} alt="左侧合同原件连同印章进入消费级入口，右侧脱敏后的文件进入模型通道并产出疑点清单" caption="图：原件进聊天框，是把专有名、金额和印章一并交出去；脱敏后再交模型，模型只看到结构，输出的是疑点清单。" width="wide" border />
+
+2026 年 1 月 27 日 [Politico 报道](https://www.politico.com/news/2026/01/27/cisa-madhu-gottumukkala-chatgpt-00749361)：CISA 代理局长 Madhu Gottumukkala 把标了 For Official Use Only 的采购合同文件，上传到公开版 ChatGPT。文件不是机密级，但是政府认定不宜公开。CISA 自己的外发监测报警，国土安全部随后做损害评估。CISA 公关对媒体说：获批在 DHS 控制下短期使用，最后一次是 2025 年 7 月中旬；默认仍然封禁 ChatGPT。授权过，不等于原件可以进公网聊天框。不要写成「已经进模型、别人问得出来」——报道没有证实这一点。
+
+三年前已经演过一遍。[Bloomberg 2023 年 5 月 2 日报道](https://www.bloomberg.com/news/articles/2023-05-02/samsung-bans-chatgpt-and-other-generative-ai-use-by-staff-after-leak)：三星发现员工把内部源代码上传 ChatGPT 后，在公司设备和网络上限制了 ChatGPT、Bard 一类工具，理由是数据进外部服务器后难以取回、删除。2026 年 6 月 [Korea Herald](https://www.koreaherald.com/article/10767379) 等报道，三星改走企业通道，向关联公司推广 ChatGPT、Gemini Enterprise、Claude。故事不是「永远不能用 AI 看文件」，是「消费级聊天框禁掉，企业通道再放开」。
+
+## 公开通道和企业通道，不是同一扇门
+
+OpenAI 政策页写：个人向 ChatGPT（以及 Sora、Operator）提交的内容「可能会用于训练」，除非 opt-out。[《How your data is used to improve model performance》](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/) 把个人服务和企业产品分开。2026 年 5 月 6 日官方博文 [《How ChatGPT learns about the world while protecting privacy》](https://openai.com/index/how-chatgpt-protects-privacy/) 更直：「Users should not share sensitive information in ChatGPT that they wouldn’t want to be used or reviewed.」付 Plus、付 Pro，仍是这套消费级关系，不是企业隐私。
+
+企业产品另一套：[ChatGPT Business、ChatGPT Enterprise 和 API](https://openai.com/business-data/) 默认不拿输入输出做训练，要训练必须显式 opt-in。
+
+两件常被混在一起的事：
+
+1. **训不训练**，是模型会不会吃你的合同。关掉 “Improve the model for everyone” 只约束**新对话**不训练；点赞点踩仍可能把整段对话送去训练。opt-out 不回溯已经用过的旧对话。
+2. **留不留存**，是服务器上还记不记。Temporary Chat 不进历史、不写记忆、也不用于训练，但官方说明仍可能为安全审查保留一段时间（帮助中心写至 30 天后删除）。它不是保密方案。零留存是符合条件的 API 能力，不是浏览器里个人 ChatGPT 的默认项。
+
+所以「我开了企业账号」只回答了训练问题。合同原件进了哪扇门、在不在个人浏览器、对方能不能再看到盖章页，还是另一件事。个人买来的 ChatGPT 账号，本来就不是企业通道。法国 CNIL 2024 年 7 月 [FAQ](https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative) 对员工更硬：消费级生成式 AI 上，不要提交个人数据、企业或行政机关的保密信息。
+
+这也是 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号</NoteLink> 要挡住的入口：账号散落在个人手里，合同从私人聊天框出去，组织看不见。要把调用收进可审计的入口，见 <NoteLink slug="what-llm-gateway-solves">安全可信的 LLM API 网关到底解决什么</NoteLink>。来路不清的「中文版 ChatGPT」和不明中转站，更不要传原件，见 <NoteLink slug="third-party-llm-router-security">不明 LLM 中转站为什么危险</NoteLink>。
+
+国内也不是无法可依。《[生成式人工智能服务管理暂行办法](https://www.gov.cn/zhengce/zhengceku/202307/content_6891752.htm)》第四条要求提供和使用服务时「保守商业秘密」；第十一条约束的是**提供者**保护使用者的输入信息和使用记录。办法不是「员工把合同贴进境外消费级聊天框」的单独罚则。合同里若有个人信息或重要数据，贴进境外个人账号，还可能碰到《个人信息保护法》的告知同意、金融账户等敏感信息规则，以及数据出境路径。这是法律结构，不是已经公布的罚单。
+
+## 怎么用：先脱敏，再让模型找疑点
+
+不要把「能不能读合同」理解成「能不能收原件」。可复制的工序只有一条：
+
+- **可全文：** 已公开的产品说明、已经脱敏的条款结构。
+- **须脱敏：** 当事方全称、法定代表人、联系人、地址电话邮箱、合同编号、对价和付款节点、银行账户、客户名和可反查的项目代号。打码，或只贴句式不贴实值。
+- **须人审、默认不进模型：** 签字页、盖章页、骑缝章扫描件、赔偿和违约数字、对外承诺句、争议解决里的管辖和仲裁地。图像比文本更容易带出身份，不要整页 PDF 直传。模型只出「疑点列表 + 建议核对的页码」，人拿未脱敏原件对。
+
+给模型的任务也写成一件活，不要写成「帮我看一下这份合同」：
+
+```text
+你负责：在脱敏稿上标风险句式。
+完成后我要看到：漏项清单（保密、付款、验收、违约、终止、争议解决）和需要人核对的页码。
+不要做：还原被打码的名称和数字，不要给出法律意见，不要建议直接签署。
+```
+
+输出默认待确认。不能直发邮件，不能直贴合同系统。Enterprise / API 默认不训练，也不等于对方同意把真件交给 OpenAI，更不等于满足出境和商业秘密条款。不明中转站、来路不清的「中文版 ChatGPT」更不要传原件。脱敏之后，组织调用仍应走自己的入口和审计，而不是每人一个个人账号。
+
+## 合同丢进 ChatGPT：常见问题
+
+### 合同能不能直接丢进 ChatGPT？
+
+不能丢原件。公开个人版（含 Plus）默认可能用于训练，OpenAI 自己也写不要提交不愿被使用或被审阅的敏感信息。企业通道默认不训练，也不等于可以零审查贴真件。
+
+### 先脱敏怎么做？
+
+拿掉当事方全称、联系方式、合同编号、对价、银行账户、客户名；签字页和公章不要整页上传。留下条款结构，让模型出疑点清单和核对页码，人拿未脱敏原件对。
+
+### 合同丢进 ChatGPT，泄密了谁负责
+
+相对方按你签的保密条款找你，不找聊天框。CNIL 把员工使用消费级生成式 AI 的责任放在使用机构。国内《暂行办法》主要约束服务提供者，不是「贴合同」单独罚则；合同里的商业秘密和个人信息，仍是你的出境、告知和保密义务。没有公开的「某公司因贴合同被网信办处罚」个案，不等于没人担责。
+
+## 来源
+
+1. [Politico，Trump’s acting cyber chief uploaded sensitive files into a public version of ChatGPT（2026-01-27）](https://www.politico.com/news/2026/01/27/cisa-madhu-gottumukkala-chatgpt-00749361)
+2. [Ars Technica，US cyber defense chief accidentally uploaded secret government info to ChatGPT](https://arstechnica.com/tech-policy/2026/01/us-cyber-defense-chief-accidentally-uploaded-secret-government-info-to-chatgpt/)
+3. [OpenAI，How your data is used to improve model performance](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/)
+4. [OpenAI，How ChatGPT learns about the world while protecting privacy（2026-05-06）](https://openai.com/index/how-chatgpt-protects-privacy/)
+5. [OpenAI，Business data privacy, security, and compliance](https://openai.com/business-data/)
+6. [Bloomberg，Samsung Bans ChatGPT, Google Bard, Other Generative AI Use by Staff After Leak（2023-05-02）](https://www.bloomberg.com/news/articles/2023-05-02/samsung-bans-chatgpt-and-other-generative-ai-use-by-staff-after-leak)
+7. [The Korea Herald，Samsung bets on AI to reinvent how it works（2026-06-09）](https://www.koreaherald.com/article/10767379)
+8. [CNIL，Les questions-réponses de la CNIL sur l’utilisation d’un système d’IA générative（2024-07-18）](https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative)
+9. [国家互联网信息办公室等，生成式人工智能服务管理暂行办法](https://www.gov.cn/zhengce/zhengceku/202307/content_6891752.htm)
