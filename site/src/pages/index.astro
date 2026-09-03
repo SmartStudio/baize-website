@@ -1,9 +1,17 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
 import mark from '../assets/baize-mark.png';
 
 const base = import.meta.env.BASE_URL;
+
+const latestNotes = (
+  await getCollection('notes', ({ data }) => !data.draft && data.lang === 'zh-CN')
+)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 <BaseLayout
   title="白泽明理｜企业 AI 提效与经营流程重塑咨询，让组织明白 AI、用好 AI"
@@ -200,6 +208,36 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <section id="mingli-notes" class="bz-rail-section">
+    <div class="bz-rail-grid">
+      <aside aria-label="Notes section label">
+        <div class="bz-rail-label">Notes</div>
+        <div class="bz-rail-bar"></div>
+      </aside>
+      <div class="bz-home-intro">
+        <div>
+          <h2 class="bz-home-heading">明理笔记</h2>
+          <p class="bz-home-lead">把零散尝鲜变成可验证、可复用的组织能力。</p>
+        </div>
+        <div class="bz-notes-grid">
+          {latestNotes.map((note) => (
+            <NoteCard
+              title={note.data.title}
+              description={note.data.description}
+              pubDate={note.data.pubDate}
+              category={note.data.category}
+              slug={note.id}
+              cover={note.data.cover}
+              coverAlt={note.data.coverAlt}
+              lang={note.data.lang}
+            />
+          ))}
+        </div>
+        <a class="bz-text-link" href={`${base}notes/`}>全部笔记 <span class="bz-text-link__arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
   <section id="notes" class="bz-rail-section">
     <div class="bz-rail-grid">
       <aside aria-label="Proof section label">
@@ -244,6 +282,20 @@ const base = import.meta.env.BASE_URL;
     #method .bz-flow::before {
       left: 10%;
       right: 10%;
+    }
+  }
+
+  /* Homepage notes rail: compact 3-up. notes/index.astro scopes .bz-notes-grid
+     to that page, so the homepage needs its own copy. */
+  .bz-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .bz-notes-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
