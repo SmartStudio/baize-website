@@ -1,0 +1,76 @@
+---
+title: AI 视频广告：多发视频 vs 过得了品牌审
+description: 视频模型可一天出几十条 AI 视频广告；同批素材里过品牌审、平台审和标识的更少。国内《标识办法》自 2025-09-01 施行，显式角标与隐式元数据都要留；Google 2026-07 加了「How this ad was made」。批量前先写清 AI 生成 内容 审核口径。
+pubDate: 2026-09-04
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/ai-video-ads-vs-brand-review-cover.png
+coverAlt: 多发视频与过得了品牌审对比：出片量与过审量口径差异、显式角标与隐式元数据要求
+howto:
+  name: 先过审口径，再开批量
+  steps:
+    - name: 可批量
+      text: 已过品牌色、禁词、竞品名、肖像授权清单的脚本与镜头模板；显式角标位置写进模板。
+    - name: 须人审再投
+      text: 疗效或收益承诺、对比前后、真人肖像与声音、数字人口播、未成年人场景；模型输出风险清单和时间码，人完成过审判定。
+    - name: 默认不过
+      text: 隐式元数据在剪辑或转码后缺失；显式标识只出现在片头一帧；声明文案与投放平台本地要求不一致。
+---
+
+同一卖点下，模型一天可生成几十条 AI 视频 广告。法务、品牌与投放平台拒审后，多数素材无法上线。出片量统计生成条数，过审量统计通过品牌审、平台审和法定标识的条数。多发视频与过得了品牌审对应两套统计口径。
+
+import noteFig from './media/ai-video-ads-vs-brand-review-fig.png'
+
+<Figure src={noteFig} alt="多发视频与过得了品牌审对比：出片量统计生成条数，过审量统计过审条数，显式角标与隐式元数据共同构成标识要求" caption="图：多发视频 vs 过得了品牌审" width="wide" border />
+
+## 境内监管：显式角标与隐式元数据一并保留
+
+2025 年 3 月，国家互联网信息办公室等四部门印发[《人工智能生成合成内容标识办法》](https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm)，自 2025 年 9 月 1 日起施行，配套强制性国家标准《网络安全技术 人工智能生成合成内容标识方法》（GB 45438-2025）同步实施，官方配发[答记者问](https://www.cac.gov.cn/2025-03/14/c_1743654685899683.htm)。该办法将标识分为显式标识与隐式标识。第四条规定：视频须在起始画面和播放周边适当位置呈现显著提示，并可在中间或末尾追加；文件在下载、复制、导出后仍须保持显式标识。第六条规定：平台核验隐式标识，并在发布周边添加提示。商业广告素材适用上述条款。
+
+2026 年 1 月 9 日，上海市市场监督管理局发布[《关于促进互联网平台广告规范健康发展的指导意见》](https://www.shanghai.gov.cn/gwk/search/content/2c984a729b92b990019ba06d36224232)（沪市监广告〔2025〕354 号）。文件规定：广告含有生成式人工智能或深度合成内容的，发布者须主动声明「本广告使用AI技术」或「本广告由AI技术生成」等文字并显著标识；使用数字虚拟人的须单独声明，并与自然人名义或形象明显区分；禁止使用 AI 生成虚假违法广告；使用自然人形象制作数字人须取得书面授权并明确使用范围。平台端审核机制包括「AI智能筛查＋人工复核＋动态抽检」。
+
+## 平台披露：Google 广告引入 AI 标签与 C2PA
+
+2026 年 7 月 9 日，Google 在 Ads 博文[《New AI transparency labels for Google Ads》](https://blog.google/products/ads-commerce/google-ads-ai-transparency-labels/)中说明，Search、YouTube 与 Discover 的「My Ad Center」新增「How this ad was made」披露项，展示广告是否由生成式 AI 生成或编辑。使用 Google 内部工具生成的素材自动添加披露，站外制作的素材由广告主自主勾选。[Google Ads 帮助页](https://support.google.com/google-ads/answer/17140115)载明：元数据层支持嵌入 SynthID 与 C2PA；部分地区（如欧盟、印度、纽约）要求在广告画面呈现可见标签。[C2PA 相关产品更新](https://blog.google/innovation-and-ai/products/google-gen-ai-content-transparency-c2pa/)载明：广告投放系统接入 C2PA 元数据，用于审核和政策执行。
+
+## 将审核口径前置到批量流程
+
+批量制作 AI 视频 广告 前，团队须明确 AI 生成 内容 审核 的拦截标准。账号权限、模型调用留痕与审计，参考 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。前置规则检查与自动化阻断，参考 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。将设计验收约束固化到开发工序，参考 <NoteLink slug="design-first-ai-dev-workflow">小团队如何设计第一套 AI 编程工作流？</NoteLink>。
+
+## 怎么用：先过审口径，再开批量
+
+- **可批量：** 已过品牌色、禁词、竞品名、肖像授权清单的脚本与镜头模板；显式角标位置写进模板。
+- **须人审再投：** 疗效或收益承诺、对比前后、真人肖像与声音、数字人口播、未成年人场景；模型输出风险清单和时间码，人工执行最终判定。
+- **默认不过：** 剪辑或转码后隐式元数据缺失；显式标识只出现在片头单帧；声明文案与投放平台当地规范不符。
+
+```text
+你负责：按品牌禁词表 + 标识清单预检成片。
+完成后我要看到：拒审风险列表（时间码）、显式标识是否全片可见、隐式元数据是否仍在、需人批的镜头。
+不要做：自动重渲绕过拒审；不要删改标识；不要把「模型说合规」写成已过品牌审。
+```
+
+## AI 视频广告：常见问题
+
+### AI 视频广告为什么多发了还过不了品牌审？
+
+出片量统计生成素材总数，过审量统计符合品牌规范、平台规则与法定标识的素材数。批量生成前若未锁定禁词、授权和角标位置，多数素材会在法务与平台拒审台被拦截。
+
+### 国内 AI 视频广告要怎么标？
+
+依据《标识办法》，视频须在起始画面及播放周边呈现显著提示，导出文件须保留显式标识，平台核验隐式元数据；依据上海指导意见，广告须声明「本广告使用AI技术」等字样，数字人须单独声明。
+
+### AI 生成内容审核审的是什么？
+
+审核重点包括：法定显式与隐式标识完整性、真人肖像及声音书面授权、是否存在虚假广告或绝对化宣传、投放平台（如 Google 的 AI 标签或 C2PA 元数据）披露要求。
+
+## 来源
+
+1. [国家互联网信息办公室等，《人工智能生成合成内容标识办法》（2025-03-14）](https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm)
+2. [国家互联网信息办公室，《人工智能生成合成内容标识办法》有关问题答记者问（2025-03-14）](https://www.cac.gov.cn/2025-03/14/c_1743654685899683.htm)
+3. [上海市市场监督管理局，《关于促进互联网平台广告规范健康发展的指导意见》（沪市监广告〔2025〕354 号）](https://www.shanghai.gov.cn/gwk/search/content/2c984a729b92b990019ba06d36224232)
+4. [Google Ads Blog，New AI transparency labels for Google Ads（2026-07-09）](https://blog.google/products/ads-commerce/google-ads-ai-transparency-labels/)
+5. [Google Ads Help，About generative AI disclosures on Google Ads](https://support.google.com/google-ads/answer/17140115)
+6. [Google Keyword Blog，Expanding content transparency with C2PA](https://blog.google/innovation-and-ai/products/google-gen-ai-content-transparency-c2pa/)
