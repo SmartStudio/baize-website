@@ -1,0 +1,79 @@
+---
+title: 机器人视频模仿能学会动作时，动作脚本还要人写吗
+description: BeyondMimic 用开源运动跟踪把人体动作学到人形机上：侧空翻、冲刺、spin-kick 等能在真机跑。学会动作之后，换航点、摇杆、避障仍要人写测试时的代价函数或关键帧。机器人视频模仿先把参考动作跑稳；动作脚本写的是任务目标与边界，不是逐帧关节角。
+pubDate: 2026-09-08
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/robot-video-imitation-vs-motion-script-cover.png
+coverAlt: 学会动作与动作脚本谁写：参考动作跟踪跑稳后，下游任务仍要人写代价函数或关键帧
+howto:
+  name: 先锁参考与代价，再谈「学会了」
+  steps:
+    - name: 先固定参考
+      text: 先固定机型、参考动作集与跟踪成功标准，再谈多技能扩展。
+    - name: 再写代价
+      text: 下游任务先写可检查的代价（到点误差、碰撞距离、关键帧间隔），再开 guidance。
+    - name: 真机收口
+      text: 真机只部署已在仿真与短距离外场跑通的片段；长视界规划另开一层，不指望 0.64 秒预测包办。
+---
+
+演示里人形机做出侧空翻、冲刺、连续 spin-kick，观众常问：动作脚本还要人写吗。BeyondMimic（[arXiv:2508.08241](https://arxiv.org/abs/2508.08241)，项目页 [beyondmimic.github.io](https://beyondmimic.github.io/)）把链路拆成两段：先用强化学习做运动跟踪，把人体参考动作落到真机；再用潜空间扩散与 classifier guidance，在测试时用简单代价函数拼下游任务。机器人视频模仿能学会动态动作；换任务时，人仍要写清目标与代价。
+
+import noteFig from './media/robot-video-imitation-vs-motion-script-fig.png'
+
+<Figure src={noteFig} alt="学会动作与动作脚本谁写：左侧参考动作跟踪跑稳，右侧下游任务由人写代价函数或关键帧" caption="图：学会动作｜动作脚本谁写" width="wide" border />
+
+## 视频模仿先把动作跑稳
+
+开源运动跟踪代码在 [HybridRobotics/whole_body_tracking](https://github.com/HybridRobotics/whole_body_tracking)。同一套 MDP 与超参，可训多种动态技能，不必为每个动作单独调参。论文写明：约 2.5 小时人体动作数据用于训练；约 30 段代表动作在真机验证，覆盖单腿站立、空中侧空翻、冲刺、舞蹈与运动姿态等。跟踪目标是参考运动的相对身体位姿，允许全局漂移，便于 sim-to-real。
+
+跟踪阶段输入仍是人体运动参考（经 retarget 的运动学序列），不是「看一段短视频就自动出产线策略」。参考从哪来、哪些身体链要跟、终止条件怎么设，仍是人定的配方。
+
+## 下游任务靠测试时引导
+
+第二段把多种跟踪策略蒸馏进统一的潜空间扩散模型。测试时用 guidance：人提供可微代价，例如速度/摇杆指令、航点、基于 SDF 的避障，或按 0.2 秒间隔注入未来关键帧做 motion inpainting。论文演示了摇杆遥控、航点导航、绕障、从行走切入侧空翻再回到行走等，且声称无需为每个新任务重训。
+
+人写的不再是整段关节角时间序列，而是任务代价与关键帧。代价选错、关键帧给错，机子仍会跟着错目标走。论文自述局限：预测视界约 0.64 秒；粗目标好用、细粒度目标较差；起步与结束阶段在 guidance 下更易不稳；guidance 权重仍需轻量调节。
+
+## 动作脚本还要人写什么
+
+- 参考动作：采集/选用哪段人体运动、如何 retarget 到目标机型。
+- 任务层：速度与航点、避障场、关键帧时间表——测试时拼什么目标。
+- 收口：guidance 权重、安全与终止条件、真机延迟与状态估计是否够稳。
+
+设计先于实现的工作流见 <NoteLink slug="design-first-ai-dev-workflow">小团队如何设计第一套 AI 编程工作流？</NoteLink>；编排与亲自改文件的分工见 <NoteLink slug="from-coder-to-orchestrator">AI 时代，开发者的核心工作已经不是写代码</NoteLink>；工程护栏见 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。
+
+## 怎么用：先锁参考与代价，再谈「学会了」
+
+- 先固定机型、参考动作集与跟踪成功标准，再谈多技能扩展。
+- 下游任务先写可检查的代价（到点误差、碰撞距离、关键帧间隔），再开 guidance。
+- 真机只部署已在仿真与短距离外场跑通的片段；长视界规划另开一层，不指望 0.64 秒预测包办。
+
+```text
+你负责：按已选定的人体参考动作训练/加载跟踪策略；下游任务只接受明文代价或关键帧表。
+完成后我要看到：参考动作来源与 retarget 说明、代价函数条目、guidance 权重、仿真与真机是否同配方。
+不要做：把演示视频当成已可上产线的动作脚本；不要在无避障/终止条件时宣称「任务自适应完成」；不要把未验证的长视界目标塞进短视界 guidance。
+```
+
+## 机器人视频模仿：常见问题
+
+### 视频模仿是不是不用写动作脚本了？
+
+能学会参考动作，任务层仍要另行指定。BeyondMimic 的跟踪仍要人体参考；换航点、遥控、避障时，人仍要提供代价或关键帧。脚本从「逐帧关节角」上移到「参考 + 任务代价」。
+
+### 开源管线能直接上产线吗？
+
+开源跟踪仓库与项目页提供可复现配方与真机演示片段。产线还要机型标定、延迟、状态估计与现场安全流程。论文也写了视界短、细粒度目标弱、过渡阶段更易不稳等限制，需按现场补验收。
+
+### 动作脚本到底指什么？
+
+这里的动作脚本包括：选用哪段参考动作、测试时拼哪些代价/关键帧、guidance 与安全边界如何收口。可以不再手写每一帧关节角；边界写不清时，学会的动作仍无法复用到新任务。
+
+## 来源
+
+1. [BeyondMimic 项目页](https://beyondmimic.github.io/)
+2. [arXiv:2508.08241 BeyondMimic: From Motion Tracking to Versatile Humanoid Control via Guided Diffusion](https://arxiv.org/abs/2508.08241)
+3. [开源运动跟踪 HybridRobotics/whole_body_tracking](https://github.com/HybridRobotics/whole_body_tracking)
