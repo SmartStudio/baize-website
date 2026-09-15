@@ -1,0 +1,78 @@
+---
+title: Agent 读邮件可以，改日历发信要先批什么
+description: Agent 读邮件多半只是检索与摘要。Claude 的 Gmail 连接器已能发送、回复、转发，默认每次先问你；日历连接器还能创建、更新、删除日程。读可以宽，写要收口：发信与改日历属于对外动作，先批什么，写进工具权限表再开 Always allow。
+pubDate: 2026-09-15
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/agent-read-mail-vs-calendar-send-cover.png
+coverAlt: 读邮件与发信改日历先批：检索摘要可宽，发送与日历写动作默认先批
+howto:
+  name: 先画读/写表，再开连接器
+  steps:
+    - name: 读可宽
+      text: 搜信、摘要、列草稿、看日历——可以宽一点。
+    - name: 写先批
+      text: 发信/回复/转发；创建/更新/删除日历事件；Drive 侧分享/移动/进垃圾桶同类——默认 Needs approval。
+    - name: 验收
+      text: 抽 10 次写动作，每次都要有批准记录或组织策略说明；没记录就别开 Always allow。
+---
+
+Gmail 接上连接器之后，很多人第一句话是「帮我翻邮件」。Anthropic 帮助中心写明：Claude 的 Google Workspace 连接器能搜读邮件，也能起草；发送、回复、转发默认每次都要你点头。日历这边能看事件，也能创建、更新、删除。读邮件是一档权限；改日历、发信是另一档。
+
+import noteFig from './media/agent-read-mail-vs-calendar-send-fig.png'
+
+<Figure src={noteFig} alt="读邮件与发信改日历先批：左侧检索摘要，右侧发送与日历写动作需批准" caption="图：读邮件｜发信/改日历先批" width="wide" border />
+
+## 读邮件：检索与摘要
+
+常见用法：用自然语言搜线程、摘要往来、拉会议相关上下文、列未回复。文档写明：默认只在你提问或要求动作时取最小必要信息；附件内容读不到（只有元数据）；权限跟你在 Google 账号里已有的范围一致。
+
+读档可以开 Always allow，或者审批放宽一点——这时通常还没改外面的世界。仍要当心：别把整箱邮件粘进消费级聊天，还开着训练开关。见 <NoteLink slug="chatgpt-contract-paste-vs-redact">合同丢进 ChatGPT：直接丢进聊天框 vs 脱敏后再用</NoteLink>。账号散落在个人号上时，审计更难，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。
+
+## 发信：默认先批
+
+帮助中心 FAQ：Claude 能从 Gmail 发送、回复、转发；这些动作默认每次先问你。Team / Enterprise 里，Owner 决定成员能不能改成「不用次次问」。OAuth 屏上会出现发送相关权限说明，这不等于产品默认自动连发。
+
+落地时把「起草」和「发送」拆开：起草可以常开；发送先保持 Needs approval，等有了抽样审计和回滚再谈放宽。给 AI 研发加护栏时，写权限和读权限分两列写，见 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。
+
+## 日历自动发送与改日程：写动作
+
+日历连接器能做：查看（含共享日历）、创建/更新/删除事件、找共同空档、管参会者和回复邀请、设循环会议。创建、改、删会通知参会者，或者改会议室占用，这是对外写。
+
+现场说「日历 自动发送」，常混着两件事：① Agent 代发会议邀请/更新；② 跟邮件联用，自动发出日程说明。两种都按写工具处理：默认 Needs approval。组织级走 Customize → Connectors → 工具权限，把写/删类设成 Always allow、Needs approval 或 Blocked。Team / Enterprise 的 Owner 可以组织级收紧；个人没法越权放开。
+
+## 怎么用：先画读/写表，再开连接器
+
+- 读：搜信、摘要、列草稿、看日历——可以宽一点。
+- 写（默认先批）：发信/回复/转发；创建/更新/删除日历事件；Drive 侧分享/移动/进垃圾桶同类。
+- 组织：Owner 先定组织级允许集；个人再在工具权限里收紧，别一上来就 Always allow 发送。
+- 验收：抽 10 次写动作，每次都要有批准记录或组织策略说明；没记录就别开 Always allow。
+
+```text
+你负责：在已授权范围内检索邮件与日历只读信息；涉及发送邮件或创建/更新/删除日历事件时停手并请求批准。
+完成后我要看到：拟发送正文或事件字段草稿、收件人/参会者列表、本次是否已获用户或策略批准。
+不要做：把「帮我回复」理解成已授权自动连发；不要在未批时改共享日历；不要关闭发送类 Needs approval 却无审计抽样。
+```
+
+## Agent 读邮件：常见问题
+
+### Agent 读邮件会不会自动发出去？
+
+读不会发出。发送、回复、转发是单独能力；Anthropic 文档写明默认每次先批。指令里把「总结这封信」和「发出回复」拆成两步更稳。
+
+### 团队能不能关掉发信前审批？
+
+Team / Enterprise 由 Owner 决定成员能不能让写动作不次次问。组织没放行前，个人想 Always allow 也可能被挡住。放行后仍建议保留抽样审计。
+
+### 日历自动发送要先批什么？
+
+至少批：事件标题与时间、参会者列表、是否发更新通知、是否写入共享日历。跟邮件联用时，邮件正文和收件人一起进审批单。日历写权限和 Gmail 发送权限分开配，别捆成一个「全开」。
+
+## 来源
+
+1. [Anthropic Help Center：Use Google Workspace connectors](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors)
+2. [Anthropic Help Center：Use connectors to extend Claude's capabilities](https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities)
+3. [9to5Google 报道（2026-08-18，Gmail 可发送及审批可选）](https://9to5google.com/2026/08/18/claude-can-now-send-emails-in-gmail-even-without-your-approval/)
