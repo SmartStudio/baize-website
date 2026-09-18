@@ -1,0 +1,100 @@
+---
+title: AEO 是什么？和搜索排名还差在哪一步
+description: 搜索排名进了前几名，不保证 Google AI Overviews、ChatGPT、Perplexity 会引用你。AEO（Answer Engine Optimization）盯的是答案里有没有你的引用和提及。差在哪一步：页面有没有可被抽取的答案块。SEO 仍是底座——先能被抓、被索引；AEO 在底座上补抽取与引用。
+pubDate: 2026-09-17
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/what-is-aeo-vs-search-ranking-cover.png
+coverAlt: 搜索排名与答案块被引用：有排名不等于答案引擎会引用你
+howto:
+  name: 先盘引用，再改答案块
+  steps:
+    - name: 摸清引用现状
+      text: 用 10–20 个真实问法测 Google AI Overview、ChatGPT、Perplexity，记品牌是否出现、引用 URL、对手占句。
+    - name: 每页补短答
+      text: 对有排名却未进答案的页，在 H1 或 H2 下加 40–60 字可抽短答，再跟依据。
+    - name: 用引用验收
+      text: 改完两周后再跑同一批问法；排名波动与「答案里有没有你」分开看。
+---
+
+页面排进搜索引擎前几名，用户去问 ChatGPT、Perplexity，或者 Google 弹出 AI Overview 时，生成的答案里照样可能没有你。排在前面，不代表会被模型引用。AEO（Answer Engine Optimization，答案引擎优化）盯的是：AI 直接给出的答案里，有没有引用你的链接、提没提到你的品牌。常规 SEO 依然是底座，网页得先能被搜索引擎抓取并建索引。底座搭好了，关键还差一步：页面里有没有一段能让模型直接拿去引用的答案块。至于零点击搜索的背景，这篇只点到为止，细节留给后续专篇。
+
+import noteFig from './media/what-is-aeo-vs-search-ranking-fig.png'
+
+<Figure src={noteFig} alt="搜索排名与答案块被引用：左侧结果页位次，右侧可抽取短答被答案引擎引用" caption="图：搜索排名｜答案块被引用" width="wide" border />
+
+## AEO 是什么
+
+AEO 就是把内容写得清晰、容易抽取，让 AI 答案引擎在生成回答时引用你的网页、带上你的链接或者提及你的品牌。常见的答案引擎有 Google AI Overviews / AI Mode、ChatGPT、Perplexity 和 Gemini。
+
+HubSpot 的定义很直接：AEO 解决的是怎么让内容被选进 AI 的直接回答里。传统 SEO 争的是搜索结果页上的排名和点击，AEO 争的是答案正文里的引用源和品牌露出。Contently 在 2026 年的指南里也指出，竞争目标从传统的十条蓝色链接，变成了模型生成的那段话以及后面附带的来源标签。
+
+Google Search Central 对网站运营者的说明更务实：AI Overviews 和 AI Mode 并没有额外的代码门槛，也没有专门的「AI Overview schema」。页面能被这类功能收录的前提，依然是正常建索引、允许展示摘要，并且符合常规 SEO 规范。行业里常把 AEO 或 GEO 当成新概念，但 Google Search Central 2026 年的官方指南写得很明确：面向生成式 AI 搜索体验的优化，底层依然属于常规 SEO。
+
+实际做的时候，别把这两件事拆成两套冲突的项目。SEO 负责网页能不能被抓取、收录以及在搜索页的权重；AEO 负责在模型回答里的引用率和段落抽取质量。底层 SEO 没做好，页面根本进不去模型的候选池。
+
+## 排名有了还差哪一步：答案块
+
+中间差的那一步，就是「可被抽取的答案块」。
+
+AI 答案引擎读取网页时，最喜欢抓取能独立说明问题的一小段文字：开头先用 40–60 字把核心答案讲清楚，后面再去补充证据、数据和适用边界。HubSpot 的优化建议也是这个顺序：结论直接给，证据接着铺。如果核心结论埋在第三屏、小标题拐弯抹角、关键信息散在长故事里，人类读者或许有耐心往下翻，模型通常会直接略过。
+
+行业实测数据也显示，传统排名和 AI 引用正在脱钩。根据 Leapd 汇总的公开统计：2025 年中，Google AI Overview 引用的来源里，大概有 76% 同时排在该词自然搜索的前 10 名；到了 2026 年初，Ahrefs 统计的这一重合率降到了大约 38%，BrightEdge 的一组数据甚至降到了 17% 左右。具体数值因测试样本不同会有差异，但趋势一致：搜索排名前列不再自动锁定 AI 的来源位。而在 ChatGPT、Perplexity 这些独立产品里，引用的链接和 Google 自然前 10 名的重叠度更低。排名靠前只是具备了基础门槛。
+
+合格的答案块通常符合这 5 条：
+
+- **一问一答**：小节标题直接写成用户搜索的问题，标题下方第一句话就给出明确结论。
+- **独立完整**：这一段文字即便单拎出来，不联系上下文也能看懂；专有名词首次出现时说明清楚。
+- **事实可验**：关键数据、业务定义和实操步骤标清来源或更新时间，避免无法佐证的空话。
+- **排版清晰**：涉及参数对比直接用表格，流程说明直接用编号列表；核心结论不要只画在图片里，必须有对应文本。
+- **单段精简**：一段只讲一个核心事实，句子简短有力，方便模型直接引用。
+
+页面有排名但没有成型的答案块，人类能看懂，AI 却挑不出适合引用的短段落；把答案块写规整、底座 SEO 做好，被模型引用的概率才会真正提升。
+
+## 怎么用：先盘引用，再改答案块
+
+不用特意搞复杂的立项，拿出一周时间把现有的重点网页改到能被模型抽取即可：
+
+**1. 摸清目前的引用现状**
+
+挑出 10 到 20 个真实的客户提问，分别放进 Google（观察是否触发 AI Overview）、ChatGPT 和 Perplexity 提问。记录三项数据：AI 回复里提没提到你的品牌或产品；它引用的具体网址是哪篇；竞品被引用了哪些观点。Google Search Console 只能统计搜索引擎带来的流量，测不出其他 AI 引擎的引用情况，这项核对需要人工抽查或借助第三方监测工具完成。
+
+**2. 重点页面补充短答**
+
+针对那些已经有自然排名、但从未被 AI 引用的网页，在 H1 标题下方或重点 H2 小节开头，补上 40–60 字的直接回答，后面再附上论据。少用「我们拥有业内领先的……」这种宣传口吻，多用「X 是什么、适用场景有哪些、具体步骤是什么」这类模型可以直接引用的事实句。对比数据多用表格，流程说明多用列表。
+
+**3. 更新实质事实**
+
+行业监测表明，最近一年内有实质内容更新的网页，被引用的概率明显更高。重点去校准过期的数字、更新操作步骤和适用规则，只在网页底部把年份改成 2026 没有实际效果。
+
+**4. 用引用数据做验收**
+
+改版发布两周后，用最初的那批问题再测一遍。核心核对三个指标：被引用的总次数、品牌描述是否准确、模型有没有还在引用旧数据。搜索排名的升降单独记录，和 AI 引用率分开统计，不能拿自然搜索报表代替 AEO 验收。
+
+如果团队已经用 Agent 批量生成内容，要把「小节开头必写短答」作为规则固化，见 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。日常整理素材如果还分散在个人账号和私有聊天窗口里，建议先收归到统一规范，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>、<NoteLink slug="chatgpt-contract-paste-vs-redact">合同丢进 ChatGPT：直接丢进聊天框 vs 脱敏后再用</NoteLink>。
+
+## AEO 是什么：常见问题
+
+### AEO 到底优化什么？
+
+优化的是：AI 答案引擎在生成回答时，愿不愿意选中、引用并提及你的网页内容。验收的核心指标包括引用总次数、品牌提及的准确率，以及重点提问下的展现率。AEO 不会取代页面的收录与排名，它是在现有网页的基础上，补上清晰、可抽取、可核对的答案块。
+
+### 有搜索排名为什么还没被 AI 答案引用？
+
+最常见的原因是页面里缺少可以直接抓取的简短答案：结论放在太靠后的位置、用词含糊不清、重要信息只画在图里，或者页面数据长期没更新。在 Google 体系下，页面还必须先满足收录索引和摘要展示的前提。排名高只能证明页面主题与搜索词相关；被 AI 引用，还要求模型能从正文里快速挑出一整句完整成立的话当成论据。
+
+### AEO 和 SEO 是什么关系？要不要停做 SEO？
+
+绝对不要停。SEO 解决的是网页抓取、索引收录、域名权威度和结果页排名，这也是绝大多数 AI 答案引擎挑选信源的底层依据。AEO 是在 SEO 的基础上，提升在 AI 生成答案里的引用和品牌露出。Google Search Central 2026 年官方指南明确指出：在 Google Search 看来，针对生成式 AI 搜索体验的优化依然属于常规 SEO；站长不必另搞 chunking / 专用 llms.txt 一类 AEO hack。日常维护同一套高质量网页即可：底座上要把排名做上去，正文里要把答案块写得方便模型抽取。
+
+## 来源
+
+1. [Google Search Central，《Optimizing your website for generative AI features on Google Search》](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+2. [Google Search Central，《AI features and your website》](https://developers.google.com/search/docs/appearance/ai-features)
+3. [HubSpot Glossary，《AEO (Answer Engine Optimization)》](https://www.hubspot.com/glossary/aeo-answer-engine-optimization)
+4. [Contently，《What Is Answer Engine Optimization (AEO)? A 2026 Definition Guide》](https://contently.com/2026/02/03/what-is-aeo-answer-engine-optimization/)
+5. [HubSpot Blog，《How to optimize for AI overviews (AIOs): A complete 2026 playbook》](https://blog.hubspot.com/marketing/optimize-for-ai-overviews)
+6. [Leapd，《How ChatGPT, Google AI Overviews, and Perplexity Source Information in 2026》](https://www.leapd.ai/blog/ai-visibility/how-chatgpt-google-ai-overviews-and-perplexity-source-information-in-2026)
