@@ -1,0 +1,102 @@
+---
+title: 零点击搜索变多了，还要不要做 SEO
+description: SparkToro 用 Similarweb 面板统计：2026 年 1–4 月，美国 Google 搜索里约 68% 以零点击收场，比 2024 年的约 60% 又抬了一截。AI Overviews 一出现，自然结果的点击率往往再砍一半左右。点击变少，不等于可以停做 SEO。品牌词、本地服务、交易意图还在点；信息问答更容易停在结果页。SEO 要继续做，KPI 要从「全靠自然流量」改成「还能进索引、还能影响答案、还能接住会点进来的那部分」。
+pubDate: 2026-09-18
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/zero-click-search-still-need-seo-cover.png
+coverAlt: 零点击与还要做 SEO：答案常停在结果页，品牌交易词仍需 SEO
+howto:
+  name: 按意图切词表，再换验收指标
+  steps:
+    - name: 词表按意图切开
+      text: 从 Search Console 拉 90 天查询，标成信息 / 品牌 / 本地 / 交易；信息类预期 CTR 下调。
+    - name: 看板换四列
+      text: 品牌词点击、交易词转化、核心 URL 索引状态、10–20 个客户问题是否出 AI Overview。
+    - name: 信息页先给结论
+      text: H1 下两三句写清定义或步骤，数据标时间与出处；Agent 批量改文也固化这条。
+---
+
+
+
+2026 年前四个月，美国 Google 搜索里大概有 68% 搜完就没点出去。这个数来自 SparkToro，底层是 Similarweb 的桌面+移动面板。2024 年同一口径大约是 60%。两年涨了七个多百分点。很多人第一反应是：自然搜索流量还靠得住吗？还要不要做 SEO？结论先说：要做。但别再拿三年前的点击量当唯一验收标准。
+
+import noteFig from './media/zero-click-search-still-need-seo-fig.png'
+
+<Figure src={noteFig} alt="零点击与还要做 SEO：左侧答案停在结果页，右侧品牌交易词仍靠 SEO 接点击" caption="图：零点击｜还要做 SEO" width="wide" border />
+
+## 零点击在发生什么
+
+零点击，就是用户搜完，没有点到任何外部网站、广告，也没点到 Maps、YouTube 这类 Google 自有产品。答案在结果页里就看完了：知识面板、精选摘要、本地包，再加上现在的 AI Overviews。
+
+SparkToro 这组数还有几个细节值得看：
+
+- 样本是美国 2026 年 1–4 月；设备权重大约三分之二移动、三分之一桌面。
+- 没把 Google 手机搜索 App 算进去。App 里零点击可能更高，所以全端真实比例可能还要再往上。
+- 每 1000 次搜索里，能落到开放网页上的点击大概只剩两百多下；同时「搜完再搜一次」的比例在涨。
+
+AI Overviews 是加速器之一。SparkToro 写到，AIO 已覆盖两成以上搜索，出现时 CTR 常被削掉近六成。Ahrefs 用约 30 万词、对照 2023 年 12 月与 2025 年 12 月的 Search Console 聚合数据，估过：有 AIO 时，排名第一的自然 CTR 大约比「若无 AIO」的推算值低 58%。Seer Interactive 跟踪信息类查询到 2025 年 9 月，有 AIO 的自然 CTR 相对基线大约掉了六成。Pew Research 看 2025 年 3 月美国用户真实浏览：有 AI 摘要时，点传统蓝链的比例约 8%，没有摘要时约 15%；点摘要里来源链接的更少，大约 1%；有摘要时直接结束浏览会话的比例也更高。
+
+这些研究口径不完全一样（国家、设备、是否含 App、关键词样本），数字会抖。方向一致：信息类搜索越来越常停在 Google 页上。
+
+## 还要不要做 SEO
+
+要。停 SEO，页面进不了索引，连被摘要、被引用、被品牌词搜到都谈不上。
+
+Rand Fishkin 在 SparkToro 文里说得很直：别指望「把 SEO 做得更猛」就能把零点击扳回来；SEO 仍重要，只是换不来过去那种量级的站外点击。他还点了几类仍吃点击的场景：品牌搜索、本地业务、高意图交易/战术查询。
+
+可以按意图粗分：
+
+| 意图类型 | 零点击压力 | SEO 还干什么 |
+| --- | --- | --- |
+| 信息问答（什么是、怎么做、对比） | 高；AIO / 摘要直接答完 | 保证收录与权威；页面事实写准，避免答案里把你说错 |
+| 品牌 / 导航 | 相对低；人本来就要找你 | 官网、文档、定价页干净可点；品牌 SERP 别被第三方抢 |
+| 本地服务 | 中等；地图包常截流 | GBP、本地落地页、评价与 NAP 一致 |
+| 交易 / 比价 / 下单前 | 相对低 | 产品页、FAQ、比较表、转化路径照常优化 |
+
+KPI 也要改口径。只盯「自然会话同比」会误判。建议并行看三组：
+
+1. **还会点进来的量**：品牌词、交易词、核心落地页的点击与转化。
+2. **可见度**：重点词是否仍在索引、排名是否塌；有没有突然被 AIO 盖住。
+3. **答案侧露出**（轻量）：重点客户问题在 Google 出 AIO 时，有没有提到你或链到你。细做答案块、ChatGPT/Perplexity 引用清单，见 <NoteLink slug="what-is-aeo-vs-search-ranking">AEO 是什么？和搜索排名还差在哪一步</NoteLink>，这篇不展开。
+
+零点击涨，等于答案在结果页就结束的场景变多了。网站仍是抓取源、证据源、转化承接面。
+
+## 怎么用：一周能改的三件事
+
+**1. 把词表按意图切开**
+从 Search Console 拉 90 天查询。标成信息 / 品牌 / 本地 / 交易。信息类预期点击率下调，别用旧 CTR 基线骂内容团队。品牌和交易词掉了，优先查技术收录、页面可用性和竞品抢位。
+
+**2. 验收指标换一套看板**
+至少四列：品牌词点击、交易词转化、核心 URL 索引状态、10–20 个客户原话问题在 Google 上是否出 AIO。流量总盘可以留着，别再当唯一奖金指标。
+
+**3. 信息页改「先给结论」**
+信息类页在 H1 下用两三句写清定义或步骤，数据标时间与出处。人扫得快，摘要和模型也少抄错。团队若用 Agent 批量改文，把「小节开头先写短结论」写进规则，见 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。素材和账号别散落在个人聊天里，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。
+
+做完这三步，你至少能分清：哪些点击本来就会少，哪些才是真的丢份额。
+
+## 零点击搜索：常见问题
+
+### 零点击搜索是什么意思？
+
+用户完成一次搜索后，没有点到结果页以外的任何链接（含广告和 Google 自有产品）。答案在 SERP 上就看完了。SparkToro/Similarweb 统计的是美国浏览器端面板；手机 App 未计入。
+
+### 零点击变多了，是不是 SEO 没意义了？
+
+不是。SEO 管收录、权威和排名，也影响品牌词与交易词能不能被找到。变的是信息类查询的点击预期。停掉 SEO，连「还在答案里露脸、品牌搜索还能进站」都难保住。
+
+### AI Overviews 和零点击是什么关系？
+
+AI Overviews 是零点击的加速器之一，不是唯一原因。精选摘要、知识面板、本地包早就在分流。多份研究显示：有 AIO 时，自然结果 CTR 常明显低于无 AIO 的同类词；用户更少点蓝链，也很少点摘要里的来源。SparkToro 提到 AIO 已覆盖两成以上搜索；Ahrefs、Seer、Pew 从 CTR 与真实点击行为两侧印证了下滑。应对上，先把意图与 KPI 切开，再决定哪些页拼点击、哪些页拼可见度与答案露出。
+
+## 来源
+
+1. [SparkToro / Rand Fishkin，《In 2026, Less than One Third of Google Searches Still Send a Click》](https://sparktoro.com/blog/in-2026-less-than-one-third-of-google-searches-still-send-a-click/)
+2. [Search Engine Land 报道同组数据](https://searchengineland.com/google-zero-click-searches-2026-study-479717)
+3. [Search Engine Journal 同组解读](https://www.searchenginejournal.com/google-search-sends-23-of-queries-to-the-open-web/578724/)
+4. [Ahrefs，《Update: AI Overviews Reduce Clicks by 58%》](https://ahrefs.com/blog/ai-overviews-reduce-clicks-update/)
+5. [Seer Interactive，《AIO Impact on Google CTR: September 2025 Update》](https://www.seerinteractive.com/insights/aio-impact-on-google-ctr-september-2025-update)
+6. [Pew Research Center，《Google users are less likely to click on links when an AI summary appears in the results》](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)
