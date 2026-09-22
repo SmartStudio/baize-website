@@ -1,6 +1,6 @@
 ---
 title: llms.txt 怎么写才有用
-description: llms.txt 是站点根目录的 Markdown 索引，用来给 LLM / Agent 指路，不是排名开关。按 llmstxt.org 写清优先链接；GPTBot 等拦/放写在 robots.txt，别混进同一份说明书。Google 搜索不使用 llms.txt。写完用 curl 验 200，并抽测三条链接。
+description: llms.txt 是站点根目录的 Markdown 索引，按 llmstxt.org 2026 年 v2：写清站点做什么、优先读哪些页。有文档、定价、FAQ 的站值得写；名片站可先不做。拦/放爬虫仍写 robots.txt。Google 搜索不使用 llms.txt。写完 curl 验 200，并抽测链接。
 pubDate: 2026-09-22
 category: AI普及
 relatedService: consulting
@@ -12,62 +12,126 @@ coverAlt: llms.txt 与有用索引：根目录 Markdown 索引，指向优先文
 howto:
   name: 半天写好一份有用的 llms.txt
   steps:
-    - name: 先分清两份文件
-      text: llms.txt 只做 Markdown 索引；GPTBot / 搜索爬虫的 Allow-Disallow 只改 robots.txt。
-    - name: 根目录放索引，优先区控量
-      text: 通常放 /llms.txt；优先区最多约 30 条 https 绝对链接，其余进 Optional。
+    - name: 放对位置并定维护人
+      text: 根目录 /llms.txt（或 /docs/llms.txt）；文档负责人主改，发版 checklist 加 URL 变更项。
+    - name: 按 v2 顺序写索引
+      text: H1 → 引用块 → 可选说明 → ## 分区链接；优先区约 10–30 条绝对 URL。
     - name: curl 验通并抽测
-      text: 改完检查 200 与 Content-Type，再点开三条链接确认可达。
+      text: 检查 200 与 Content-Type；抽 2–3 个问题，只凭 llms.txt 看 Agent 能否摸到正确文档。
 ---
 
-llms.txt 有用，靠的是「指路」，不是「冲排名」。按 [llmstxt.org](https://llmstxt.org/) 的约定，它是一份放在站点根目录（或子路径）的 Markdown 索引：先用一两段说明站点做什么，再列出优先阅读的页面链接。Agent 打开站点时，能少绕弯。
-
-它不替代 robots.txt。拦不拦 GPTBot、放不放搜索爬虫，写在 robots.txt。也不要指望靠一份 llms.txt 让 Google 或 ChatGPT「更爱引用你」——Google Search Central 写明：Google 搜索（含其生成式功能）不使用 llms.txt，写了不加分也不减分。ChatGPT / Perplexity 是否引用，仍主要看爬虫是否放行、页面有没有可抽取的事实文本；索引文件最多降低找错页的成本。引用侧细则见 <NoteLink slug="chatgpt-perplexity-cite-your-site">怎么让 ChatGPT / Perplexity 引用你的网站</NoteLink>；答案块底座见 <NoteLink slug="what-is-aeo-vs-search-ranking">AEO 是什么？和搜索排名还差在哪一步</NoteLink>。本篇只把索引文件写对。
+llms.txt 是一份放在网站根目录（或 `/docs/` 这类子路径）的 Markdown 索引。按 [llmstxt.org](https://llmstxt.org/) 2026 年 v2 口径，它告诉 Agent：这个站是干什么的、优先去读哪些页面。有文档、定价、FAQ、产品说明的站点，值得写一份；只有几页名片站、又没人愿意维护链接，可以先不做。它帮的是发现与指路；拦爬虫、放爬虫仍写在 robots.txt。
 
 import noteFig from './media/llms-txt-how-to-write-useful-fig.png'
 
 <Figure src={noteFig} alt="llms.txt 与有用索引：左侧根目录索引文件，右侧精选优先文档" caption="图：llms.txt｜有用索引" width="wide" border />
 
-## 先分清：索引 vs 爬虫门禁
+## 有用写法：字段和链接怎么排
 
-两件事常被写成一本说明书，结果两边都做糊。
+llmstxt.org 规定的顺序很死板，写起来反而省事：
 
-1. **llms.txt**：给模型与 Agent 看的 Markdown 目录。链到产品说明、定价、FAQ、合规页等「优先读」的 URL。
-2. **robots.txt**：告诉爬虫哪些路径可抓。OpenAI 的 GPTBot（训练相关抓取）与 OAI-SearchBot（ChatGPT 搜索露出）规则互相独立；Perplexity 搜索抓取用 PerplexityBot。这些 Allow / Disallow 只写在 robots.txt。
+1. **H1**：站点或产品名（唯一必填项）。
+2. **引用块 `>`**：一两句说明产品做什么、给谁用。
+3. **可选说明段**：没有二级标题的短段落，写解读时要注意的边界（兼容性、版本、别踩的坑）。
+4. **`##` 分区 + 链接列表**：每条 `- [标题](绝对 URL): 短说明`。
 
-混写的典型后果：在 llms.txt 里大段抄爬虫规则，索引变得难读；或以为写了 llms.txt 就等于放行了搜索爬虫。门禁没开，索引再漂亮也进不去。
+链接怎么排，比「有没有这个文件」更重要：
 
-零点击变多以后，索引与答案侧仍要分开验收，见 <NoteLink slug="zero-click-search-still-need-seo">零点击搜索变多了，还要不要做 SEO</NoteLink>。
+| 优先放 | 往后放 / Optional |
+| --- | --- |
+| 产品是什么、怎么开始、定价、核心 FAQ | 全站博客流水账、过期活动页 |
+| 稳定 canonical 文档 / API 参考 | 尚未定稿的草稿 URL |
+| 一句事实说明（功能、受众、适用范围） | 堆关键词、复述整页摘要 |
 
-## 怎么写才算「有用」
+实践里几条够用：
 
-按 llmstxt.org 的常见写法，落地时盯这几条：
+- **绝对 URL**，带 `https://`。相对路径在 Agent 拉文件时常解不出来。
+- **描述控制在约 120 字以内**，写「这份页解决什么问题」，别塞 SEO 词串。
+- **一次收录大约 10–30 条优先链接**。全站 URL 留给 `sitemap.xml`；llms.txt 是策展，不是第二份站点地图。
+- **次要资源进 `## Optional`**。v2 不再规定 Agent 必须跳过它，但约定上仍表示「上下文紧时可以后读」。
+- **有人维护**。页面改址、下线，同步改这一份；否则 Agent 会顺着坏链走。
+- **可选 `/llms-full.txt`**：把链接页正文拼成一份大 Markdown，给明确支持该约定的工具用。体积大、易过期、暴露面更大，多数站点先把索引写对就够。
 
-1. **只输出 Markdown；首行是单个 H1。** 用一两段说明站点是谁、解决什么问题，别写成广告稿。
-2. **链接一律 https 绝对 URL。** 禁止相对路径，避免 Agent 解析错站点。
-3. **优先区控量。** 优先链接大约控制在 30 条以内；次要材料放进 `## Optional`（或规范里的次级分区），别把整站 sitemap 倒进去。
-4. **每条描述短、具体。** 描述控制在约 120 字内：页面是什么、适合回答哪类问题。禁止堆砌关键词，禁止宣称「保证被引用 / 冲排名」。
-5. **爬虫规则不进 llms.txt。** GPTBot、OAI-SearchBot、PerplexityBot 的拦/放，只改 robots.txt。
-6. **改完用 curl 验收。** 确认 `/llms.txt` 返回 200，Content-Type 合理；再抽测三条列出的链接是否可达。
+骨架可以直接抄：
 
-优先链什么：文档首页、核心产品页、定价、联系/支持、安全与合规说明、更新日志。少链营销落地页堆叠、过期博客、需登录才能看的地址。
+```markdown
+# 你的产品名
 
-## 半天三步落地
+> 一句话：做什么、给谁用。
 
-**第一步：起草根目录文件**  
-在站点根放 `llms.txt`。H1 写清站点名与一句话定位。下列 10–20 条当前最该被 Agent 读的页，每条一行链接 + 一句描述。
+维护说明：链接只指向稳定文档与定价；博客进 Optional。
 
-**第二步：把爬虫门禁单独改对**  
-打开 robots.txt。若要拦训练、放搜索，按 OpenAI / Perplexity 文档分别配置 GPTBot 与搜索用爬虫；不要把这些段落粘进 llms.txt。
+## 核心入口
 
-**第三步：发布后抽测**  
-`curl -I https://你的域名/llms.txt` 看状态码。随机打开三条优先链接。若团队有内部 Agent，让它「只根据 llms.txt 回答本站三个常见问题」，看它会不会指到错误页。
+- [快速开始](https://example.com/docs/start/): 安装与第一次调用
+- [定价](https://example.com/pricing/): 套餐、限额、企业选项
+- [FAQ](https://example.com/faq/): 常见购买与接入问题
+
+## 文档
+
+- [API 参考](https://example.com/docs/api/): 鉴权、端点、限流
+
+## Optional
+
+- [更新日志](https://example.com/changelog/): 版本历史
+```
+
+OpenAI、Anthropic、Perplexity 的开发者文档都挂了自己的 llms.txt，形态就是「短索引 + 分区链接」。你要仿的是这种指路方式，不是把 sitemap 整份粘进去。
+
+## 和 robots.txt、GPTBot 怎么分
+
+两份文件职责不同，别合并成一本手册。
+
+| 文件 | 回答的问题 |
+| --- | --- |
+| `robots.txt` | 哪些爬虫可以抓哪些路径（含 GPTBot、OAI-SearchBot、PerplexityBot） |
+| `llms.txt` | 允许被读之后，Agent 优先看哪些页、每页是干什么的 |
+
+llmstxt.org 原文也写了：robots.txt 管可接受的自动化访问；llms.txt 是在 Agent 需要了解站点时，按需提供的导览。Google Search Central 的生成式搜索指南另外说清楚：Google 搜索（含 AI Overviews / AI Mode）不会拿 llms.txt 做特殊处理；你写了既不伤排名，也不帮忙。它仍可能对其他会读这份文件的 Agent / 文档工具有用。想进 ChatGPT / Perplexity 的引用链路，先处理爬虫放行与页面可抽取文本，见 <NoteLink slug="chatgpt-perplexity-cite-your-site">怎么让 ChatGPT / Perplexity 引用你的网站</NoteLink>。GPTBot 细则放在文末 FAQ。
+
+## 怎么用：检查清单
+
+**1. 放哪儿**
+站点根：`https://你的域名/llms.txt`。若只控制文档子站，可用 `/docs/llms.txt`；多份并存时，Agent 应按「路径最具体」那份为准（v2）。
+
+**2. 谁维护**
+文档负责人主改链接与描述；营销 / 产品改定价与落地页时同步知会。发版 checklist 加一项：「本周有无 URL 变更要改 llms.txt」。
+
+**3. 怎么验**
+
+```bash
+curl -sI https://example.com/llms.txt
+# 期望：HTTP 200；Content-Type 为 text/plain 或 Markdown 相关类型
+curl -sL https://example.com/llms.txt | head
+# 期望：首行是 # 站点名，链接为 https 绝对地址且可打开
+```
+
+再抽 2–3 个真实问题，只把 llms.txt 当作起点丢给一个 Agent，看它能不能摸到正确文档页。
+
+**4. 什么时候可以不做**
+- 没有公开文档 / 产品说明值得指路。
+- 团队两个月内改不了坏链。
+- 唯一目标是 Google 排名——Google 搜索忽略这份文件，时间请花在可抓取、有独特信息的页面上（生成式可见度仍建立在常规 SEO 上；零点击变多时 KPI 怎么改，见 <NoteLink slug="zero-click-search-still-need-seo">零点击搜索变多了，还要不要做 SEO</NoteLink>）。
+
+**Agent 护栏（可贴进发布 Agent）**
+
+```text
+写或改 /llms.txt 时：
+1. 只输出 Markdown；首行必须是单个 H1。
+2. 链接必须用 https 绝对 URL；禁止相对路径。
+3. 优先区最多 30 条；其余进 ## Optional。
+4. 每条描述 ≤120 字，禁止堆砌关键词、禁止宣称「保证被引用/冲排名」。
+5. 不把 GPTBot / 爬虫 Allow-Disallow 写进 llms.txt；那些规则只改 robots.txt。
+6. 改完用 curl 检查 200 与 Content-Type，并抽测三条链接。
+```
+
+答案块、引用侧怎么铺，和 AEO 底座相关的部分见 <NoteLink slug="what-is-aeo-vs-search-ranking">AEO 是什么？和搜索排名还差在哪一步</NoteLink>；本篇只把索引文件写对。
 
 ## llms.txt：常见问题
 
 ### llms.txt 是什么？放在哪里？
 
-一份给 LLM / Agent 读的 Markdown 索引，通常放在站点根目录 `/llms.txt`，也可以放在 `/docs/llms.txt` 这类子路径，覆盖该目录下的页面。内容是站点说明加优先链接列表，格式见 llmstxt.org。
+一份给 LLM / Agent 读的 Markdown 索引，通常放在站点根目录 `/llms.txt`，也可以放在 `/docs/llms.txt` 这类子路径覆盖该目录下的页面。内容是站点说明加优先链接列表，格式见 llmstxt.org。
 
 ### 写了 llms.txt，Google 或 ChatGPT 会不会更爱引用我？
 
@@ -79,7 +143,9 @@ import noteFig from './media/llms-txt-how-to-write-useful-fig.png'
 
 ## 来源
 
-1. [llmstxt.org，《The /llms.txt file》](https://llmstxt.org/)
-2. [Google Search Central，《AI features and your website》](https://developers.google.com/search/docs/appearance/ai-features)
-3. [OpenAI Developers，《Overview of OpenAI Crawlers》](https://platform.openai.com/docs/bots)
-4. [Perplexity Docs，《Perplexity Crawlers》](https://docs.perplexity.ai/guides/bots)
+1. [llmstxt.org，《The /llms.txt file, v2》](https://llmstxt.org/)
+2. [llmstxt.org，《Changes》（v2，2026-08）](https://llmstxt.org/changes.md)
+3. [Google Search Central，《Optimizing your website for generative AI features on Google Search》](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+4. [Google Search Central Blog，《A new resource for optimizing for generative AI in Google Search》（2026-05-15）](https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing)
+5. [OpenAI，《Overview of OpenAI Crawlers》](https://platform.openai.com/docs/bots)
+6. [Perplexity Docs，《Perplexity Crawlers》](https://docs.perplexity.ai/docs/resources/perplexity-crawlers)
