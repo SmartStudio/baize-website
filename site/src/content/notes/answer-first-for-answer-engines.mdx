@@ -1,0 +1,111 @@
+---
+title: 内容先给答案，答案引擎才抽得走
+description: 答案引擎常从问答型小标题下的第一段抽可引用句。先给答案：第一句写完整结论（约 40–60 字说清 who/what/when/how/数字），再写依据与例外。H2 写成用户真会问的整句。Google 说生成式搜索仍建在常规 SEO 上；HubSpot 实务把每节开头直答当作可重复写法。
+pubDate: 2026-09-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/answer-first-for-answer-engines-cover.png
+coverAlt: 先给答案：问答型小标题下，第一句是可单独引用的完整结论
+howto:
+  name: 把一页改成先给答案
+  steps:
+    - name: H2 改成整句问句
+      text: 把说明性小标题改成用户会真问的完整问句（含吗/多久/怎么/谁/是否）。
+    - name: 第一句写完整结论
+      text: H2 正下方单独成段，约 40–60 字说清结论与关键条件/数字；步骤与例外全部放后面。
+    - name: 抽测可引用性
+      text: 只保留「H2 + 第一句」喂给会引用网页的助手，看是否几乎原句复述结论。
+---
+
+答案引擎从你的页面抽句子时，优先抓「问题式小标题」正下方那第一段完整结论。先给答案，就是把 who / what / when / how / 数字写进第一句，让这段话可以脱离上下文被引用；后面再补步骤、例外和例子。HubSpot 的 AI Overviews / AEO 实务材料把「每节开头约 40–60 字直答」当成可重复的写法；Google Search Central 则提醒：进 AI Overviews / AI Mode 仍靠可索引、可出摘要的常规 SEO 与对人有用的文本，没有另开一套「专供 AI 的写法」。底座概念见 <NoteLink slug="what-is-aeo-vs-search-ranking">什么是 AEO</NoteLink>；本篇只练「小标题下第一句怎么写」。
+
+import noteFig from './media/answer-first-for-answer-engines-fig.png'
+
+<Figure src={noteFig} alt="先给答案与问答型 H2：左侧问句式小标题，右侧第一句完整可引用答案再展开" caption="图：先给答案｜问答型 H2" width="wide" border />
+
+## 怎么写：问答型 H2 + 第一句完整答案
+
+两步就够用。
+
+**1. H2 写成用户会问的整句**
+
+写成完整问句，贴近搜索框或对话里的原话，不要只堆关键词碎片。
+
+| 碎片式（难对上提问） | 问答型 H2（好对上提问） |
+| --- | --- |
+| 交付周期说明 | 网站改版通常要多久？ |
+| AEO 注意事项 | 什么是先给答案？怎么写才抽得走？ |
+| 报价相关 | 小团队做内容改版，第一周先改哪三类页？ |
+
+中文里「吗 / 多久 / 怎么 / 谁负责 / 要不要」这类问法，比「XX 优化技巧」更容易和真实提问对齐。一页里挑最核心的 3–7 个用户真问过的问题做成 H2，比堆十几条空泛小标题更有效。
+
+**2. H2 正下方第一句 = 完整答案**
+
+第一句单独拿出来，也要能回答这个 H2。约 40–60 字内说清结论；需要条件就写条件，需要数字就写数字。然后才用列表、表格或短段展开。
+
+改前（清嗓子，答案埋后头）：
+
+> ## 网站改版通常要多久？
+>
+> 在当今快速变化的数字环境中，改版周期因团队而异。一般来说，很多因素会影响排期……（读到第三段才出现「六到十周」。）
+
+改后（第一句就是答案）：
+
+> ## 网站改版通常要多久？
+>
+> 中小站点信息架构不大改时，从定范围到上线常见是 6–10 周；若含设计重做与数据迁移，按 12–16 周排更稳。下面按「定范围、设计、开发、验收」拆周数，并标出最常拖期的两处。
+
+可抽取的第一句，通常带这些东西：
+
+- **具体名词**：产品名、角色、场景，少用「这方面」「相关事宜」。
+- **数字或边界**：时长、人数、金额区间、适用/不适用条件。
+- **一句一主张**：第一句只回答这一个 H2；次要点放到后面列表。
+- **别用开场白**：「随着……」「众所周知……」「在开始之前……」会把可引用句往后推。
+
+展开部分用短列表或表格补「怎么做 / 例外 / 依据」即可。爬虫放行与站点级入口（如 llms.txt）另有专篇，见 <NoteLink slug="chatgpt-perplexity-cite-your-site">怎么让 ChatGPT / Perplexity 引用你的网站</NoteLink>、<NoteLink slug="llms-txt-how-to-write-useful">llms.txt 怎么写才有用</NoteLink>；零点击变多时 KPI 怎么看，见 <NoteLink slug="zero-click-search-still-need-seo">零点击搜索变多了，还要不要做 SEO</NoteLink>。本篇只要求：问答型 H2 下，第一句先交卷。
+
+## 怎么用：检查清单 / Agent 护栏
+
+改一页或发一篇前，过这四条：
+
+1. **每个说明性 H2** 能否念成用户原话问句？念不利索就改成整句问句。
+2. **H2 后第一句** 剪到别处，是否仍完整回答该问？缺主语、缺数字、缺条件就重写第一句。
+3. **第一句之后** 才放步骤、例外、来源；不要把 CTA、品牌口号插在答案句前面。
+4. **抽测**：把 H2 + 第一句喂给一个会引用网页的助手，看它是否几乎原句复述结论。
+
+**Agent 护栏（可贴进写作 / 发布 Agent）**
+
+```text
+写或改正文小节时：
+1. 说明性 H2 必须是完整问句（含吗/怎么/多久/谁/是否等），禁止纯关键词碎片。
+2. H2 后第一句必须单独成段，且单独可读即可回答该 H2；目标约 40–60 字，含具体名词与数字/条件。
+3. 禁止第一句使用：在当今、众所周知、随着……、在开始之前、值得注意的是。
+4. 第一句只写一个主张；列表与例外全部放在第一句之后。
+5. 本任务不输出 FAQPage / JSON-LD 教程，不改写 robots.txt / llms.txt。
+6. 自检：删掉第一句之后的全部文字，剩余「H2 + 第一句」仍应能当一句完整答复。
+```
+
+## 先给答案：常见问题
+
+### 什么是「先给答案」？
+
+先给答案（answer-first）是一种段落写法：在问答型小标题下，用第一句给出可单独引用的完整结论（常见约 40–60 字说清结论与关键条件），再写展开内容。它服务的是人的扫读，也方便答案引擎按「问题 → 短答复」抽取句子。
+
+### 先给答案能保证进 AI Overviews 吗？
+
+不能保证。Google Search Central 写明：出现在 AI Overviews / AI Mode 没有额外专用门槛，页面仍需可抓取、可索引、可出摘要，并提供对人有用的内容；也没有要求为 Google 搜索单独写 AI 文件或特殊 markup。先给答案提高的是「被抽中时句子是否干净」，不替代收录与内容质量。
+
+### 什么是问答型 H2？怎么写？
+
+问答型 H2 是把小节标题写成用户会真实输入的完整问句，例如「网站改版通常要多久？」（对照关键词碎片「改版周期说明」）。写法要点：一句一问、用语贴近客户原话、问法与下文第一句答案严格对齐；同一页用若干条问答型 H2 覆盖不同微问题，每条下面各自先给答案再展开。
+
+## 来源
+
+1. [Google Search Central，《Optimizing your website for generative AI features on Google Search》](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+2. [Google Search Central，《AI features and your website》](https://developers.google.com/search/docs/appearance/ai-features)
+3. [Google Search Central Blog，《A new resource for optimizing for generative AI in Google Search》（2026-05-15）](https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing)
+4. [HubSpot，《How to optimize for AI overviews (AIOs): A complete 2026 playbook》](https://blog.hubspot.com/marketing/optimize-for-ai-overviews)
+5. [HubSpot，《FAQs for AEO: How to structure answers that rank in answer engines》](https://blog.hubspot.com/marketing/faqs-for-aeo)
