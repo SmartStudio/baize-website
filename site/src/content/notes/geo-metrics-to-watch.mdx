@@ -1,0 +1,108 @@
+---
+title: GEO 指标要盯哪些
+description: GEO 指标分三层记：可见度（固定提示词里被提到的比例和份额）、引用率（答案挂你链接的比例、被引的是哪一页）、推荐质量（描述对不对、情绪、推荐给谁）。结果层看 GA4 的 AI Assistant 渠道和 Search Console 生成式 AI 报告。AI 答案每次都变，要重复抽样看出现率，不盯名次。
+pubDate: 2026-09-25
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/geo-metrics-to-watch-cover.png
+coverAlt: GEO 指标分三层：被提到、挂了链接、推荐对了
+howto:
+  name: 按周量 GEO 指标
+  steps:
+    - name: 定提示词集
+      text: 从销售和客服记录里抄买家真问的问题，分品类、场景、对比、品牌四类；定了就别天天改。
+    - name: 每条重复跑并记环境
+      text: 每条提示词跑几次算出现率；记录产品、是否联网、地区语言、日期、原文和来源链接。
+    - name: 按周看趋势并对照结果
+      text: 看四周趋势；GA4 建自定义渠道组把 perplexity.ai 排在 Referral 前，Search Console 生成式 AI 报告看展示。
+---
+
+GEO 指标分三层记。第一层是可见度：一组固定提示词里，AI 答案提到你的比例。第二层是引用率：答案里挂了你网站链接的比例，挂的是哪一页。第三层是推荐质量：对你的描述对不对，语气怎样，有没有推荐给对的客户。三层之外再看结果：GA4 里从 AI 助手来的会话和转化，Search Console 里你的页面在 AI Overviews、AI Mode 里的展示次数。
+
+这套数要和传统排名、点击分开记。原因有两个。
+
+第一，AI 答案没有稳定的名次。SparkToro 和 Gumshoe 请 600 名志愿者，把 12 个提示词在 ChatGPT、Claude、Google AI 里跑了 2,961 次。ChatGPT 或 Google AI 两次给出同一份品牌清单的概率不到 1%，顺序也一样的概率大约千分之一。名次抖成这样，看单次截图没意义。同一份数据里，出现率反倒比较稳：Google AI 被问电商数字营销顾问时，Smartsites 在 95 次回答里出现了 85 次。
+
+第二，搜索排第几，换算不成答案里的分量。GEO 论文（Aggarwal 等，KDD 2024）指出：平均排名适合一列蓝链，放到生成式答案里不适用。他们改用「答案里引用这个来源的句子占多少字、位置靠不靠前」来量可见度。AEO 和排名的差别见 <NoteLink slug="what-is-aeo-vs-search-ranking">AEO 是什么？和搜索排名还差在哪一步</NoteLink>，这篇只讲怎么量。
+
+import noteFig from './media/geo-metrics-to-watch-fig.png'
+
+<Figure src={noteFig} alt="GEO 指标与 citation tracking：左边三层往下走，被提到、挂了链接、推荐对了；右边 GA4 AI 引荐会话到转化" caption="图：GEO 指标｜citation tracking" width="wide" border />
+
+## 怎么分层：一张指标表
+
+| 层级 | 指标 | 怎么量 | 常见误读 |
+| --- | --- | --- | --- |
+| 可见度 | 提及率 = 提到你的回答数 ÷ 总回答数 | 固定提示词集，每条重复跑几次，数带你品牌名的回答 | 一个回答提到三次也只算一次；提到了不等于推荐了 |
+| 可见度 | 份额（share of voice）= 你的提及 ÷ 你和对手的提及总和 | 对手名单先定死，在同一批回答里一起数 | 这是相对数，对手名单一改，数字就跳 |
+| 引用率 | 引用率 = 挂你域名链接的回答数 ÷ 总回答数 | 看答案里的来源链接，记域名 | 被提到不等于被引用；AI 读过你的页面也可能不引用 |
+| 引用率 | 被引页面 | 记下被引的具体 URL | 被引的是一篇旧博客，还是你想推的产品页，差别很大 |
+| 推荐质量 | 描述准确 | 人工核对产品名、适用对象、能力边界、价格档有没有写错 | 语气正面，内容也可能是错的 |
+| 推荐质量 | 情绪和推荐场景 | 标正面 / 中性 / 负面；看推荐给的是不是你真服务的客户 | 推给了不合适的客户，来了也不成交 |
+| 结果 | AI 引荐会话、关键事件 | GA4 AI Assistant 渠道 + 自建渠道组 | 渠道靠来源（referrer）识别，没带来源的访问进不来，只能当下限看 |
+| 结果 | AI Overviews / AI Mode 展示 | Search Console 生成式 AI 报告 | 报告给的是展示次数；展示多不代表有人点 |
+
+工具的口径也不一样，跨工具的数字别直接比。Semrush 的 Mentions 是「回答里带上品牌的提示词数」，Citations 是「引用你域名的回答数」，Share of Voice 是你在对手里的提及占比。Ahrefs Brand Radar 一个回答里提到多次只算 1 次；它还把「读到了但没引用」（Found in）和「引用了」分开记；它的份额按搜索量加权，自己也提醒对手设置一改数字会变很多。用哪家都行，先把自己的口径写下来。
+
+## 怎么量：固定提示词、按周抽样
+
+1. **定提示词集。** 从销售和客服记录里抄买家真问的问题，分四类：品类（「做 X 用什么工具」）、场景（「我是 Y 类公司，该选什么」）、对比（「A 和 B 怎么选」）、品牌（「某某公司靠谱吗」）。先定几十条，定了就别天天改。
+2. **每条重复跑。** 同一条提示词一次只抽一个答案，会被随机性骗。每条跑几次，算出现率。
+3. **记环境。** 每条记录写上：产品（ChatGPT、Perplexity、Google AI Mode 等）、是否联网搜索、地区和语言、日期、有没有登录。原文和来源链接一起存。
+4. **按周看。** 看四周趋势，不看单日涨跌。换了提示词集或对手名单，要在表里标出来，前后不能直接比。
+5. **GA4 分组。** Google 的定义里，AI Assistant 渠道收的是来自 ChatGPT、Gemini、Deepseek、Copilot、Grok 这类来源的访问，按一份 AI 助手来源名单识别，不含 Google 的 AI Overviews 和 AI Mode。名单里没点名 Perplexity，所以建一个自定义渠道组，把 perplexity.ai 等来源写进规则。GA4 按顺序把流量放进第一个匹配的渠道，这个渠道要排在 Referral 前面。
+6. **Search Console 对照。** 生成式 AI 报告统计你的链接在 AI Overviews、AI Mode 里被展示的次数，可按页面、国家、设备、日期看；2026 年 8 月 31 日起所有网站都能用。Search Labs 实验里的数据不算在内。AI Overviews、AI Mode 带来的点击不进 GA4 的 AI Assistant 渠道。
+
+转化只看 GA4 里已有的关键事件，这篇不展开归因。页面怎么写才更容易被引，见 <NoteLink slug="chatgpt-perplexity-cite-your-site">怎么让 ChatGPT / Perplexity 引用你的网站</NoteLink>。
+
+## 怎么用：检查清单 / Agent 护栏
+
+每周出数前过一遍：
+
+1. 提示词集和上周一样吗？改了有没有标注？
+2. 提及率、份额、引用率是不是分三列记的？
+3. 被引页面有没有记到具体 URL？
+4. 抽查的回答里，产品名、适用对象、价格档有没有被写错？错的有没有记下来？
+5. GA4 里 AI 渠道排在 Referral 前面吗？Perplexity 有没有进规则？
+
+**Agent 护栏（可贴进监测 / 周报 Agent）**
+
+```text
+做 GEO 指标周报时：
+1. 只用固定提示词集；提示词、对手名单有改动，必须在报告开头写明。
+2. 提及、引用、推荐质量分开记，不准合成一个「AI 可见度总分」。
+3. 每条回答记录：产品、是否联网、地区语言、日期、原文、全部来源 URL。
+4. 提到品牌 ≠ 引用；读到但没挂链接的页面，不算引用。
+5. 描述有错（产品名、适用对象、价格档、能力边界）单列成清单，附原文。
+6. 不写「第几名」；只报出现次数 / 总次数。
+7. GA4 数字标注「仅含带来源的访问，为下限」；Search Console 生成式 AI 报告只报展示。
+8. 数字只用本周实测或已核实来源，禁止估算或编造行业均值。
+```
+
+## GEO 指标：常见问题
+
+### GEO 指标和 SEO 指标能放一张表吗？
+
+能放一张表，但要分列。SEO 看排名、点击、点击率；GEO 看提及率、引用率、推荐质量。别用排名去推算 AI 引用。GEO 论文专门说过，搜索的平均排名不适用于生成式答案。两边一起涨跌时再对照看，不要互相换算。
+
+### 多久看一次？数字掉了先查什么？
+
+按周看，看四周趋势。数字掉了，先查三件事：提示词集或对手名单改没改；模型或产品有没有更新；掉的是哪一层。提及率没变、引用率掉了，先看被引页面有没有换；提及率掉了，先看是哪几类提示词不再提你。
+
+### 什么是 citation tracking？怎么做？
+
+citation tracking 就是记录 AI 答案里挂了哪些来源链接，看你的页面有没有被引、被引的是哪一页、挂在哪句话后面。做法：每条回答把全部来源 URL 抄进表里，标出哪些是你的域名、哪一页，再记下它支撑的那句话。「读到了但没引用」的页面单独放一列，Ahrefs 就是这样把 Found in 和 citation 分开的。引用你对手但没引用你的第三方网站也记下来，Semrush 把它叫 Source Opportunities。
+
+## 来源
+
+1. [Google Search Console 帮助，《Generative AI performance report (Search)》](https://support.google.com/webmasters/answer/16984139?hl=en)
+2. [Google Search Central Blog，《Introducing Search Generative AI performance reports in Search Console》（2026-06-03，8 月 31 日补注全量上线）](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports)
+3. [Google Analytics 帮助，《Default channel group》（AI Assistant 渠道定义）](https://support.google.com/analytics/answer/9756891?hl=en)
+4. [Google Analytics 帮助，《Custom channel groups》](https://support.google.com/analytics/answer/13051316?hl=en)
+5. [Semrush 知识库，《AI Visibility Metrics》](https://www.semrush.com/kb/1594-ai-seo-metrics)
+6. [Ahrefs 帮助中心，《AI Visibility Metrics》（Brand Radar）](https://help.ahrefs.com/en/articles/15501968-ai-visibility-metrics)
+7. [SparkToro，《NEW Research: AIs are highly inconsistent when recommending brands or products》（Rand Fishkin，2026-01-28）](https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/)
+8. [Aggarwal 等，《GEO: Generative Engine Optimization》（arXiv 2311.09735，KDD 2024）](https://arxiv.org/abs/2311.09735)
