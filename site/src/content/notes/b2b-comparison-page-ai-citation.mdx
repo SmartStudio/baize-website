@@ -1,0 +1,109 @@
+---
+title: B2B 对比页怎么写，AI 才肯引用
+description: B2B 对比页（X vs Y）按决策轴做成可扫对照表，写清公平取舍与统一产品名，AI 才更容易在「谁和谁比」里引用你。Siege Media 对 116 个 B2B GA4 站、约 1112 个交易型页：versus 页 Spearman 约 0.65，约是次优模板两倍；相关不等于因果，内容大约解释 28% 方差。
+pubDate: 2026-09-24
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/b2b-comparison-page-ai-citation-cover.png
+coverAlt: 对比页：两个具名产品按决策轴并排对照，写清公平取舍
+howto:
+  name: 写一页可被 AI 引用的 B2B 对比页
+  steps:
+    - name: 页型优先 X vs Y
+      text: 短名单已缩到两家，或销售常被问「和某某比」时写 X vs Y；双方都具名，再补 alternatives / best。
+    - name: 先给选型结论再给对照表
+      text: H1 下两三句写清谁更适合哪类团队 / 预算 / 场景；表格列是产品，行是购买决策轴。
+    - name: 公平取舍与具名实体
+      text: 每一侧至少写一条什么时候别选；产品名、公司名在标题、表头、正文、FAQ 保持同一写法。
+---
+
+Siege Media 抽样 116 个 B2B GA4 站点、约 1112 个交易型对比类页面，看相对 90 天（截止约 2026-05-24）来自 ChatGPT、Perplexity、Claude、Gemini、Copilot、Meta AI 的引荐：versus（X vs Y）页的 Spearman 相关约 0.65，大约是次优交易型模板的两倍。这里的「对比页」，指把两个（或少数几个）具名产品按购买决策轴做成可扫对照表、写清适用场景与公平取舍的页面——形状对准「A 和 B 怎么选」，模型才有整页可抽。相关不等于因果；内容大约只解释 AI 流量方差的 28%。底座概念见 <NoteLink slug="what-is-aeo-vs-search-ranking">什么是 AEO</NoteLink>；本篇只练对比页怎么写成可被引用的结构。
+
+import noteFig from './media/b2b-comparison-page-ai-citation-fig.png'
+
+<Figure src={noteFig} alt="对比页与 Knowledge Graph：左侧 X vs Y 对照表与公平取舍，右侧产品与公司名在全文和表格里保持同一实体写法" caption="图：对比页｜Knowledge Graph" width="wide" border />
+
+## 怎么写：可被引用的对比页结构
+
+先定页型，再定表轴，再写取舍。
+
+**1. 页型：优先 X vs Y，再补 alternatives / best**
+
+买方在对话里常直接问「A 和 B 怎么选」。Siege 的解释是结构原因：模型回答对比提问时，倾向引用已经对准「X vs Y」意图的页面；alternatives、best-of 更容易和 G2、Capterra 等第三方榜单抢同一引用位。落地顺序建议：
+
+| 页型 | 什么时候写 | 注意 |
+| --- | --- | --- |
+| X vs Y（对比页） | 短名单已缩到两家，或销售常被问「和某某比」 | 双方都具名；表轴要能支撑选型 |
+| Y alternatives | 对方已锁定竞品，想找替代 | 别写成伪装榜单；每条替代说清差异 |
+| Best / 榜单 | 品类教育、早期发现 | AI 引荐相关最弱但仍为正；别指望它扛主引用 |
+
+真三强品类、买方本来就三家一起比时，可加 A vs B vs C（Siege 另有 triple-comparison 写法）；它不替代双向 vs，也不要用「把所有两两排列塞进一页」当借口。
+
+**2. 开头先给选型结论，再给对照表**
+
+H1 下用两三句写清：谁更适合哪类团队 / 预算 / 场景。别用「各有千秋」开场。表格紧跟其后，列是产品，行是决策轴。决策轴举例如下（按品类改，不要堆二十行装饰参数）：
+
+- 适用团队规模或部署方式
+- 核心能力边界（能做什么、不能做什么）
+- 集成与数据进出
+- 实施 / 上手成本
+- 价格档位或计费方式（能公开就公开）
+- 合规 / 安全相关门槛（若买方真问）
+
+表内用短句和可核对的名词，少用形容词堆砌。单元格写「支持 SSO（SAML）」比写「企业级安全」好抽。
+
+**3. 公平取舍 + 具名实体**
+
+每一侧至少写一条「什么时候别选我们 / 别选对方」。模型更愿意引用看起来像对照材料、而不是软广的页面。产品名、公司名全文统一：同一产品不要在标题写缩写、表头写全称、正文又换营销别名。实体写法一致，系统才分得清「表里的两列分别是谁」——这点放到 FAQ 第三条展开。
+
+**4. 展开用决策轴，不用故事腔**
+
+每个重要轴用一个小标题：写差异、写适用条件、写例外。需要数字就写数字或区间。页面底部可加短 FAQ（例如「迁移要多久」「数据能不能导出」），仍保持对照语气。爬虫放行、llms.txt、先给答案的句级写法另有专篇，见 <NoteLink slug="chatgpt-perplexity-cite-your-site">怎么让 ChatGPT / Perplexity 引用你的网站</NoteLink>、<NoteLink slug="llms-txt-how-to-write-useful">llms.txt 怎么写才有用</NoteLink>、<NoteLink slug="answer-first-for-answer-engines">内容先给答案，答案引擎才抽得走</NoteLink>；本篇只要求：对比页对准 X vs Y，表轴可扫，取舍公平，实体名稳定。
+
+## 怎么用：清单 / Agent 护栏
+
+发一页对比页前，过这五条：
+
+1. **URL / H1** 是否清楚写成「A vs B」或中文等价「A 对比 B」，而不是模糊的「方案比较」。
+2. **H1 下** 是否先有一句选型结论（谁适合什么），再出现对照表。
+3. **表轴** 是否是买方决策轴（规模、能力边界、集成、实施、价格档），而不是内部功能清单搬家。
+4. **两侧** 是否都有至少一条真实短板或「不适合」条件。
+5. **产品 / 公司名** 全文与表格是否同一写法；抽测时把表头+一行喂给会引用网页的助手，看它是否仍能说清两列分别是谁。
+
+体量上，Siege 的分桶只是相关信号：从 1–5 页到 6–20 页，中位 AI 流量大约高 350%；21+ 相对 1–5 大约高 900%。先保证页写得可引用，再谈加页；不要为空刷数量而造假对比。
+
+**Agent 护栏（可贴进写作 / 发布 Agent）**
+
+```text
+写或改 B2B 对比页时：
+1. 页型默认 X vs Y；H1/URL 必须同时出现双方产品（或公司）正式名。
+2. H1 后先写选型结论（谁适合什么），再放对照表；禁止「各有千秋」「全面对比如下」开场。
+3. 表行必须是购买决策轴；单元格写可核对事实，禁止空形容词。
+4. 每侧至少一条真实「不适合 / 短板」；禁止只贬对方、只夸己方。
+5. 全文产品名/公司名保持同一实体写法（含表头、正文、FAQ）；禁止一会缩写一会营销别名。
+6. 本任务不输出 FAQPage/JSON-LD 教程，不改 robots.txt/llms.txt，不写 GEO 指标看板。
+7. 数字只允许使用已核实来源；禁止编造引用率或 BrightEdge 类百分比。
+```
+
+## 对比页：常见问题
+
+### 什么是 B2B「对比页」？为什么 AI 更常引用它？
+
+B2B 对比页通常指「X vs Y」结构：把两个具名产品按购买决策轴做成对照表，并写清适用场景与取舍。Siege Media 在 116 个 B2B GA4 站点上发现，versus 页与 AI 搜索引荐的 Spearman 相关约 0.65，大约是次优交易型模板的两倍；一个常见解释是，模型回答「A 和 B 怎么选」时，更愿意点名已经对准该意图的页面。
+
+### 对比页、alternatives、best 榜单怎么排优先级？
+
+若目标偏 AI 引荐与「两家怎么选」，先做 versus / 对比页，再补 alternatives，best 榜单放后面。Siege 的数据里三者相关都为正，但 versus 最强；alternatives / best 更容易和 G2、Capterra 等第三方内容抢引用位。真三强市场再考虑 A vs B vs C，且不要用它替代双向 vs。
+
+### Knowledge Graph 和对比页有什么关系？要做谷歌知识面板吗？
+
+这里说的不是「怎么做 Google Knowledge Graph 面板」。它指：把产品、公司写成稳定、一致的实体——同一产品在标题、表头、正文、FAQ 里用同一正式名，少用临时营销别名和混乱缩写。对比表被引用时，系统要能分辨「列 A / 列 B 分别是谁」；实体命名一致，有助于 AI 与搜索系统在引用对照内容时对齐身份。Google Search Central 的 Organization 结构化数据说明里，也把组织消歧列为一项目的；本篇只要求正文与表格里的实体名一致，不展开 Schema / 面板申请教程。
+
+## 来源
+
+1. [Siege Media，《The Content That Predicts B2B AI Traffic Most: Versus Pages》（Ross Hudgens，更新 2026-06-01）](https://www.siegemedia.com/research/versus-pages)
+2. [Google Search Central，《Organization structured data》（组织消歧 / sameAs 等）](https://developers.google.com/search/docs/appearance/structured-data/organization)
+3. [Siege Media，《Triple-Comparison Pages: The GEO Play Two-Way Pages Miss》](https://www.siegemedia.com/strategy/triple-comparison-pages)
