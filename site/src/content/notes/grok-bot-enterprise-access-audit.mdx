@@ -1,0 +1,106 @@
+---
+title: 企业开通 Grok Bot，权限和审计要先定什么
+description: 企业开通 Grok Bot 前，先定谁能用、审批怎么锁、审计能看到什么。Teams 默认全员可用，没有组织级总开关；Enterprise 由管理员启用，可按组放行。Bot 以成员身份行动，没有独立身份。Audit Log 记控制面变更；Action Recording 记工具动作，默认关闭，不出现在 Audit Log 页。
+pubDate: 2026-09-29
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-enterprise-access-audit-cover.png
+coverAlt: 企业控制台放行 Grok Bot：按组启用、强制审批、网络策略，旁边两条审计记录线
+howto:
+  name: 开通 Grok Bot 前定好权限和审计
+  steps:
+    - name: 定谁能用
+      text: 全员还是指定组（Enterprise 用 Manage Group Access）；先离开 Privacy Mode (Legacy)。
+    - name: 锁审批和网络
+      text: 打开 Enforce Auto-review，加团队 Ask first 规则覆盖外发邮件、付款、生产部署、接受法律条款；配 Network Controls；Execution on Local Computer 设为 Never allow。
+    - name: 定审计口径
+      text: Audit Log 看控制面变更，可按 grok_bot 筛选接 SIEM；工具动作要另开 Action Recording，走 OpenTelemetry 导出。
+---
+
+Grok Bot 企业权限放给同事之前，IT 和安全管理员先定两件事：谁能用，出了事能查到什么。开关一天就能打开，权限边界和审计口径没定，后面很难补。
+
+本文只讲在 Cursor 企业控制台点 Enable 之前要定的设置。Grok Bot 和普通聊天工具差在哪，见 <NoteLink slug="grok-bot-vs-chatgpt-cloud-teammate">云端同事 vs 再开一个聊天框：Grok Bot 和 ChatGPT 的区别</NoteLink>。
+
+import noteFig from './media/grok-bot-enterprise-access-audit-fig.png'
+
+<Figure src={noteFig} alt="Grok Bot 企业 权限与账号 审计：左边启用、按组放行、强制审批、网络策略；右边 Audit Log 记控制面，Action Recording 记工具动作" caption="图：Grok Bot 企业 权限｜账号 审计" width="wide" border />
+
+## 开通前先定六项
+
+按官方 Teams / Enterprise 文档和安全基线：
+
+1. **谁能用**：全员，还是指定组（Enterprise 用 Manage Group Access）。
+2. **隐私模式**：先离开 Privacy Mode (Legacy)，它会整站挡住 Grok Bot。
+3. **审批**：打开 Enforce Auto-review，再加团队 Ask first 规则，覆盖外发邮件、付款、生产部署、接受法律条款。
+4. **网络**：配 Network Controls。没配策略时默认全放行。
+5. **本机执行**：Execution on Local Computer 设为 Never allow，除非 Bot 确实要动成员本机。
+6. **审计口径**：分清 Audit Log（控制面）和 Action Recording（工具动作）。后者默认关，也不进 Audit Log 页。
+
+连接器也要先在 Teams Marketplace 里过一遍。放行的连接器，成员名下每个 Bot 都能用。账号散落、入口不统一带来的组织风险，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。
+
+## Teams 和 Enterprise 差在哪
+
+| 项 | Teams | Enterprise |
+| --- | --- | --- |
+| 默认是否可用 | 全员默认开 | 管理员在仪表盘启用 |
+| 组织级总开关 | 无 | 有；关掉会挡住成员，不删电脑 |
+| 按组放行 | 无 | Manage Group Access |
+| Network Controls / Enforce Auto-review / Action Recording / Audit Log | 自助 Teams 没有 | 有 |
+
+Teams 上，成员一进团队就能用 Grok Bot，管理员没有全公司先关掉的开关。要组织级启用、分组、网络策略和强制审批，得用 Enterprise。
+
+## Bot 没有独立身份
+
+官方安全文档写明：Bot 没有自己的身份或凭据，以登录成员的身份行动，权限不会超过这名成员，每个动作都能归到具体的人。连接器的 OAuth token 留在 Cursor 后端，Bot 调工具时拿不到 token 明文。
+
+登录、二次验证、支付确认会交给成员自己操作。收回权限时，从团队移除成员或关掉他所在组的 Grok Bot，再在身份提供方撤销会话。只终止电脑不等于收回权限。
+
+读的权限可以放宽，写的动作要先批，同样的做法见 <NoteLink slug="agent-read-mail-vs-calendar-send">Agent 读邮件可以，改日历发信要先批什么</NoteLink>。
+
+## 审批和网络：官方基线
+
+安全要求高的部署，官方建议管理员至少做这些：
+
+- 配置 Network Controls。
+- 启用前审一遍连接器策略。
+- 打开 Enforce Auto-review，再配团队 Auto-review 规则。
+- 没有本机需求时，Execution on Local Computer 设为 Never allow。
+- 不需要委派编码时，关掉 Cloud Agent。
+- 对外公开模板分享保持关闭。
+- 团队 Ask first 规则覆盖生产部署、外发邮件、付款、接受法律条款。
+
+成员这边：凭据不贴进普通聊天；涉及账号、钱、共享资源时优先选 Allow once；任务结束后退出不再需要的网站登录。
+
+同一用户名下多个 Bot 共用一台云电脑，文件和登录态怎么隔离，明天单独写。
+
+## 审计两条线：控制面和工具动作
+
+**Audit Log（Enterprise）**
+记管理员、安全、认证事件，以及 Grok Bot 的控制面变更：启用和关闭（`sand_onboarding`）、创建 Bot（`grok_bot_created`）、成员访问变更（`grok_bot_access_changed`）、MCP 认证（`mcp_authentication`）、Routine 变更（`grok_bot_routine`）等。仪表盘可以按应用筛选；流式事件带 `application_type`，Grok Bot 为 `grok_bot`，可以接进 SIEM。
+
+**Action Recording（Enterprise，默认关）**
+记 Bot 做了哪些工具动作：脱敏后的 shell 命令、连接器调用、浏览器导航元数据、例程运行等。这些事件不出现在 Audit Log 页。要收进自己的日志系统，配 OpenTelemetry 导出，事件带 `cursor.surface=grok_bot`。安全文档写明内部保留 90 天。Privacy Mode (Legacy) 会强制关掉它。
+
+查谁改了权限、谁建了 Bot、谁连了 MCP，看 Audit Log。
+查某次任务里 Bot 调了哪些工具，先开 Action Recording，再走 OpenTelemetry 导出。
+
+## Grok Bot 企业权限：常见问题
+
+### Teams 能不能整个组织关掉 Grok Bot？
+自助 Teams 没有组织级总开关，默认全员可用。Enterprise 管理员可以在 Grok Bot 页启用或关闭；关闭会挡住成员，不会删除他们的电脑。Privacy Mode (Legacy) 下 Grok Bot 不可用。
+
+### Audit Log 里能看到 Bot 点了哪个网页、跑了什么命令吗？
+看不到。Audit Log 记控制面和管理、安全事件。工具动作要开 Action Recording，用 OpenTelemetry 导出，它们不出现在 Audit Log 页。
+
+### 开通后，账号审计要先对齐什么？
+三件事：哪些账号或组拿到 Grok Bot；Enforce Auto-review 和 Ask first 规则有没有锁住外发、付款、部署；Audit Log 能不能按 `grok_bot` 筛选、要不要接 SIEM，以及要不要另开 Action Recording。账号入口不统一，审计很难收口，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。
+
+## 来源
+
+1. [Grok Bot for Teams and Enterprise](https://cursor.com/docs/grok-bot/teams)
+2. [Grok Bot security](https://cursor.com/docs/grok-bot/security)
+3. [Compliance and Monitoring（Audit logs）](https://cursor.com/docs/enterprise/compliance-and-monitoring)
+4. [Grok Bot security FAQ](https://cursor.com/docs/grok-bot/security-faq)
