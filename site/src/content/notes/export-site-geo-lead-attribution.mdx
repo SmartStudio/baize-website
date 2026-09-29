@@ -1,0 +1,112 @@
+---
+title: 外贸独立站做 GEO，询盘从哪归因
+description: 外贸独立站询盘归因分三处记：GA4 自建 AI 渠道看会话和表单事件，这是下限；表单隐藏字段把来源、referrer、落地页跟询盘一起提交；「怎么知道我们的」让客户自己选 AI 选项。三处都进 CRM，WhatsApp 和邮件询盘靠预填文字、主题标记补上。每周对一次账。
+pubDate: 2026-09-28
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/export-site-geo-lead-attribution-cover.png
+coverAlt: 表单、WhatsApp、邮件三路询盘经 GA4、隐藏字段、自报三处记来源，汇进 CRM
+howto:
+  name: 给外贸独立站的 AI 询盘记来源
+  steps:
+    - name: GA4 建 AI 渠道并设关键事件
+      text: 复制默认渠道组，新建「AI 助手」渠道，按来源正则收 chatgpt、perplexity 等，拖到 Referral 前面；表单提交设成关键事件。
+    - name: 表单加隐藏字段和自报字段
+      text: 首次落地时把 utm 参数、referrer、落地页存进第一方 cookie，提交时写进隐藏字段；加选填的「怎么知道我们的」，列出 AI 选项。
+    - name: WhatsApp、邮件打标记，CRM 规则写死
+      text: wa.me 预填页面代码，mailto 预填主题；原始来源只写一次，自报来源和追踪来源分两列，没有来源信号记「未知」。
+---
+
+外贸独立站 GEO 做了几个月，老板会问：AI 带来了几个询盘？GA4 答不全。品牌被 AI 提到，不代表询盘能归因。GA4 里的 AI 渠道只算下限，表单和 CRM 要能记下来源。具体分三处记：GA4 看带来源的访问；表单隐藏字段把来源和落地页跟着询盘一起交上来；再加一个「怎么知道我们的」让客户自己选。WhatsApp 和邮件询盘另外打标记。每周把几处数字对一次。
+
+先说 GA4 为什么只能当下限。
+
+第一，来源信号会丢。浏览器默认只把对方的域名传过来，比如 chatgpt.com，对话内容传不过来。客户在 App 里点链接、把网址复制到别的浏览器、转发给同事再打开，常常连域名也没有。GA4 把来源和媒介都缺的访问记成 Direct。
+
+第二，只有一半信号的访问会落进 Unassigned。OpenAI 说 ChatGPT 会在引荐链接上自动加 utm_source=chatgpt.com。这种访问 GA4 看得到来源，但媒介常常是空的，默认规则都匹配不上。分析工具 Clickport 2026 年 4 月的 30 天样本里，2,619 次被识别出的 AI 搜索会话，有 935 次（35.7%）只带来源标记、没有 referrer。它自己也说明，两种信号都没有的访问根本进不了样本。
+
+第三，B2B 询盘常常不在网站上成交。客户看完页面，转头发 WhatsApp、发邮件，GA4 里这次询盘不存在。
+
+所以「AI 带来几个询盘」要把几处数据放在一起看。GEO 本身怎么量见 <NoteLink slug="geo-metrics-to-watch">GEO 指标要盯哪些</NoteLink>，这篇只讲询盘记到哪。
+
+import noteFig from './media/export-site-geo-lead-attribution-fig.png'
+
+<Figure src={noteFig} alt="外贸 独立站 GEO 与 AI 询盘：左边三路进来：表单、WhatsApp、邮件；中间三处记来源：GA4、隐藏字段、自报；右边汇进 CRM，每周对账" caption="图：外贸 独立站 GEO｜AI 询盘" width="wide" border />
+
+## 记在哪：一张字段表
+
+| 位置 | 记什么 | 怎么设 | 常见误读 |
+| --- | --- | --- | --- |
+| GA4 | AI 渠道会话、表单提交事件 | 自建渠道组，AI 渠道排在 Referral 前面 | 只含带来源的访问，是下限 |
+| 表单隐藏字段 | utm_source / medium / campaign、referrer、落地页 | 首次访问时存进第一方 cookie，提交时写进隐藏字段 | 只存提交那一刻的 referrer，会被站内跳转覆盖 |
+| 表单自报字段 | 「怎么知道我们的」 | 下拉加 AI 选项，再留一个「其他，请填写」 | 客户记的是最早在哪看到你，和本次点进来的路径可能不同 |
+| CRM | 原始来源、最近来源、自报来源、落地页、询盘渠道 | 原始来源只写一次，不覆盖 | 把最近来源当成首次来源 |
+| WhatsApp | 从哪一页点进来 | wa.me 链接预填文字，带页面代码 | 客户删了预填文字，就记不到 |
+| 邮件 | 从哪一页发来 | mailto 带预填主题；或按页面用不同收件地址 | 客户另起一封邮件，标记就没了 |
+
+CRM 可以参考 HubSpot 的做法。它把联系人来源分成「原始」和「最近」两个字段，AI 来的记成 AI Referrals，下一层再记具体平台，比如 chatgpt.com。识别条件是：referrer 是它认得的 AI 域名，或者 utm 参数里带这些域名。用别的 CRM，照这个结构建字段就行。
+
+## 怎么设：六步
+
+1. **GA4 建自定义渠道组。** 复制默认渠道组，新建一个「AI 助手」渠道，条件选「来源匹配正则」，写进 chatgpt、perplexity、gemini、copilot、claude、deepseek 这些来源。拖到 Referral 前面，GA4 按顺序把访问放进第一个匹配的渠道。来源是 chatgpt.com、媒介为空的访问，也会被这条规则收进来，不再落进 Unassigned。自定义渠道组可以回溯应用到旧数据。标准版媒体资源最多建 2 个。
+2. **表单提交设成关键事件。** 在 GA4 里按渠道看表单提交数。这个数是网站表单的下限，不含 WhatsApp 和邮件。
+3. **表单加隐藏字段。** 访客第一次落地时，用脚本把 URL 里的 utm 参数、document.referrer、落地页地址存进第一方 cookie。提交询盘时写进隐藏字段，跟姓名、邮箱一起进 CRM。落地页很关键：referrer 只有域名，落地页能告诉你客户看的是哪篇内容。
+4. **加「怎么知道我们的」。** 英文站写 How did you find us?。选项列：Google search、ChatGPT、Perplexity、Gemini、Copilot、Other AI assistant、LinkedIn、Trade show、Colleague / referral、B2B platform、Other (please specify)。设成选填，放在留言框后面。想分清首次看到和本次来路，可以再问一句「今天是怎么来到这个页面的」。HockeyStack 的自报归因报告就建议这样追问。
+5. **WhatsApp、邮件打标记。** 每个页面的 WhatsApp 按钮用 wa.me 链接预填一句话，带页面代码，比如「Hi, I'm asking about CNC parts (ref: B12)」。邮件按钮在 mailto 里预填主题。业务员收到询盘，按代码把落地页和来源填进 CRM；客户说是在 ChatGPT 上看到的，也记进自报来源。
+6. **CRM 规则写死。** 原始来源只写一次。自报来源和追踪来源分开两列，不合并。没有任何来源信号的询盘记「未知」，不要猜成 AI。
+
+## 怎么用：每周对账表 / Agent 护栏
+
+每周一填一次：
+
+| 周 | 询盘总数 | GA4 AI 渠道表单提交 | 隐藏字段记到 AI 来源 | 自报 AI | 两边都有 | 只有自报 AI | WhatsApp / 邮件里的 AI | 有效询盘里的 AI |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 第 1 周 | | | | | | | | |
+
+怎么读：隐藏字段记到的 AI 询盘是追踪下限。「只有自报 AI」这一列，是追踪没抓到、客户自己说出来的部分。这一列一直很大，先查 cookie 和隐藏字段有没有生效。有效询盘单独算，AI 来的询盘多，不代表单子多。
+
+每周出数前过一遍：
+
+1. GA4 的 AI 渠道还排在 Referral 前面吗？
+2. 本周表单里，隐藏字段为空的询盘有几条？
+3. WhatsApp、邮件询盘有没有全部补填来源？
+4. 自报来源和追踪来源是分两列记的吗？
+
+**Agent 护栏（可贴进询盘周报 Agent）**
+
+```text
+做询盘来源周报时：
+1. 追踪来源（GA4、隐藏字段）和自报来源分开报，不准相加。
+2. GA4 AI 渠道数字标注「仅含带来源的访问，为下限」。
+3. 每条询盘记录：询盘渠道、原始来源、落地页、自报来源、是否有效。
+4. 没有来源信号的询盘记「未知」，不准推测为 AI。
+5. WhatsApp、邮件询盘没有页面代码的，单列清单交业务员补填。
+6. 渠道组规则、表单字段、选项有改动，写在报告开头，前后不直接比。
+7. 数字只用本周实际记录，禁止估算或引用行业均值。
+```
+
+## 外贸独立站 GEO 询盘归因：常见问题
+
+### 没有 CRM，只用 Excel 能做吗？
+能。表单提交后把隐藏字段一起发到邮箱或表格，一条询盘一行，列和上面的字段表一样。WhatsApp、邮件询盘由业务员手动加行。量少的时候 Excel 够用，关键是原始来源那一列填了就不改。
+
+### 自报来源靠得住吗？
+能用，但要和追踪数据一起看。客户可能记错，也可能随手选第一个选项。所以设成选填，留「其他，请填写」。它能补上追踪看不到的来路，比如客户在 ChatGPT 里看到你，隔天直接输网址进来。
+
+### 什么算 AI 询盘？怎么记？
+满足任一条就记为 AI 询盘：GA4 或隐藏字段记到 AI 来源（referrer 或 utm 里有 chatgpt.com、perplexity.ai 这类域名）；客户在「怎么知道我们的」里选了 AI 选项；WhatsApp、邮件里客户说是 AI 推荐来的。记的时候写清是哪一种，追踪到的和自报的分开放。两种都有的，只算一条询盘，两列都打勾。
+
+## 来源
+
+1. [Google Analytics 帮助，《Default channel group》（AI Assistant、Direct、Unassigned 定义）](https://support.google.com/analytics/answer/9756891?hl=en)
+2. [Google Analytics 帮助，《Custom channel groups》](https://support.google.com/analytics/answer/13051316?hl=en)
+3. [OpenAI 帮助中心，《Publishers and Developers - FAQ》（utm_source=chatgpt.com）](https://help.openai.com/en/articles/12627856-publishers-and-developers-faq)
+4. [MDN，《Referrer-Policy》](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy)
+5. [Clickport，《Why ChatGPT Traffic Shows as Direct in GA4 (2026)》（2026-09-18 更新）](https://clickport.io/blog/chatgpt-direct-traffic-ga4)
+6. [HubSpot 知识库，《Understand Original and Latest traffic source properties》](https://knowledge.hubspot.com/properties/understand-traffic-source-properties)
+7. [HubSpot 知识库，《Understand HubSpot's traffic sources in the web traffic analysis tool》](https://knowledge.hubspot.com/reports/understand-hubspots-traffic-sources-in-the-traffic-analytics-tool)
+8. [WhatsApp 帮助中心，《How to use click to chat》](https://faq.whatsapp.com/5913398998672934/?locale=en_US)
+9. [HockeyStack，《HockeyStack's Self-Reported Attribution Report – 2024》](https://www.hockeystack.com/lab-blog-posts/hockeystacks-sra-report-2024)
