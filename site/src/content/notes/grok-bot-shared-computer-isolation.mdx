@@ -1,0 +1,87 @@
+---
+title: 多个 Bot 共用云电脑，文件怎么隔离
+description: 同一 Cursor 账号下，多个 Bot 共用云电脑：机器上的文件是共用的，登录态也是。每只 Bot 有自己的桌面（屏幕），那是工作面，不是安全边界。想按岗位分工可以多开 Bot；想按权限隔离文件和凭据，不能指望多开 Bot。
+pubDate: 2026-09-30
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-shared-computer-isolation-cover.png
+coverAlt: 一台共用云电脑，几只 Bot 各有自己的屏幕，文件和网站登录留在同一台机器上
+howto:
+  name: 共用云电脑上管好文件和登录
+  steps:
+    - name: 多 Bot 只做岗位分工
+      text: 调研、写稿、复现可以分给不同 Bot；不要假设它们看不见彼此的文件。
+    - name: 敏感文件用完就删
+      text: 导出表、密钥材料、客户名单不长期放在共用电脑上。
+    - name: 网站登录用完就退
+      text: 任务结束后退出不再需要的网站；凭据不贴进普通聊天。
+    - name: 真隔离用单独用户
+      text: 需要独立电脑和凭据集时，给那份工作单独的 Cursor 用户。同账号多 Bot 切不开文件系统。
+---
+
+# 多个 Bot 共用云电脑，文件怎么隔离
+
+同一 Cursor 账号下，多个 Bot 共用云电脑：机器上的文件是共用的，登录态也是。每只 Bot 有自己的桌面（屏幕），那是工作面，不是安全边界。想按岗位分工可以多开 Bot；想按权限隔离文件和凭据，不能指望多开 Bot。
+
+Grok Bot 是什么、和聊天框差在哪，见 <NoteLink slug="grok-bot-persistent-ai-teammates">Grok Bot 是什么？AI Agent 云端同事的实战指南</NoteLink>、<NoteLink slug="grok-bot-vs-chatgpt-cloud-teammate">云端同事 vs 再开一个聊天框：Grok Bot 和 ChatGPT 的区别</NoteLink>。企业开通时谁能用、审计看什么，见 <NoteLink slug="grok-bot-enterprise-access-audit">企业开通 Grok Bot，权限和审计要先定什么</NoteLink>。
+
+import noteFig from './media/grok-bot-shared-computer-isolation-fig.png'
+
+<Figure src={noteFig} alt="左边同一账号多只 Bot 共用一台云电脑上的文件和登录；右边每只 Bot 有自己的桌面，真正隔离是单独的 Cursor 用户" caption="图：「Bot 共用 云电脑」｜「文件 隔离」" width="wide" border />
+
+## 先分清两层隔离
+
+| 边界 | 官方说法 | 实际含义 |
+| --- | --- | --- |
+| 用户与用户 | 每人一台 Firecracker microVM，硬件级隔离 | 你进不了同事的云电脑 |
+| 同一用户的多只 Bot | 共用一台电脑；隔离的是人格和工作区，不是算力 | 文件、浏览器会话、命令行凭据互相可见 |
+
+电脑归属账号，不归属某一只 Bot。官方总览写明：All of your Bots use the same cloud computer。放进机器的东西，默认对你名下每只 Bot 可用。
+
+## 桌面独立，文件不独立
+
+每只 Bot 有自己的桌面（官方英文叫 screen）。几只 Bot 可以并行做浏览器和桌面操作，同一时间每只 Bot 在自己的屏幕上跑一条 computer-use 任务。
+
+官方 Work 文档写得很直：screens are work surfaces, not security boundaries。不要把「看得见各自的桌面」理解成「文件和登录已按 Bot 切开」。
+
+共享工作区在 `/workspace`。持久项目文件放这里；临时目录和未提交状态当可替换。一只 Bot 写下的文件，另一只 Bot 能接着用——这是交接能少做一遍设置的原因，也是敏感文件不能堆在机器上的原因。
+
+## 删 Bot 清不掉机器
+
+删除一只 Bot，会去掉它的配置、对话和 Routine。机器上的文件和网站登录不会跟着消失，要自己清理。
+
+连接器（插件）是账号级的：装好后，你名下每只 Bot 都能用。OAuth token 留在 Cursor 连接器后端，不落在云电脑磁盘上。浏览器里你亲手登过的网站会话，则仍在那台共用电脑上，所有 Bot 都能碰到。
+
+## 实际怎么管
+
+按官方 Teams / 安全 FAQ 的用法：
+
+1. **多 Bot = 岗位分工，不是权限隔离。** 调研、写稿、复现可以分给不同 Bot；不要假设它们看不见彼此的文件。
+2. **敏感临时文件用完就删。** 尤其是导出表、密钥材料、客户名单。
+3. **不再需要的网站，退出登录。** 任务结束后清掉会话。
+4. **凭据不要贴进普通聊天。** 支持的连接走安全密钥请求；密码和一次性验证码不进对话。
+5. **真要独立电脑和凭据集：** 给那份工作单独的 Cursor 用户。同账号多 Bot 做不到按 Bot 切电脑。
+
+企业侧网络策略、强制审批、审计口径，不在本篇展开，见 <NoteLink slug="grok-bot-enterprise-access-audit">企业开通 Grok Bot，权限和审计要先定什么</NoteLink>。
+
+## Bot 共用云电脑：常见问题
+
+### 多开几只 Bot，文件会自动分开吗？
+不会。同一用户名下所有 Bot 共用一台云电脑。文件、浏览器会话、命令行凭据共享。Bot 之间分开的是对话、记忆和各自桌面，不是文件系统。
+
+### 每只 Bot 有自己的桌面，和共用电脑什么关系？
+桌面（屏幕）让多只 Bot 能并行操作界面；官方把它叫工作面，不是安全边界。机器上的文件仍然共用。能各自点网页，不代表能互不看见 `/workspace` 里的文件。
+
+### 同一账号下想做文件隔离，该怎么办？
+同账号做不到按 Bot 切开文件系统。做法是：敏感文件不长期放在共用电脑上；用完就删；网站登录用完就退；需要独立电脑和凭据集时，开单独的 Cursor 用户。岗位怎么拆、审批怎么锁，见 <NoteLink slug="grok-bot-persistent-ai-teammates">Grok Bot 是什么？AI Agent 云端同事的实战指南</NoteLink>。
+
+## 来源
+
+1. [Grok Bot](https://cursor.com/docs/grok-bot)（Your Bots share one computer）
+2. [Work with Grok Bot](https://cursor.com/docs/grok-bot/work)（screen ≠ security boundary；`/workspace`；删 Bot）
+3. [Grok Bot for Teams and Enterprise](https://cursor.com/docs/grok-bot/teams)（How users are isolated）
+4. [Grok Bot security](https://cursor.com/docs/grok-bot/security)
+5. [Grok Bot security FAQ](https://cursor.com/docs/grok-bot/security-faq)
