@@ -1,0 +1,52 @@
+---
+title: 为什么 OpenAI 在重走 Dropbox 的路？AI 产品变现先想清谁付钱
+description: 给消费级 AI 应用定价，先分清谁付钱。Ben Thompson 在播客里说，OpenAI 在重走 Dropbox 的路。Jobs 对 Dropbox 说的是「一个功能，不是一个产品」。OpenAI 同时做广告转化追踪和企业产品。
+pubDate: 2026-10-13
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/ai-monetization-dropbox-lesson-cover.png
+coverAlt: 一个同步文件的盒子变成企业产品，旁边分出消费者和公司、广告主两路付款
+---
+
+这是明理读播客 01。
+这篇可以单独读。
+
+Ben Thompson 在一期播客里讲过：给消费级 AI 应用定价，先看谁付钱。订阅、广告、改成企业产品，三条路的付款人不一样。AI 产品变现先把这一步定下来。
+
+Jobs 当时对 Dropbox 说：「一个功能，不是一个产品」。（Ben 转述为 “a feature, not a company”。）Dropbox 后来按公司客户把产品重做了一遍。Ben 说，Dropbox 大约停滞了两年。他认为 OpenAI 在重走这条路，规模大约是一百倍（这是他的说法）。
+
+import noteFig from './media/ai-monetization-dropbox-lesson-fig.png'
+
+<Figure src={noteFig} alt="左边是 AI 产品变现的三条路：订阅、广告、企业产品；右边是消费者付费意愿低，公司和广告主承担费用" caption="图：「AI 产品变现」｜「消费者付费意愿」" width="wide" border />
+
+## 消费者不付钱，公司付钱
+
+Ben 说，硅谷大约每十年会重新学到两件事。消费者不愿为软件付钱。消费者不关心效率。
+
+公司愿意付钱，因为公司在付工资。省下的时间、多出的产出，能算成回报。产品要卖给公司，得补上权限、管理控制，还要有一名管理员。
+
+## 广告涨价和订阅涨价
+
+广告提价时，加价由广告主承担，用户不用跟着多付。订阅提价，每一次都要重新掂量。Netflix 调订阅价就是这样。Ben 说：「收钱很难，免费很容易」。
+
+## OpenAI 同时做广告和企业
+
+OpenAI 两件事一起做。ChatGPT 于 2026 年 2 月开始在美国测试广告。广告侧提供 pixel 和 Conversions API，广告主可以回传购买事件，事件类型里有 order_created。10 月 5 日，OpenAI 又宣布本月晚些时候在美国测试一种视觉广告：用户在 ChatGPT 里生成图片时，旁边出现带标注的广告，和生成的图分开。企业侧也在推进，因为 Anthropic 在企业客户上更强。Ben 说，他不理解为什么两头一起做。
+
+Ben 还提到，扎克伯格和 Altman 都不喜欢把广告说得很响。
+
+## 常见问题
+
+### 消费级 AI 应用定价，先看什么？
+先看谁付钱。订阅、广告、企业产品，付款人不同。卖给公司时，要补权限、管理控制和管理员，因为公司在付工资，效率有回报。
+
+### OpenAI 的广告怎么记一笔购买？
+广告主可以用 pixel，也可以用 Conversions API，把购买事件传回去。事件类型里有 order_created。ChatGPT 于 2026 年 2 月开始在美国测试广告。
+
+### 消费者付费意愿低，AI 产品还能靠订阅赚钱吗？
+a16z 的报告说，截至 2026 年 4 月，美国只有约 2% 的家庭在为 AI 服务付费。订阅可以收。涨价要一次一次掂量，用户会直接碰到新价格。广告涨价由广告主付。Ben 说：「收钱很难，免费很容易」。
+
+企业愿意付钱，但 AI 的账单开始按用量算了。下篇：按量计费之后，企业预算怎么编。
