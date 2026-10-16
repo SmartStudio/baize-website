@@ -1,0 +1,72 @@
+---
+title: 品牌舆情监控交给 Bot，每天摘要写什么、什么时候该叫人
+description: 品牌舆情监控交给 Bot，日报每条只写三样：原帖链接、为什么要紧、要不要人拍板。没新东西就写一行。什么时候叫人，开工前写进 Bot 说明，比如有人冒充官方、投诉涉及安全或退款、媒体点名。Bot 只读和起草，不替你回帖。定时任务会晚几分钟，急事别等日报。
+pubDate: 2026-10-16
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-x-brand-monitoring-digest-cover.png
+coverAlt: 屏幕上一列带链接的帖子卡片，其中一张被标成橙色，旁边一只手拿起电话
+---
+
+品牌舆情监控交给 Bot，日报不用写长。每条只写三样：原帖链接、为什么要紧、要不要人拍板。没新东西，就写一行「今天没有要处理的」。什么情况叫人，要在开工前写进 Bot 说明，别让它每天现场判断。
+
+import noteFig from './media/grok-bot-x-brand-monitoring-digest-fig.png'
+
+<Figure src={noteFig} alt="左边是监控清单经去重、分级的流程，右边是日报一条的三栏格式和叫人条件" caption="图：「品牌 舆情 监控」｜「每日 摘要」" width="wide" border />
+
+
+## 为什么现在可以交给 Bot
+
+Grok Bot 2026 年 10 月 11 日的更新日志写到：Bot 不用连你的 X 账号，就能搜 X、读帖子和主页。（来源：[Grok Bot 更新日志](https://x.ai/changelog/bot)）给它一份关键词和账号清单，当天就能开始查。
+
+已经有人做成了模板。Superpower Daily 9 月 5 日介绍过 X Brief：给它账号、话题或搜索词，它把上次运行之后的新帖按主题分组，每条带原帖链接；没什么事就只写一行；报过的链接记在单独的文件里，下次不重复报。它默认只起草，不发帖、不回复、不点赞、不发私信。（来源：[Superpower Daily](https://superpowerdaily.com/posts/x-brief-turns-x-watch-lists-into-linked-daily-briefs)）
+
+## 日报写什么
+
+1. **监控清单。** 品牌名、产品名、常见错写、创始人和官方账号、主要竞品。清单放在文件里，改清单不用改 Bot。
+2. **每条的格式。** 官方用例里的 Chief of Staff 日报是这样要求的：写来源、为什么要紧、建议下一步、要不要你拍板。（来源：[Grok Bot 用例](https://docs.x.ai/grok-bot/use-cases)）
+3. **去重。** 报过的链接记下来。同一条帖子第二天转发涨了，写成「旧帖更新」，不当新事报。
+4. **查不到要直说。** 官方文档建议给定时任务写清没数据、旧数据时怎么办：查不到就报查不到，不拿昨天的结果顶上。（来源：[Skills 与 Routines 文档](https://docs.x.ai/grok-bot/skills-routines-and-automations)）
+5. **每周调一次。** 把有用的和没用的标出来，下周的清单和分级跟着改。
+
+## 什么时候该叫人
+
+叫人的条件写进 Bot 说明，写得越具体越好。常见的有五类，具体门槛按自己的品牌定：
+
+1. 有人冒充官方账号，或者出现假客服、假活动。
+2. 投诉涉及安全、隐私、退款或合规。
+3. 媒体、行业大号或合作方点了你的名。
+4. 同一个问题，短时间里有好几个人在提。
+5. 官方账号发的帖，下面突然很多负面回复。
+
+叫人时，让 Bot 带上原帖链接和要点，再起草一版回应。回不回、怎么回，由人来定。Bot 能读什么、能不能发，开通时就要定下来，见 <NoteLink slug="grok-bot-enterprise-access-audit">企业开通 Grok Bot，权限和审计要先定什么</NoteLink>。
+
+## 日报不是报警器
+
+定时任务要排队执行。Cursor 论坛 9 月初的帖子里，官方回复一位用户：对方的任务在队列里等了 10 到 37 分钟才开始；9 月 16 日改了排队方式后，官方说最忙的时段仍可能晚几分钟。（来源：[Cursor 论坛](https://forum.cursor.com/t/grok-bot-routines-dont-auto-run-on-schedule/170358)）
+
+做日报，晚几分钟没关系。发布会、活动当天、已经出事的时候，别等日报：安排人盯，或者在工作时间里把检查改成每小时一次。
+
+把监控当成一个岗位交给 Bot 长期做，怎么定岗位和 Skill，见 <NoteLink slug="grok-bot-persistent-ai-teammates">Grok Bot 是什么？AI Agent 云端同事的实战指南</NoteLink>。
+
+## 品牌舆情监控：常见问题
+
+### 品牌舆情监控交给 Bot，要连自己的 X 账号吗？
+看公开内容不用。按 10 月 11 日的更新日志，Bot 不连 X 账号也能搜帖子、读主页。要看自己账号里的私信这类内容，才需要另外连。
+
+### Bot 能直接替我回负面帖吗？
+不建议。让它起草，人看过再发。X Brief 这类模板默认也是只起草，不发帖、不回复。
+
+### 每日摘要写多长合适？
+一屏看得完。每条不超过三句：发生了什么、为什么要紧、要不要你拍板。没新东西就一行。发送时间定在你上班后会看的时候，比如工作日早上。
+
+## 来源
+
+1. [Grok Bot 更新日志](https://x.ai/changelog/bot)
+2. [Grok Bot 用例](https://docs.x.ai/grok-bot/use-cases)
+3. [Grok Bot Skills、Routines 与自动化](https://docs.x.ai/grok-bot/skills-routines-and-automations)
+4. [Superpower Daily：X Brief](https://superpowerdaily.com/posts/x-brief-turns-x-watch-lists-into-linked-daily-briefs)
+5. [Cursor 论坛：Grok Bot routines 不按时运行](https://forum.cursor.com/t/grok-bot-routines-dont-auto-run-on-schedule/170358)
