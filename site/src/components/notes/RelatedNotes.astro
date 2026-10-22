@@ -5,10 +5,11 @@
  * 存在的理由是内链,不是装饰:笔记之间原本几乎没有互链,抓取器进到任何一篇都是
  * 死胡同,读者读完也没有下一步。这里给每篇笔记 3 条出边(推荐逻辑见 lib/notes.ts)。
  *
- * 刻意不复用 NoteCard:那是带大封面的卡片,放在文末会盖过正文和 CTA。这里只要
+ * 刻意不复用 NoteCard:这里是文末浅绿色带里的小卡,封面只做缩略图,
  * 分类 + 标题 + 一句话,够读者判断要不要点进去即可。
  */
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { categoryLabel } from '../../lib/notes';
 
 interface Props {
@@ -20,34 +21,55 @@ const { notes, lang = 'zh-CN' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 {notes.length > 0 && (
-  <nav class="bz-related" aria-label={lang === 'en' ? 'Related notes' : '相关笔记'}>
-    <p class="bz-card__eyebrow">{lang === 'en' ? 'Keep reading' : '继续读'}</p>
-    <ul class="bz-related__list">
-      {notes.map((n) => (
-        <li class="bz-related__item">
-          <a class="bz-related__link" href={`${base}notes/${n.id}/`}>
-            <span class="bz-related__cat">{categoryLabel(n.data.category, lang)}</span>
-            <span class="bz-related__title">{n.data.title}</span>
-            <span class="bz-related__desc">{n.data.description}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
+  <section class="bz-related">
+    <nav class="bz-related__inner" aria-label={lang === 'en' ? 'Related notes' : '相关笔记'}>
+      <h2 class="bz-related__heading">{lang === 'en' ? 'Keep reading' : '继续读'}</h2>
+      <ul class="bz-related__list">
+        {notes.map((n) => (
+          <li class="bz-related__item">
+            <a class="bz-related__link" href={`${base}notes/${n.id}/`}>
+              {n.data.cover ? (
+                <Image src={n.data.cover} alt="" class="bz-related__thumb" widths={[400, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" />
+              ) : (
+                <span class="bz-related__thumb" aria-hidden="true"></span>
+              )}
+              <span class="bz-related__text">
+                <span class="bz-related__cat">{categoryLabel(n.data.category, lang)}</span>
+                <span class="bz-related__title">{n.data.title}</span>
+                <span class="bz-related__desc">{n.data.description}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </section>
 )}
 
 <style>
   .bz-related {
-    margin-top: 56px;
-    border-top: 1px solid var(--bz-border-subtle);
-    padding-top: 32px;
+    background: var(--bz-soft);
+  }
+
+  .bz-related__inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(48px, 6vw, 72px) clamp(16px, 4vw, 32px);
+  }
+
+  .bz-related__heading {
+    margin: 0 0 clamp(20px, 3vw, 32px);
+    color: var(--bz-text-primary);
+    font-family: var(--bz-font-display);
+    font-size: clamp(23px, 2.4vw, 28px);
+    font-weight: 800;
   }
 
   .bz-related__list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
-    margin: 20px 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -55,17 +77,18 @@ const base = import.meta.env.BASE_URL;
   .bz-related__link {
     display: flex;
     flex-direction: column;
-    gap: 6px;
     height: 100%;
-    border-top: 2px solid var(--bz-border-strong);
-    padding-top: 12px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--bz-bg-card);
     color: inherit;
     text-decoration: none;
-    transition: border-color var(--bz-transition-fast);
+    transition: transform var(--bz-transition-fast), box-shadow var(--bz-transition-fast);
   }
 
   .bz-related__link:hover {
-    border-top-color: var(--bz-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(10, 31, 28, 0.08);
   }
 
   .bz-related__link:focus-visible {
@@ -73,33 +96,44 @@ const base = import.meta.env.BASE_URL;
     outline-offset: 3px;
   }
 
+  .bz-related__thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--bz-chip);
+  }
+
+  .bz-related__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px 22px;
+  }
+
   .bz-related__cat {
-    color: var(--bz-text-muted);
-    font-family: var(--bz-font-mono);
-    font-size: var(--bz-type-caption-size);
-    letter-spacing: 0.06em;
+    color: var(--bz-accent-strong);
+    font-size: 13px;
+    font-weight: 600;
   }
 
   .bz-related__title {
     color: var(--bz-text-primary);
     font-family: var(--bz-font-display);
-    font-size: 16px;
-    font-weight: 650;
+    font-size: 18px;
+    font-weight: 700;
     line-height: 1.4;
     text-wrap: pretty;
   }
 
-  .bz-related__link:hover .bz-related__title {
-    color: var(--bz-accent-strong);
-  }
-
   .bz-related__desc {
-    color: var(--bz-text-muted);
+    color: var(--bz-text-secondary);
     font-size: 14px;
     line-height: 1.6;
-    /* 摘要只做「够不够点进去」的提示,不铺满三行把卡片撑歪 */
+    /* 摘要只做「够不够点进去」的提示,不铺满把卡片撑歪 */
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
