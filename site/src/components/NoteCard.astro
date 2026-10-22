@@ -24,56 +24,112 @@ const dateStr = pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN', {
 });
 const displayCategory = categoryLabel(category, lang);
 ---
-<article class:list={['bz-card', 'bz-note-card', { 'bz-note-card--has-cover': cover }]} data-category={category}>
-  {cover && (
-    <a class="bz-note-card__cover" href={href} tabindex="-1" aria-hidden="true">
-      <Image src={cover} alt={coverAlt ?? ''} widths={[320, 640]} sizes="(max-width: 640px) 100vw, 360px" class="bz-note-card__img" />
-    </a>
-  )}
-  <p class="bz-card__eyebrow">{displayCategory} · {dateStr}</p>
-  <h3 class="bz-card__title"><a href={href}>{title}</a></h3>
-  <p class="bz-card__body">{description}</p>
-  <a class="bz-text-link" href={href}>{lang === 'en' ? 'Read article' : '阅读全文'} <span class="bz-text-link__arrow">→</span></a>
+<article class="note-card" data-category={category}>
+  <a class="note-card__cover" href={href} tabindex="-1" aria-hidden="true">
+    {cover && (
+      <Image src={cover} alt={coverAlt ?? ''} widths={[320, 640]} sizes="(max-width: 640px) 100vw, 380px" class="note-card__img" />
+    )}
+    <span class="note-card__chip">{displayCategory}</span>
+  </a>
+  <div class="note-card__body">
+    <p class="note-card__meta"><time datetime={pubDate.toISOString()}>{dateStr}</time></p>
+    <h3 class="note-card__title"><a href={href}>{title}</a></h3>
+    <p class="note-card__desc">{description}</p>
+  </div>
 </article>
 
 <style>
-  .bz-card__title a {
-    color: inherit;
-    text-decoration: none;
+  .note-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 20px;
+    background: var(--bz-bg-card);
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-
-  .bz-card__title a:hover {
-    color: var(--bz-accent-strong);
+  .note-card[hidden] {
+    display: none;
   }
-
-  /* Cover bleeds to the card edges (cancels the card's 28px/26px padding),
-     sits above a hairline divider. No cover → card renders as the old text card. */
-  .bz-note-card__cover {
+  .note-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(10, 31, 28, 0.08);
+  }
+  .note-card__cover {
+    position: relative;
     display: block;
-    margin: -28px -26px 4px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: var(--bz-paper-100);
-    border-bottom: 1px solid var(--bz-border-subtle);
+    background: var(--bz-soft);
   }
-
-  .bz-note-card__img {
+  .note-card__img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--bz-transition-base);
   }
-
-  .bz-note-card--has-cover:hover .bz-note-card__img {
-    transform: scale(1.03);
+  .note-card__chip {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--bz-white);
+    color: var(--bz-text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
   }
-
+  .note-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px 22px;
+  }
+  .note-card__meta {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  .note-card__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .note-card__title a {
+    color: var(--bz-text-primary);
+    text-decoration: none;
+  }
+  /* 整卡可点:标题链接的伪元素铺满卡片 */
+  .note-card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .note-card__title a:focus-visible {
+    outline: none;
+  }
+  .note-card:has(.note-card__title a:focus-visible) {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+  .note-card__desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--bz-text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   @media (prefers-reduced-motion: reduce) {
-    .bz-note-card__img {
+    .note-card,
+    .note-card:hover {
       transition: none;
-    }
-    .bz-note-card--has-cover:hover .bz-note-card__img {
       transform: none;
     }
   }

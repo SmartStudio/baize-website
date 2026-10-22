@@ -74,79 +74,224 @@ const breadcrumbLd = {
   path={path}
   jsonLd={[collectionLd, breadcrumbLd]}
 >
-  <section class="bz-rail-section">
-    <div class="bz-shell">
-      <header class="cat-head">
-        <p class="bz-eyebrow"><a class="cat-back" href={`${base}notes/`}>明理笔记</a> · {category}</p>
-        <h1 class="bz-product-title">{category}</h1>
-        <p class="bz-product-lead">{intro}</p>
-        <p class="cat-count">共 {notes.length} 篇</p>
-      </header>
-
-      <div class="bz-notes-grid">
-        {notes.map((note) => (
-          <NoteCard
-            title={note.data.title}
-            description={note.data.description}
-            pubDate={note.data.pubDate}
-            category={note.data.category}
-            slug={note.id}
-            cover={note.data.cover}
-            coverAlt={note.data.coverAlt}
-            lang={note.data.lang}
-          />
-        ))}
-      </div>
-
-      <nav class="cat-more" aria-label="其他分类">
-        <p class="bz-card__eyebrow">换个话题</p>
-        <div class="cat-more__links">
-          <a class="bz-badge bz-badge--neutral" href={`${base}notes/`}>全部笔记</a>
-          {siblings.map((c) => (
-            <a class="bz-badge bz-badge--neutral" href={`${base}notes/category/${categorySlug(c)}/`}>{c}</a>
-          ))}
+  <section class="hero">
+    <div class="wrap hero__in">
+      <p class="crumb"><a href={`${base}notes/`}>明理笔记</a> / {category}</p>
+      <div class="hero__row">
+        <div class="hero__copy">
+          <p class="hero__badge">专题</p>
+          <h1>{category}</h1>
+          <p class="hero__lead">{intro}</p>
         </div>
-      </nav>
+        <div class="hero__stat">
+          <p class="hero__num">{notes.length}</p>
+          <p class="hero__lbl">篇笔记</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <p class="eyebrow">本专题</p>
+    <h2>全部笔记</h2>
+    <div class="grid">
+      {notes.map((note) => (
+        <NoteCard
+          title={note.data.title}
+          description={note.data.description}
+          pubDate={note.data.pubDate}
+          category={note.data.category}
+          slug={note.id}
+          cover={note.data.cover}
+          coverAlt={note.data.coverAlt}
+          lang={note.data.lang}
+        />
+      ))}
+    </div>
+  </section>
+
+  <nav class="wrap more" aria-label="其他分类">
+    <p class="eyebrow">换个话题</p>
+    <div class="more__links">
+      <a class="chip" href={`${base}notes/`}>全部笔记</a>
+      {siblings.map((c) => (
+        <a class="chip" href={`${base}notes/category/${categorySlug(c)}/`}>{c}</a>
+      ))}
+    </div>
+  </nav>
+
+  <section class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>先聊 30 分钟，<br />找出第一条该改的流程。</h2>
+        <p>不收费。也可以微信扫页脚二维码直接聊。</p>
+      </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={`${base}contact/`}>预约咨询 →</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .cat-head {
-    margin-bottom: clamp(32px, 5vw, 56px);
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
   }
-
-  .cat-back {
+  .hero {
+    background: var(--bz-dark);
+    color: var(--bz-on-dark);
+  }
+  .hero__in {
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+  .crumb {
+    margin: 0 0 48px;
+    font-size: 14px;
+    color: var(--bz-on-dark-muted);
+  }
+  .crumb a {
     color: inherit;
+    text-decoration: none;
   }
-
-  .cat-count {
-    margin: 16px 0 0;
-    color: var(--bz-text-muted);
-    font-family: var(--bz-font-mono);
-    font-size: var(--bz-type-caption-size);
+  .crumb a:hover {
+    color: var(--bz-on-dark);
   }
-
-  .bz-notes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
-  .cat-more {
-    margin-top: 56px;
-    border-top: 1px solid var(--bz-border-subtle);
-    padding-top: 32px;
-  }
-
-  .cat-more__links {
+  .hero__row {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 48px;
+    align-items: flex-end;
   }
-
-  .cat-more__links a {
+  .hero__copy {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+  .hero__badge {
+    display: inline-flex;
+    margin: 0 0 24px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--bz-dark-card);
+    color: var(--bz-accent);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(40px, 5.6vw, 76px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .hero__lead {
+    margin: 28px 0 0;
+    max-width: 620px;
+    font-size: 19px;
+    color: var(--bz-on-dark-2);
+  }
+  .hero__stat {
+    flex: 0 1 200px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--bz-dark-card);
+  }
+  .hero__num {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+  }
+  .hero__lbl {
+    margin: 0;
+    font-size: 14px;
+    color: var(--bz-on-dark-muted);
+  }
+  .sec {
+    padding-top: 80px;
+    padding-bottom: 56px;
+  }
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  h2 {
+    margin: 0 0 40px;
+    font-weight: 800;
+    font-size: clamp(28px, 3.2vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .more {
+    padding-bottom: 80px;
+  }
+  .more__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 999px;
+    color: var(--bz-ink-700);
+    font-size: 15px;
+    font-weight: 500;
     text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .chip:hover {
+    border-color: var(--bz-ink-900);
+    color: var(--bz-text-primary);
+  }
+  .chip:focus-visible {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+  .pill {
+    border-radius: 999px;
+  }
+  .book-wrap {
+    padding-bottom: 96px;
+  }
+  .book {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(32px, 5vw, 56px);
+    border-radius: 20px;
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+  }
+  .book h2 {
+    margin: 0 0 12px;
+  }
+  .book p {
+    margin: 0;
+    font-size: 16px;
+  }
+  @media (max-width: 640px) {
+    .wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .crumb {
+      margin-bottom: 32px;
+    }
+    .sec {
+      padding-top: 56px;
+    }
   }
 </style>
