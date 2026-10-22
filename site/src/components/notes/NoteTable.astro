@@ -50,7 +50,6 @@ const { columns, rows, caption } = Astro.props;
 
   @media (max-width: 640px) {
     .bz-note-table {
-      border-top: 1px solid var(--bz-border-strong);
     }
 
     .bz-note-table table,
@@ -84,6 +83,7 @@ const { columns, rows, caption } = Astro.props;
       gap: 0;
       padding: 4px 0;
       border: 1px solid var(--bz-border-subtle);
+      border-radius: 16px;
       background: var(--bz-bg-card);
     }
 
@@ -104,12 +104,9 @@ const { columns, rows, caption } = Astro.props;
     .bz-note-table td::before {
       content: attr(data-label);
       color: var(--bz-text-muted);
-      font-family: var(--bz-font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      font-size: 12px;
+      font-weight: 600;
       line-height: 1.55;
-      text-transform: uppercase;
     }
 
     .bz-note-table td:first-child {

@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 }
 
 const { note, related } = Astro.props;
-const { Content } = await render(note);
+const { Content, headings } = await render(note);
 
 // 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>/<NoteLink>,无需逐篇 import。
 const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
@@ -50,6 +50,7 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
   coverAlt={note.data.coverAlt}
   path={`/notes/${note.id}/`}
   related={related}
+  headings={headings}
 >
   <Content components={mdxComponents} />
 </NoteLayout>

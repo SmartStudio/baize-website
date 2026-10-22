@@ -22,6 +22,7 @@ interface Props {
   coverAlt?: string;
   path: string;
   related?: CollectionEntry<'notes'>[];
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
 const {
@@ -40,7 +41,11 @@ const {
   coverAlt,
   path,
   related = [],
+  headings = [],
 } = Astro.props;
+// 目录只收 h2;少于 3 节不值得占一列,直接不出。
+const toc = headings.filter((h) => h.depth === 2);
+const showToc = toc.length >= 3;
 const base = import.meta.env.BASE_URL;
 const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
@@ -184,35 +189,65 @@ const cta = isApiArticle
   titleSuffix={isEnglish ? '· Baize Tech' : undefined}
   alternates={alternates}
 >
-  <article class="bz-rail-section">
-    <div class="bz-shell bz-note">
-      <p class="bz-eyebrow">{displayCategory} · {dateStr}</p>
-      <h1 class="bz-note__title">{title}</h1>
-      <p class="bz-product-lead">{description}</p>
+  <article class="bz-art">
+    <header class="bz-art__head">
+      <nav class="bz-art__crumbs" aria-label={isEnglish ? 'Breadcrumb' : '面包屑'}>
+        <a href={base}>{isEnglish ? 'Home' : '首页'}</a>
+        <span aria-hidden="true">/</span>
+        <a href={`${base}notes/`}>{isEnglish ? 'Notes' : '明理笔记'}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{isEnglish ? 'This note' : '本文'}</span>
+      </nav>
+      <p class="bz-art__chips"><span class="bz-art__chip">{displayCategory}</span></p>
+      <h1 class="bz-art__title">{title}</h1>
+      <p class="bz-art__lead">{description}</p>
+      <p class="bz-art__meta">
+        <span>{author}</span>
+        <time datetime={pubDate.toISOString()}>{dateStr}</time>
+      </p>
+    </header>
 
-      {cover && (
-        <figure class="bz-media bz-media--wide bz-note__cover">
-          <Image src={cover} alt={coverAlt ?? title} class="bz-media__img" widths={[760, 1040, 1560]} sizes="(max-width: 800px) 100vw, 1040px" loading="eager" />
+    {cover && (
+      <div class="bz-art__wide">
+        <figure class="bz-art__cover">
+          <Image src={cover} alt={coverAlt ?? title} class="bz-art__cover-img" widths={[760, 1120, 1680]} sizes="(max-width: 1184px) 100vw, 1120px" loading="eager" />
         </figure>
+      </div>
+    )}
+
+    <div class:list={['bz-art__wide', 'bz-art__grid', { 'bz-art__grid--toc': showToc }]}>
+      {showToc && (
+        <aside class="bz-art__toc" aria-label={isEnglish ? 'Contents' : '目录'}>
+          <p class="bz-art__toc-label">{isEnglish ? 'Contents' : '目录'}</p>
+          <ol>
+            {toc.map((h) => (
+              <li><a href={`#${h.slug}`} data-toc={h.slug}>{h.text}</a></li>
+            ))}
+          </ol>
+        </aside>
       )}
 
-      <div class="bz-note__body">
-        <slot />
-      </div>
-
-      <RelatedNotes notes={related} lang={lang} />
-
-      <div class="bz-note__cta">
-        <p class="bz-card__eyebrow">{cta.eyebrow}</p>
-        <h2 class="bz-note__cta-title">{cta.title}</h2>
-        <p class="bz-card__body">{cta.body}</p>
-        <div class="bz-note__cta-actions">
-          <a class="bz-button bz-button--primary" href={cta.primaryHref}>{cta.primaryLabel}</a>
-          <a class="bz-text-link" href={cta.secondaryHref}>{cta.secondaryLabel} <span class="bz-text-link__arrow">→</span></a>
+      <div class="bz-art__main">
+        <div class="bz-note__body">
+          <slot />
         </div>
+
+        <aside class="bz-art__cta" aria-label={cta.eyebrow}>
+          <div class="bz-art__cta-copy">
+            <p class="bz-art__cta-eyebrow">{cta.eyebrow}</p>
+            <p class="bz-art__cta-title">{cta.title}</p>
+            <p class="bz-art__cta-body">{cta.body}</p>
+          </div>
+          <div class="bz-art__cta-actions">
+            <a class="bz-art__pill" href={cta.primaryHref}>{cta.primaryLabel} →</a>
+            <a class="bz-art__cta-link" href={cta.secondaryHref}>{cta.secondaryLabel}</a>
+          </div>
+        </aside>
       </div>
     </div>
   </article>
+
+  <RelatedNotes notes={related} lang={lang} />
 
   <div id="bz-lightbox" class="bz-lightbox" role="dialog" aria-modal="true" aria-label={isEnglish ? 'View enlarged image' : '放大查看图片'} hidden>
     <button type="button" class="bz-lightbox__close" aria-label={isEnglish ? 'Close' : '关闭'}>✕</button>
@@ -262,80 +297,280 @@ const cta = isApiArticle
       if (e.key === 'Escape' && !overlay.hidden) close();
     });
   }
+
+  // 目录高亮当前所读的 h2。渐进增强:无 JS 时目录就是普通锚点列表。
+  const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.bz-art__toc a[data-toc]'));
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    const ids = new Set(tocLinks.map((a) => a.dataset.toc));
+    const setActive = (id: string) => tocLinks.forEach((a) => a.classList.toggle('is-active', a.dataset.toc === id));
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (hit && ids.has(hit.target.id)) setActive(hit.target.id);
+      },
+      { rootMargin: '0px 0px -70% 0px' },
+    );
+    ids.forEach((id) => {
+      const el = id ? document.getElementById(id) : null;
+      if (el) io.observe(el);
+    });
+  }
 </script>
 
 <style>
-  .bz-note {
-    max-width: var(--bz-read-max);
+  /* ---------- 白泽青 v3 文章骨架 ----------
+     头部 860 窄列;封面与正文网格 1120;正文阅读列 ≤720。 */
+  .bz-art {
+    --art-gutter: clamp(16px, 4vw, 32px);
+    padding-bottom: clamp(48px, 6vw, 80px);
   }
 
-  /* 说明文字(description)跟标题、正文共用同一条 760 阅读列。
-     全局 .bz-product-lead 为营销页设计,max-width 卡到 560px,比正文窄——在笔记里放开。 */
-  .bz-note .bz-product-lead {
-    max-width: none;
+  .bz-art__head {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 40px) var(--art-gutter);
   }
 
-  .bz-note__title {
-    margin: 20px 0 0;
+  .bz-art__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: clamp(24px, 4vw, 40px);
+    color: var(--bz-text-secondary);
+    font-size: 14px;
+  }
+
+  .bz-art__crumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .bz-art__crumbs a:hover {
+    color: var(--bz-accent-strong);
+  }
+
+  .bz-art__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 20px;
+  }
+
+  .bz-art__chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--bz-chip);
+    color: var(--bz-accent-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .bz-art__title {
+    margin: 0;
     color: var(--bz-text-primary);
     font-family: var(--bz-font-display);
-    font-size: clamp(30px, 4vw, 44px);
-    font-weight: 600;
+    font-size: clamp(30px, 4.6vw, 52px);
+    font-weight: 800;
     line-height: 1.2;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     text-wrap: pretty;
   }
 
-  .bz-note__body :global(p) {
-    margin: 0 0 22px;
+  .bz-art__lead {
+    margin: 24px 0 0;
+    color: var(--bz-ink-700);
+    font-size: clamp(17px, 1.6vw, 19px);
+    line-height: 1.7;
+  }
+
+  .bz-art__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
+    margin: 24px 0 0;
     color: var(--bz-text-secondary);
-    font-size: 16px;
-    line-height: 1.85;
+    font-size: 14px;
+  }
+
+  .bz-art__meta span::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: var(--bz-accent);
+    vertical-align: 1px;
+  }
+
+  .bz-art__wide {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 var(--art-gutter);
+  }
+
+  .bz-art__cover {
+    margin: 0;
+  }
+
+  .bz-art__cover-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    background: var(--bz-dark);
+  }
+
+  .bz-art__grid {
+    padding-top: clamp(40px, 5vw, 64px);
+  }
+
+  .bz-art__main {
+    max-width: 720px;
+    min-width: 0;
+    margin: 0 auto;
+  }
+
+  .bz-art__toc {
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .bz-art__grid--toc {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 720px);
+      justify-content: space-between;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .bz-art__grid--toc .bz-art__main {
+      margin: 0;
+    }
+
+    .bz-art__toc {
+      display: block;
+      position: sticky;
+      top: 96px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    /* 有目录时正文列不再居中,wide/full 图收回列宽,免得盖住目录 */
+    .bz-art__grid--toc :global(.bz-media--wide),
+    .bz-art__grid--toc :global(.bz-media--full) {
+      left: auto;
+      transform: none;
+      width: 100%;
+    }
+  }
+
+  .bz-art__toc-label {
+    margin: 0 0 12px;
+    color: var(--bz-text-secondary);
+    font-weight: 600;
+  }
+
+  .bz-art__toc ol {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bz-art__toc a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: var(--bz-text-secondary);
+    line-height: 1.5;
+    text-decoration: none;
+    transition: background var(--bz-transition-fast), color var(--bz-transition-fast);
+  }
+
+  .bz-art__toc a:hover {
+    color: var(--bz-text-primary);
+  }
+
+  .bz-art__toc a.is-active {
+    background: var(--bz-chip);
+    color: var(--bz-accent-strong);
+    font-weight: 600;
+  }
+
+  .bz-art__toc a:focus-visible,
+  .bz-art__crumbs a:focus-visible,
+  .bz-art__pill:focus-visible,
+  .bz-art__cta-link:focus-visible {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* ---------- 正文排版 ---------- */
+  .bz-note__body :global(p) {
+    margin: 0 0 24px;
+    color: var(--bz-ink-700);
+    font-size: 17px;
+    line-height: 1.9;
   }
 
   .bz-note__body :global(h2) {
-    margin: 44px 0 16px;
+    margin: 56px 0 16px;
     color: var(--bz-text-primary);
     font-family: var(--bz-font-display);
-    font-size: 24px;
-    font-weight: 650;
+    font-size: clamp(23px, 2.4vw, 28px);
+    font-weight: 800;
     line-height: 1.35;
+    letter-spacing: -0.01em;
+    scroll-margin-top: 96px;
+  }
+
+  .bz-note__body > :global(h2:first-child) {
+    margin-top: 0;
   }
 
   .bz-note__body :global(h3) {
-    margin: 34px 0 14px;
+    margin: 36px 0 12px;
     color: var(--bz-text-primary);
-    font-size: 19px;
-    font-weight: 650;
+    font-size: 20px;
+    font-weight: 700;
     line-height: 1.4;
+    scroll-margin-top: 96px;
   }
 
   .bz-note__body :global(ul),
   .bz-note__body :global(ol) {
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     padding-left: 22px;
-    color: var(--bz-text-secondary);
-    font-size: 16px;
-    line-height: 1.85;
+    color: var(--bz-ink-700);
+    font-size: 17px;
+    line-height: 1.9;
+  }
+
+  .bz-note__body :global(li::marker) {
+    color: var(--bz-accent-strong);
+  }
+
+  .bz-note__body :global(strong) {
+    color: var(--bz-text-primary);
   }
 
   .bz-note__body :global(a) {
     color: var(--bz-accent-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
   }
 
-  /* ---------- Cover hero ---------- */
-  .bz-note__cover {
-    margin-top: clamp(28px, 4vw, 44px);
-    margin-bottom: 0;
-  }
-
-  /* ---------- Rich media: figures / video / galleries ----------
-     Shared by the MDX components (Figure/Video/Figures) and the cover.
-     Global on purpose: the cover figure lives outside .bz-note__body.
-     wide/full break out symmetrically around the reading column, clamped
-     to the page gutters so they never trigger horizontal overflow. */
+  /* ---------- Rich media ----------
+     Global on purpose: shared by Figure/Video/Figures MDX components. */
   :global(.bz-media) {
-    margin: clamp(28px, 4vw, 44px) 0;
+    margin: clamp(32px, 4vw, 44px) 0;
   }
 
   :global(.bz-media__img),
@@ -343,7 +578,8 @@ const cta = isApiArticle
     display: block;
     width: 100%;
     height: auto;
-    background: var(--bz-paper-100);
+    border-radius: 20px;
+    background: var(--bz-soft);
   }
 
   :global(.bz-media--border .bz-media__img),
@@ -367,10 +603,9 @@ const cta = isApiArticle
   }
 
   :global(.bz-media--full) {
-    width: min(var(--bz-page-max), calc(100vw - var(--bz-page-gutter) * 2));
+    width: min(1120px, calc(100vw - var(--bz-page-gutter) * 2));
   }
 
-  /* bleed = 贴视口两边的满宽大图;图注收回阅读列宽居中,不跟着拉到 100vw */
   :global(.bz-media--bleed) {
     position: relative;
     left: 50%;
@@ -379,8 +614,13 @@ const cta = isApiArticle
     max-width: 100vw;
   }
 
+  :global(.bz-media--bleed .bz-media__img),
+  :global(.bz-media--bleed .bz-media__video) {
+    border-radius: 0;
+  }
+
   :global(.bz-media--bleed .bz-figcap) {
-    max-width: var(--bz-read-max);
+    max-width: 720px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 var(--bz-page-gutter);
@@ -389,7 +629,7 @@ const cta = isApiArticle
   :global(.bz-figcap) {
     margin: 12px 0 0;
     color: var(--bz-text-muted);
-    font-size: var(--bz-type-caption-size);
+    font-size: 14px;
     line-height: 1.55;
     text-align: center;
   }
@@ -424,34 +664,38 @@ const cta = isApiArticle
 
   /* ---------- Callout ---------- */
   :global(.bz-callout) {
-    margin: clamp(24px, 3.5vw, 36px) 0;
-    border: 1px solid var(--bz-border-subtle);
-    border-left: 3px solid var(--bz-border-strong);
-    background: var(--bz-bg-alt);
-    padding: 18px 20px;
+    margin: 32px 0;
+    border-left: 4px solid var(--bz-accent);
+    border-radius: 0 16px 16px 0;
+    background: var(--bz-soft);
+    padding: 22px 26px;
   }
 
-  :global(.bz-callout--tip) {
-    border-left-color: var(--bz-accent);
+  :global(.bz-callout--note) {
+    border-left-color: var(--bz-on-dark-muted);
+    background: var(--bz-gray-100);
   }
 
   :global(.bz-callout--warning) {
-    border-left-color: var(--bz-orange-ink);
-    background: var(--bz-orange-100);
+    border-left-color: var(--bz-dark);
+    background: var(--bz-chip);
   }
 
   :global(.bz-callout__title) {
     margin: 0 0 6px;
-    color: var(--bz-text-primary);
-    font-family: var(--bz-font-mono);
-    font-size: var(--bz-type-caption-size);
+    color: var(--bz-accent-strong);
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
-  /* Callout paragraphs inherit body-text styling; only trim outer margins.
-     Scoped under .bz-note__body to out-specify the global :global(p) rule. */
+  :global(.bz-callout--warning .bz-callout__title) {
+    color: var(--bz-dark);
+  }
+
+  .bz-note__body :global(.bz-callout__body p) {
+    color: var(--bz-text-primary);
+  }
+
   .bz-note__body :global(.bz-callout__body > :first-child) {
     margin-top: 0;
   }
@@ -460,12 +704,13 @@ const cta = isApiArticle
     margin-bottom: 0;
   }
 
-  /* ---------- Code blocks (Shiki) + inline code + blockquote ---------- */
+  /* ---------- Code + blockquote ---------- */
   .bz-note__body :global(pre) {
-    margin: clamp(24px, 3.5vw, 32px) 0;
+    margin: 32px 0;
     padding: 18px 20px;
     border: 1px solid var(--bz-border-subtle);
-    background: var(--bz-paper-100) !important;
+    border-radius: 16px;
+    background: var(--bz-gray-100) !important;
     overflow-x: auto;
     font-size: 13.5px;
     line-height: 1.7;
@@ -478,17 +723,17 @@ const cta = isApiArticle
 
   .bz-note__body :global(:not(pre) > code) {
     font-family: var(--bz-font-mono);
-    font-size: 0.9em;
-    background: var(--bz-paper-100);
-    border: 1px solid var(--bz-border-subtle);
-    padding: 1px 5px;
+    font-size: 0.88em;
+    background: var(--bz-soft);
+    border-radius: 6px;
+    padding: 2px 6px;
     color: var(--bz-ink-800);
   }
 
   .bz-note__body :global(blockquote) {
-    margin: clamp(24px, 3.5vw, 32px) 0;
+    margin: 32px 0;
     padding-left: 20px;
-    border-left: 3px solid var(--bz-accent);
+    border-left: 4px solid var(--bz-accent);
     color: var(--bz-text-primary);
   }
 
@@ -497,37 +742,33 @@ const cta = isApiArticle
   }
 
   /* ---------- Markdown tables ----------
-     Tables in notes carry decisions, not decoration. The header is a compact
-     orientation bar; rows have enough air to scan. On a narrow screen the
-     table remains a real table and scrolls inside its own boundary instead of
-     forcing the entire page sideways. */
+     窄屏下表格在自身边界内横向滚动,不把整页撑出横向滚动。 */
   .bz-note__body :global(table) {
     width: 100%;
-    margin: clamp(28px, 4vw, 40px) 0;
-    border: 1px solid var(--bz-border-strong);
+    margin: 36px 0;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 16px;
     border-collapse: separate;
     border-spacing: 0;
+    overflow: hidden;
     background: var(--bz-bg-card);
-    color: var(--bz-text-secondary);
-    font-size: 14px;
+    color: var(--bz-ink-700);
+    font-size: 14.5px;
     line-height: 1.65;
   }
 
   .bz-note__body :global(th),
   .bz-note__body :global(td) {
-    padding: 15px 18px;
+    padding: 14px 18px;
     text-align: left;
     vertical-align: top;
   }
 
   .bz-note__body :global(th) {
-    border-bottom: 1px solid var(--bz-ink-900);
-    background: var(--bz-ink-900);
-    color: var(--bz-white);
-    font-family: var(--bz-font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    background: var(--bz-dark);
+    color: var(--bz-on-dark);
+    font-size: 13px;
+    font-weight: 600;
     line-height: 1.45;
   }
 
@@ -535,13 +776,16 @@ const cta = isApiArticle
     border-bottom: 1px solid var(--bz-border-subtle);
   }
 
-  .bz-note__body :global(th + th),
   .bz-note__body :global(td + td) {
     border-left: 1px solid var(--bz-border-subtle);
   }
 
+  .bz-note__body :global(th + th) {
+    border-left: 1px solid var(--bz-on-dark-line);
+  }
+
   .bz-note__body :global(tbody tr:nth-child(even)) {
-    background: var(--bz-paper-100);
+    background: var(--bz-soft);
   }
 
   .bz-note__body :global(tbody tr:last-child td) {
@@ -557,11 +801,9 @@ const cta = isApiArticle
   @media (max-width: 640px) {
     .bz-note__body :global(table) {
       display: block;
-      width: 100%;
       max-width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      scrollbar-color: var(--bz-gray-300) transparent;
     }
 
     .bz-note__body :global(th),
@@ -576,7 +818,86 @@ const cta = isApiArticle
     }
   }
 
-  /* ---------- Lightbox (click-to-zoom) ---------- */
+  /* ---------- 服务 CTA 卡 ---------- */
+  .bz-art__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 28px;
+    margin-top: 56px;
+    padding: clamp(24px, 4vw, 36px);
+    border-radius: 24px;
+    background: var(--bz-dark);
+    color: var(--bz-on-dark);
+  }
+
+  .bz-art__cta-copy {
+    flex: 1 1 300px;
+  }
+
+  .bz-art__cta-eyebrow {
+    margin: 0 0 8px;
+    color: var(--bz-accent);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .bz-art__cta-title {
+    margin: 0;
+    color: var(--bz-on-dark);
+    font-size: clamp(19px, 2vw, 22px);
+    font-weight: 700;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+
+  .bz-art__cta-body {
+    margin: 8px 0 0;
+    color: var(--bz-on-dark-2);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .bz-art__cta-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .bz-art__pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: filter var(--bz-transition-fast);
+  }
+
+  .bz-art__pill:hover {
+    filter: brightness(1.08);
+  }
+
+  .bz-art__cta-link {
+    color: var(--bz-on-dark-muted);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .bz-art__cta-link:hover {
+    color: var(--bz-on-dark);
+  }
+
+  /* ---------- Lightbox ---------- */
   .bz-lightbox {
     position: fixed;
     inset: 0;
@@ -587,7 +908,7 @@ const cta = isApiArticle
     justify-content: center;
     gap: 16px;
     padding: clamp(24px, 5vw, 64px);
-    background: rgba(17, 24, 39, 0.92);
+    background: rgba(6, 42, 37, 0.94);
     cursor: zoom-out;
   }
 
@@ -601,15 +922,16 @@ const cta = isApiArticle
     width: auto;
     height: auto;
     object-fit: contain;
-    background: var(--bz-paper-100);
+    border-radius: 12px;
+    background: var(--bz-soft);
     cursor: default;
   }
 
   .bz-lightbox__cap {
     margin: 0;
     max-width: min(760px, 92vw);
-    color: rgba(255, 255, 255, 0.82);
-    font-size: var(--bz-type-caption-size);
+    color: var(--bz-on-dark-2);
+    font-size: 14px;
     line-height: 1.55;
     text-align: center;
   }
@@ -623,7 +945,8 @@ const cta = isApiArticle
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--bz-on-dark-line);
+    border-radius: 999px;
     background: transparent;
     color: #fff;
     font-size: 18px;
@@ -632,35 +955,11 @@ const cta = isApiArticle
   }
 
   .bz-lightbox__close:hover {
-    border-color: #fff;
+    border-color: var(--bz-accent);
   }
 
   .bz-lightbox__close:focus-visible {
     outline: 3px solid var(--bz-focus-ring);
     outline-offset: 2px;
-  }
-
-  .bz-note__cta {
-    margin-top: 56px;
-    border-top: 1px solid var(--bz-border-subtle);
-    padding-top: 40px;
-  }
-
-  .bz-note__cta-title {
-    margin: 10px 0 0;
-    color: var(--bz-text-primary);
-    font-family: var(--bz-font-display);
-    font-size: clamp(20px, 2.4vw, 28px);
-    font-weight: 600;
-    line-height: 1.35;
-    text-wrap: balance;
-  }
-
-  .bz-note__cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    margin-top: 24px;
   }
 </style>

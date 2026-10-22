@@ -12,34 +12,29 @@ const base = import.meta.env.BASE_URL;
   path="/404"
   noindex
 >
-  <section class="nf">
-    <p class="bz-eyebrow">404</p>
-    <h1 class="bz-product-title">这里没有页面</h1>
-    <p class="bz-product-lead">链接可能已经失效，或者地址打错了一个字。</p>
-    <div class="nf__actions">
-      <a class="bz-button bz-button--primary bz-button--lg" href={base}>回到首页</a>
-      <a class="bz-button bz-button--secondary bz-button--lg" href={`${base}notes/`}>读明理笔记</a>
+  <section class="wrap">
+    <div class="nf">
+      <p class="badge"><span class="dot"></span>404</p>
+      <h1>这里没有页面。</h1>
+      <p class="nf__sub">链接可能已经失效，或者地址打错了一个字。</p>
+      <div class="nf__actions">
+        <a class="bz-button bz-button--primary bz-button--lg pill" href={base}>回到首页</a>
+        <a class="bz-button bz-button--secondary bz-button--lg pill" href={`${base}notes/`}>读明理笔记</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .nf {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: var(--bz-space-16);
-    min-height: 52vh;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: var(--bz-space-64) var(--bz-space-24);
-  }
-
-  .nf__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--bz-space-12);
-    margin-top: var(--bz-space-16);
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 80px 32px 96px; }
+  .nf { background: var(--bz-soft); border-radius: 28px; padding: clamp(40px, 7vw, 96px) clamp(24px, 6vw, 80px); min-height: 44vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 24px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 600; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(40px, 5vw, 68px); line-height: 1.12; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  .nf__sub { margin: 20px 0 0; font-size: 19px; color: var(--bz-ink-700); }
+  .nf__actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .pill { border-radius: 999px; }
+  @media (max-width: 767px) {
+    .wrap { padding: 48px 16px 64px; }
   }
 </style>
