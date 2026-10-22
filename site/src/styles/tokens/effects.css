@@ -1,22 +1,23 @@
 :root {
   /* ============================================================
      BAIZE DESIGN SYSTEM · EFFECTS
-     Sharp corners everywhere (Sakana buttons measured at radius 0).
-     Depth comes from background steps + hairlines, not shadow.
+     白泽青 v2.0（design-system.md §5）：按钮/标签胶囊，卡片 20px，
+     小色块 12px。静止无阴影，hover 上浮 3px + shadow-soft。
+     radius-8 被按钮与输入框共用，故取胶囊值。
      ============================================================ */
   --bz-radius-0: 0px;
-  --bz-radius-4: 0px;
-  --bz-radius-8: 0px;
-  --bz-radius-16: 0px;
+  --bz-radius-4: 12px;
+  --bz-radius-8: 999px;
+  --bz-radius-16: 20px;
   --bz-radius-pill: 999px;      /* utility chips only */
   --bz-border: 1px solid var(--bz-border-subtle);
   --bz-border-strong-line: 1px solid var(--bz-border-strong);
 
   /* Elevation — used sparingly */
   --bz-shadow-none: none;
-  --bz-shadow-soft: 0 8px 28px rgba(17, 24, 39, 0.05);
-  --bz-shadow-pop: 0 16px 44px rgba(17, 24, 39, 0.08);
-  --bz-shadow-mark: 0 24px 60px rgba(7, 30, 91, 0.09);
+  --bz-shadow-soft: 0 12px 32px rgba(10, 31, 28, 0.08);
+  --bz-shadow-pop: 0 16px 44px rgba(10, 31, 28, 0.1);
+  --bz-shadow-mark: 0 24px 60px rgba(6, 42, 37, 0.12);
 
   /* Motion */
   --bz-ease: cubic-bezier(0.2, 0, 0, 1);

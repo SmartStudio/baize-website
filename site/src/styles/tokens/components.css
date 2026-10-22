@@ -105,6 +105,11 @@ a {
 }
 
 .bz-button--primary {
+  background: var(--bz-accent);
+  color: var(--bz-on-accent);
+}
+
+.bz-button--dark {
   background: var(--bz-action-primary);
   color: #FFFFFF;
 }
@@ -144,6 +149,10 @@ a {
 
 @media (hover: hover) {
   .bz-button--primary:hover {
+    background: #3BEAB4;
+  }
+
+  .bz-button--dark:hover {
     background: var(--bz-action-primary-hover);
   }
 
