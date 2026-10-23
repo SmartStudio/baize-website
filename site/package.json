@@ -13,7 +13,9 @@
     "check": "astro check",
     "tokens:push": "node scripts/tokens-push.mjs",
     "favicon:gen": "node scripts/gen-favicon.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:i18n": "node scripts/check-i18n-dist.mjs dist",
+    "i18n:status": "node scripts/i18n-status.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.3",
