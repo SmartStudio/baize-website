@@ -8,14 +8,14 @@ ctaVariant: consulting
 author: 白泽明理
 draft: false
 cover: ./media/agent-eval-suite-pass-rate-variance-cover.png
-coverAlt: 白瓷机器人拿着同一张任务卡在测试台前反复运行，台上一排相同的试验杯有的装满橙色、有的空着，旁边一个人在逐个比对
+coverAlt: 一条椭圆测试跑道放在圆形底座上，一块方块沿跑道绕圈，绿色光迹绕了好几圈，跑道上一道检查门亮着绿光
 ---
 
 Agent 上线前，用一组固定的真实业务任务做 Agent 评测，每个任务跑多次，报通过率、单次成本、延迟和波动，再写一份「它还做不到什么」的失败清单。只跑一次的结果不能拿来做上线决定。
 
 import noteFig from './media/agent-eval-suite-pass-rate-variance-fig.png'
 
-<Figure src={noteFig} alt="左边是一组固定任务卡，每张旁边叠着多次运行的记录；右边是一排液位高低不一的杯子，箭头标出最高与最低之间的差距" caption="图：「Agent 评测」｜「通过率方差」" width="wide" border />
+<Figure src={noteFig} alt="一块台面上从左到右四站，用绿色箭头相连：一叠固定任务卡、同一张卡复制成一排托盘、四只液位高低不一的烧杯和标出高低差的括号、一块部分行标了绿点的清单夹板" caption="图：「固定任务集」｜「多跑几次」｜「通过率方差」｜「失败清单」" width="wide" border />
 
 ## 任务集怎么挑：从真实业务里选，有明确验收标准
 
