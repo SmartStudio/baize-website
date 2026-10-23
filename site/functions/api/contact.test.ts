@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { onRequestPost } from './contact';
+import { mapFields } from './_feishu';
 
 const env = {
   FEISHU_APP_ID: 'id',
@@ -59,5 +60,24 @@ describe('onRequestPost', () => {
     const j = await res.json();
     expect(j.ok).toBe(false);
     expect(JSON.stringify(j)).not.toContain('feishu');
+  });
+
+  it('英文缺字段：报错是英文', async () => {
+    const res = await onRequestPost(ctx({ company: 'Acme', lang: 'en' }));
+    expect(res.status).toBe(400);
+    expect(((await res.json()) as any).error).toBe('Missing required fields.');
+  });
+
+  it('英文写入失败：报错是英文且含邮箱', async () => {
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(new Response(JSON.stringify({ code: 0, tenant_access_token: 't' })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ code: 91403, msg: 'Forbidden' })));
+    const res = await onRequestPost(ctx({ name: 'Ann', contact: 'a@b.com', problem: 'x', lang: 'en', _hp: '' }));
+    expect(((await res.json()) as any).error).toBe('Submission failed. Please try again later or email contacts@fxai.ai.');
+  });
+
+  it('mapFields 写入语言列', () => {
+    expect(mapFields({ name: 'a', company: '', contact: 'c', problem: 'p', service: '', lang: 'en' })['语言']).toBe('en');
+    expect(mapFields({ name: 'a', company: '', contact: 'c', problem: 'p', service: '' })['语言']).toBe('zh-CN');
   });
 });

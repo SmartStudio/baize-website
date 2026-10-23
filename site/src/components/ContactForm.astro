@@ -1,51 +1,111 @@
 ---
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'zh-CN' } = Astro.props;
+
+// 英文选项值与 4 项服务一一对应;中文选项值是飞书表里已有的取值,不改。
+const COPY = {
+  'zh-CN': {
+    title: '预约 30 分钟免费诊断',
+    intro: '告诉我们团队现状和最想解决的问题，我们判断适合从哪里开始。',
+    name: '姓名',
+    company: '公司 / 团队',
+    contact: '联系方式',
+    contactType: 'text',
+    service: '感兴趣的服务',
+    options: [
+      ['诊断', '预约 AI 落地诊断'],
+      ['培训', '企业培训合作'],
+      ['中转站/网关', '中转站 / 网关服务咨询'],
+      ['Loop/交付', 'Loop / 端到端交付路径共创'],
+    ],
+    problem: '当前最想解决的问题',
+    submit: '提交咨询需求',
+  },
+  en: {
+    title: 'Book a free 30-minute call',
+    intro: 'Tell us how your team works today and the problem you most want solved. We will suggest where to start.',
+    name: 'Name',
+    company: 'Company / team',
+    contact: 'Email',
+    contactType: 'email',
+    service: 'Service you are interested in',
+    options: [
+      ['Consulting', 'AI transformation consulting'],
+      ['Training', 'Team AI training'],
+      ['FDE', 'Forward deployed engineering'],
+      ['Tools', 'Internal tools and product support'],
+    ],
+    problem: 'The problem you most want to solve',
+    submit: 'Send request',
+  },
+} as const;
+const t = COPY[lang];
 ---
-<form class="bz-contact-form" id="contact-form">
+<form class="bz-contact-form" id="contact-form" data-lang={lang}>
   <div class="cf-head">
-    <h2>预约 30 分钟免费诊断</h2>
-    <p>告诉我们团队现状和最想解决的问题，我们判断适合从哪里开始。</p>
+    <h2>{t.title}</h2>
+    <p>{t.intro}</p>
   </div>
   <div class="bz-field">
-    <label for="cf-name">姓名</label>
+    <label for="cf-name">{t.name}</label>
     <input id="cf-name" name="name" autocomplete="name" required />
   </div>
   <div class="bz-field">
-    <label for="cf-company">公司 / 团队</label>
+    <label for="cf-company">{t.company}</label>
     <input id="cf-company" name="company" autocomplete="organization" />
   </div>
   <div class="bz-field">
-    <label for="cf-contact">联系方式</label>
-    <input id="cf-contact" name="contact" autocomplete="email" required />
+    <label for="cf-contact">{t.contact}</label>
+    <input id="cf-contact" name="contact" type={t.contactType === 'email' ? 'email' : undefined} autocomplete="email" required />
   </div>
   <div class="bz-field">
-    <label for="cf-service">感兴趣的服务</label>
+    <label for="cf-service">{t.service}</label>
     <select id="cf-service" name="service">
-      <option value="诊断">预约 AI 落地诊断</option>
-      <option value="培训">企业培训合作</option>
-      <option value="中转站/网关">中转站 / 网关服务咨询</option>
-      <option value="Loop/交付">Loop / 端到端交付路径共创</option>
+      {t.options.map(([value, label]) => <option value={value}>{label}</option>)}
     </select>
   </div>
   <div class="bz-field">
-    <label for="cf-problem">当前最想解决的问题</label>
+    <label for="cf-problem">{t.problem}</label>
     <textarea id="cf-problem" name="problem" required></textarea>
   </div>
+  <input type="hidden" name="lang" value={lang} />
   <input name="_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
-  <button class="bz-button bz-button--primary bz-button--lg cf-submit" type="submit">提交咨询需求</button>
+  <button class="bz-button bz-button--primary bz-button--lg cf-submit" type="submit">{t.submit}</button>
   <p class="cf-status" data-status hidden aria-live="polite"></p>
 </form>
 <script>
+  // 状态提示按表单的 data-lang 取;服务端报错本身已按 body.lang 返回对应语言。
+  const MESSAGES = {
+    'zh-CN': {
+      sending: '提交中…',
+      ok: '已收到需求，我们会在 1-2 个工作日内联系你。',
+      failed: (error?: string) => '提交失败：' + (error || '请稍后重试'),
+      network: '网络异常，请稍后重试或直接邮件联系。',
+    },
+    en: {
+      sending: 'Sending…',
+      ok: 'Thanks. We will reply within 1 to 2 business days.',
+      failed: (error?: string) => error || 'Submission failed. Please try again later.',
+      network: 'Network error. Please try again later or email us directly.',
+    },
+  };
+
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const status = form?.querySelector('[data-status]') as HTMLParagraphElement | null;
   const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
   const API = import.meta.env.PUBLIC_FORM_ENDPOINT || '/api/contact';
+  const m = MESSAGES[form?.dataset.lang === 'en' ? 'en' : 'zh-CN'];
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!status) return;
     const body = Object.fromEntries(new FormData(form).entries());
     status.hidden = false;
-    status.textContent = '提交中…';
+    status.textContent = m.sending;
     if (submitBtn) submitBtn.disabled = true;
     try {
       const r = await fetch(API, {
@@ -53,13 +113,11 @@
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const j = await r.json();
-      status.textContent = j.ok
-        ? '已收到需求，我们会在 1-2 个工作日内联系你。'
-        : '提交失败：' + (j.error || '请稍后重试');
+      const j = (await r.json()) as { ok?: boolean; error?: string };
+      status.textContent = j.ok ? m.ok : m.failed(j.error);
       if (j.ok) form.reset();
     } catch {
-      status.textContent = '网络异常，请稍后重试或直接邮件联系。';
+      status.textContent = m.network;
     } finally {
       if (submitBtn) submitBtn.disabled = false;
     }

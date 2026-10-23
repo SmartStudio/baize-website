@@ -4,10 +4,13 @@ export interface ContactBody {
   contact: string;
   problem: string;
   service: string;
+  /** 提交表单的页面语言;旧客户端不带时按中文处理。 */
+  lang?: 'zh-CN' | 'en';
   _hp?: string;
 }
 
-// key 必须与飞书多维表格表头完全一致（表头：姓名 / 公司 / 联系方式 / 感兴趣的服务 / 当前最想解决的问题）。
+// key 必须与飞书多维表格表头完全一致（表头：姓名 / 公司 / 联系方式 / 感兴趣的服务 / 当前最想解决的问题 / 语言）。
+// 「语言」列要先在表里建好再上线,否则每次写表都会因字段不存在而失败。
 // 若表格里「感兴趣的服务」是「多选」字段类型，需改成数组：'感兴趣的服务': b.service ? [b.service] : []
 export function mapFields(b: ContactBody): Record<string, string> {
   return {
@@ -16,6 +19,7 @@ export function mapFields(b: ContactBody): Record<string, string> {
     '联系方式': b.contact ?? '',
     '感兴趣的服务': b.service ?? '',
     '当前最想解决的问题': b.problem ?? '',
+    '语言': b.lang === 'en' ? 'en' : 'zh-CN',
   };
 }
 
