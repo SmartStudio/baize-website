@@ -52,88 +52,132 @@ const breadcrumbLd = {
   path="/notes/"
   jsonLd={[blogLd, breadcrumbLd]}
 >
-  <section class="bz-rail-section">
-    <div class="bz-shell">
-      <header class="notes-head">
-        <p class="bz-eyebrow">Baize Notes</p>
-        <h1 class="bz-product-title">明理笔记</h1>
-        <p class="bz-product-lead">关于 AI 接入、工程与落地的笔记，帮你把零散尝鲜变成可验证、可复用的组织能力。</p>
-      </header>
+  <section class="wrap lib-head">
+    <p class="eyebrow">明理笔记</p>
+    <h1>教程库</h1>
+    <p class="lead">关于 AI 接入、工程与落地的笔记，按话题筛选。共 {notes.length} 篇。</p>
 
-      <div class="bz-section-header">
-        <p class="bz-section-header__eyebrow">按话题筛选</p>
-      </div>
+    {/* 筛选项是真链接,不是纯 JS 按钮:
+        - 抓取器顺着它发现分类归档页(否则归档页只有 sitemap 能找到,近乎孤儿);
+        - 无 JS 时点击直接跳归档页,功能不丢;
+        - 有 JS 时拦下来做即时筛选,并把地址栏同步成归档页地址——刷新会真的落到
+          那一页,而内容与筛选结果一致,不会出现「URL 说 A、内容是 B」。 */}
+    <nav class="filter" aria-label="按分类筛选笔记">
+      <a class="chip is-active" href={`${base}notes/`} data-filter="all" aria-current="page">全部</a>
+      {liveCategories.map((c) => (
+        <a class="chip" href={`${base}notes/category/${categorySlug(c)}/`} data-filter={c}>{c}</a>
+      ))}
+    </nav>
+  </section>
 
-      {/* 筛选项是真链接,不是纯 JS 按钮:
-          - 抓取器顺着它发现分类归档页(否则归档页只有 sitemap 能找到,近乎孤儿);
-          - 无 JS 时点击直接跳归档页,功能不丢;
-          - 有 JS 时拦下来做即时筛选,并把地址栏同步成归档页地址——刷新会真的落到
-            那一页,而内容与筛选结果一致,不会出现「URL 说 A、内容是 B」。 */}
-      <nav class="bz-notes-filter" aria-label="按分类筛选笔记">
-        <a class="bz-badge bz-badge--vermilion" href={`${base}notes/`} data-filter="all" aria-current="page">全部</a>
-        {liveCategories.map((c) => (
-          <a class="bz-badge bz-badge--neutral" href={`${base}notes/category/${categorySlug(c)}/`} data-filter={c}>{c}</a>
-        ))}
-      </nav>
-
-      <div class="bz-notes-grid" id="notes-grid">
-        {notes.map((note) => (
-          <NoteCard
-            title={note.data.title}
-            description={note.data.description}
-            pubDate={note.data.pubDate}
-            category={note.data.category}
-            slug={note.id}
-            cover={note.data.cover}
-            coverAlt={note.data.coverAlt}
-            lang={note.data.lang}
-          />
-        ))}
-      </div>
-
-      <p class="bz-card__body" id="notes-empty" hidden>该分类暂时还没有笔记，欢迎先看看其他话题。</p>
+  <section class="wrap lib-grid">
+    <div class="grid" id="notes-grid">
+      {notes.map((note) => (
+        <NoteCard
+          title={note.data.title}
+          description={note.data.description}
+          pubDate={note.data.pubDate}
+          category={note.data.category}
+          slug={note.id}
+          cover={note.data.cover}
+          coverAlt={note.data.coverAlt}
+          lang={note.data.lang}
+        />
+      ))}
     </div>
+    <p class="empty" id="notes-empty" hidden>该分类暂时还没有笔记，欢迎先看看其他话题。</p>
   </section>
 </BaseLayout>
 
 <style>
-  .notes-head {
-    margin-bottom: clamp(32px, 5vw, 56px);
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
   }
-
-  .bz-notes-filter {
+  .lib-head {
+    padding-top: 56px;
+    padding-bottom: 32px;
+  }
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--bz-text-primary);
+  }
+  .lead {
+    margin: 12px 0 32px;
+    font-size: 18px;
+    color: var(--bz-ink-700);
+  }
+  .filter {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin: 24px 0 36px;
+    gap: 8px;
   }
-
-  .bz-notes-filter a {
-    border: none;
-    cursor: pointer;
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 999px;
+    background: var(--bz-white);
+    color: var(--bz-ink-700);
+    font-size: 15px;
+    font-weight: 500;
     text-decoration: none;
-    transition: color var(--bz-transition-fast), background-color var(--bz-transition-fast);
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
   }
-
-  .bz-notes-filter a:focus-visible {
+  .chip:hover {
+    border-color: var(--bz-ink-900);
+    color: var(--bz-text-primary);
+  }
+  .chip.is-active {
+    background: var(--bz-ink-900);
+    border-color: var(--bz-ink-900);
+    color: var(--bz-white);
+  }
+  .chip:focus-visible {
     outline: 3px solid var(--bz-focus-ring);
     outline-offset: 2px;
   }
-
-  .bz-notes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+  .lib-grid {
+    padding-top: 16px;
+    padding-bottom: 96px;
   }
-
-  #notes-empty {
-    margin-top: 32px;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .empty {
+    margin: 32px 0 0;
+    color: var(--bz-text-secondary);
+  }
+  @media (max-width: 640px) {
+    .wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .lib-head {
+      padding-top: 40px;
+    }
   }
 </style>
 
 <script>
   // 渐进增强:链接本身已经能用(直接跳分类归档页),这里把它升级成不刷新的即时筛选。
-  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.bz-notes-filter a'));
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.filter a'));
   const cards = Array.from(document.querySelectorAll<HTMLElement>('#notes-grid [data-category]'));
   const empty = document.getElementById('notes-empty');
 
@@ -149,8 +193,7 @@ const breadcrumbLd = {
         const active = l === link;
         l.toggleAttribute('aria-current', active);
         if (active) l.setAttribute('aria-current', 'page');
-        l.classList.toggle('bz-badge--vermilion', active);
-        l.classList.toggle('bz-badge--neutral', !active);
+        l.classList.toggle('is-active', active);
       });
 
       let visible = 0;

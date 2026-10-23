@@ -1,260 +1,188 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import mark from '../assets/baize-mark.png';
 
 const base = import.meta.env.BASE_URL;
 
-const services = [
-  { name: 'Codex 中转站搭建', desc: '给团队一个稳定、可控、可审计的 Codex 使用入口。' },
-  { name: 'LLM API 网关设计', desc: '团队所有 AI 调用的统一入口：鉴权、路由、限流、成本和审计一处管好。' },
-  { name: 'AI 研发流设计', desc: '把 AI 编程纳入需求、实现、测试、评审、文档的真实流程。' },
-  { name: 'Loop Engineering 设计', desc: '让 AI 像有经验的工程师一样，先自查再交付，每一轮都更准。' },
-  { name: '想法到产品端到端交付设计', desc: '一条从想法到可用产品、每步都能验收的路线图。' },
+type Item = { t: string; d: string; out: string };
+type Service = { id: string; n: string; t: string; lead: string; items: Item[] };
+
+const SERVICES: Service[] = [
+  {
+    id: 'consulting',
+    n: '01',
+    t: 'AI 转型咨询',
+    lead: '访谈各部门，排出改造优先级和验收口径。管理层拿到一份能拍板的清单。',
+    items: [
+      { t: '现状诊断', d: '访谈管理层、业务和技术团队，记录现在怎么用 AI、卡在哪一步。', out: '诊断报告 + 风险边界' },
+      { t: '流程优先级', d: '按收益、风险、改造成本给候选流程排序，选出第一条先改的流程。', out: '改造清单 + 推进节奏' },
+      { t: '验收口径', d: '每条流程写清改造前后用什么指标对比、谁来签字。', out: '验收标准 + 复盘模板' },
+    ],
+  },
+  {
+    id: 'training',
+    n: '02',
+    t: '企业 AI 培训',
+    lead: '按岗位授课，用学员自己的真实任务练习。课后每个团队留下可复用的 Skill。',
+    items: [
+      { t: '岗位课程', d: '管理层、业务、研发分开排课，内容对应各自每天的工作。', out: '形式 · 企业内训 / 随工工作坊' },
+      { t: 'AI 编程实训', d: '从工具使用推进到真实项目工作流：需求、实现、测试、评审。', out: '形式 · 项目制练习' },
+      { t: 'Skills 沉淀', d: '把团队规范、业务经验写成 AI Skills，留在你的组织里。', out: '输出 · Skills / SOP / 上下文' },
+    ],
+  },
+  {
+    id: 'fde',
+    n: '03',
+    t: 'FDE 驻场开发',
+    lead: '工程师进你的团队，把 Agent 接进 CRM、ERP、HR。研发流程同步改造。',
+    items: [
+      { t: 'AI 研发流设计', d: '把 AI 编程纳入需求、实现、测试、评审、文档的日常流程。', out: '研发 SOP + 使用规范 + 验收标准' },
+      { t: 'Loop Engineering 设计', d: '让 AI 先自查再交付，每一轮按评估结果修正。', out: '回路架构 + 评估体系 + 可复用模板' },
+      { t: '想法到产品端到端交付', d: '从想法到可用产品排出路线图，每一步都能验收。', out: '交付蓝图 + 里程碑 + 验收标准' },
+    ],
+  },
+  {
+    id: 'tools',
+    n: '04',
+    t: '工具开发与产品支持',
+    lead: '定制内部工具，上线后持续维护。先从 AI 的统一接入做起。',
+    items: [
+      { t: 'Codex 中转站搭建', d: '给团队一个稳定、可控、可审计的 Codex 使用入口，不用各自找账号。', out: '接入架构 + 权限规则 + 落地指导' },
+      { t: 'LLM API 网关设计', d: '所有 AI 调用走统一入口：鉴权、路由、限流、成本和审计一处管理。', out: '网关蓝图 + 路由降级策略 + 审计设计' },
+      { t: '内部工具与维护', d: '按业务需要开发内部工具，上线后跟进问题和迭代。', out: '工具交付 + 运维支持' },
+    ],
+  },
 ];
-const jsonLd = services.map((s) => ({
+
+const STEPS = [
+  { k: '01', t: '先诊断', d: '30 分钟免费沟通，确认现状和第一条要改的流程。' },
+  { k: '02', t: '给方案', d: '交付架构、SOP 和验收标准，管理层据此决定是否推进。' },
+  { k: '03', t: '带落地', d: '培训、驻场或工具开发，按里程碑验收，方法沉淀成 Skills。' },
+];
+
+const jsonLd = SERVICES.map((s) => ({
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: s.name,
-  description: s.desc,
+  name: s.t,
+  description: s.lead,
   provider: { '@type': 'Organization', name: '白泽明理' },
 }));
 ---
 
 <BaseLayout
-  title="企业 AI 提效，不止是买工具"
-  description="白泽五项服务围绕企业 AI 提效与经营流程重塑：从安全接入、工程化研发到端到端产品交付，帮助企业形成可验证、可复用的组织效率。"
+  title="服务｜AI 转型咨询、企业 AI 培训、FDE 驻场开发与工具开发"
+  description="白泽明理四项服务：AI 转型咨询排出改造优先级，企业 AI 培训按岗位授课，FDE 工程师驻场把 Agent 接进业务系统，工具开发覆盖中转站、LLM 网关与内部工具。"
   path="/services/"
   jsonLd={jsonLd}
 >
-  <section class="bz-product-hero">
-    <div class="bz-product-hero__grid">
-      <div class="bz-product-hero__copy">
-        <div class="bz-eyebrow">Formal eXplainable AI</div>
-        <h1 class="bz-product-title">企业 AI 提效，不止是买工具。</h1>
-        <p class="bz-product-lead">白泽明理帮助企业把 AI 嵌入经营、研发与交付流程。我们从业务目标出发，设计 AI 接入架构、流程重构方案、研发与运营 SOP、验收标准和推进节奏，让 AI 真正转化为增长、效率和可持续的组织能力。</p>
-        <div class="hero-actions">
-          <a class="bz-button bz-button--primary" href={`${base}contact/`}>预约 AI 落地诊断</a>
-          <a class="bz-button bz-button--secondary" href={`${base}method/`}>查看方法论</a>
+  <section class="hero wrap">
+    <p class="badge"><span class="dot"></span>四项服务 · 咨询 · 培训 · FDE · 工具</p>
+    <h1>从想清楚，<br />到 <em>跑起来</em>。</h1>
+    <p class="hero__sub">先找出最该改的流程，再教团队用 AI 干活，最后派工程师把 Agent 和工具接进你的系统。四项服务可以单独买，也可以按顺序接。</p>
+    <nav class="jump" aria-label="服务目录">
+      {SERVICES.map((s) => (
+        <a href={`#${s.id}`}><span>{s.n}</span>{s.t}</a>
+      ))}
+    </nav>
+  </section>
+
+  {SERVICES.map((s, i) => (
+    <section id={s.id} class={i % 2 === 0 ? 'soft' : ''}>
+      <div class="wrap sec svc">
+        <div class="svc__head">
+          <span class="svc__n">{s.n}</span>
+          <h2>{s.t}</h2>
+          <p class="svc__lead">{s.lead}</p>
+        </div>
+        <div class="items">
+          {s.items.map((it) => (
+            <article class="item">
+              <h3>{it.t}</h3>
+              <p>{it.d}</p>
+              <span class="item__out">{it.out}</span>
+            </article>
+          ))}
         </div>
       </div>
-      <div class="bz-product-hero__media">
-        <div class="media-panel">
-          <Image src={mark} alt="白泽明理 Baize Tech 标识" />
-        </div>
+    </section>
+  ))}
+
+  <section class="dark">
+    <div class="wrap sec">
+      <p class="eyebrow eyebrow--on-dark">怎么合作</p>
+      <h2>三步，每一步都能停</h2>
+      <div class="steps">
+        {STEPS.map((s) => (
+          <div class="step">
+            <span class="step__k">{s.k}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="bz-rail-section bz-rail-section--alt">
-    <div class="bz-rail-grid">
-      <aside>
-        <div class="bz-rail-label">Services</div>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div class="bz-home-intro">
-        <div>
-          <h2 class="rail-title">五项服务，一条从接入到经营提效的路径。</h2>
-          <p class="rail-lead">先把 AI 稳定可控地接进来，再把研发、运营和交付流程改造成可验证的 AI 工作流，最后把想法到产品的链路做成能验收、能复盘、能持续扩展的增长能力。</p>
-        </div>
-        <div class="bz-tier">
-          <div class="bz-tier__head">
-            <span class="bz-tier__step">01 · 接入 Access</span>
-            <h3 class="bz-tier__name">先把 AI 稳定、可控、可审计地接进来。</h3>
-          </div>
-          <div class="bz-cell-grid bz-cell-grid--3" aria-label="接入层服务">
-            <article class="bz-cell">
-              <div class="bz-cell__n">01</div>
-              <h3 class="bz-cell__t">Codex 中转站搭建</h3>
-              <p class="bz-cell__b">给团队一个稳定、可控、可审计的 Codex 使用入口，不用各自找账号。</p>
-              <div class="bz-cell__out">交付物 · 接入架构 + 权限规则 + 落地指导</div>
-            </article>
-            <article class="bz-cell">
-              <div class="bz-cell__n">02</div>
-              <h3 class="bz-cell__t">LLM API 网关设计</h3>
-              <p class="bz-cell__b">团队所有 AI 调用的统一入口：鉴权、路由、限流、成本和审计一处管好。</p>
-              <div class="bz-cell__out">交付物 · 网关蓝图 + 路由降级策略 + 审计设计</div>
-            </article>
-          </div>
-        </div>
-        <div class="bz-tier">
-          <div class="bz-tier__head">
-            <span class="bz-tier__step">02 · 工程 Engineering</span>
-            <h3 class="bz-tier__name">再把 AI 变成可迭代、可验证的工程能力。</h3>
-          </div>
-          <div class="bz-cell-grid bz-cell-grid--3" aria-label="工程层服务">
-            <article class="bz-cell">
-              <div class="bz-cell__n">03</div>
-              <h3 class="bz-cell__t">AI 研发流设计</h3>
-              <p class="bz-cell__b">把 AI 编程纳入需求、实现、测试、评审、文档的真实流程，而不是个人自由发挥。</p>
-              <div class="bz-cell__out">交付物 · 研发 SOP + 使用规范 + 验收标准</div>
-            </article>
-            <article class="bz-cell">
-              <div class="bz-cell__n">04</div>
-              <h3 class="bz-cell__t">Loop Engineering 设计</h3>
-              <p class="bz-cell__b">让 AI 像有经验的工程师一样，先自查再交付，每一轮都比上一轮更准。</p>
-              <div class="bz-cell__out">交付物 · 回路架构 + 评估体系 + 可复用模板</div>
-            </article>
-          </div>
-        </div>
-        <div class="bz-tier bz-tier--end">
-          <div class="bz-tier__head">
-            <span class="bz-tier__step">03 · 交付 Delivery</span>
-            <h3 class="bz-tier__name">最终把能力设计成真实产品与增长路径。</h3>
-          </div>
-          <div class="bz-cell-grid" aria-label="交付层服务">
-            <article class="bz-cell">
-              <div class="bz-cell__n">05</div>
-              <h3 class="bz-cell__t">想法到产品端到端交付设计</h3>
-              <p class="bz-cell__b">一条从想法到可用产品、每一步都能验收的路线图，把业务目标、AI 能力和团队执行节奏对齐。</p>
-              <div class="bz-cell__out">交付物 · 交付蓝图 + 里程碑 + 验收标准</div>
-            </article>
-          </div>
-        </div>
+  <section class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>先聊 30 分钟，<br />找出第一条该改的流程。</h2>
+        <p>不收费。也可以微信扫页脚二维码直接聊。</p>
       </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={`${base}contact/`}>预约咨询 →</a>
     </div>
   </section>
-
-  <section class="bz-rail-section">
-    <div class="bz-rail-grid">
-      <aside>
-        <div class="bz-rail-label">Support</div>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div class="bz-home-intro">
-        <div>
-          <h2 class="rail-title">支撑层：贯穿全程，不单列为主服务。</h2>
-          <p class="rail-lead">培训与 Skills 不是单独售卖的服务，而是咨询与交付过程里自然产生的能力与资产。它们贯穿五项服务，不作为并列主服务卡。</p>
-        </div>
-        <div class="bz-cell-grid bz-cell-grid--3" aria-label="支撑层">
-          <article class="bz-cell">
-            <div class="bz-cell__n">A</div>
-            <h3 class="bz-cell__t">AI 编程培训</h3>
-            <p class="bz-cell__b">随工工作坊与企业内训，帮个人和团队从工具使用升级到真实项目工作流，是低门槛的获客与赋能入口。</p>
-            <div class="bz-cell__out">形式 · 随工工作坊 / 企业内训 / 公开课</div>
-          </article>
-          <article class="bz-cell">
-            <div class="bz-cell__n">B</div>
-            <h3 class="bz-cell__t">Skills 与知识沉淀</h3>
-            <p class="bz-cell__b">把团队规范、业务经验与交付方法写成可复用的 AI Skills，作为工程服务的资产输出，留在你的组织里。</p>
-            <div class="bz-cell__out">输出 · 可复用资产（Skills / SOP / 上下文）</div>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bz-rail-section">
-    <div class="bz-rail-grid">
-      <aside>
-        <div class="bz-rail-label">Who</div>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div class="bz-home-intro">
-        <div>
-          <h2 class="rail-title">四类团队，从不同的一层进入同一条阶梯。</h2>
-          <p class="rail-lead">管理者看增长与风险，研发看规范与质量，小团队看低门槛起步，个体看持续学习。白泽把同一套方法，翻译成每类人各自的落点。</p>
-        </div>
-        <div class="bz-cell-grid bz-cell-grid--4" aria-label="适用受众">
-          <article class="bz-cell">
-            <div class="bz-cell__n">01</div>
-            <h3 class="bz-cell__t">企业管理者</h3>
-            <p class="bz-cell__b">关心 AI 是否真能提效、投入优先级与风险边界。从一次落地诊断看清方向。</p>
-            <div class="bz-cell__out">主入口 · 接入 · 交付</div>
-          </article>
-          <article class="bz-cell">
-            <div class="bz-cell__n">02</div>
-            <h3 class="bz-cell__t">研发负责人</h3>
-            <p class="bz-cell__b">AI 编程缺规范，质量、评审、测试和安全边界难管。用 SOP 把它纳入流程。</p>
-            <div class="bz-cell__out">主入口 · 接入 · 工程</div>
-          </article>
-          <article class="bz-cell">
-            <div class="bz-cell__n">03</div>
-            <h3 class="bz-cell__t">小团队负责人</h3>
-            <p class="bz-cell__b">人少必须靠 AI 提效，但不知从何起步。从最小可验证工作流开始。</p>
-            <div class="bz-cell__out">主入口 · 工程 · 交付</div>
-          </article>
-          <article class="bz-cell">
-            <div class="bz-cell__n">04</div>
-            <h3 class="bz-cell__t">个体开发者</h3>
-            <p class="bz-cell__b">想系统掌握 AI 编程、提升个人生产力。随工工作坊与明理笔记持续学习。</p>
-            <div class="bz-cell__out">主入口 · 培训 · 内容</div>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bz-rail-section bz-rail-section--alt">
-    <div class="bz-rail-grid">
-      <aside>
-        <div class="bz-rail-label">How</div>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div class="bz-home-intro">
-        <div>
-          <h2 class="rail-title">怎么合作：诊断经营流程，设计 AI 改造路径，陪团队落地。</h2>
-          <p class="rail-lead">白泽交付的是管理层能判断、业务团队能执行、技术团队能复核的改造方案。我们把方法、规范和验收标准沉淀成企业自己的资产，让效率提升留在组织内部。</p>
-        </div>
-        <div class="bz-proof-strip" aria-label="合作方式">
-          <div class="bz-proof-strip__item">
-            <div class="bz-proof-strip__k">01 / Diagnose</div>
-            <div class="bz-proof-strip__v">先诊断</div>
-            <p class="bz-proof-strip__b">看清团队现在怎么用 AI、卡在哪，给出落地优先级与风险边界。</p>
-          </div>
-          <div class="bz-proof-strip__item">
-            <div class="bz-proof-strip__k">02 / Design</div>
-            <div class="bz-proof-strip__v">给方案</div>
-            <p class="bz-proof-strip__b">交付架构、SOP、蓝图与规范，帮助管理层判断方向，业务和技术团队照着推进、复盘和迭代。</p>
-          </div>
-          <div class="bz-proof-strip__item">
-            <div class="bz-proof-strip__k">03 / Enable</div>
-            <div class="bz-proof-strip__v">带落地</div>
-            <p class="bz-proof-strip__b">陪跑指导团队执行，把有效方法沉淀成可复用的 Skills 与规范。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </BaseLayout>
 
 <style>
-  .media-panel {
-    display: grid;
-    min-height: 320px;
-    place-items: center;
-    border: 1px solid var(--bz-border-subtle);
-    background:
-      linear-gradient(var(--bz-grid-line-warm) 1px, transparent 1px),
-      linear-gradient(90deg, var(--bz-grid-line-warm) 1px, transparent 1px),
-      var(--bz-paper-0);
-    background-size: 32px 32px;
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  .sec { padding-top: 96px; padding-bottom: 96px; }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(40px, 5vw, 68px); line-height: 1.12; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  h1 em { font-style: normal; color: var(--bz-accent-strong); }
+  h2 { margin: 0 0 40px; font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.2; letter-spacing: -0.01em; }
+  .eyebrow { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--bz-accent-strong); }
+  .eyebrow--on-dark { color: var(--bz-accent); }
+  .pill { border-radius: 999px; }
+  .soft { background: var(--bz-soft); }
+  .dark { background: var(--bz-dark); color: #fff; }
+
+  .hero { padding-top: 80px; padding-bottom: 88px; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 28px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 500; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  .hero__sub { margin: 28px 0 0; max-width: 640px; font-size: 19px; color: var(--bz-ink-700); }
+  .jump { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .jump a { display: inline-flex; gap: 10px; align-items: center; padding: 10px 18px; border: 1px solid var(--bz-border-subtle); border-radius: 999px; color: var(--bz-text-primary); font-weight: 600; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+  .jump a:hover { border-color: var(--bz-accent); background: var(--bz-chip); }
+  .jump span { font-size: 13px; color: var(--bz-accent-strong); }
+
+  section[id] { scroll-margin-top: 72px; }
+  .svc { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; }
+  .svc__n { font-size: 14px; font-weight: 700; color: var(--bz-accent-strong); }
+  .svc__head h2 { margin: 12px 0 20px; }
+  .svc__lead { margin: 0; font-size: 18px; color: var(--bz-ink-700); }
+  .items { display: grid; gap: 16px; }
+  .item { background: var(--bz-bg-card); border: 1px solid var(--bz-border-subtle); border-radius: 20px; padding: 24px 28px; display: flex; flex-direction: column; gap: 8px; }
+  .item h3 { margin: 0; font-size: 20px; font-weight: 800; }
+  .item p { margin: 0; font-size: 15px; color: var(--bz-text-secondary); }
+  .item__out { align-self: flex-start; margin-top: 6px; padding: 4px 12px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 13px; font-weight: 600; }
+
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .step { background: var(--bz-dark-card); border-radius: 20px; padding: 28px; }
+  .step__k { font-size: 13px; color: var(--bz-accent); font-weight: 700; }
+  .step h3 { margin: 12px 0 8px; font-size: 22px; color: #fff; }
+  .step p { margin: 0; font-size: 15px; color: var(--bz-on-dark-2); }
+
+  .book-wrap { padding-top: 96px; padding-bottom: 96px; }
+  .book { background: var(--bz-accent); color: var(--bz-on-accent); border-radius: 28px; padding: 64px 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .book h2 { margin: 0; font-weight: 900; }
+  .book p { margin: 16px 0 0; font-size: 18px; opacity: 0.8; }
+
+  @media (max-width: 900px) {
+    .svc { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   }
-  .media-panel img {
-    display: block;
-    width: 180px;
-    height: auto;
-    filter: drop-shadow(0 18px 32px rgba(7, 30, 91, .1));
-  }
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 30px;
-  }
-  .rail-title {
-    margin: 0;
-    color: var(--bz-text-primary);
-    font-size: clamp(26px, 3vw, 36px);
-    line-height: 1.4;
-    font-weight: 700;
-  }
-  .rail-lead {
-    max-width: 680px;
-    margin: 20px 0 0;
-    color: var(--bz-text-secondary);
-    font-size: 16px;
-    line-height: 1.95;
+  @media (max-width: 767px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .sec, .book-wrap { padding-top: 64px; padding-bottom: 64px; }
+    .hero { padding-top: 48px; padding-bottom: 56px; }
+    .book { padding: 40px 24px; }
   }
 </style>

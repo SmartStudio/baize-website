@@ -1,124 +1,130 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+
+const NAME = [
+  { k: '白泽', t: '通万物之情', d: '先弄清团队真实在用 AI 做什么、卡在哪，再给方案。' },
+  { k: '明', t: '透明可解释', d: '每条建议写清依据和边界，团队自己能看懂、能复核。' },
+  { k: '理', t: '可验证方法', d: '先假设、后验证、再交付。结论能被重新推导一遍。' },
+];
+
+const VALUES = [
+  { n: '01', t: '解释清楚', d: '每个判断都有可追溯的依据。' },
+  { n: '02', t: '严谨落地', d: '先验证再交付，不为速度牺牲可靠性。' },
+  { n: '03', t: '安全可信', d: '权限、数据边界和使用规范排在交付速度前面。' },
+  { n: '04', t: '长期沉淀', d: '每次交付都留下团队可复用的 Skills 与 SOP。' },
+];
 ---
 <BaseLayout
   title="关于白泽"
   description="白泽明理帮助企业借助 AI 大力提效，重塑业务经营流程，把 AI 能力转化为可验证、可持续的组织效率。"
   path="/about/"
 >
-  <section class="bz-product-hero">
-    <div class="bz-product-hero__grid">
-      <div class="bz-product-hero__copy">
-        <p class="bz-eyebrow">关于白泽明理</p>
-        <h1 class="bz-product-title">白泽明理</h1>
-        <p class="bz-product-lead">
-          白泽通万物之情，是我们借用的名字；明理，是我们对自己的要求。明，是透明可解释；理，是数理逻辑与可验证方法。
-        </p>
+  <section class="hero wrap">
+    <p class="badge"><span class="dot"></span>关于白泽明理 · Formal eXplainable AI</p>
+    <h1>白泽明理</h1>
+    <p class="hero__sub">白泽是古代传说里能辨识万物的神兽。明，指透明可解释；理，指数理逻辑与可验证方法。这三个字是我们给自己定的工作要求。</p>
+  </section>
+
+  <section class="soft">
+    <div class="wrap sec">
+      <p class="eyebrow">品牌释名</p>
+      <h2>一个名字，三条要求</h2>
+      <div class="cards">
+        {NAME.map((x) => (
+          <article class="card">
+            <span class="card__k">{x.k}</span>
+            <h3>{x.t}</h3>
+            <p>{x.d}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="bz-rail-section">
-    <div class="bz-rail-grid">
-      <aside>
-        <p class="bz-rail-label">品牌释名</p>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div>
-        <div class="bz-section-header">
-          <p class="bz-section-header__eyebrow">为什么叫白泽明理</p>
-          <h2 class="bz-section-header__title">一个神兽的名字，两个工程要求</h2>
-          <p class="bz-section-header__body">
-            白泽是古代传说里能辨识万物、讲清楚事情原委的神兽。我们借用这个名字，不是讲故事，而是给自己提两个具体要求：明，要求每一步判断都可以被追问；理，要求每一个结论都经得起验证，而不是靠经验或运气。
-          </p>
-        </div>
-        <div class="bz-cell-grid bz-cell-grid--3" style="margin-top: 40px;">
-          <article class="bz-cell">
-            <p class="bz-cell__n">白泽</p>
-            <h3 class="bz-cell__t">通万物之情</h3>
-            <p class="bz-cell__b">先弄清楚一个团队真实在用 AI 做什么、卡在哪里，再谈方案，不预设答案。</p>
-          </article>
-          <article class="bz-cell">
-            <p class="bz-cell__n">明</p>
-            <h3 class="bz-cell__t">透明可解释</h3>
-            <p class="bz-cell__b">每一个建议都写清楚依据和边界，团队自己也能看懂、能复核，不是一个只能相信的黑箱。</p>
-          </article>
-          <article class="bz-cell">
-            <p class="bz-cell__n">理</p>
-            <h3 class="bz-cell__t">数理逻辑与可验证方法</h3>
-            <p class="bz-cell__b">用可检验的方法做判断，先假设、后验证、再交付，结论要能被重新推导一遍。</p>
-          </article>
-        </div>
+  <section class="wrap sec split">
+    <div>
+      <p class="eyebrow">我们是谁</p>
+      <h2>企业 AI Native 转型顾问</h2>
+    </div>
+    <div class="prose">
+      <p>白泽明理服务正在推进 AI 转型的企业。我们和管理层、业务与技术团队一起判断：AI 该进入哪些流程，哪些环节能明显提效，哪些能力要沉淀成团队自己的方法和系统。</p>
+      <p>交付物包括诊断报告、流程改造方案、AI 接入路径、研发与运营 SOP、验收标准和推进节奏。工作方式有四种：咨询、培训、FDE 驻场开发、工具开发与产品支持。</p>
+      <p>Formal eXplainable AI 是我们的技术口径。Formal 指形式化、可验证的方法；eXplainable 指过程和结论非技术人员也能看懂。</p>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap sec">
+      <p class="eyebrow eyebrow--on-dark">核心价值观</p>
+      <h2>四条工作原则</h2>
+      <div class="values">
+        {VALUES.map((v) => (
+          <div class="value">
+            <span class="value__n">{v.n}</span>
+            <h3>{v.t}</h3>
+            <p>{v.d}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="bz-rail-section bz-rail-section--alt">
-    <div class="bz-rail-grid">
-      <aside>
-        <p class="bz-rail-label">技术定义</p>
-        <div class="bz-rail-bar"></div>
-      </aside>
+  <section class="wrap book-wrap">
+    <div class="book">
       <div>
-        <div class="bz-section-header">
-          <p class="bz-section-header__eyebrow">Formal eXplainable AI</p>
-          <h2 class="bz-section-header__title">把「讲清楚」当作工程目标，而不是口号</h2>
-          <p class="bz-section-header__body">
-            Formal 对应形式化、可验证的方法，判断不靠感觉；eXplainable 对应过程和结论都能被非技术的人理解；AI 是我们介入团队工作流的具体对象，不是终点。合起来，Formal eXplainable AI 是我们给自己定的工作标准：接得住技术细节，也讲得清业务道理。
-          </p>
-        </div>
+        <h2>想知道 AI 该从哪个流程切入？</h2>
+        <p>先聊 30 分钟，不收费。</p>
       </div>
-    </div>
-  </section>
-
-  <section class="bz-rail-section">
-    <div class="bz-rail-grid">
-      <aside>
-        <p class="bz-rail-label">公司定位</p>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div>
-        <div class="bz-section-header">
-          <p class="bz-section-header__eyebrow">我们是谁</p>
-          <h2 class="bz-section-header__title">企业 AI 提效与经营流程重塑顾问</h2>
-          <p class="bz-section-header__body">
-            白泽明理面向正在推进 AI 转型的企业，帮助管理层和业务团队重新审视经营流程、组织协作与交付方式。我们的工作不是停留在工具推荐，而是从业务目标出发，判断 AI 应该进入哪些关键流程，哪些环节可以大幅提效，哪些能力需要沉淀为团队自己的方法、规范和系统。我们交付诊断报告、流程重构方案、AI 接入路径、研发与运营 SOP、验收标准和推进节奏，让企业把 AI 从个人尝鲜变成可复核、可扩展、能持续创造增长和效率的组织能力。
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bz-rail-section bz-rail-section--alt">
-    <div class="bz-rail-grid">
-      <aside>
-        <p class="bz-rail-label">核心价值观</p>
-        <div class="bz-rail-bar"></div>
-      </aside>
-      <div>
-        <div class="bz-cell-grid bz-cell-grid--4">
-          <article class="bz-cell">
-            <p class="bz-cell__n">01</p>
-            <h3 class="bz-cell__t">解释清楚</h3>
-            <p class="bz-cell__b">每一个判断都有可追溯的依据，团队和客户都能看懂原因，而不是被动接受一个结论。</p>
-          </article>
-          <article class="bz-cell">
-            <p class="bz-cell__n">02</p>
-            <h3 class="bz-cell__t">严谨落地</h3>
-            <p class="bz-cell__b">先假设、后验证、再交付；方法要经得起检验，不为了速度牺牲可靠性。</p>
-          </article>
-          <article class="bz-cell">
-            <p class="bz-cell__n">03</p>
-            <h3 class="bz-cell__t">安全可信</h3>
-            <p class="bz-cell__b">权限、数据边界和使用规范优先于交付速度；接入 AI 不等于放弃控制。</p>
-          </article>
-          <article class="bz-cell">
-            <p class="bz-cell__n">04</p>
-            <h3 class="bz-cell__t">长期沉淀</h3>
-            <p class="bz-cell__b">每一次交付都沉淀成团队自己可复用的 Skills 与 SOP，而不是用完即弃的一次性项目。</p>
-          </article>
-        </div>
-      </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={`${base}contact/`}>预约咨询 →</a>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  .sec { padding-top: 96px; padding-bottom: 96px; }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(44px, 5.4vw, 76px); line-height: 1.12; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  h2 { margin: 0 0 40px; font-weight: 800; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.01em; }
+  .eyebrow { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--bz-accent-strong); }
+  .eyebrow--on-dark { color: var(--bz-accent); }
+  .pill { border-radius: 999px; }
+  .soft { background: var(--bz-soft); }
+  .dark { background: var(--bz-dark); color: #fff; }
+
+  .hero { padding-top: 80px; padding-bottom: 88px; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 28px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 500; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  .hero__sub { margin: 28px 0 0; max-width: 640px; font-size: 19px; color: var(--bz-ink-700); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--bz-bg-card); border: 1px solid var(--bz-border-subtle); border-radius: 20px; padding: 28px; }
+  .card__k { display: inline-block; padding: 4px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-weight: 800; }
+  .card h3 { margin: 16px 0 8px; font-size: 22px; font-weight: 800; }
+  .card p { margin: 0; font-size: 15px; color: var(--bz-text-secondary); }
+
+  .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; }
+  .prose p { margin: 0 0 20px; font-size: 17px; line-height: 1.9; color: var(--bz-ink-700); }
+
+  .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .value { background: var(--bz-dark-card); border-radius: 20px; padding: 28px; }
+  .value__n { font-size: 13px; color: var(--bz-on-dark-muted); }
+  .value h3 { margin: 12px 0 8px; font-size: 22px; color: #fff; }
+  .value p { margin: 0; font-size: 15px; color: var(--bz-on-dark-2); }
+
+  .book-wrap { padding-top: 96px; padding-bottom: 96px; }
+  .book { background: var(--bz-accent); color: var(--bz-on-accent); border-radius: 28px; padding: 64px 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .book h2 { margin: 0; font-weight: 900; }
+  .book p { margin: 16px 0 0; font-size: 18px; opacity: 0.8; }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  }
+  @media (max-width: 767px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .sec, .book-wrap { padding-top: 64px; padding-bottom: 64px; }
+    .hero { padding-top: 48px; padding-bottom: 56px; }
+    .book { padding: 40px 24px; }
+  }
+</style>

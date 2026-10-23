@@ -10,14 +10,11 @@ const { lang = 'zh-CN' } = Astro.props;
 const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL; // 恒以 / 结尾
 // 片段带尾斜杠:构建产物是 services/index.html,少一个斜杠 CF/GH Pages 就会 308。
-// 首页用空片段,base 本身就是终态地址。
 const NAV = [
-  { href: '', label: '首页' },
   { href: 'services/', label: '服务' },
   { href: 'notes/', label: '明理笔记' },
   { href: 'method/', label: '方法论' },
   { href: 'about/', label: '关于白泽' },
-  { href: 'contact/', label: '联系我们' },
 ];
 const NAV_EN = [
   { href: 'https://api.fxai.ai/', label: 'API Home', external: true },
@@ -27,25 +24,134 @@ const NAV_EN = [
 const nav = isEnglish ? NAV_EN : NAV;
 const brandHref = isEnglish ? 'https://api.fxai.ai/' : base;
 ---
-<header class="bz-topbar">
-  <a class="bz-topbar__brand" href={brandHref}>
-    {/* 34px 展示,单独出一档小图:SEO 流量直接落在笔记页,那里没有 hero 大图可复用。
-        eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它(且首屏图懒加载会被 Lighthouse 扣分)。 */}
-    <Image class="bz-topbar__logo" src={mark} alt={isEnglish ? 'Baize Tech' : '白泽明理'} width={96} height={126} loading="eager" />
-    <span class="bz-topbar__wm bz-logotype">白泽明理</span>
-    <span class="bz-topbar__eyebrow">Formal eXplainable AI</span>
-  </a>
-  <button class="bz-topbar__toggle" aria-label={isEnglish ? 'Menu' : '菜单'} aria-expanded="false">≡</button>
-  <nav class="bz-topbar__nav" aria-label={isEnglish ? 'Main navigation' : '主导航'}>
-    {nav.map((n) => <a href={'external' in n && n.external ? n.href : `${base}${n.href}`}>{n.label}</a>)}
-    <a class="bz-topbar__cta bz-button bz-button--secondary bz-button--sm" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an account' : '预约咨询'}</a>
-  </nav>
+<header class="hd">
+  <div class="hd__inner">
+    <a class="hd__brand" href={brandHref}>
+      {/* eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它。 */}
+      <Image class="hd__logo" src={mark} alt={isEnglish ? 'Baize Tech' : '白泽明理'} width={96} height={126} loading="eager" />
+      <span class="hd__wm">baize</span>
+      <span class="hd__cn">白泽明理</span>
+    </a>
+    <button class="hd__toggle" aria-label={isEnglish ? 'Menu' : '菜单'} aria-expanded="false">≡</button>
+    <nav class="hd__nav" aria-label={isEnglish ? 'Main navigation' : '主导航'}>
+      {nav.map((n) => <a href={'external' in n && n.external ? n.href : `${base}${n.href}`}>{n.label}</a>)}
+      <a class="hd__cta" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an account' : '预约咨询'}</a>
+    </nav>
+  </div>
 </header>
 <script>
-  const btn = document.querySelector('.bz-topbar__toggle');
-  const nav = document.querySelector('.bz-topbar__nav');
+  const btn = document.querySelector('.hd__toggle');
+  const nav = document.querySelector('.hd__nav');
   btn?.addEventListener('click', () => {
     const open = nav?.classList.toggle('is-open');
     btn.setAttribute('aria-expanded', String(!!open));
   });
 </script>
+<style>
+  .hd {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--bz-border-subtle);
+  }
+  .hd__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px 40px;
+  }
+  .hd__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--bz-text-primary);
+    text-decoration: none;
+  }
+  .hd__logo {
+    width: 26px;
+    height: auto;
+  }
+  .hd__wm {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .hd__cn {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bz-text-secondary);
+  }
+  .hd__nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .hd__nav a {
+    color: var(--bz-ink-700);
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .hd__nav a:hover {
+    color: var(--bz-accent-strong);
+  }
+  .hd__nav .hd__cta {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--bz-ink-900);
+    color: #fff;
+    font-weight: 500;
+  }
+  .hd__nav .hd__cta:hover {
+    background: var(--bz-dark);
+    color: #fff;
+  }
+  .hd__toggle {
+    display: none;
+    margin-left: auto;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  @media (max-width: 767px) {
+    .hd__inner {
+      flex-wrap: wrap;
+      padding: 10px 16px;
+    }
+    .hd__toggle {
+      display: block;
+    }
+    .hd__nav {
+      display: none;
+      flex-basis: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+      padding-bottom: 12px;
+    }
+    .hd__nav.is-open {
+      display: flex;
+    }
+    .hd__nav a {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .hd__nav .hd__cta {
+      margin-left: 0;
+      justify-content: center;
+    }
+  }
+</style>

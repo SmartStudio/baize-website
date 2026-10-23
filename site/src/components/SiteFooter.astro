@@ -11,20 +11,107 @@ const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
 ---
-<footer class="bz-footer">
-  <div class="bz-shell bz-footer__inner">
-    <div class="bz-footer__brand">
-      <span class="bz-topbar__wm bz-logotype">白泽明理</span>
-      <p class="bz-eyebrow">Formal eXplainable AI</p>
+<footer class="ft">
+  <div class="ft__inner">
+    <div class="ft__brand">
+      <p class="ft__wm">baize <span>白泽明理</span></p>
+      <p>{isEnglish ? 'AI Native transformation: consulting, training, FDE.' : '企业 AI Native 转型：咨询、培训、FDE 驻场。'}</p>
+      <!--email_off--><a href="mailto:contacts@fxai.ai">contacts@fxai.ai</a><!--/email_off-->
     </div>
-    <div class="bz-footer__contact">
-      <!--email_off--><a class="bz-text-link" href="mailto:contacts@fxai.ai">contacts@fxai.ai</a><!--/email_off-->
-      <div class="bz-footer__qr">
-        <Image src={qr} alt={isEnglish ? 'Baize Tech WeChat QR code' : '白泽明理微信二维码'} format="png" quality={90} loading="lazy" />
-        <span class="bz-eyebrow">{isEnglish ? 'Scan on WeChat' : '微信扫码咨询'}</span>
-      </div>
+    <div class="ft__col">
+      <span class="ft__h">{isEnglish ? 'Site' : '站点'}</span>
+      <a href={`${base}services/`}>服务</a>
+      <a href={`${base}method/`}>方法论</a>
+      <a href={`${base}about/`}>关于白泽</a>
+      <a href={`${base}contact/`}>预约咨询</a>
     </div>
-    <a class="bz-button bz-button--primary" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an API account' : '预约 AI 落地诊断'}</a>
+    <div class="ft__col">
+      <span class="ft__h">{isEnglish ? 'Resources' : '资源'}</span>
+      <a href={`${base}notes/`}>明理笔记</a>
+      <a href={`${base}rss.xml`}>RSS</a>
+      <a href={`${base}llms.txt`}>llms.txt</a>
+    </div>
+    <div class="ft__qr">
+      <Image src={qr} alt={isEnglish ? 'Baize Tech WeChat QR code' : '白泽明理微信二维码'} format="png" quality={90} loading="lazy" />
+      <span>{isEnglish ? 'Scan on WeChat' : '微信扫码咨询'}</span>
+    </div>
   </div>
-  <p class="bz-footer__meta">© {year} 白泽明理 Baize Tech · Formal eXplainable AI</p>
+  <p class="ft__meta">© {year} 白泽明理 Baize Tech</p>
 </footer>
+<style>
+  .ft {
+    background: var(--bz-dark);
+    color: var(--bz-on-dark-muted);
+    font-size: 14px;
+  }
+  .ft__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 32px 32px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 32px;
+  }
+  .ft a {
+    color: var(--bz-on-dark-2);
+    text-decoration: none;
+  }
+  .ft a:hover {
+    color: var(--bz-accent);
+  }
+  .ft p {
+    margin: 0 0 8px;
+  }
+  .ft__wm {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .ft__wm span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bz-on-dark-muted);
+  }
+  .ft__col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ft__h {
+    color: #fff;
+    font-weight: 600;
+  }
+  .ft__qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .ft__qr img {
+    width: 96px;
+    height: 96px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 6px;
+  }
+  .ft__meta {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 20px 32px 32px;
+    border-top: 1px solid var(--bz-on-dark-line);
+    font-size: 13px;
+  }
+  @media (max-width: 767px) {
+    .ft__inner {
+      grid-template-columns: 1fr 1fr;
+      padding: 48px 16px 24px;
+    }
+    .ft__brand {
+      grid-column: 1 / -1;
+    }
+    .ft__meta {
+      padding: 20px 16px 28px;
+    }
+  }
+</style>
