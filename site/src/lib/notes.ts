@@ -45,6 +45,16 @@ export const CATEGORY_INTROS = {
   案例复盘: '真实项目里的踩坑、取舍与验证过程，包括那些没走通的路。',
 } as const satisfies Record<Category, string>;
 
+/** 英文归档页导语,与 CATEGORY_INTROS 一一对应,按海外读者重写而非逐句翻译。 */
+export const CATEGORY_INTROS_EN = {
+  AI普及: 'What AI can and cannot do today, explained without jargon, so non-technical teams can decide where to use it.',
+  AI编程: 'How engineering practice changes once AI writes code: constraints, boundaries, and how to accept the output.',
+  企业落地: 'Putting AI into real business workflows: the context it needs, the permissions it gets, and the process changes around it.',
+  安全可信: 'Permissions, audit trails, and explainability, so teams can trust AI output and trace problems when they happen.',
+  Loop与方法论: 'Designing plan, execute, observe, and correct loops so AI checks its own work before it hands anything over.',
+  案例复盘: 'Write-ups from real projects: the trade-offs, how results were verified, and the approaches that did not work.',
+} as const satisfies Record<Category, string>;
+
 export const categorySlug = (c: Category): string => CATEGORY_SLUGS[c];
 
 const CATEGORY_LABELS_EN = {
@@ -67,11 +77,11 @@ export const categoryLabel = (c: Category, lang: 'zh-CN' | 'en' = 'zh-CN'): stri
  * 时间补足,保证任何一篇都拿得满 limit 篇,不会出现空的推荐位。
  */
 export function relatedNotes(current: Note, all: Note[], limit = 3): Note[] {
-  const pool = all.filter((n) => n.id !== current.id && !n.data.draft);
+  // 只在同语言里挑:英文页推中文笔记等于把海外读者导进看不懂的页面。
+  const pool = all.filter((n) => n.id !== current.id && !n.data.draft && n.data.lang === current.data.lang);
 
   const score = (n: Note): number => {
     let s = 0;
-    if (n.data.lang === current.data.lang) s += 4;
     if (current.data.relatedService && n.data.relatedService === current.data.relatedService) s += 2;
     if (n.data.category === current.data.category) s += 1;
     return s;
