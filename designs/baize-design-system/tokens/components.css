@@ -105,6 +105,11 @@ a {
 }
 
 .bz-button--primary {
+  background: var(--bz-accent);
+  color: var(--bz-on-accent);
+}
+
+.bz-button--dark {
   background: var(--bz-action-primary);
   color: #FFFFFF;
 }
@@ -144,6 +149,10 @@ a {
 
 @media (hover: hover) {
   .bz-button--primary:hover {
+    background: #3BEAB4;
+  }
+
+  .bz-button--dark:hover {
     background: var(--bz-action-primary-hover);
   }
 
@@ -228,6 +237,13 @@ a {
   background: var(--bz-bg-card);
   padding: 28px 26px;
   transition: border-color var(--bz-transition-base), background var(--bz-transition-base);
+}
+
+/* `display:flex` above overrides the UA `[hidden]{display:none}` (author beats UA origin),
+   so the JS notes filter's `card.hidden = true` wouldn't actually hide cards.
+   This higher-specificity rule restores hide-on-[hidden]. */
+.bz-card[hidden] {
+  display: none;
 }
 
 .bz-card:hover {

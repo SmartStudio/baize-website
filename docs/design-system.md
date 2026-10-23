@@ -181,3 +181,5 @@ SEM 落地页按投放关键词切换 H1、副标题、卖点、模块和按钮�
 2. 跑 `pnpm run tokens:push` 回灌 `designs/baize-design-system/`。
 3. 更新 `CLAUDE.md` 的「明理笔记配图」一节：强调色改为白泽青，封面 / 正文按 §9 分用 B / A。
 4. 按 §7 改组件与页面；新增专题页和教程库页时同步 sitemap、`llms.txt` 与结构化数据，并抓构建产物核对（见 `CLAUDE.md` SEO 一节）。
+
+进度（2026-10-23，PR #4）：1–4 已完成。专题页与教程库复用现有 `/notes/category/<slug>/` 与 `/notes/`，没有新开 URL。出图提示词模板见 `docs/image-prompts.md`。§11 的 5–8 与案例区、数字卡仍待做。

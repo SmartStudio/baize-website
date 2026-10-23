@@ -1,13 +1,11 @@
 :root {
   /* ============================================================
-     BAIZE DESIGN SYSTEM · TYPOGRAPHY
-     Poppins-led (Sakana's measured display + body face), paired
-     with Noto Sans SC for CJK. Restrained scale: Sakana's hero h1
-     measured at 46.8px / weight 500 / -1.4px tracking, body 13.5–16.
-     Impact comes from the mark + whitespace, NOT from huge bold type.
+     BAIZE DESIGN SYSTEM · TYPOGRAPHY · 白泽青 v2.0
+     全站无衬线：Inter + Noto Sans SC。不加载 webfont（国内访问 Google
+     Fonts 不稳），装了就用，没装回落 PingFang / 黑体。标题 800–900。
      ============================================================ */
-  --bz-font-display: "Poppins", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
-  --bz-font-sans: "Poppins", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
+  --bz-font-display: "Inter", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
+  --bz-font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif; /* @kind font */
   --bz-font-serif: "Songti SC", "Noto Serif SC", serif; /* optional, unused by default @kind font */
   --bz-font-mono: "JetBrains Mono", "SF Mono", "Menlo", ui-monospace, monospace; /* @kind font */
 
@@ -15,23 +13,23 @@
   --bz-w-light: 300;
   --bz-w-regular: 400;
   --bz-w-medium: 500;
-  --bz-w-semibold: 600;
-  --bz-w-bold: 700;
+  --bz-w-semibold: 700;
+  --bz-w-bold: 800;
 
   /* Type scale (restrained, Sakana-accurate) */
   --bz-type-display-size: 64px;   /* brand-title contexts */
   --bz-type-display-line: 1.0; /* @kind other */
   --bz-type-display-track: -0.02em; /* @kind other */
-  --bz-type-h1-size: 47px;
-  --bz-type-h1-line: 1.04; /* @kind other */
+  --bz-type-h1-size: clamp(42px, 5.4vw, 76px);
+  --bz-type-h1-line: 1.12; /* @kind other */
   --bz-type-h1-track: -0.02em; /* @kind other */
-  --bz-type-h2-size: 30px;
+  --bz-type-h2-size: 40px;
   --bz-type-h2-line: 1.2; /* @kind other */
   --bz-type-h2-track: -0.01em; /* @kind other */
-  --bz-type-h3-size: 19px;
+  --bz-type-h3-size: 20px;
   --bz-type-h3-line: 1.45; /* @kind other */
   --bz-type-body-size: 16px;
-  --bz-type-body-line: 1.65; /* @kind other */
+  --bz-type-body-line: 1.7; /* @kind other */
   --bz-type-small-size: 14px;
   --bz-type-small-line: 1.6; /* @kind other */
   --bz-type-caption-size: 13px;
@@ -53,8 +51,8 @@
 @media (max-width: 767px) {
   :root {
     --bz-type-display-size: 44px;
-    --bz-type-h1-size: 34px;
-    --bz-type-h2-size: 25px;
+    --bz-type-h1-size: 38px;
+    --bz-type-h2-size: 30px;
     --bz-type-h3-size: 18px;
   }
 }
