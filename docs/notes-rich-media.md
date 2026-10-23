@@ -2,12 +2,12 @@
 
 笔记正文是 MDX，除了普通段落/标题/列表，还能直接用下面这套组件加**图、图注、视频、图组、提示框、代码块**。组件已在 `src/pages/notes/[...slug].astro` 里通过 `components` 注入，**MDX 里直接写标签即可，不用 import**。
 
-设计规则统一：直角、发丝线边框、灰色小字图注、单一橙色火花，和全站一致。
+设计规则统一：圆角、细边框、灰色小字图注、翡翠绿 `#14E0A0` 作唯一强调色，和全站白泽青一致。
 
-> **图片怎么来(项目约定)**：明理笔记的**封面和正文配图统一用 `guizang-material-illustration` 技能生成**(Guizang 3D 物料/瑞士编辑风,统一站点橙 `#E9961A`),不手写 SVG、不用裸提示词。
+> **图片怎么来(项目约定)**：明理笔记的**封面和正文配图统一用 `guizang-material-illustration` 技能生成**(Guizang 3D 物料/瑞士编辑风,强调色翡翠绿 `#14E0A0`;封面深墨绿底、配图冷白底),不手写 SVG、不用裸提示词。
 > - 正文配图 = 带中文标签的概念图(cycle/pipeline/hub/before-after);封面 = 无字的单一主视觉头图,两者互补。
 > - 出图:`codex exec ... "<让它用内置 image_gen 一次性出图>"`;中文标签给白色标注板就不糊;逐张 QA 后放进 `src/content/notes/media/`。
-> - 详见仓库根 `CLAUDE.md` 的「明理笔记配图」小节。下面讲的是把图**接进笔记**的写法。
+> - 提示词模板见 `docs/image-prompts.md`,约定见仓库根 `CLAUDE.md` 的「明理笔记配图」小节。下面讲的是把图**接进笔记**的写法。
 
 ---
 
@@ -89,7 +89,7 @@ import shot from './media/dashboard.png'
 </Callout>
 ```
 
-`type`：`note`(灰) / `tip`(橙) / `warning`(橙底强调)；`title` 可选。
+`type`：`note`(灰底) / `tip`(浅绿底 + 翡翠绿左边线) / `warning`(薄荷底 + 深墨绿左边线)；`title` 可选。
 
 ## 6. 代码块
 
