@@ -1,0 +1,132 @@
+---
+/**
+ * 关于页主体,中英两个路由共用(/about/、/en/about/)。文案在 i18n/about.ts,样式只在这里写一份。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localePath, withBase, type Lang } from '../../lib/i18n';
+import type { AboutCopy } from '../../i18n/about';
+
+interface Props {
+  lang: Lang;
+  copy: AboutCopy;
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const { lang, copy: t, alternates, switchPath } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = (zhPath: string) => withBase(base, localePath(zhPath, lang));
+---
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  path={localePath('/about/', lang)}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="hero wrap">
+    <p class="badge"><span class="dot"></span>{t.badge}</p>
+    <h1>{t.h1}</h1>
+    <p class="hero__sub">{t.sub}</p>
+  </section>
+
+  <section class="soft">
+    <div class="wrap sec">
+      <p class="eyebrow">{t.name.eyebrow}</p>
+      <h2>{t.name.h2}</h2>
+      <div class="cards">
+        {t.name.items.map((x) => (
+          <article class="card">
+            <span class="card__k">{x.k}</span>
+            <h3>{x.t}</h3>
+            <p>{x.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec split">
+    <div>
+      <p class="eyebrow">{t.who.eyebrow}</p>
+      <h2>{t.who.h2}</h2>
+    </div>
+    <div class="prose">
+      {t.who.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap sec">
+      <p class="eyebrow eyebrow--on-dark">{t.values.eyebrow}</p>
+      <h2>{t.values.h2}</h2>
+      <div class="values">
+        {t.values.items.map((v) => (
+          <div class="value">
+            <span class="value__n">{v.n}</span>
+            <h3>{v.t}</h3>
+            <p>{v.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>{t.book.h2}</h2>
+        <p>{t.book.p}</p>
+      </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={href('/contact/')}>{t.book.cta}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  .sec { padding-top: 96px; padding-bottom: 96px; }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(44px, 5.4vw, 76px); line-height: 1.12; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  h2 { margin: 0 0 40px; font-weight: 800; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.01em; }
+  .eyebrow { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--bz-accent-strong); }
+  .eyebrow--on-dark { color: var(--bz-accent); }
+  .pill { border-radius: 999px; }
+  .soft { background: var(--bz-soft); }
+  .dark { background: var(--bz-dark); color: #fff; }
+
+  .hero { padding-top: 80px; padding-bottom: 88px; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 28px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 500; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  .hero__sub { margin: 28px 0 0; max-width: 640px; font-size: 19px; color: var(--bz-ink-700); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--bz-bg-card); border: 1px solid var(--bz-border-subtle); border-radius: 20px; padding: 28px; }
+  .card__k { display: inline-block; padding: 4px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-weight: 800; }
+  .card h3 { margin: 16px 0 8px; font-size: 22px; font-weight: 800; }
+  .card p { margin: 0; font-size: 15px; color: var(--bz-text-secondary); }
+
+  .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; }
+  .prose p { margin: 0 0 20px; font-size: 17px; line-height: 1.9; color: var(--bz-ink-700); }
+
+  .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .value { background: var(--bz-dark-card); border-radius: 20px; padding: 28px; }
+  .value__n { font-size: 13px; color: var(--bz-on-dark-muted); }
+  .value h3 { margin: 12px 0 8px; font-size: 22px; color: #fff; }
+  .value p { margin: 0; font-size: 15px; color: var(--bz-on-dark-2); }
+
+  .book-wrap { padding-top: 96px; padding-bottom: 96px; }
+  .book { background: var(--bz-accent); color: var(--bz-on-accent); border-radius: 28px; padding: 64px 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .book h2 { margin: 0; font-weight: 900; }
+  .book p { margin: 16px 0 0; font-size: 18px; opacity: 0.8; }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  }
+  @media (max-width: 767px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .sec, .book-wrap { padding-top: 64px; padding-bottom: 64px; }
+    .hero { padding-top: 48px; padding-bottom: 56px; }
+    .book { padding: 40px 24px; }
+  }
+</style>
