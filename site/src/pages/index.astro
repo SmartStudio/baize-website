@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import promoCover from '../assets/video/promo-cover.png';
 import promoWebm from '../assets/video/fxai-promo-720p.webm?url';
 import promoMp4 from '../assets/video/fxai-promo-720p.mp4?url';
@@ -18,6 +18,36 @@ const latestNotes = notes.slice(0, 6);
 const topics = CATEGORIES.map((c) => ({ c, n: notes.filter((x) => x.data.category === c).length })).filter((t) => t.n > 0);
 const topicHref = (c: (typeof CATEGORIES)[number]) => `${base}notes/category/${categorySlug(c)}/`;
 
+const siteUrl = Astro.site ?? new URL('https://fxai.ai/');
+const promoThumb = await getImage({ src: promoCover, width: 1920 });
+const promoVideoJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: '看 1 分钟了解 baize',
+  description: 'baize 白泽明理帮企业做 AI Native 转型，提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持四项服务。',
+  thumbnailUrl: new URL(promoThumb.src, siteUrl).href,
+  contentUrl: new URL(promoMp4, siteUrl).href,
+  duration: 'PT58S',
+  uploadDate: '2026-10-23',
+  inLanguage: 'zh-CN',
+  transcript: [
+    '你的公司，也这样吗？',
+    '模型账单失控：五家模型、五套账号、五份账单。',
+    '知识散落各处：Wiki、网盘、群聊，找不到也用不上。',
+    'AI 试点落不了地：Demo 很惊艳，上线遥遥无期。',
+    'baize · 企业 AI Native 转型：咨询、培训、驻场开发、工具，一路陪你到上线。',
+    '01 AI 转型咨询：访谈各部门，排出改造优先级和验收口径。',
+    '02 企业 AI 培训：按岗位授课，课后每个团队留下可复用的 Skill。',
+    '03 FDE 驻场开发：工程师进你的团队，把 Agent 接进 CRM、ERP、HR。',
+    'LLM Gateway：一个入口接入所有大模型，成本、权限、用量一目了然。',
+    'Agents & Tools Gateway：让 Agent 安全地调用企业的每一个系统和工具。',
+    'Company Brain：把散落的文档、数据和经验，变成 AI 随时能用的公司大脑。',
+    '04 工具开发与产品支持：按你的业务定制内部工具，上线后持续维护。',
+    'Loop Engineering：构建、上线、度量、学习，一轮比一轮好。',
+    '让你的公司，按 AI Native 的方式运转。预约 30 分钟免费诊断。fxai.ai',
+  ].join('\n'),
+};
+
 const SERVICES = [
   { n: '01', t: 'AI 转型咨询', d: '访谈各部门，排出改造优先级和验收口径。', rel: ['企业落地', '案例复盘'] },
   { n: '02', t: '企业 AI 培训', d: '按岗位授课，课后每个团队留下可复用的 Skill。', rel: ['AI普及', 'AI编程'] },
@@ -29,6 +59,7 @@ const SERVICES = [
   title="白泽明理 baize｜企业 AI Native 转型：咨询、培训与 FDE 驻场开发"
   description="baize 帮企业找出最该先改的流程，按岗位培训团队用 AI 干活，再派工程师驻场把 Agent 接进 CRM、ERP、HR 系统。明理笔记公开全部方法。"
   path="/"
+  jsonLd={promoVideoJsonLd}
 >
   <section class="hero wrap">
     <div class="hero__copy">
@@ -62,7 +93,7 @@ const SERVICES = [
         <source src={promoMp4} type="video/mp4" />
       </video>
       <button class="promo__cover" type="button" aria-label="播放 baize 介绍视频（1 分钟）">
-        <Image src={promoCover} alt="" widths={[640, 1280, 1920]} sizes="(max-width: 1240px) 100vw, 1176px" />
+        <Image src={promoCover} alt="baize 白泽明理 1 分钟介绍视频封面" widths={[640, 1280, 1920]} sizes="(max-width: 1240px) 100vw, 1176px" />
         <span class="promo__play" aria-hidden="true">看 1 分钟了解 baize</span>
       </button>
     </div>
