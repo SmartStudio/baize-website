@@ -1,0 +1,126 @@
+---
+/**
+ * 方法论页主体,中英两个路由共用(/method/、/en/method/)。文案在 i18n/method.ts,样式只在这里写一份。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localePath, withBase, type Lang } from '../../lib/i18n';
+import type { MethodCopy } from '../../i18n/method';
+
+interface Props {
+  lang: Lang;
+  copy: MethodCopy;
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const { lang, copy: t, alternates, switchPath } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = (zhPath: string) => withBase(base, localePath(zhPath, lang));
+---
+
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  path={localePath('/method/', lang)}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="hero wrap">
+    <p class="badge"><span class="dot"></span>{t.badge}</p>
+    <h1>{t.h1.map((s) => (typeof s === 'string' ? s : 'em' in s ? <em>{s.em}</em> : 'br' in s ? <br /> : null))}</h1>
+    <p class="hero__sub">{t.sub}</p>
+  </section>
+
+  <section class="soft">
+    <div class="wrap sec">
+      <p class="eyebrow">{t.stages.eyebrow}</p>
+      <h2>{t.stages.h2}</h2>
+      <ol class="steps">
+        {t.stages.steps.map((s) => (
+          <li class="step">
+            <span class="step__n">{s.n} · {s.stage}</span>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+            <span class="step__out">{t.stages.outLabel} · {s.out}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap sec">
+      <p class="eyebrow eyebrow--on-dark">{t.rules.eyebrow}</p>
+      <h2>{t.rules.h2}</h2>
+      <div class="rules">
+        {t.rules.items.map((r) => (
+          <div class="rule">
+            <h3>{r.t}</h3>
+            <p>{r.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>{t.book.h2}</h2>
+        <p>{t.book.p}</p>
+      </div>
+      <div class="book__actions">
+        <a class="bz-button bz-button--dark bz-button--lg pill" href={href('/contact/')}>{t.book.cta}</a>
+        <a class="book__link" href={href('/services/')}>{t.book.servicesLink}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  .sec { padding-top: 96px; padding-bottom: 96px; }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(40px, 5vw, 68px); line-height: 1.12; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  h1 em { font-style: normal; color: var(--bz-accent-strong); }
+  h2 { margin: 0 0 40px; font-weight: 800; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.01em; }
+  .eyebrow { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--bz-accent-strong); }
+  .eyebrow--on-dark { color: var(--bz-accent); }
+  .pill { border-radius: 999px; }
+  .soft { background: var(--bz-soft); }
+  .dark { background: var(--bz-dark); color: #fff; }
+
+  .hero { padding-top: 80px; padding-bottom: 88px; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 28px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 500; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  .hero__sub { margin: 28px 0 0; max-width: 620px; font-size: 19px; color: var(--bz-ink-700); }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .step { background: var(--bz-bg-card); border: 1px solid var(--bz-border-subtle); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .step__n { font-size: 13px; font-weight: 700; color: var(--bz-accent-strong); }
+  .step h3 { margin: 0; font-size: 24px; font-weight: 800; }
+  .step p { flex: 1; margin: 0; font-size: 15px; color: var(--bz-text-secondary); }
+  .step__out { padding-top: 12px; border-top: 1px solid var(--bz-border-subtle); font-size: 13px; color: var(--bz-ink-700); }
+
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .rule { background: var(--bz-dark-card); border-radius: 20px; padding: 28px; }
+  .rule h3 { margin: 0 0 10px; font-size: 22px; color: #fff; }
+  .rule p { margin: 0; font-size: 15px; color: var(--bz-on-dark-2); }
+
+  .book-wrap { padding-top: 96px; padding-bottom: 96px; }
+  .book { background: var(--bz-accent); color: var(--bz-on-accent); border-radius: 28px; padding: 64px 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .book h2 { margin: 0; font-weight: 900; }
+  .book p { margin: 16px 0 0; font-size: 18px; opacity: 0.8; }
+  .book__actions { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .book__link { color: var(--bz-on-accent); font-weight: 600; }
+
+  @media (max-width: 1080px) {
+    .steps { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .sec, .book-wrap { padding-top: 64px; padding-bottom: 64px; }
+    .hero { padding-top: 48px; padding-bottom: 56px; }
+    .book { padding: 40px 24px; }
+  }
+</style>
