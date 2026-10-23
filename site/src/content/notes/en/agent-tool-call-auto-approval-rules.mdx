@@ -1,0 +1,86 @@
+---
+title: "AI Agent Tool Call Approval: Which Calls to Auto-Approve and Which to Block"
+description: "Auto-approve agent tool calls in three layers: code boundary checks, rules, and human review. Check the arguments, not the model's reasons. Log every decision."
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-tool-call-auto-approval-rules-cover.png
+coverAlt: A white porcelain robot places blank tool pieces into a tray while one piece sits alone in an orange cradle at the table's edge, where a person inspects it
+sourceHash: 'ef441d8e8cc4'
+---
+
+Auto-approval for agent tool calls works in three layers. Layer one: code rejects calls that should never reach a person, such as invalid arguments or paths outside the allowed scope. Layer two: rules approve low-risk calls automatically. Layer three: every other call is held for a person. Each approval or block writes a log entry that names the rule it matched. Approval judges the call itself. The reason the model gives for the call does not count.
+
+import noteFig from '../media/agent-tool-call-auto-approval-rules-fig-en.png'
+
+<Figure src={noteFig} alt="On the left, a wrench, a key, and a document stand on pedestals, with a green check mark on the document. On the right, a wrench is held by a green clamp in front of a green-rimmed shield." caption="Figure: Auto-Approval | Block Rules" width="wide" border />
+
+## Where approval sits: code boundary checks first, no person involved
+
+The approval layer sits after argument parsing and before tool execution.
+
+The University of Michigan's Fall 2026 course EECS 498-016, *Applied Agentic Software Engineering*, is taught by Marcus Darden. The course notes list the approval steps in order: parse the arguments, run code boundary checks, have a person allow or deny, then execute the call or return the denial as its result. Invalid arguments return an error directly. A path outside the repository is denied directly, without asking anyone.
+
+We recommend building the approval pipeline in the same order. If a required argument is missing, or the requested working directory is outside the preset scope, code blocks the call and returns an error. No person is involved. Only calls that pass the basic validity checks move on to rule-based and human routing.
+
+## Reads carry risk too: set block conditions on sensitive files
+
+Reading local files and internal data can leak information. Do not approve all reads by default.
+
+The course notes say that at the start, every call stops for a person, reads included. A file read puts the file's contents into the context of the next request. With a hosted model endpoint, that content leaves the machine. Sensitive config files inside the repository also pass the basic directory boundary check. Later rules in the course then approve most reads automatically.
+
+In production environments, config files often hold private tokens, database connection strings, and service keys. If the model reads one of these files and sends it to an external hosted model, the secrets can leak.
+
+We recommend separate block conditions for sensitive config files, key directories, and system credentials. Approve other routine reads after confirming the path does not touch secrets.
+
+## What to auto-approve and what to block: tier by consequence
+
+Limit auto-approval to low-risk calls with a contained blast radius. A person takes over writes with irreversible consequences.
+
+We recommend setting the approval scope by action type. Calls that do not change external state can be auto-approved: reading read-only business documents, querying public information, and writing temporary test data in an isolated directory.
+
+Hold these for human review on the spot: deleting critical data, sending email or tickets to outside parties, initiating payments or settlements, installing external packages, and running a script in the terminal that was just downloaded from outside.
+
+For the order in which to grant tool permissions, see <NoteLink slug="agent-tool-permission-ladder">which tool permissions to give an agent first, and which later</NoteLink>. For which steps of high-risk outbound actions keep a person in the loop, see <NoteLink slug="crm-outbound-agent-send-approval">which steps need human approval before a CRM outreach agent sends</NoteLink>. Change sign-off and review before connecting external servers are separate processes and are not covered here.
+
+## What approval checks: the command and its arguments
+
+The approval layer judges a call's risk from the actual command and arguments. It does not rely on the model's own summary.
+
+The course notes say to show the approver the full call. For a file write, show the diff, not only a byte count. Do not use the model's summary. When a call is denied, the system returns a tool message with the reason, so the model knows the call was denied.
+
+The course notes also state that approval covers the command, not the explanation. The first version of the approval layer trusts the purpose the model states. The course lists this as a weakness that a later session attacks directly.
+
+Our view: the model's explanation of its own call can be wrong. Under a malicious instruction, the model can also invent a compliant-sounding reason. Approval logic should match rules only against the arguments and diffs the model actually produced.
+
+## Log every call and keep hardening the rules
+
+Auto-approval rules need ongoing tuning based on the logs.
+
+The syllabus lists rule-based auto-approval with a decision log. The second half of the term has a dedicated topic on permission policies and how they fail, plus a lab that hardens the first version of the approval layer. The syllabus also describes a hackathon where students watch their agents run unattended to test their auto-approval rules.
+
+We recommend four fields in each log entry: the exact command, the rule it matched, the decision (approve or block), and the reason. The ops team reviews the audit log on a schedule. They look for operations that should not have been approved and for normal business calls that were blocked by mistake, then update the rule set. The approval layer handles single calls only. For when a whole run should stop, see <NoteLink slug="agent-stop-conditions-decision-log">how far an unattended agent should run before it stops</NoteLink>.
+
+## Tool call auto-approval: FAQ
+
+### Why not leave every tool call decision to a person?
+
+Our view: an agent often calls tools many times to finish one long task. If every simple file read or directory search needs a person to click Allow, that person becomes the bottleneck. Approvers also get tired and start approving without reading. Code boundary checks and explicit approval rules filter out most low-risk calls. The agent keeps running, and people review only the destructive, high-risk actions.
+
+### Why show approvers the diff instead of the model's summary?
+
+Our view: a model's text summary can miss a small but critical argument change. Under prompt injection, it can also describe the change in a misleading way. For example, the summary says the model only updated a comment in a config file, while the generated diff changes the database port or deletes validation logic. Send the diff and the exact arguments to the approval screen. The approver then sees which lines changed and where each request goes. This catches cases where the summary and the actual behavior differ.
+
+### When a team first builds an approval layer, which block rules come first?
+
+We recommend starting with the actions that have the widest impact and are hardest to undo. Define three conditions that block a call outright:
+
+1. Irreversible actions such as delete, wipe, or format.
+2. File writes whose target path touches system environment config, credentials and keys, or production database connections.
+3. Outbound network requests to destinations not on the internal trusted list.
+
+Once these three are in place, approve other routine operations one at a time based on business needs.

@@ -1,0 +1,85 @@
+---
+title: When Should a Voice Sales AI Agent Hand a Call to a Human?
+description: A voice sales AI agent cannot take back what it says on a live call. Six handoff triggers, four facts to pass to the rep, and how to audit call recordings.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/voice-sales-agent-human-handoff-cover.png
+coverAlt: A white robot wearing a headset passes a handset on an orange phone cord to a human call-center agent reaching for it, with a customer on a sofa making a call in the background
+sourceHash: '3d2cee91357d'
+---
+
+import noteFig from '../media/voice-sales-agent-human-handoff-fig-en.png'
+
+A voice sales agent talks to customers in real time. Nothing it says can be reviewed first, the way an email draft can. Set the handoff rules before the agent makes its first call. Automated outbound calls work for collecting early interest, explaining standard product information, and qualifying leads. When a customer starts negotiating a discount floor, contract terms, or a delivery date, or sounds unhappy, the system should move the call to a human sales rep at once and pass along the full context of the conversation so far.
+
+<Figure src={noteFig} alt="Left, a robot wearing a headset talks on the phone, representing the voice sales agent. Right, the handset moves along a jade arrow into the hand of a human call-center agent, representing the handoff to a human" caption="Figure: Voice Sales Agent | Human Handoff" width="wide" border />
+
+## Phone vs. email: a spoken answer cannot be recalled
+
+An email can go through several rounds of edits and an approval before it is sent. If it goes out wrong, a correction can follow. A phone call allows none of this.
+
+A call happens in real time. The customer asks, and the agent answers immediately. If the agent offers an unauthorized discount or agrees to a delivery date the company cannot meet, the customer will treat it as a company commitment. Reversing it later invites a dispute. For how legal liability for spoken commitments is assigned, see <NoteLink slug="ai-cs-can-reply-vs-who-owns-liability">AI customer service compliance: who owns the promises an auto-reply makes?</NoteLink>.
+
+A voice sales agent fits the first stage of the funnel. CMA CGM's agent, Eva, learns what the customer needs, quotes a tailored freight rate, and qualifies the lead. We recommend leaving discount negotiation and contract signing to the sales team.
+
+## CMA CGM's voice sales agent
+
+On October 14, 2026, CMA CGM Group announced an expansion of its multilingual AI voice program built with HappyRobot. On the sales side, its AI voice sales agent, Eva, calls prospects who have registered on its platform but have no dedicated account manager.
+
+In the first campaigns, in the UK and Senegal, Eva reached more than 4,000 customers. About one third moved on to discussions about potential shipping routes. CMA CGM plans to deploy Eva in 20 countries by the end of 2026.
+
+## Six moments that should trigger a handoff
+
+The six conditions below are our recommendations for an outbound calling rulebook. CMA CGM has not published them as its practice.
+
+1. The customer starts negotiating a custom price or asks for a term commitment. Requests like "Can you go lower for a larger volume?", "Can you extend the payment terms?", or "Can you guarantee delivery next week?" are non-standard. The agent must not estimate or promise anything. It should tell the customer, "Let me transfer you to your account manager to confirm a special approval."
+
+2. The customer asks for a person. If the customer says "Put your manager on" or "Transfer me to a human," the system must not loop through more persuasion. It should confirm and start the transfer.
+
+3. The customer complains, criticizes the service, or becomes visibly upset. Once the voice model detects anger, criticism of the company, or a complaint, a scripted tone makes things worse. The agent should stop the sales pitch and transfer the call to a senior staff member with complaint-handling experience.
+
+4. The agent cannot hear, cannot answer, or makes no progress over several turns. Heavy background noise, a laggy connection, or several turns of low model confidence about the customer's intent all call for a human to take over.
+
+5. The customer already has an assigned rep. If a lookup during the call shows the customer is registered to a specific salesperson, the agent should stop quoting and transfer the call to that rep.
+
+6. The customer says they do not want more calls. When the customer says "Not interested" or "Stop calling me," the agent should say goodbye politely and hang up. The system should add the number to the do-not-call list and must not schedule another automated call later. Rules on outbound calling and call recording vary by jurisdiction. Have your legal team confirm compliance before launch.
+
+## Four facts to pass to the rep at handoff
+
+A rough transfer drops the call on the rep without warning. The customer does not know why someone new is on the line. The rep does not know what was said and has to ask the customer to repeat everything.
+
+For a clean handoff, the system pushes four pieces of data the moment the rep's headset rings or the screen pop appears:
+
+1. Call summary and intent level. A short account of what the call covered and where the customer is in the buying decision.
+2. The customer's core requirements. Specifications, estimated purchase volume, and timing.
+3. Public information the agent already quoted. The standard unit price or base product package the agent gave, so the rep does not contradict an earlier quote.
+4. The reason for the handoff. Whether the customer asked about a special discount or asked for a person, so the rep's first sentence picks up where the call left off.
+
+## Recording audits and a staged rollout
+
+The management team should run recurring recording audits, pulling call recordings and transcripts in batches. The audit checks three things: calls where the agent kept answering when it should have handed off, any unauthorized promises the agent made, and the actual conversion rate of leads after handoff to sales. Customer service has a similar review step after automatic ticket closure. See <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI customer service auto-closed the ticket. Why does a human still need to review it?</NoteLink>.
+
+Do not start by calling every customer. Pick one or two representative regional markets for a staged pilot. Run the full flow there: outbound reach, lead qualification, human handoff, and recording audits. Expand to more markets after that flow works.
+
+## Voice sales agent FAQ
+
+### When a customer interrupts the agent mid-sentence, how does the system avoid both sides talking at once?
+
+This needs full-duplex audio streaming and real-time interruption, known as barge-in. When the system detects the customer starting to speak, it stops playback at once and sends the microphone audio to speech recognition. Without barge-in, the agent keeps talking while the customer cannot cut in. The call feels mechanical, and customers find it awkward.
+
+### If a handoff triggers and every rep is busy, what should the system do?
+
+When all human agents are busy or the call falls outside business hours, the agent must not leave the customer on hold indefinitely. The standard approach is to say so plainly: "All our account managers are on calls right now. I've noted your freight rate request and contact details. Would it be all right if a manager calls you back shortly?" With the customer's consent, the system creates a ticket for the sales team so the lead is not lost.
+
+### When a team sets up handoff rules in its phone system, which rules come first?
+
+Set three rules first:
+
+1. Make price floors and discount authority hard rules. Any request for a specific discount goes to a human.
+2. Transfer on negative sentiment and keywords. Requests for a person, complaints, or an angry tone go to a human at once.
+3. Cap failed exchanges. After several turns in a row where the agent cannot understand the customer's intent, transfer to a human and push the context to the rep's screen.

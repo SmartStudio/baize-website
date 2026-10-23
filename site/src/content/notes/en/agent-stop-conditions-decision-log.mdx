@@ -1,0 +1,90 @@
+---
+title: How to Set Stop Conditions for an Unattended AI Agent
+description: Before an AI agent runs unattended, define its stop conditions. One task-complete check, plus caps on steps, tokens, wall-clock time, repeated calls, and errors.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-stop-conditions-decision-log-cover.png
+coverAlt: A white porcelain robot halts at an orange stop line as an orange barrier drops in front of it, while a seated person writes in a blank notebook beside it
+sourceHash: '8ce8fa392029'
+---
+
+Before you let an agent run unattended, define its stop conditions. You need one "task complete" check and five limits: a step limit, a token budget, a wall-clock limit, a repeated-identical-call limit, and a consecutive-tool-error limit. Your team sets the values for its own workload. A run that stops on a limit is not complete. The log must name the condition that fired, what the agent was doing when it stopped, and what is still unresolved.
+
+import noteFig from '../media/agent-stop-conditions-decision-log-fig-en.png'
+
+<Figure src={noteFig} alt="Left: a path of stepping stones ends at a jade green barrier bar, with a row of five limit pawns where one has turned green and a check-mark disc beside them. Right: an open log book with one line marked by a green bookmark." caption="Figure: Stop Conditions | Decision Log" width="wide" border />
+
+## Define "complete" by the business outcome
+
+To decide whether an unattended run has finished, you first need an objective definition of done.
+
+The University of Michigan's Fall 2026 course EECS 498-016, *Applied Agentic Software Engineering*, is taught by Marcus Darden. Its syllabus lists the core requirements for "Agent v0," including an autonomous loop with six stop conditions. The course notes say that in a basic interaction loop, a run ends when the model returns a reply with no tool calls.
+
+Our view: in enterprise deployments, a model that stops calling tools may have run out of context or hit a branch it cannot handle. That does not mean the business goal was met.
+
+We recommend defining completion by a business outcome. Examples: an external validation script passes, or a valid target record exists in the database and the downstream system confirms receipt. When the environment, not the model, sends the done signal, the model cannot falsely report success.
+
+## What each of the five limits guards against: steps, budget, time, loops, and repeated errors
+
+The five numeric limits back up the completion signal. Each one blocks a different way a run can go out of control.
+
+The course notes describe the six stop conditions as one "task complete" check plus five limits: a step limit, a token budget, a wall-clock limit, repeated identical calls, and consecutive tool errors. The step limit is the backstop for the others.
+
+1. The step limit prevents infinite loops. It caps the number of iterations in the autonomous loop and serves as the overall backstop.
+
+2. The token budget controls spend. When a single run reaches its quota, it stops immediately, so recursive reasoning cannot burn resources.
+
+3. The wall-clock limit handles hangs. When a background process or external API stops responding, the run is cut off by elapsed time so the task cannot hang forever.
+
+4. The repeated-call limit catches an agent spinning in place. It stops the run when the agent calls the same tool with the same arguments several times in a row.
+
+5. The consecutive-error limit catches an agent failing the same way over and over. It stops the run when tool calls fail a set number of times in a row. The course notes warn that you must decide carefully whether a non-zero exit code counts as an error. When an agent is fixing code, a failing test command is the information it needs to debug. If you count that as an error, you may stop the run halfway through a fix. Your team has to separate business feedback from an interface crash.
+
+## Hitting a limit is not completion: give each limit its own name in the log
+
+A task that stopped on a limit did not finish. The run log cannot just say "stopped."
+
+The course notes say that a run ending on a limit is not complete, and that each limit needs its own name in the log. The course spec does not set the numbers. Your team sets them for its workload. A log that only says "stopped" hides the most important fact.
+
+In production monitoring, if the log only records that the system stopped, operators cannot tell whether the task finished normally, timed out, or tripped a breaker on an argument loop.
+
+We recommend a separate identifier for each stop condition: step limit exceeded, budget exceeded, wall-clock timeout, repeated call, and consecutive errors. Mark a run as successful only when it passes the objective business check. Route every limit-triggered exit to a human review board as an incomplete exception, so half-finished output does not flow downstream as a normal result.
+
+## What to record at stop time: what the agent was doing and what is unresolved
+
+When an agent exits on a stop condition, the log needs enough context for someone to investigate afterward.
+
+The course notes say the exit message is written for a person. It should state what the agent was doing when it stopped, not only why it stopped.
+
+Example: an accounts-reconciliation agent stops at its step limit. If the log only says "step limit reached," the person taking over has to pull the full call history again. If the exit message states which batch of supplier invoices it was matching, which batches are done, and which amount discrepancies are still open, the person can pick up the work on the spot without rerunning from scratch.
+
+We recommend three fixed fields in every exit message: the step it stopped on, what it was doing, and what is unresolved. A clear record cuts the time a person spends investigating before stepping in.
+
+## What stop conditions do not cover: they end the run, they do not judge individual actions
+
+Stop conditions manage the lifecycle of a whole run. They do not decide whether a single action is dangerous.
+
+The course notes say stop conditions end a run and do not judge individual actions. Deleting critical data from the command line or calling an external payment transfer is high-risk even if it is the first step and no limit has been touched. Judging actions is the job of an approval layer. See <NoteLink slug="agent-tool-call-auto-approval-rules">Which agent tool calls can be auto-approved by rule, and which must be blocked</NoteLink>.
+
+Rolling back and recovering after a mistake is a separate topic. Before an agent runs unattended, we recommend writing the values of all five limits into the go-live acceptance checklist. For tiered tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Which agent tool permissions to grant first, and which later</NoteLink>.
+
+For governance before you scale automation, see <NoteLink slug="agent-governance-before-scale">Agent governance has to come before scale: a bad recommendation can be ignored, a bad action has already happened</NoteLink>. For what to check when moving from pilot to production, see <NoteLink slug="agent-pilot-to-production-checklist">Your agent pilot works. What is missing before production?</NoteLink>
+
+## Agent stop conditions: FAQ
+
+### Why not let the model decide when the task is done? Why set external stop conditions?
+
+Our view: on long task chains, a model can misjudge or loop. It may declare a task closed when it is only half done, or retry the same action after an error and waste resources. External stop conditions are enforced by the runtime environment, outside the model's reasoning, so they give you a deterministic circuit breaker.
+
+### Why shouldn't every non-zero exit code, such as a failing test command, count as a tool error?
+
+Many command-line tools return a non-zero code without having crashed. The code often carries a specific business state. When unit tests fail, the test framework returns non-zero. That is an objective result and the basis for the agent's next code fix. If you log it as a tool error and trip the breaker, the run gets cut off in the middle of the fix. Separate low-level call failures from the return codes of business tools.
+
+### How should a team structure the decision log so the stop reason is recorded in full?
+
+Split run state and context into structured key-value fields. Fix three core fields in the log: stop type, current action, and unresolved items. Stop type is an enum that says whether the run completed normally or hit a specific limit. Current action records the ID of the entity being processed and the tool arguments at the moment of interruption. Unresolved items keep the remaining task queue and an error summary. A log in this format gives the person taking over a snapshot of the scene, so they do not have to start the investigation from scratch.
