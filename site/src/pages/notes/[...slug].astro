@@ -7,28 +7,33 @@ import Video from '../../components/notes/Video.astro';
 import Callout from '../../components/notes/Callout.astro';
 import NoteLink from '../../components/notes/NoteLink.astro';
 import { relatedNotes } from '../../lib/notes';
+import { alternates, localePath, noteLang, notePath, pairNotes } from '../../lib/i18n';
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes', ({ data }) => !data.draft);
-  const notesByPath = new Map(notes.map((note) => [`/notes/${note.id}/`, note]));
-
-  for (const note of notes) {
-    if (!note.data.alternatePath) continue;
-    const alternate = notesByPath.get(note.data.alternatePath);
-    const expectedBacklink = `/notes/${note.id}/`;
-    if (!alternate || alternate.data.alternatePath !== expectedBacklink || alternate.data.lang === note.data.lang) {
-      throw new Error(`Invalid reciprocal translation link: ${expectedBacklink} <-> ${note.data.alternatePath}`);
-    }
-  }
+  const notes = await getCollection('notes');
+  const { zh, en } = pairNotes(notes);
 
   // 相关笔记要在这里算好:布局层拿不到 collection,而每篇的推荐都依赖「其他所有篇」。
-  return notes.map((note) => ({
-    params: { slug: note.id },
-    props: { note, related: relatedNotes(note, notes) },
-  }));
+  return [...zh].map(([slug, note]) => {
+    if (note.data.lang !== noteLang(note.id)) {
+      throw new Error(`Note ${note.id} declares lang ${note.data.lang} but its path says ${noteLang(note.id)}`);
+    }
+    const enPath = en.has(slug) ? notePath(slug, 'en') : null;
+    return {
+      params: { slug },
+      props: {
+        note,
+        related: relatedNotes(note, notes),
+        alternates: alternates(notePath(slug, 'zh-CN'), enPath),
+        // 没有英文版时切到英文笔记列表,不切到不存在的页面。
+        switchPath: enPath ?? localePath('/notes/', 'en'),
+        path: notePath(slug, 'zh-CN'),
+      },
+    };
+  });
 }
 
-const { note, related } = Astro.props;
+const { note, related, alternates: alts, switchPath, path } = Astro.props;
 const { Content, headings } = await render(note);
 
 // 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>/<NoteLink>,无需逐篇 import。
@@ -38,7 +43,8 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
   title={note.data.title}
   description={note.data.description}
   lang={note.data.lang}
-  alternatePath={note.data.alternatePath}
+  alternates={alts}
+  switchPath={switchPath}
   pubDate={note.data.pubDate}
   updatedDate={note.data.updatedDate}
   category={note.data.category}
@@ -48,7 +54,7 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
   howto={note.data.howto}
   cover={note.data.cover}
   coverAlt={note.data.coverAlt}
-  path={`/notes/${note.id}/`}
+  path={path}
   related={related}
   headings={headings}
 >

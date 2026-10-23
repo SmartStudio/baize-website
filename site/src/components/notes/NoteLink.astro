@@ -5,12 +5,18 @@
  * 不要在 mdx 里直接写 `[文字](/notes/xxx/)`:那是硬编码的绝对路径,
  * 在 GH Pages 镜像(base=/baize-website/)下会丢掉 base 前缀,直接断链。
  * 这里统一拼 base,并保证是带尾斜杠的终态地址(少一个斜杠 CF 就会 308)。
+ * slug 拼错或指向 draft 时直接让构建失败,不产出死链。英文路由注入的是 NoteLinkEn。
  */
+import { getCollection } from 'astro:content';
+import { notePath, pairNotes, withBase } from '../../lib/i18n';
+
 interface Props {
   slug: string;
 }
 
 const { slug } = Astro.props;
-const href = `${import.meta.env.BASE_URL}notes/${slug}/`;
+const { zh } = pairNotes(await getCollection('notes'));
+if (!zh.has(slug)) throw new Error(`NoteLink to unknown note: ${slug}`);
+const href = withBase(import.meta.env.BASE_URL, notePath(slug, 'zh-CN'));
 ---
 <a class="bz-text-link" href={href}><slot /></a>

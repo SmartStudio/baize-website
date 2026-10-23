@@ -2,14 +2,13 @@
 title: GLM 5.3 API for Codex, DeepSeek Harness, and Oh My Pi
 description: GLM 5.3 is now available on Baize API. Configure the OpenAI-compatible API for Codex, DeepSeek Harness, and Oh My Pi. New accounts receive $10 in starter credit.
 lang: en
-alternatePath: /notes/baize-open-model-api/
 pubDate: 2026-08-19
 category: AI编程
 relatedService: gateway
 ctaVariant: api
 author: Baize Tech
 draft: false
-cover: ./media/glm53-api-coding-cover.png
+cover: ../media/glm53-api-coding-cover.png
 coverAlt: An orange model core connects a terminal, agent workbench, and configuration card
 howto:
   name: Call GLM 5.3 through Baize API
@@ -30,7 +29,7 @@ The public Chat Completions endpoint is `https://api.fxai.ai/v1`. Baize API keep
 Create a token in the console and call `glm-5.3`. Keep the full token in an environment variable or a secret manager, never in a repository or screenshot.
 </Callout>
 
-import glm53Fig from './media/glm53-api-coding-fig-en.png'
+import glm53Fig from '../media/glm53-api-coding-fig-en.png'
 
 <Figure
   src={glm53Fig}
@@ -150,5 +149,3 @@ Baize API records the selected model, request status, input and output tokens, a
 3. Run one production-shaped task with `glm-5.3`, then connect Codex, DeepSeek Harness, or Oh My Pi.
 
 GLM 5.3 API access, OpenAI-compatible API setup, Codex configuration, DeepSeek Harness configuration, and OMP configuration do not need separate account sprawl. Use one integration and inspectable usage records while your team keeps control over model choice.
-
-<NoteLink slug="baize-open-model-api">Read the Chinese version of this guide.</NoteLink>

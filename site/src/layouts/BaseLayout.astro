@@ -21,6 +21,8 @@ interface Props {
   lang?: 'zh-CN' | 'en';
   titleSuffix?: string;
   alternates?: { hreflang: string; path: string }[];
+  /** 对应语言版本的路径(不带 base);不传时页头切到对方语言首页。 */
+  switchPath?: string;
 }
 const {
   title,
@@ -35,6 +37,7 @@ const {
   lang = 'zh-CN',
   titleSuffix,
   alternates,
+  switchPath,
 } = Astro.props;
 const org = organizationJsonLd();
 const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : org;
@@ -73,7 +76,7 @@ const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : 
     <JsonLd schema={schema} />
   </head>
   <body>
-    <SiteHeader lang={lang} />
+    <SiteHeader lang={lang} switchPath={switchPath} />
     <main><slot /></main>
     <SiteFooter lang={lang} />
   </body>

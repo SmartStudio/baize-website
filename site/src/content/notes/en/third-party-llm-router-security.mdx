@@ -2,14 +2,13 @@
 title: "Third-Party LLM Router Security: Why Cheap Proxies Put Agent Credentials at Risk"
 description: "A practical guide to third-party LLM router risk, malicious model output, Agent Full Access, credential theft, sandboxing, and self-managed LLM gateways."
 lang: en
-alternatePath: /notes/third-party-llm-router-security/
 pubDate: 2026-08-23
 category: 安全可信
 relatedService: gateway
 ctaVariant: api
 author: Baize Tech
 draft: false
-cover: ./media/third-party-llm-router-security-cover.png
+cover: ../media/third-party-llm-router-security-cover.png
 coverAlt: An orange transparent gateway connects trusted nodes while a broken dark relay is isolated outside the path
 howto:
   name: Create a minimum security boundary for untrusted model routes
@@ -22,7 +21,7 @@ howto:
       text: Use a gateway you operate to call official model-provider APIs, issue scoped employee keys, enforce egress allowlists, and retain audit records.
 ---
 
-import securityFig from './media/third-party-llm-router-security-fig-en.png'
+import securityFig from '../media/third-party-llm-router-security-fig-en.png'
 
 A “malware-infected proxy” story misses the real risk. A coding Agent can turn model output into activity on your computer. You may be looking for a cheaper API route. An attacker may be looking for SSH keys, cloud credentials, repository tokens, and business secrets in `.env` files. Those are not comparable values.
 
@@ -136,5 +135,3 @@ This design has two separate boundaries. The gateway boundary answers where a re
 An unknown relay combined with high-privilege host execution is an Agent-era supply-chain risk. The public report shows how data collection instructions can hide inside the language of a routine environment check, then use unattended execution to access local assets.
 
 Do not use “the relay is cheap” as a security decision. For untrusted model paths, keep unattended privileges off, run in a credential-free sandbox, and strictly limit outbound network access. When a team needs a shared entry point, operate or control an LLM gateway that connects directly to model providers, without another opaque relay in the path.
-
-<NoteLink slug="third-party-llm-router-security">Read the Chinese version.</NoteLink>
