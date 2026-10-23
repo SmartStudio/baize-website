@@ -1,0 +1,334 @@
+---
+/**
+ * 分类归档页主体,中英两个路由共用(/notes/category/<slug>/、/en/notes/category/<slug>/)。
+ *
+ * 归档页最容易变成「薄内容」——一堆标题列表、没有独立价值,反而稀释权重。两个防线:
+ *   1. 路由的 getStaticPaths 只为「该语言有笔记的分类」出页,不会产出空壳页;
+ *   2. 每个分类有自己的导语(CATEGORY_INTROS / CATEGORY_INTROS_EN),说清这一类在回答什么问题。
+ */
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../NoteCard.astro';
+import { localePath, notePath, noteSlug, withBase, type Lang } from '../../lib/i18n';
+import { CATEGORY_INTROS, CATEGORY_INTROS_EN, categoryLabel, categorySlug } from '../../lib/notes';
+
+type Category = CollectionEntry<'notes'>['data']['category'];
+
+interface Props {
+  lang: Lang;
+  category: Category;
+  /** 本分类的笔记,已按语言过滤、去掉 draft。 */
+  notes: CollectionEntry<'notes'>[];
+  /** 同语言里同样有页面的其他分类——链到空分类就是死链。 */
+  siblings: Category[];
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const COPY = {
+  'zh-CN': {
+    blogName: '明理笔记',
+    home: '首页',
+    badge: '专题',
+    stat: (_n: number) => '篇笔记',
+    eyebrow: '本专题',
+    h2: '全部笔记',
+    moreLabel: '其他分类',
+    moreEyebrow: '换个话题',
+    allNotes: '全部笔记',
+    book: ['先聊 30 分钟，', '找出第一条该改的流程。'],
+    bookNote: '不收费。也可以微信扫页脚二维码直接聊。',
+    cta: '预约咨询 →',
+    description: (label: string, intro: string) => `明理笔记 · ${label}：${intro}`,
+  },
+  en: {
+    blogName: 'Notes',
+    home: 'Home',
+    badge: 'Topic',
+    stat: (n: number) => (n === 1 ? 'note' : 'notes'),
+    eyebrow: 'In this topic',
+    h2: 'All notes',
+    moreLabel: 'Other categories',
+    moreEyebrow: 'Other topics',
+    allNotes: 'All notes',
+    book: ['Start with a 30-minute call.', 'Find the first workflow to change.'],
+    bookNote: 'Free. Remote, over video.',
+    cta: 'Book a call →',
+    description: (label: string, intro: string) => `Baize Tech Notes · ${label}: ${intro}`,
+  },
+} as const;
+
+const { lang, category, notes: input, siblings, alternates, switchPath } = Astro.props;
+const t = COPY[lang];
+const base = import.meta.env.BASE_URL;
+const site = import.meta.env.SITE;
+
+const notes = [...input].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const label = categoryLabel(category, lang);
+const intro = (lang === 'en' ? CATEGORY_INTROS_EN : CATEGORY_INTROS)[category];
+const notesPath = localePath('/notes/', lang);
+const categoryPath = (c: Category) => localePath(`/notes/category/${categorySlug(c)}/`, lang);
+const path = categoryPath(category);
+const canonical = new URL(path, site).href;
+const description = t.description(label, intro);
+
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${label} · ${t.blogName}`,
+  description,
+  url: canonical,
+  inLanguage: lang,
+  isPartOf: { '@type': 'Blog', name: t.blogName, url: new URL(notesPath, site).href },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: notes.length,
+    itemListElement: notes.map((n, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(notePath(noteSlug(n.id), lang), site).href,
+      name: n.data.title,
+    })),
+  },
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t.home, item: new URL(localePath('/', lang), site).href },
+    { '@type': 'ListItem', position: 2, name: t.blogName, item: new URL(notesPath, site).href },
+    { '@type': 'ListItem', position: 3, name: label },
+  ],
+};
+---
+<BaseLayout
+  title={`${label} · ${t.blogName}`}
+  description={description}
+  path={path}
+  jsonLd={[collectionLd, breadcrumbLd]}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="hero">
+    <div class="wrap hero__in">
+      <p class="crumb"><a href={withBase(base, notesPath)}>{t.blogName}</a> / {label}</p>
+      <div class="hero__row">
+        <div class="hero__copy">
+          <p class="hero__badge">{t.badge}</p>
+          <h1>{label}</h1>
+          <p class="hero__lead">{intro}</p>
+        </div>
+        <div class="hero__stat">
+          <p class="hero__num">{notes.length}</p>
+          <p class="hero__lbl">{t.stat(notes.length)}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h2>{t.h2}</h2>
+    <div class="grid">
+      {notes.map((note) => (
+        <NoteCard
+          title={note.data.title}
+          description={note.data.description}
+          pubDate={note.data.pubDate}
+          category={note.data.category}
+          slug={noteSlug(note.id)}
+          cover={note.data.cover}
+          coverAlt={note.data.coverAlt}
+          lang={note.data.lang}
+        />
+      ))}
+    </div>
+  </section>
+
+  <nav class="wrap more" aria-label={t.moreLabel}>
+    <p class="eyebrow">{t.moreEyebrow}</p>
+    <div class="more__links">
+      <a class="chip" href={withBase(base, notesPath)}>{t.allNotes}</a>
+      {siblings.map((c) => (
+        <a class="chip" href={withBase(base, categoryPath(c))}>{categoryLabel(c, lang)}</a>
+      ))}
+    </div>
+  </nav>
+
+  <section class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>{t.book[0]}<br />{t.book[1]}</h2>
+        <p>{t.bookNote}</p>
+      </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={withBase(base, localePath('/contact/', lang))}>{t.cta}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .hero {
+    background: var(--bz-dark);
+    color: var(--bz-on-dark);
+  }
+  .hero__in {
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+  .crumb {
+    margin: 0 0 48px;
+    font-size: 14px;
+    color: var(--bz-on-dark-muted);
+  }
+  .crumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .crumb a:hover {
+    color: var(--bz-on-dark);
+  }
+  .hero__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: flex-end;
+  }
+  .hero__copy {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+  .hero__badge {
+    display: inline-flex;
+    margin: 0 0 24px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--bz-dark-card);
+    color: var(--bz-accent);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(40px, 5.6vw, 76px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .hero__lead {
+    margin: 28px 0 0;
+    max-width: 620px;
+    font-size: 19px;
+    color: var(--bz-on-dark-2);
+  }
+  .hero__stat {
+    flex: 0 1 200px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--bz-dark-card);
+  }
+  .hero__num {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+  }
+  .hero__lbl {
+    margin: 0;
+    font-size: 14px;
+    color: var(--bz-on-dark-muted);
+  }
+  .sec {
+    padding-top: 80px;
+    padding-bottom: 56px;
+  }
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  h2 {
+    margin: 0 0 40px;
+    font-weight: 800;
+    font-size: clamp(28px, 3.2vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .more {
+    padding-bottom: 80px;
+  }
+  .more__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 999px;
+    color: var(--bz-ink-700);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .chip:hover {
+    border-color: var(--bz-ink-900);
+    color: var(--bz-text-primary);
+  }
+  .chip:focus-visible {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+  .pill {
+    border-radius: 999px;
+  }
+  .book-wrap {
+    padding-bottom: 96px;
+  }
+  .book {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(32px, 5vw, 56px);
+    border-radius: 20px;
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+  }
+  .book h2 {
+    margin: 0 0 12px;
+  }
+  .book p {
+    margin: 0;
+    font-size: 16px;
+  }
+  @media (max-width: 640px) {
+    .wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .crumb {
+      margin-bottom: 32px;
+    }
+    .sec {
+      padding-top: 56px;
+    }
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import NotesIndex from '../../../components/pages/NotesIndex.astro';
+import { alternates, localePath, pairNotes } from '../../../lib/i18n';
+
+const { en } = pairNotes(await getCollection('notes'));
+const zhPath = localePath('/notes/', 'zh-CN');
+const enPath = localePath('/notes/', 'en');
+---
+<NotesIndex lang="en" notes={[...en.values()]} alternates={alternates(zhPath, enPath)} switchPath={zhPath} />

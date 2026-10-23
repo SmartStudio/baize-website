@@ -20,7 +20,8 @@ export default defineConfig({
   markdown: {
     shikiConfig: { theme: 'github-light', wrap: false },
   },
-  integrations: [mdx(), sitemap()],
+  // sitemap 的 i18n 按 URL 前缀(/en/)给配对页面加 xhtml:link hreflang;中文是默认语言、不带前缀。
+  integrations: [mdx(), sitemap({ i18n: { defaultLocale: 'zh', locales: { zh: 'zh-Hans', en: 'en' } } })],
   vite: {
     define: {
       'import.meta.env.PUBLIC_DEPLOY_TARGET': JSON.stringify(target),
