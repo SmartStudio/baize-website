@@ -32,6 +32,7 @@ export function organizationJsonLd(overrides: Record<string, unknown> = {}) {
     areaServed: [
       { '@type': 'City', name: 'Hangzhou' },
       { '@type': 'Country', name: 'CN' },
+      'Worldwide',
     ],
     address: {
       '@type': 'PostalAddress',

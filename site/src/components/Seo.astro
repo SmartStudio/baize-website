@@ -34,7 +34,7 @@ const {
   article,
   noindex: forceNoindex = false,
   lang = 'zh-CN',
-  titleSuffix = '· 白泽明理',
+  titleSuffix = lang === 'en' ? '· Baize Tech' : '· 白泽明理',
   alternates = [],
 } = Astro.props;
 const site = import.meta.env.SITE;
@@ -58,7 +58,7 @@ const locale = lang === 'en' ? 'en_US' : 'zh_CN';
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogUrl} />
 {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
-<meta property="og:site_name" content="白泽明理 Baize Tech" />
+<meta property="og:site_name" content={lang === 'en' ? 'Baize Tech' : '白泽明理 Baize Tech'} />
 <meta property="og:locale" content={locale} />
 {article && (
   <>
