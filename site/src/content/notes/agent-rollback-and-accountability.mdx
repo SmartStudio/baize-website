@@ -8,14 +8,14 @@ ctaVariant: consulting
 author: 白泽明理
 draft: false
 cover: ./media/agent-rollback-and-accountability-cover.png
-coverAlt: 一个 Agent 机器人扳下拉杆，一排正在倒下的方块按橙色箭头方向被拉回原位，旁边一个人在看着思考
+coverAlt: 一根紧急拉杆已经扳下，一排正在倒下的骨牌被绿色弧形箭头拉回竖直
 ---
 
 Agent 执行出错后，先止损再回滚，最后谈责任。推进 Agent 回滚分三步：先停动作（按停止开关、收窄凭证、暂停触发）；再按动作类型撤回（可撤销走软删除窗口，能恢复拉回备份，撤不回发更正补偿）；最后用动作日志复原执行与授权链。责任按事前定好的角色认，事后不找人背锅。
 
 import noteFig from './media/agent-rollback-and-accountability-fig.png'
 
-<Figure src={noteFig} alt="左边是一条传送带上的方块被拉杆按橙色箭头撤回，右边是一卷展开的动作日志和两个角色棋子，其中一个被橙色圈标出" caption="图：「Agent 回滚」｜「责任认定」" width="wide" border />
+<Figure src={noteFig} alt="一块台面上从左到右五站，用绿色箭头相连：按下的停止按钮、收回保险箱的钥匙、三只分类箱、点阵动作日志、四枚角色棋子" caption="图：「停止开关」｜「收回凭证」｜「分类撤回」｜「动作日志」｜「角色分工」" width="wide" border />
 
 ## 出错后第一个小时：先停动作与收回凭证
 
