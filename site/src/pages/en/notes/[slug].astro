@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { faqFromMdx } from '../../../lib/faq';
 import NoteLayout from '../../../layouts/NoteLayout.astro';
 import Figure from '../../../components/notes/Figure.astro';
 import Figures from '../../../components/notes/Figures.astro';
@@ -40,6 +41,7 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink: NoteLinkEn };
 ---
 <NoteLayout
   title={note.data.title}
+  seoTitle={note.data.seoTitle}
   description={note.data.description}
   lang={note.data.lang}
   alternates={alts}
@@ -51,6 +53,7 @@ const mdxComponents = { Figure, Figures, Video, Callout, NoteLink: NoteLinkEn };
   relatedService={note.data.relatedService}
   ctaVariant={note.data.ctaVariant}
   howto={note.data.howto}
+  faq={faqFromMdx(note.body ?? '')}
   cover={note.data.cover}
   coverAlt={note.data.coverAlt}
   path={path}

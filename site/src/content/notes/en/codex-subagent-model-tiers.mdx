@@ -1,5 +1,6 @@
 ---
 title: "Codex Subagent Models: Keep Judgment on the Main Thread, Send Repeat Work to Cheaper Tiers"
+seoTitle: "Codex Subagent Models: Which Work Goes to Cheaper Tiers"
 description: How to assign GPT-6.1 Sol, GPT-6 Astra, and GPT-6 Luna to Codex subagents by role, which setting wins, and which reasoning levels each model supports.
 lang: en
 pubDate: 2026-10-23
@@ -8,7 +9,8 @@ relatedService: dev-workflow
 author: Baize Tech
 draft: false
 cover: ../media/codex-subagent-model-tiers-cover.png
-sourceHash: '6c43175180e1'
+coverAlt: "One glowing orange sphere above a wide spread of small white capsules, like a main thread handing repeat work to many subagents"
+sourceHash: '1c02758a9bd7'
 ---
 
 When this note was first written in August 2026, OpenAI's [GPT-5.6](https://openai.com/index/gpt-5-6/), released in July 2026, came in three tiers: Sol, Terra, and Luna. In late September 2026, Codex moved to the GPT-6 family. Codex CLI 0.157.0 added GPT-6 Sol and GPT-6 Luna on September 25, and GPT-6.1 Sol shipped on September 29. As of October 2026, the Codex docs recommend three models. GPT-6 Astra is the most capable. GPT-6.1 Sol performs close to Astra at a lower cost, and the docs name it the starting point for most tasks. GPT-6 Luna is the fastest and cheapest, for well-scoped, repeatable, high-volume work. The GPT-5.6 tiers remain selectable during the rollout. Codex lets you assign a different model and reasoning level to each subagent role, so the question becomes how much judgment each role needs. You answer it in config files.
