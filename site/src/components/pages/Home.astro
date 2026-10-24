@@ -15,6 +15,7 @@ import promoMp4En from '../../assets/video/fxai-promo-en-720p.mp4?url';
 import { localePath, noteSlug, pairNotes, withBase, type Lang } from '../../lib/i18n';
 import { CATEGORIES, categoryLabel, categorySlug } from '../../lib/notes';
 import type { HomeCopy } from '../../i18n/home';
+import { ORGANIZATION_NAME, ORGANIZATION_NAME_EN, orgRef } from '../../lib/organization';
 
 interface Props {
   lang: Lang;
@@ -55,12 +56,24 @@ const promoVideoJsonLd = {
   inLanguage: lang,
   transcript: t.promo.video.transcript.join('\n'),
 };
+
+// WebSite 节点让搜索结果显示站点名(而不是域名),主名跟页面语言走。
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': new URL('/#website', siteUrl).href,
+  name: lang === 'en' ? ORGANIZATION_NAME_EN : ORGANIZATION_NAME,
+  alternateName: [lang === 'en' ? ORGANIZATION_NAME : ORGANIZATION_NAME_EN, 'fxai.ai'],
+  url: new URL(localePath('/', lang), siteUrl).href,
+  inLanguage: lang,
+  publisher: orgRef(lang),
+};
 ---
 <BaseLayout
   title={t.title}
   description={t.description}
   path={localePath('/', lang)}
-  jsonLd={promoVideoJsonLd}
+  jsonLd={[websiteJsonLd, promoVideoJsonLd]}
   lang={lang}
   alternates={alternates}
   switchPath={switchPath}

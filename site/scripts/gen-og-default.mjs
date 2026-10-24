@@ -1,5 +1,5 @@
-// Generates public/og-default.png (1200x630), the default OG/share image and
-// Organization logo referenced by Seo.astro / BaseLayout.astro.
+// Generates public/og-default.png and public/og-default-en.png (1200x630), the
+// default OG/share images Seo.astro picks by page language.
 //
 // Composites the brand mark (src/assets/baize-mark.png) onto a white 1200x630
 // canvas alongside the wordmark and tagline, using the same brand tokens as
@@ -37,16 +37,33 @@ const sharp = loadSharp();
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// Brand tokens (src/styles/tokens/colors.css / typography.css)
-const INK_900 = '#111827';
-const INK_700 = '#374151';
-const GRAY_500 = '#6B7280';
-const ORANGE = '#E9961A';
+// Brand tokens (src/styles/tokens/colors.css / typography.css), 白泽青 v3
+const INK_900 = '#0A1F1C';
+const INK_700 = '#3C4B48';
+const GRAY_500 = '#5A6B67';
+const ACCENT = '#14E0A0';
 const FONT = 'PingFang SC, Noto Sans SC, Poppins, sans-serif';
 
-async function main() {
+const VARIANTS = [
+  {
+    file: 'og-default.png',
+    kicker: 'BAIZE TECH',
+    name: '白泽明理',
+    nameSize: 76,
+    tagline: ['企业 AI 转型：咨询、培训、FDE 驻场开发'],
+  },
+  {
+    file: 'og-default-en.png',
+    kicker: 'AI TRANSFORMATION',
+    name: 'Baize Tech',
+    nameSize: 72,
+    tagline: ['Consulting, team training, and', 'forward deployed engineering.'],
+  },
+];
+
+async function render(v) {
   const markPath = path.join(root, 'src', 'assets', 'baize-mark.png');
-  const outPath = path.join(root, 'public', 'og-default.png');
+  const outPath = path.join(root, 'public', v.file);
 
   const markHeight = 360;
   const markMeta = await sharp(markPath).metadata();
@@ -60,12 +77,16 @@ async function main() {
   const textSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}">
       <text x="${textX}" y="228" font-family="${FONT}" font-size="21" font-weight="600"
-        fill="${GRAY_500}" style="letter-spacing:4px">BAIZE TECH</text>
-      <text x="${textX}" y="308" font-family="${FONT}" font-size="76" font-weight="600"
-        fill="${INK_900}" style="letter-spacing:-0.02em">白泽明理</text>
-      <rect x="${textX}" y="336" width="72" height="6" rx="3" fill="${ORANGE}" />
-      <text x="${textX}" y="404" font-family="${FONT}" font-size="33" font-weight="400"
-        fill="${INK_700}">让复杂 AI 变得可解释、可验证、可落地。</text>
+        fill="${GRAY_500}" style="letter-spacing:4px">${v.kicker}</text>
+      <text x="${textX}" y="308" font-family="${FONT}" font-size="${v.nameSize}" font-weight="600"
+        fill="${INK_900}" style="letter-spacing:-0.02em">${v.name}</text>
+      <rect x="${textX}" y="336" width="72" height="6" rx="3" fill="${ACCENT}" />
+      ${v.tagline
+        .map(
+          (line, i) => `<text x="${textX}" y="${404 + i * 46}" font-family="${FONT}" font-size="33"
+        font-weight="400" fill="${INK_700}">${line}</text>`,
+        )
+        .join('')}
     </svg>
   `;
 
@@ -87,7 +108,7 @@ async function main() {
   console.log('wrote', outPath);
 }
 
-main().catch((err) => {
+Promise.all(VARIANTS.map(render)).catch((err) => {
   console.error(err);
   process.exit(1);
 });

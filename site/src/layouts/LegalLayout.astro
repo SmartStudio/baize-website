@@ -42,11 +42,13 @@ if (altPath) {
   alternates.push({ hreflang: 'x-default', path: isZh ? path : altPath });
 }
 
-const org = organizationJsonLd({ email: 'contacts@fxai.ai' });
+const org = organizationJsonLd(lang);
 ---
 <!doctype html>
 <html lang={lang}>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     {import.meta.env.PROD && (
       <>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
@@ -58,8 +60,6 @@ const org = organizationJsonLd({ email: 'contacts@fxai.ai' });
         </script>
       </>
     )}
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={`${base}favicon.ico`} sizes="32x32" />
     <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
     <Seo
@@ -75,8 +75,8 @@ const org = organizationJsonLd({ email: 'contacts@fxai.ai' });
   <body>
     <header class="bz-legal-topbar">
       <a class="bz-legal-topbar__brand" href={base}>
-        <Image class="bz-legal-topbar__logo" src={mark} alt="白泽明理" width={56} loading="eager" />
-        <span class="bz-legal-topbar__wm bz-logotype">白泽明理</span>
+        <Image class="bz-legal-topbar__logo" src={mark} alt={isZh ? '白泽明理' : 'Baize Tech'} width={56} loading="eager" />
+        <span class="bz-legal-topbar__wm bz-logotype">{isZh ? '白泽明理' : 'Baize Tech'}</span>
       </a>
       <a class="bz-legal-topbar__switch" href={altHref}>{altLabel}</a>
     </header>

@@ -8,6 +8,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NoteCard from '../NoteCard.astro';
 import { localePath, notePath, noteSlug, withBase, type Lang } from '../../lib/i18n';
 import { CATEGORIES, categoryLabel, categorySlug } from '../../lib/notes';
+import { orgRef } from '../../lib/organization';
 
 interface Props {
   lang: Lang;
@@ -21,10 +22,9 @@ const COPY = {
   'zh-CN': {
     title: '明理笔记',
     blogName: '明理笔记',
-    publisher: '白泽明理',
-    description: '白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。',
-    eyebrow: '明理笔记',
-    h1: '教程库',
+    description: '白泽明理关于企业 AI 转型的笔记：企业落地案例、AI 编程、Loop Engineering、安全合规与模型接入，每篇给出可核对的步骤和来源。',
+    eyebrow: '方法全公开',
+    h1: '明理笔记',
     lead: (n: number) => `关于 AI 接入、工程与落地的笔记，按话题筛选。共 ${n} 篇。`,
     filterLabel: '按分类筛选笔记',
     all: '全部',
@@ -34,7 +34,6 @@ const COPY = {
   en: {
     title: 'Notes',
     blogName: 'Baize Tech Notes',
-    publisher: 'Baize Tech',
     description: 'Baize Tech notes on putting AI to work in real teams: engineering practice, security, governance, and rollout.',
     eyebrow: 'Baize Tech Notes',
     h1: 'Notes',
@@ -65,14 +64,14 @@ const blogLd = {
   description: t.description,
   url: new URL(path, site).href,
   inLanguage: lang,
-  publisher: { '@type': 'Organization', name: t.publisher },
+  publisher: orgRef(lang),
   blogPost: notes.map((n) => ({
     '@type': 'BlogPosting',
     headline: n.data.title,
     description: n.data.description,
     url: new URL(notePath(noteSlug(n.id), lang), site).href,
     datePublished: n.data.pubDate.toISOString(),
-    articleSection: n.data.category,
+    articleSection: categoryLabel(n.data.category, lang),
     inLanguage: n.data.lang,
   })),
 };
