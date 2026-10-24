@@ -6,8 +6,8 @@ type Category = (typeof CATEGORIES)[number];
 export type HomeCopy = {
   title: string;
   description: string;
-  /** 介绍视频是中文配音、中文封面,只在有这一项的语言里出现。 */
-  promo?: {
+  /** transcript 按视频里出现的字幕逐条抄,改视频文案时这里要跟着改。 */
+  promo: {
     playLabel: string;
     coverAlt: string;
     play: string;
@@ -95,6 +95,32 @@ export const en: HomeCopy = {
   title: 'AI Transformation Consulting, Training, and Engineering',
   description:
     'Baize Tech helps companies choose the first workflow to change with AI, trains teams by role, and assigns remote-first engineers to connect agents to CRM, ERP, and HR systems. Our methods are published as notes.',
+  promo: {
+    playLabel: 'Play the baize intro video (1 minute)',
+    coverAlt: 'Cover of the 1-minute baize intro video',
+    play: 'Watch the 1-minute tour',
+    video: {
+      name: 'A 1-minute tour of baize',
+      description:
+        'Baize Tech helps companies run the AI-native way with four services: AI transformation consulting, team AI training, forward deployed engineering, and internal tools and product support.',
+      transcript: [
+        'Sound familiar?',
+        'Runaway AI bills: 5 models, 5 accounts, 5 invoices.',
+        'Scattered knowledge: wikis, drives, chats. Never found.',
+        'Pilots never ship: great demo, no launch date.',
+        'baize · AI-native transformation: consulting, training, engineering and tools, all the way to launch.',
+        '01 AI transformation consulting: we interview each department and rank the workflows to change.',
+        '02 Team AI training: sessions by role. Each team keeps the reusable AI Skills it builds.',
+        '03 Forward deployed engineering: engineers join your team and connect agents to CRM, ERP and HR.',
+        'LLM Gateway: one entry point for every model. Cost, access and usage in one view.',
+        'Agents & Tools Gateway: agents call every company system and tool, safely.',
+        'Company Brain: scattered docs, data and know-how, turned into a brain AI can use.',
+        '04 Internal tools and product support: custom tools for your business, maintained after launch.',
+        'Loop Engineering: build, ship, measure, learn, better every round.',
+        'Run your company the AI-native way. Book a free 30-minute call. fxai.ai',
+      ],
+    },
+  },
   badge: 'AI-native transformation · Consulting · Training · FDE',
   h1: ['Run your company', BR, 'the ', { em: 'AI-native' }, ' ', { nw: 'way.' }],
   sub: 'We find the workflow to change first, train your team to do daily work with AI, and assign engineers who connect agents to your systems. Delivery is remote-first.',
