@@ -1,0 +1,113 @@
+---
+title: How to Write Answer-First Content That Answer Engines Can Quote
+description: Answer engines often quote the first paragraph under a question-style H2. Write the full answer in the first sentence, then the reasons and exceptions after it.
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/answer-first-for-answer-engines-cover.png
+coverAlt: Two stacks of grey slabs under wave-shaped heading blocks; on the shorter stack, an orange slab sits directly below the heading
+howto:
+  name: Rewrite a page to put the answer first
+  steps:
+    - name: Turn each H2 into a full question
+      text: Replace descriptive headings with complete questions a user would actually ask (does, how long, how, who, should).
+    - name: Make the first sentence a complete answer
+      text: Put it in its own paragraph directly under the H2. In about 40–60 words, state the conclusion and its key conditions or numbers. Move steps and exceptions below it.
+    - name: Test whether it can be quoted
+      text: Give only the H2 and its first sentence to an assistant that cites web pages, and check whether it restates your conclusion almost word for word.
+sourceHash: '295a13ca3db8'
+---
+
+When an answer engine pulls sentences from your page, it favors the first complete statement directly under a question-style heading. Answer-first writing puts the who, what, when, how, and the numbers into that first sentence, so the sentence can be quoted without the surrounding text. Steps, exceptions, and examples come after it. HubSpot's material on AI Overviews and answer engine optimization (AEO) treats a direct answer of about 40–60 words at the top of each section as a repeatable pattern. Google Search Central says that getting into AI Overviews or AI Mode still depends on standard SEO: pages that can be crawled, indexed, and shown with a snippet, and text that is useful to people. Google does not ask for a separate way of writing for AI. For the underlying concept, see <NoteLink slug="what-is-aeo-vs-search-ranking">What Is AEO, and How Is It Different from Search Ranking?</NoteLink>. This note covers one skill: how to write the first sentence under a heading.
+
+import noteFig from '../media/answer-first-for-answer-engines-fig-en.png'
+
+<Figure src={noteFig} alt="Answer first and question-style H2: on the left, a tall stack under a question heading; on the right, the complete quotable answer sits directly under the heading, with details below" caption="Figure: Question H2 | Answer First" width="wide" border />
+
+## How to write it: a question-style H2 plus a complete first-sentence answer
+
+Two steps cover it.
+
+**1. Write the H2 as a full question a user would ask**
+
+Use a complete question that matches what people type into a search box or say to a chatbot. Avoid stacks of keyword fragments.
+
+| Fragment heading (hard to match to a question) | Question-style H2 (easy to match) |
+| --- | --- |
+| Delivery timeline details | How long does a website redesign usually take? |
+| AEO considerations | What is answer-first writing, and how do you write it so it gets quoted? |
+| Pricing info | For a small team redoing its content, which three page types should we fix in week one? |
+
+Questions built on "does", "how long", "how", "who owns", or "should we" line up with real queries better than headings like "X optimization tips". On one page, pick the 3–7 questions users have actually asked and make those the H2s. That works better than a dozen vague headings.
+
+**2. The first sentence under the H2 is the complete answer**
+
+Read on its own, the first sentence should still answer the H2. State the conclusion in about 40–60 words. If the answer depends on a condition, state the condition. If it needs a number, give the number. Expand afterward with a list, a table, or short paragraphs.
+
+Before (throat-clearing; the answer is buried):
+
+> ## How long does a website redesign usually take?
+>
+> In today's fast-changing digital landscape, redesign timelines vary from team to team. Generally speaking, many factors affect the schedule... (The figure "six to ten weeks" does not appear until the third paragraph.)
+
+After (the first sentence is the answer):
+
+> ## How long does a website redesign usually take?
+>
+> For a small or mid-sized site without major changes to its information architecture, scoping to launch usually takes 6–10 weeks; if the project includes a full redesign and data migration, plan for 12–16 weeks. Below, the weeks are broken down by scoping, design, development, and acceptance testing, with the two stages that most often run late.
+
+A first sentence that can be extracted usually has these properties:
+
+- **Specific nouns**: product names, roles, scenarios. Avoid "in this area" or "related matters".
+- **Numbers or boundaries**: durations, headcount, price ranges, when it applies and when it does not.
+- **One claim per sentence**: the first sentence answers this one H2. Secondary points go in the list below.
+- **No preamble**: openers like "As...", "As we all know...", or "Before we begin..." push the quotable sentence further down.
+
+Use a short list or table after it to cover how to do it, the exceptions, and the sources. Crawler access and site-level entry points such as llms.txt are covered in separate notes: <NoteLink slug="chatgpt-perplexity-cite-your-site">How to Get ChatGPT and Perplexity to Cite Your Website</NoteLink> and <NoteLink slug="llms-txt-how-to-write-useful">How to Write a Useful llms.txt File</NoteLink>. For how to read KPIs as zero-click searches grow, see <NoteLink slug="zero-click-search-still-need-seo">Zero-Click Searches Are Rising. Do You Still Need SEO?</NoteLink>. This note asks for one thing: under a question-style H2, the first sentence delivers the answer.
+
+## How to use it: checklist and agent guardrails
+
+Before you revise a page or publish a post, run these four checks:
+
+1. **Every descriptive H2**: can you read it aloud as a question a user would ask? If it sounds awkward, rewrite it as a full question.
+2. **The first sentence after the H2**: if you paste it somewhere else, does it still fully answer the question? If it lacks a subject, a number, or a condition, rewrite it.
+3. **After the first sentence**: steps, exceptions, and sources come here. Do not put a CTA or brand slogan ahead of the answer sentence.
+4. **Spot test**: give the H2 and the first sentence to an assistant that cites web pages, and check whether it restates the conclusion almost word for word.
+
+**Agent guardrails (paste into a writing or publishing agent)**
+
+```text
+When writing or revising a body section:
+1. A descriptive H2 must be a complete question (does / how / how long / who / whether, etc.). Bare keyword fragments are not allowed.
+2. The first sentence after the H2 must be its own paragraph and must answer the H2 when read alone. Target about 40-60 words, with specific nouns and numbers or conditions.
+3. The first sentence must not open with: "In today's...", "As we all know...", "As...", "Before we begin...", "It's worth noting that...".
+4. The first sentence makes exactly one claim. All lists and exceptions go after it.
+5. This task does not produce FAQPage / JSON-LD tutorials and does not modify robots.txt or llms.txt.
+6. Self-check: delete everything after the first sentence. The remaining "H2 + first sentence" must still work as a complete reply.
+```
+
+## Answer first: FAQ
+
+### What is answer-first writing?
+
+Answer-first is a way of writing a section: under a question-style heading, the first sentence gives a complete conclusion that can be quoted on its own (typically about 40–60 words covering the conclusion and its key conditions), and the detail follows. It helps people who skim, and it makes it easier for answer engines to extract a sentence as a "question, then short answer" pair.
+
+### Does answer-first writing guarantee a spot in AI Overviews?
+
+No. Google Search Central states that there are no extra requirements to appear in AI Overviews or AI Mode. The page still has to be crawlable, indexable, and eligible for a snippet, and it has to offer content that is useful to people. Google also does not require separate AI files or special markup for Google Search. Answer-first writing improves how clean the sentence is when it gets picked. It does not replace indexing or content quality.
+
+### What is a question-style H2, and how do you write one?
+
+A question-style H2 is a section heading written as the full question a user would actually type, such as "How long does a website redesign usually take?" (compare the keyword fragment "Redesign timeline details"). Ask one question per heading, use the customer's own wording, and make sure the question matches the answer in the first sentence below it. On a single page, use several question-style H2s to cover different sub-questions, and put the answer first under each one before expanding.
+
+## Sources
+
+1. [Google Search Central, "Optimizing your website for generative AI features on Google Search"](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+2. [Google Search Central, "AI features and your website"](https://developers.google.com/search/docs/appearance/ai-features)
+3. [Google Search Central Blog, "A new resource for optimizing for generative AI in Google Search" (2026-05-15)](https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing)
+4. [HubSpot, "How to optimize for AI overviews (AIOs): A complete 2026 playbook"](https://blog.hubspot.com/marketing/optimize-for-ai-overviews)
+5. [HubSpot, "FAQs for AEO: How to structure answers that rank in answer engines"](https://blog.hubspot.com/marketing/faqs-for-aeo)

@@ -1,0 +1,30 @@
+---
+title: How Should a Small Team Design Its First AI Coding Workflow?
+description: Move a small team from ad hoc AI use to a dev process where AI takes part in requirements, coding, testing, and review, with written rules everyone follows.
+lang: en
+pubDate: 2026-10-23
+category: AI编程
+relatedService: dev-workflow
+author: Baize Tech
+cover: ../media/design-first-ai-dev-workflow-cover.png
+draft: false
+sourceHash: '67aaa490d39b'
+---
+
+When a small team first adopts tools like Codex or Claude Code, the usual pattern looks like this. One developer asks the AI for a snippet while coding. If the output is good, they keep it. If not, they delete it. Each person relies on their own judgment. After a few months, everyone on the team uses AI differently. Code style drifts, review standards drift with it, and the speed gains stay with individuals instead of becoming a team capability.
+
+Start the first workflow by mapping the development process before picking tools. Write down how requirements get broken down, how designs get made, how code gets written, how tests cover it, how reviews gate it, and how docs stay current. For each step, ask two questions: can AI take part here, and how much of the step should it own? "Use AI more" is too vague to act on.
+
+import blueprintFig from '../media/design-first-ai-dev-workflow-fig-en.png'
+
+<Figure src={blueprintFig} alt="A left-to-right pipeline from a blueprint notebook to a tree diagram, a drafting set, module blocks, and a team handbook" caption="Figure: Design Blueprint | Split Workflow | Set Standards | Capture Lessons. Settle the process and the rules first, then build each part." width="wide" border />
+
+Once the steps are mapped, turn them into concrete rules. Which requirements can go straight to AI for implementation? Which need a person to design the skeleton first? Does AI-generated code need extra test requirements? Should reviewers mark which changes came from AI? The first version of these rules does not need to be complete. It does need to be written down, so the team has a shared reference.
+
+After the workflow is running, add a feedback step. Record where AI performs well enough to hand work over, and where it makes mistakes that need a second look from a person. That record is experience specific to your team. Keep it, so nobody has to rediscover it each time.
+
+If your team is at the stage where everyone uses AI but nobody follows a shared system, start designing the workflow now. Baize Tech helps teams map this kind of process and write it up as standards.
+
+Related: <NoteLink slug="codex-into-real-workflow">What Does It Take to Make Codex Part of Your Team's Dev Workflow?</NoteLink>, <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering? Make AI Check Its Work Before It Delivers</NoteLink>.
+
+For consulting, book a diagnostic session. Unified API endpoint: https://api.fxai.ai

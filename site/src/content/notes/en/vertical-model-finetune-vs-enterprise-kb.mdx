@@ -1,0 +1,88 @@
+---
+title: 'Fine-Tuning vs. RAG: Connect the Enterprise Knowledge Base First'
+description: Fine-tuning a vertical model on weekly-changing facts bakes in stale data. Connect an enterprise knowledge base (RAG) first, then fine-tune for tone and format.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/vertical-model-finetune-vs-enterprise-kb-cover.png
+coverAlt: 'Knowledge base before vertical fine-tuning: changing facts stay outside the model, fine-tuning shapes tone and task format'
+howto:
+  name: Run the knowledge base checklist before approving a fine-tuning project
+  steps:
+    - name: Pick one workflow
+      text: Choose one end-to-end business workflow (refunds, quotes, or compliance Q&A) and build an updatable knowledge slice for that workflow only.
+    - name: Prepare before ingestion
+      text: 'Before ingestion, complete four items: sensitivity classification, a single version of each document, sign-off from a business owner, and freshness rules.'
+    - name: Fine-tune after retrieval passes
+      text: After retrieval passes acceptance, scope vertical fine-tuning (tone and format) as a separate project, and state in writing that the model is not the source of truth for facts.
+sourceHash: 'f09b66503e10'
+---
+
+A common request in procurement meetings: we want a vertical industry model, so we will fine-tune it on our own data first. When prices, policies, and product specs change every week, the "industry knowledge" written into the weights goes stale fast, and every correction means another training run. The more common order in practice: connect the enterprise knowledge base for retrieval-augmented generation (RAG) first, then decide whether to fine-tune for tone and task format.
+
+import noteFig from '../media/vertical-model-finetune-vs-enterprise-kb-fig-en.png'
+
+<Figure src={noteFig} alt="Knowledge base before vertical fine-tuning: an updatable fact library on the left, tone and task-format fine-tuning on the right" caption="Figure: Knowledge Base | Then Fine-Tune" width="wide" border />
+
+## Vertical fine-tuning handles tone and format; today's facts go through the knowledge base
+
+Fine-tuning is good at industry tone, fixed output formats, and specific task flows (classification, extraction, form filling). It compresses patterns into the weights.
+
+An enterprise knowledge base with retrieval is good at policy source text, price lists, ticket resolutions, and versioned documents. The facts stay outside the model. You update the document; you do not retrain.
+
+If you fine-tune on changing facts, such as "what is the contract value today," the model will repeat the old number from its training cutoff with high confidence. When the knowledge base holds a single source of truth, each answer can carry an entry ID and be spot-checked. A fact remembered in the weights is hard to trace back to any one record.
+
+## Connecting the knowledge base first depends on three things
+
+1. **One authoritative figure**: if the same customer's contract value appears in different versions in the CRM, the finance system, and a slide deck, resolve the conflict before ingestion. If you skip that step, retrieval will reliably return the conflict.
+2. **Updatable**: when a policy changes, you edit the knowledge base. Fixing a fact through fine-tuning means rebuilding the dataset and retraining. In domains that change often, starting with the knowledge base costs less.
+3. **Auditable**: each answer traces back to a document version and paragraph. In an incident review, you can tell whether retrieval returned the wrong passage or generation drifted. Expanding access permissions safely also depends on this layer.
+
+For context that is reliable, actionable, and auditable, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>. That note covers the infrastructure. This one covers a single decision: why the knowledge base comes before fine-tuning.
+
+## When to start vertical fine-tuning
+
+Once the knowledge base answers factual questions reliably, teams usually fine-tune to:
+
+- Lock in industry phrasing and refusal boundaries (compliance wording)
+- Reduce format errors in multi-step form filling and ticket classification
+- Raise task success rates on top of retrieval results, without replacing retrieval
+
+The training set still needs versioning and de-identification. Fine-tuning does not resolve permissions or conflicting documents. If training ends and workflows stay the same, both the model and the knowledge base sit unused; see <NoteLink slug="all-hands-ai-training-workflow-unchanged">Company-Wide AI Training Is Done. Why Haven't Workflows Changed?</NoteLink>. For a design-first path, see <NoteLink slug="design-first-ai-dev-workflow">How Should a Small Team Design Its First AI Coding Workflow?</NoteLink>.
+
+## How to use it: run the knowledge base checklist before approving fine-tuning
+
+- Pick one end-to-end business workflow (refunds, quotes, or compliance Q&A) and build an updatable knowledge slice for that workflow only.
+- Before ingestion, complete four items: sensitivity classification, a single version of each document, sign-off from a business owner, and freshness rules.
+- Run retrieval acceptance: the same question against the same knowledge base gives the same answer, conflicts can be explained, and each answer carries a source ID.
+- After retrieval passes, scope vertical fine-tuning (tone and format) as a separate project, and state in writing that the model is not the source of truth for facts.
+
+```text
+Your task: connect enterprise knowledge base retrieval for the selected business workflow. Every factual answer must return a document ID and version.
+When done, show me: the conflict resolution rules, the owner, the freshness policy, and sample Q&A with a source list.
+Do not: fine-tune directly on unresolved multi-source documents; treat prices or policies as memory in the weights; or announce "the industry model is live" when answers have no source ID.
+```
+
+## Vertical industry models: FAQ
+
+### Does a vertical industry model have to be fine-tuned first?
+
+No. Route changing facts through knowledge base retrieval first. Fine-tuning fits tone and task format better. Many teams fine-tune first because they treat "sounds like our industry" and "gets the facts right" as a single step.
+
+### Once the knowledge base is connected, do we still need vertical fine-tuning?
+
+It depends on the gap. If retrieval is accurate and the main problems are unstable wording or messy formats, fine-tune. If the problems are still conflicting figures and outdated documents, keep cleaning the knowledge base. More parameters do not produce a single source of truth.
+
+### How far along should the knowledge base be before we discuss fine-tuning?
+
+At minimum: documents in the target workflow have an owner and a single version, sensitivity levels are tagged, and sample Q&A reliably returns clickable sources. If you start vertical fine-tuning without these three, later fact changes still require retraining, and audits stay difficult.
+
+## Sources
+
+1. [Baize Tech note: Enterprise context engineering (Chinese)](https://fxai.ai/notes/enterprise-context-engineering/)
+2. [Atlan: How to Build an LLM Knowledge Base for Enterprise](https://atlan.com/know/how-to-build-llm-knowledge-base/)
+3. [Atlan: How to Prepare Data for an LLM Knowledge Base](https://atlan.com/know/knowledge-base-data-preparation-llm/)

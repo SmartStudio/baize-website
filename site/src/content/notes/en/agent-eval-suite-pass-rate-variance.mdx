@@ -25,7 +25,7 @@ Pull eval tasks from the company's real business processes. Each task needs a cl
 
 Start from the tickets, reports, and customer requests that staff handle every day. Cover the main routine flow and the edge cases that are easy to get wrong. For an order reconciliation task, include complete, standard documents and also problem documents with missing fields or malformed formats. This checks whether the system recognizes the exception and stops.
 
-The University of Michigan's Fall 2026 course EECS 498-016, "Applied Agentic Software Engineering," is taught by Marcus Darden. The syllabus says an agent eval suite contains at least 8 tasks and is reported by pass rate. Treat 8 tasks as a starting line, and add more for each business area the agent covers. For preparing test data, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should agent testing use simulated company data before connecting to a CRM?</NoteLink>
+The University of Michigan's Fall 2026 course EECS 498-016, "Applied Agentic Software Engineering," is taught by Marcus Darden. The syllabus says an agent eval suite contains at least 8 tasks and is reported by pass rate. Treat 8 tasks as a starting line, and add more for each business area the agent covers. For preparing test data, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>
 
 The syllabus also says the course uses small models that students deploy themselves, because small models expose sloppy engineering. Our reading: a large model can often guess what a vague instruction meant, while a small model is more likely to fail outright on ambiguity or a format error. In an enterprise eval, one extra pass on a smaller model surfaces problems in prompts and tool definitions early.
 
@@ -69,9 +69,9 @@ The pre-launch eval suite sets the capability baseline and the acceptance bar. A
 
 Pre-launch evals focus on behavior under fixed inputs: whether the task comes out right, whether it stays stable across runs, and what each run costs and how long it takes. The baseline from this stage is the control group for every later revision.
 
-Once the system is in production, the focus moves to end-to-end business value. For how to measure ticket close rate and cost against return after launch, see <NoteLink slug="agent-value-work-finished-metrics">Which numbers to track after an agent goes live</NoteLink>.
+Once the system is in production, the focus moves to end-to-end business value. For how to measure ticket close rate and cost against return after launch, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
 
-When picking the first use cases, start with tasks whose results can be checked on the spot. See <NoteLink slug="ai-verifiable-work-first">Which AI use cases to start with: check whether results can be verified on the spot</NoteLink>. Results in these use cases are easy to compare, so the pre-launch eval set is easier to build and automated acceptance after launch runs more smoothly.
+When picking the first use cases, start with tasks whose results can be checked on the spot. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. Results in these use cases are easy to compare, so the pre-launch eval set is easier to build and automated acceptance after launch runs more smoothly.
 
 ## Agent evals: FAQ
 

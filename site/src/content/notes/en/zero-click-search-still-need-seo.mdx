@@ -1,0 +1,102 @@
+---
+title: Zero-Click Searches Are Rising. Do You Still Need SEO?
+description: About 68% of US Google searches ended without a click in early 2026. SEO still matters, but brand, local, and transactional KPIs should replace raw traffic.
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/zero-click-search-still-need-seo-cover.png
+coverAlt: A 3D results page with a lifted answer card, and an orange arrow running from a location pin to a separate website window
+howto:
+  name: Split your keywords by intent, then change the KPIs
+  steps:
+    - name: Split the keyword list by intent
+      text: Export 90 days of queries from Search Console and tag each as informational, brand, local, or transactional. Lower the expected CTR for informational queries.
+    - name: Rebuild the dashboard around four columns
+      text: Brand-query clicks, transactional-query conversions, index status of core URLs, and whether 10 to 20 customer questions trigger an AI Overview.
+    - name: Put the answer first on informational pages
+      text: Under the H1, state the definition or steps in two or three sentences, and date and source every number. Make this a fixed rule for any agent that rewrites content in bulk.
+sourceHash: 'd637931800f6'
+---
+
+import noteFig from '../media/zero-click-search-still-need-seo-fig-en.png'
+
+In the first four months of 2026, about 68% of US Google searches ended without a click to anywhere. The figure comes from SparkToro, based on Similarweb's desktop and mobile clickstream panel. On the same methodology, the 2024 figure was about 60%. That is a rise of more than seven percentage points in two years. Many teams now ask whether organic search traffic is still dependable and whether SEO is still worth the budget. Short answer: keep doing SEO. Stop using the click volumes of three years ago as the only acceptance criterion.
+
+<Figure src={noteFig} alt="Zero click versus still needing SEO: on the left the answer stays on the results page, on the right brand and transactional queries still rely on SEO to earn clicks" caption="Figure: Zero Click | Still Need SEO" width="wide" border />
+
+## What is happening with zero-click search
+
+A zero-click search is one where the user searches and then clicks nothing: no external website, no ad, and no Google-owned property such as Maps or YouTube. The user reads the answer on the results page itself, from a knowledge panel, a featured snippet, a local pack, and now AI Overviews.
+
+Details from the SparkToro dataset:
+
+- The sample covers the US, January to April 2026. Device weighting is roughly two-thirds mobile, one-third desktop.
+- The Google mobile search app is not included. Zero-click rates inside the app may be higher, so the true rate across all surfaces may be higher still.
+- Out of every 1,000 searches, only a little over 200 clicks reach the open web. The share of users who search again after a first search is rising.
+
+AI Overviews are one accelerant. SparkToro reports that AI Overviews (AIO) already appear on more than 20% of searches, and when they appear, CTR often drops by close to 60%. Ahrefs compared aggregated Search Console data for about 300,000 keywords from December 2023 and December 2025. It estimated that when an AIO appears, organic CTR for the top-ranked result is about 58% lower than the projected CTR without one. Seer Interactive tracked informational queries through September 2025 and found that organic CTR on queries with an AIO fell about 60% against baseline. Pew Research studied real browsing by US users in March 2025. When an AI summary appeared, users clicked a traditional blue link about 8% of the time, against about 15% when no summary appeared. About 1% clicked a source link inside the summary. Users were also more likely to end the browsing session when a summary appeared.
+
+These studies use different methods (country, device, app inclusion, keyword sample), so the numbers vary. They point the same way: informational searches increasingly end on Google's own page.
+
+## Do you still need SEO
+
+Yes. If you stop SEO and your pages drop out of the index, they cannot be summarized, cited, or found on a brand search.
+
+Rand Fishkin puts it plainly in the SparkToro post: more aggressive SEO will not reverse zero-click. SEO still matters, but it will not bring back off-site click volumes at the old scale. He names the scenarios that still earn clicks: brand searches, local businesses, and high-intent transactional or tactical queries.
+
+A rough split by intent:
+
+| Intent | Zero-click pressure | What SEO still does |
+| --- | --- | --- |
+| Informational (what is, how to, comparisons) | High. AIO and snippets answer the question in place | Keep pages indexed and authoritative. State facts accurately so the answer does not misstate you |
+| Brand / navigational | Relatively low. The user is already looking for you | Keep the website, docs, and pricing pages clean and clickable. Do not let third parties take over your brand SERP |
+| Local services | Medium. The map pack often absorbs the click | Keep your Google Business Profile, local landing pages, reviews, and name/address/phone (NAP) consistent |
+| Transactional / price comparison / pre-purchase | Relatively low | Keep optimizing product pages, FAQs, comparison tables, and the conversion path |
+
+The KPIs need a new definition too. Watching only year-over-year organic sessions leads to wrong conclusions. Track three groups in parallel:
+
+1. **Traffic that still clicks through**: clicks and conversions from brand queries, transactional queries, and core landing pages.
+2. **Visibility**: whether priority keywords are still indexed, whether rankings have collapsed, and whether an AIO has suddenly started covering them.
+3. **Presence in answers** (lightweight): when your priority customer questions trigger an AIO on Google, check whether it mentions or links to you. For detailed answer-block work and ChatGPT/Perplexity citation tracking, see <NoteLink slug="what-is-aeo-vs-search-ranking">What Is AEO, and How Is It Different from Search Ranking?</NoteLink>. This note does not cover it.
+
+A rise in zero-click means more searches end with the answer on the results page. Your website is still the crawl source, the evidence source, and the place where conversions happen.
+
+## What to do: three changes you can make in a week
+
+**1. Split the keyword list by intent**
+Export 90 days of queries from Search Console. Tag each as informational, brand, local, or transactional. Lower the expected click-through rate for informational queries, and stop judging the content team against the old CTR baseline. If brand or transactional queries drop, check technical indexing, page availability, and competitors taking your positions first.
+
+**2. Replace the acceptance dashboard**
+Use at least four columns: brand-query clicks, transactional-query conversions, index status of core URLs, and whether 10 to 20 questions in customers' own words trigger an AIO on Google. Keep total traffic on the dashboard, but stop using it as the only bonus metric.
+
+**3. Put the conclusion first on informational pages**
+Under the H1 of each informational page, state the definition or the steps in two or three sentences, and date and source every number. Readers can scan faster, and summaries and models copy fewer errors. If your team uses agents to rewrite content in bulk, add "open each section with a short conclusion" to the rules; see <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>. Keep source material and accounts out of individual employees' chat apps; see <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>.
+
+After these three steps, you can tell which clicks were always going to decline and which losses are real share loss.
+
+## Zero-click search: FAQ
+
+### What does zero-click search mean?
+
+The user completes a search and clicks no link that leads off the results page, including ads and Google-owned properties. The answer is read on the SERP. The SparkToro/Similarweb data comes from a US browser panel and does not include the mobile app.
+
+### If zero-click is rising, is SEO pointless now?
+
+No. SEO governs indexing, authority, and rankings, and it decides whether your brand and transactional queries can be found. What has changed is the expected click rate for informational queries. If you stop SEO, you put at risk both your presence in answers and the traffic that brand searches still send to your site.
+
+### How are AI Overviews related to zero-click search?
+
+AI Overviews are one accelerant of zero-click search, not the only cause. Featured snippets, knowledge panels, and local packs were already diverting clicks. Several studies show that organic CTR on queries with an AIO is often well below CTR on comparable queries without one. Users click blue links less, and rarely click the sources inside the summary. SparkToro reports that AIO appears on more than 20% of searches; Ahrefs, Seer, and Pew confirm the decline from both CTR data and real click behavior. To respond, split queries by intent and KPI first, then decide which pages compete for clicks and which compete for visibility and presence in answers.
+
+## Sources
+
+1. [SparkToro / Rand Fishkin, "In 2026, Less than One Third of Google Searches Still Send a Click"](https://sparktoro.com/blog/in-2026-less-than-one-third-of-google-searches-still-send-a-click/)
+2. [Search Engine Land coverage of the same data](https://searchengineland.com/google-zero-click-searches-2026-study-479717)
+3. [Search Engine Journal analysis of the same data](https://www.searchenginejournal.com/google-search-sends-23-of-queries-to-the-open-web/578724/)
+4. [Ahrefs, "Update: AI Overviews Reduce Clicks by 58%"](https://ahrefs.com/blog/ai-overviews-reduce-clicks-update/)
+5. [Seer Interactive, "AIO Impact on Google CTR: September 2025 Update"](https://www.seerinteractive.com/insights/aio-impact-on-google-ctr-september-2025-update)
+6. [Pew Research Center, "Google users are less likely to click on links when an AI summary appears in the results"](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)

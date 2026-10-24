@@ -1,0 +1,84 @@
+---
+title: "AI Agent Memory Architecture: Markdown Is the Source of Truth, the Database Is a Disposable Cache"
+description: GBrain, Garry Tan's open-source agent memory system, keeps Markdown in Git as the only source of truth and treats its database as a rebuildable index.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: loop-engineering
+author: Baize Tech
+draft: false
+cover: ../media/gbrain-markdown-truth-source-cover.png
+sourceHash: '6f13428b7e8e'
+---
+
+If you treat knowledge management as a storage problem, the plan is to pick a database, load the documents, and make queries convenient. If you treat it as a compilation problem, the plan changes. The raw signal exists in one place. The database is a build artifact compiled from that signal. When the database breaks, you delete it and rebuild it from scratch.
+
+[GBrain](https://github.com/garrytan/gbrain) is an agent memory system open-sourced by Garry Tan, President and CEO of Y Combinator. He runs it in his own production setup and uses it daily for meeting prep, email follow-ups, and investment notes. GBrain takes the compilation route and applies that choice at every layer. Most companies skip the same decision when they build memory for their agents: when something goes wrong, do you trust a row in the database, or the source material that can regenerate that row?
+
+## One source of truth, and the database is not it
+
+GBrain's source-of-truth rule is simple. All user knowledge must land in a Markdown file first, either in frontmatter or in a designated body section, before it enters the system. Direct writes to user knowledge tables are blocked in CI by a check script in the codebase.
+
+The benefit is **recoverability**. If the database crashes, a schema migration goes wrong, or an index gets corrupted, the recovery is one command: `gbrain rebuild --confirm-destructive`. It deletes all derived tables and re-extracts everything from the Markdown in Git. You do not need a careful database backup plan, because the database is a cache and has nothing that needs backing up.
+
+The architecture has three layers. The lower the layer, the more expensive it is to lose:
+
+1. **Brain Repo**: Markdown files under Git. This is the only source of truth. People can read it, edit it, and run `git diff` to see what the agent learned last night.
+2. **Retrieval Index**: Postgres plus pgvector. Single-machine setups use PGLite, a WASM build of Postgres that runs in-process with no server to install. It stores derived data such as pages, chunks, links, and timelines. The whole layer can be rebuilt.
+3. **Self-wiring Knowledge Graph**: on every page write, regex and string matching extract entities and relationship edges (`works_at`, `invested_in`, `founded`, `advises`, and others) from Markdown wikilink syntax, with **zero LLM calls**. This graph is also derived data and can also be rebuilt.
+
+import layersFig from '../media/gbrain-markdown-truth-source-fig-1-en.png'
+
+<Figure
+  src={layersFig}
+  alt="A Markdown repo at the bottom serves as the source of truth; a rebuildable retrieval index and an auto-built knowledge graph are derived from it above"
+  caption="Figure: Auto-Built Graph | Rebuildable Index | Source of Truth"
+  width="wide"
+  border
+/>
+
+## Page structure: rewritable understanding plus append-only evidence
+
+Keeping the truth in Markdown is not enough on its own. If a person's profile page only accumulates a timeline, it holds 200 entries after six months. To learn where that person stands now, you scroll to entry 147.
+
+GBrain gives every page two fixed sections. At the top is **Compiled Truth**, the current best understanding, which gets rewritten in full when new evidence arrives. At the bottom is the **Timeline**, an append-only evidence log that is never edited or deleted. On each update, the timeline gains a new line with a source and timestamp. The top summary is regenerated: the system reads the previous version, merges in the new information, and writes a new paragraph. The rule is strict: **every claim in Compiled Truth must trace back to a raw entry in the Timeline**. This is what dependability looks like at the page level. Conclusions and evidence live in separate sections, and every conclusion can be traced to its evidence.
+
+## Retrieval: beyond vectors, check whether facts actually connect
+
+Retrieval stacks four strategies. Vector search (HNSW index) and keyword search (BM25) run in parallel. RRF (Reciprocal Rank Fusion) merges the two result lists. A graph-traversal signal boosts the merged results, and a reranker runs last. GBrain's own BrainBench results: with the graph layer off, P@5 (how many of the top 5 results are relevant) is about 18%. With the graph layer on, P@5 rises to 49.1% and R@5 (how many of the relevant results appear in the top 5) reaches 97.9%.
+
+The reason for the gap: vector search finds content that is semantically similar, and the graph finds content that is factually connected. The two often return different result sets. Ask "who works at Acme," and vector search can only find passages that mention "Acme" and "work" in similar language. The graph follows the `works_at` edge directly, even if the source text never put the two words in the same sentence.
+
+import retrievalFig from '../media/gbrain-markdown-truth-source-fig-2-en.png'
+
+<Figure
+  src={retrievalFig}
+  alt="A four-stage retrieval pipeline: vector search and keyword search run in parallel, merge through rank fusion, get a knowledge graph boost, then go through reranking"
+  caption="Figure: Vector Search | Keyword Search | Rank Fusion | Graph Boost | Rerank"
+  width="wide"
+  border
+/>
+
+<Callout type="tip" title="Related reading">
+Compiled Truth backs every conclusion with evidence, which is how GBrain makes pages dependable. GBrain's Dream Cycle (deduplication, citation repair, contradiction detection) is a check that runs automatically after each write, the same idea as <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering? Make AI Check Its Work Before It Delivers</NoteLink>. Together they are one concrete reference for building the dependability pillar described in <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+</Callout>
+
+## Company brain: multiple sources, per-person access, isolation at the SQL layer
+
+A personal brain has one Source and one user. GBrain extends this into a company brain by attaching several independent Sources to the same database instance (a Brain). A shared wiki, customer notes, and internal docs each live in their own Git repo and do not interfere with each other.
+
+Permissions are implemented through OAuth Clients. `--source` sets which Source a Client can write to. `--federated-read` sets which Sources it can read. Isolation is enforced in the database layer instead of an if-check in application code: cross-Source reads are rejected at the SQL level. The project has fuzz-tested the search, list, and multi-Source read paths and reports zero leaks.
+
+The project recommends this model for teams of 10 to 50 people. Larger teams need to split into more Sources and add finer-grained permissions themselves. GBrain does not integrate with native Salesforce or Jira permission models and does not have full SOC 2 certification. Products built specifically for team memory are further along on those requirements. GBrain's strengths are elsewhere: auditable Markdown, native agent reads and writes, a graph built with zero LLM calls, and Git-friendly collaboration. The right choice depends on which layer of risk you care about most.
+
+## What GBrain does with diagrams Markdown cannot draw
+
+Markdown is a text-first format. It cannot natively express precise flowcharts, architecture diagrams, or dependency graphs. GBrain accepts this limit and does not work around it by embedding binary images as knowledge.
+
+It handles diagrams two ways. Complex visuals that people need to see are stored as attachments or external links, and the page body must describe the key nodes and relationships in text. GBrain indexes that text, not the image. For everyday cases, it prefers diagrams-as-code (Mermaid, PlantUML, Graphviz DOT), written into Markdown code blocks. The source stays plain text: full-text searchable, readable by agents, and diffable in Git. Anyone opening it in an editor that renders these formats sees the diagram. GBrain's internal knowledge graph is a set of typed entity relationships for multi-hop queries. It is not a drawing tool, and the project keeps that boundary clear.
+
+## Where to start
+
+When teams build memory for an agent, the usual first step is to pick a vector database and load documents into it. That works in a demo. The question of where the truth lives often goes unanswered. Does it matter if the database goes down? Is access control a check in the application, or does the database structure itself prevent out-of-bounds reads? These questions do not surface during a demo. They surface after the system has run in production for a while and the data has had its first incident.
+
+GBrain is one answer among several. It lays out the decision in order: first decide what is the source of truth that cannot be lost and what is a cache you can rebuild at any time, then build retrieval and permissions on that structure. Baize Tech works through the same questions when designing enterprise agent context and loops: decide where the source of truth lives and where the boundaries are, then choose tools.
