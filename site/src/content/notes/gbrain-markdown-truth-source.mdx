@@ -2,6 +2,7 @@
 title: 企业 Agent 的记忆架构：Markdown 是真值，数据库只是能丢弃的缓存
 description: GBrain 是 Y Combinator 总裁兼 CEO Garry Tan 开源并自用的 Agent 记忆系统，把知识管理当成编译问题而非存储问题：Markdown 加 Git 是唯一真值源，数据库只是可以整份丢弃重建的派生索引。看懂这个选择，才看懂企业级 Agent 上下文该怎么搭。
 pubDate: 2026-07-17
+updatedDate: 2026-10-24
 category: 企业落地
 relatedService: loop-engineering
 cover: ./media/gbrain-markdown-truth-source-cover.png
@@ -42,9 +43,9 @@ GBrain 给每个页面定了两个固定区域：顶部是 **Compiled Truth**（
 
 ## 检索：向量之外，还要看「事实上连不连得上」
 
-检索是四种策略叠加：向量检索（HNSW 索引）和关键词检索（BM25）并行跑，用 RRF（倒数排名融合）把两路结果合并，再叠加图谱遍历信号做增强，最后过一层重排。GBrain 自己的 BrainBench 测试显示：关掉图谱层，P@5（前 5 条里有多少条真正相关）约 18%；打开图谱层，跳到 49.1%，R@5（真正相关的结果里有多少条被召回）到 97.9%。
+检索是四种策略叠加：向量检索（HNSW 索引）和关键词检索（BM25）并行跑，用 RRF（倒数排名融合）把两路结果合并，再叠加图谱遍历信号做增强，最后过一层重排。GBrain 的评测仓库 gbrain-evals 在 2026-09-09 [重跑了 BrainBench](https://github.com/garrytan/gbrain-evals/blob/main/docs/benchmarks/2026-09-09-retrieval-refresh.md)。在 145 道关系类问题上，专用图谱适配器的 P@5（前 5 条里有多少条真正相关）是 34.2%，R@5（真正相关的结果里有多少条被召回）是 97.9%。参考混合检索是 19.2% 和 68.7%。仓库在 2026-09-28 补注：这个图谱适配器事先知道四种问题模板，分数只能当上限看；差距是两套完整系统的对比，不能算成图谱单独带来的提升。早先流传的 49.1% / 97.9% 已被仓库标为无效。
 
-差距的原因不难理解：向量检索找的是「语义相近」的内容，图谱找的是「事实上有关联」的内容——两者经常是不同的结果集。问「谁在 Acme 工作」，向量检索只能找到语义上提过「Acme」和「工作」的段落；图谱可以直接顺着 `works_at` 这条边走过去，即使那段原文从没把两个词放在同一句话里。
+两种检索找的东西不同。向量检索找「语义相近」的内容，图谱找「事实上有关联」的内容，两者经常是不同的结果集。问「谁在 Acme 工作」，向量检索只能找到语义上提过「Acme」和「工作」的段落；图谱可以直接顺着 `works_at` 这条边走过去，即使那段原文从没把两个词放在同一句话里。
 
 import retrievalFig from './media/gbrain-markdown-truth-source-fig-2.png'
 
