@@ -1,0 +1,153 @@
+---
+title: How to Write a Useful llms.txt File
+description: "llms.txt is a Markdown index at your site root (llmstxt.org v2, 2026). What to list, how to order links, how it differs from robots.txt, and how to test it."
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/llms-txt-how-to-write-useful-cover.png
+coverAlt: "llms.txt as a useful index: a Markdown index file at the site root pointing to priority docs"
+howto:
+  name: Write a useful llms.txt in half a day
+  steps:
+    - name: Pick the location and an owner
+      text: Use /llms.txt at the root (or /docs/llms.txt). The docs owner edits it; add a URL-change item to the release checklist.
+    - name: Write the index in v2 order
+      text: H1, then a blockquote, then optional notes, then ## sections of links. Keep about 10–30 absolute URLs in the priority sections.
+    - name: Verify with curl and spot-check
+      text: Check for HTTP 200 and the Content-Type. Pick 2–3 real questions and see whether an agent finds the right docs starting from llms.txt alone.
+sourceHash: '6e41c4013adf'
+---
+
+import noteFig from '../media/llms-txt-how-to-write-useful-fig-en.png'
+
+llms.txt is a Markdown index placed at a site's root (or under a subpath such as `/docs/`). Under the [llmstxt.org](https://llmstxt.org/) v2 spec (2026), it tells an agent what the site does and which pages to read first. Sites with docs, pricing, FAQs, or product pages should have one. A brochure site with a few pages and nobody to maintain links can skip it for now. The file helps with discovery and routing. Blocking or allowing crawlers still belongs in robots.txt.
+
+<Figure src={noteFig} alt="llms.txt as a useful index: an index file at the site root on the left, a curated stack of priority docs on the right" caption="Figure: llms.txt | Useful Index" width="wide" border />
+
+## How to structure fields and links
+
+The llmstxt.org order is fixed, which makes the file quick to write:
+
+1. **H1**: the site or product name. This is the only required element.
+2. **Blockquote `>`**: one or two sentences on what the product does and who it is for.
+3. **Optional notes**: short paragraphs with no headings. Use them for limits an agent should know when reading the site (compatibility, versions, common mistakes).
+4. **`##` sections with link lists**: each entry is `- [Title](absolute URL): short description`.
+
+Link selection and order matter more than whether the file exists:
+
+| List first | Push back / Optional |
+| --- | --- |
+| What the product is, getting started, pricing, core FAQ | The full blog archive, expired campaign pages |
+| Stable canonical docs and API reference | Draft URLs that are not final |
+| One factual line per page (feature, audience, scope) | Keyword stuffing, full-page summaries |
+
+Rules that cover most cases:
+
+- **Absolute URLs** with `https://`. Agents often fail to resolve relative paths when they fetch the file.
+- **Keep each description to about 120 characters.** Say what problem the page solves. Do not add SEO keyword strings.
+- **List about 10–30 priority links.** Leave the full URL list to `sitemap.xml`. llms.txt is a curated list, so do not turn it into a second sitemap.
+- **Put secondary resources under `## Optional`.** v2 no longer requires agents to skip this section, but by convention it still means "read later if context is tight."
+- **Assign an owner.** When a page moves or is removed, update this file in the same change. Otherwise agents follow broken links.
+- **Optional `/llms-full.txt`**: the full text of the linked pages concatenated into one large Markdown file, for tools that explicitly support that convention. It is large, goes stale quickly, and exposes more content. Most sites only need a correct index.
+
+A skeleton you can copy:
+
+```markdown
+# Your Product Name
+
+> One line: what it does and who it is for.
+
+Maintenance note: links point only to stable docs and pricing; blog posts go under Optional.
+
+## Core entry points
+
+- [Quickstart](https://example.com/docs/start/): installation and first call
+- [Pricing](https://example.com/pricing/): plans, limits, enterprise options
+- [FAQ](https://example.com/faq/): common purchase and integration questions
+
+## Docs
+
+- [API reference](https://example.com/docs/api/): authentication, endpoints, rate limits
+
+## Optional
+
+- [Changelog](https://example.com/changelog/): version history
+```
+
+The developer docs of OpenAI, Anthropic, and Perplexity each publish an llms.txt in this form: a short index with sectioned links. Copy that routing pattern. Do not paste in your whole sitemap.
+
+## How llms.txt differs from robots.txt and GPTBot rules
+
+The two files do different jobs. Keep them separate.
+
+| File | Question it answers |
+| --- | --- |
+| `robots.txt` | Which crawlers may fetch which paths (including GPTBot, OAI-SearchBot, PerplexityBot) |
+| `llms.txt` | Once reading is allowed, which pages an agent should read first and what each page covers |
+
+The llmstxt.org spec says the same: robots.txt governs acceptable automated access; llms.txt is a guide offered when an agent needs to understand the site. Google Search Central's guide to generative AI features is explicit: Google Search (including AI Overviews and AI Mode) does not give llms.txt any special treatment. Having one neither hurts nor helps ranking. It can still help other agents and documentation tools that read the file. To get cited by ChatGPT or Perplexity, first handle crawler access and extractable page text; see <NoteLink slug="chatgpt-perplexity-cite-your-site">How to Get ChatGPT and Perplexity to Cite Your Website</NoteLink>. GPTBot details are in the FAQ at the end.
+
+## Checklist: putting it into use
+
+**1. Where it goes**
+At the site root: `https://your-domain/llms.txt`. If you only control a docs subsite, use `/docs/llms.txt`. When several files exist, agents should use the one with the most specific path (v2).
+
+**2. Who maintains it**
+The docs owner edits links and descriptions. Marketing and product notify the docs owner when they change pricing or landing pages. Add one item to the release checklist: "Any URL changes this week that need an llms.txt update?"
+
+**3. How to verify**
+
+```bash
+curl -sI https://example.com/llms.txt
+# Expect: HTTP 200; Content-Type is text/plain or a Markdown type
+curl -sL https://example.com/llms.txt | head
+# Expect: first line is "# Site Name"; links are absolute https URLs that open
+```
+
+Then pick 2–3 real questions. Give an agent only llms.txt as the starting point and check whether it reaches the right doc page.
+
+**4. When to skip it**
+- You have no public docs or product pages worth pointing to.
+- The team cannot fix broken links within two months.
+- Your only goal is Google ranking. Google Search ignores this file, so spend the time on crawlable pages with original information. Visibility in generative search still rests on regular SEO. For how KPIs should change as zero-click searches grow, see <NoteLink slug="zero-click-search-still-need-seo">Zero-Click Searches Are Rising. Do You Still Need SEO?</NoteLink>
+
+**Agent guardrails (paste into your publishing agent)**
+
+```text
+When writing or editing /llms.txt:
+1. Output Markdown only; the first line must be a single H1.
+2. Links must be absolute https URLs; no relative paths.
+3. At most 30 entries in the priority sections; everything else goes under ## Optional.
+4. Each description ≤120 characters; no keyword stuffing; no claims of "guaranteed citations" or "higher rankings".
+5. Do not put GPTBot or other crawler Allow/Disallow rules in llms.txt; those rules go only in robots.txt.
+6. After editing, use curl to check for 200 and the Content-Type, and spot-check three links.
+```
+
+For answer blocks, the citation side, and the AEO groundwork, see <NoteLink slug="what-is-aeo-vs-search-ranking">What Is AEO, and How Is It Different from Search Ranking?</NoteLink> This note covers only getting the index file right.
+
+## llms.txt: FAQ
+
+### What is llms.txt, and where does it go?
+
+A Markdown index written for LLMs and agents. It usually sits at the site root, `/llms.txt`. It can also sit under a subpath such as `/docs/llms.txt` to cover the pages in that directory. It contains a site description and a list of priority links. The format is defined at llmstxt.org.
+
+### Will Google or ChatGPT cite me more if I add llms.txt?
+
+No. Google Search Central states that Google Search (including its generative features) does not use llms.txt; adding one neither adds nor removes points. Whether ChatGPT or Perplexity cites you still depends mainly on crawler access and on pages with extractable factual text. At most, llms.txt lowers the chance that an agent lands on the wrong page. It does not turn citations on.
+
+### Should GPTBot go in llms.txt?
+
+No. Allow and disallow rules for GPTBot, OAI-SearchBot, and PerplexityBot all go in `robots.txt`. Per OpenAI's docs, GPTBot crawls content that may be used to train foundation models, and OAI-SearchBot crawls for ChatGPT search results; the two rule sets are independent. Perplexity's search crawler is PerplexityBot. llms.txt only routes agents that are already allowed to read the site. To block training and allow search, edit robots.txt, not this Markdown index.
+
+## Sources
+
+1. [llmstxt.org, "The /llms.txt file, v2"](https://llmstxt.org/)
+2. [llmstxt.org, "Changes" (v2, 2026-08)](https://llmstxt.org/changes.md)
+3. [Google Search Central, "Optimizing your website for generative AI features on Google Search"](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+4. [Google Search Central Blog, "A new resource for optimizing for generative AI in Google Search" (2026-05-15)](https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing)
+5. [OpenAI, "Overview of OpenAI Crawlers"](https://platform.openai.com/docs/bots)
+6. [Perplexity Docs, "Perplexity Crawlers"](https://docs.perplexity.ai/docs/resources/perplexity-crawlers)

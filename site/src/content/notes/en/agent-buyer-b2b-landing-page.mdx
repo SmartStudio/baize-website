@@ -1,0 +1,78 @@
+---
+title: How to Write a B2B Landing Page for AI Agent Buyers
+description: AI agents now read vendor pages, check specs, compare prices, and send inquiries for B2B buyers. Humans still sign off. What a landing page needs for each reader.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-buyer-b2b-landing-page-cover.png
+coverAlt: Five blank display panels stand on bases; a scanner head on an overhead rail casts a green beam onto the middle panel, which lights up
+sourceHash: 'c39bcc1c1c3a'
+---
+
+Agent buyers read pages, check specs, compare prices, and submit inquiries on behalf of the purchasing team. In most cases a person still makes the final call. A landing page therefore has two readers. The agent buyer needs facts it can extract directly: specs, pricing basis, delivery terms, certifications, and contact details. The human reader needs reasons to trust you and enough information to weigh tradeoffs. A page with sales copy and no checkable facts may be skipped by the agent.
+
+import noteFig from '../media/agent-buyer-b2b-landing-page-fig-en.png'
+
+<Figure src={noteFig} alt="Five stations on one tabletop, left to right, joined by green arrows: a magnifying glass in front of a sheet of paper, a caliper measuring a cube next to a checklist card with green dots, a balance scale holding two blank tags, an envelope going into a mail slot, and a rubber stamp with a glowing green base on a stack of documents" caption="Figure: Read Page | Check Specs | Compare Prices | Send Inquiry | Human Decides" width="wide" border />
+
+## Reading the page: state what the product is and who it is for
+
+When an agent buyer lands on a page, it first scrapes the text and pulls out the core business facts.
+
+On October 8, 2026, Paul Graham wrote on X that people will want agents to buy things for them, and that this will be one of the main uses of agents. On October 12, 2026, he wrote that during office hours he advised a technical founder to find a more outgoing cofounder to handle sales. The founder said he didn't need one, because most of the buyers he would be selling to would be agents. Paul Graham said the founder might be right.
+
+Our view: in a first-pass screen, the buyer's agent extracts only the product definition, the target customer, and the core capabilities. If the page has rhetoric and no concrete statements, the agent cannot produce a purchasing summary and moves on.
+
+What it looks for: a clear product definition and use cases. For example, whether this is a procurement collaboration tool or a finance system, whether it runs as a private deployment or SaaS, and whether it targets small teams or large organizations.
+
+How to write it so the agent finds it: state the facts in short sentences above the fold and under each subheading. For how answer engines pull sentences from the first paragraph under a heading, see <NoteLink slug="answer-first-for-answer-engines">How to Write Answer-First Content That Answer Engines Can Quote</NoteLink>. This note does not cover how to write llms.txt. If product attributes and scope limits are stated plainly in the text, machines can parse them reliably.
+
+When it goes back to a person: after the agent extracts the basics, if the product's scope does not fully match the purchasing need, or the technical approach differs a lot, a buyer reviews the screening report and decides whether the vendor makes the shortlist.
+
+## Checking specs and certifications: give real numbers and certificate IDs
+
+After the first screen, the agent buyer checks technical specs and compliance credentials line by line. Our view: the buyer splits requirements into fixed fields and compares them one at a time. A metric the page does not mention will likely be recorded as missing.
+
+What it looks for: hard system metrics and proof of compliance. For example, concurrent throughput, single sign-on protocols, data storage region, backup frequency, and security certification numbers.
+
+How to write it so the agent finds it: we recommend putting specs in a table or list and giving the full name and number of each certificate. Write exact values, protocol versions, and certification levels. For example, name the SSO protocol and version you support, and the security certification you hold with its level and certificate number (SOC 2 or ISO/IEC 27001, for example; for the China market, the MLPS level under China's Multi-Level Protection Scheme). Once the agent has concrete parameters, it can drop them straight into a comparison table.
+
+When it goes back to a person: if the page is missing a key compliance item, or the buyer needs a custom confidentiality commitment, the agent flags the credentials as uncertain in its report, and security and legal staff review them.
+
+## Comparing prices and terms: publish the pricing basis and minimum purchase
+
+To compare quotes, the agent buyer depends on a public, clear pricing basis and tier rules. Our view: if pricing sits behind a "contact sales" form, the agent has no baseline when it estimates costs across vendors in bulk, and that vendor tends to rank lower in the first screen.
+
+What it looks for: pricing basis, minimum purchase, and extra costs. For example, whether you charge per seat, per API call, or per year; the minimum number of seats; the length of the free trial in days; the unit price of added capacity; and refund and renewal rules.
+
+How to write it so the agent finds it: we recommend listing plan features and billing units in the pricing section, without forcing visitors to fill out a form to see prices. For how to structure a table that compares you with competitors, see <NoteLink slug="b2b-comparison-page-ai-citation">How to Write B2B Comparison Pages That AI Assistants Cite</NoteLink>. State what each price covers and its limits, and the agent can convert it into an annual cost and produce a standardized quote list.
+
+When it goes back to a person: once the purchase reaches the volume discount threshold of an annual contract, the buyer asks for special payment terms, or a custom agreement is involved, the agent compiles each vendor's public prices and term differences, and a human sales representative takes over the negotiation.
+
+## Submitting an inquiry or application: keep form fields meaningful, leave the decision to people
+
+After screening and price comparison, the agent buyer starts a trial or submits an inquiry on behalf of the company. Our view: if form fields are ambiguous, the agent has trouble filling them in correctly and submitting.
+
+What it looks for: form entry points a machine can recognize. For example, a work email field, company name, a requirements description field, a trial request button, and a sign-up entry for developer API access.
+
+How to write it so the agent finds it: we recommend standard HTML form markup with clear label and name attributes, plus a technical contact email next to the form. Whether to allow automated submissions, and how to block spam inquiries, is the seller's call. This note does not cover whose identity and credentials an agent uses inside the buying company.
+
+When it goes back to a person: submitting the application is the last errand the agent buyer runs for the company. The purchasing lead and business owner decide on the trial evaluation, contract signing, and payment approval that follow.
+
+## Agent buyers: FAQ
+
+### Once agent buyers join the purchasing process, should a landing page still keep customer case studies written for human buyers?
+
+We recommend keeping case studies and trust signals. The agent buyer handles early research and the first screen, and assembles a shortlist. The final purchasing decision, and the risk that comes with it, mostly sits with company managers. Peer case studies and delivery track record are what human decision-makers rely on to weigh risk. A landing page needs both kinds of content: extractable facts and parameters for machines, and real evidence that builds trust for human decision-makers.
+
+### Why not keep all prices and spec parameters behind a lead-capture form?
+
+Our view: hiding prices and key parameters adds friction to the first screen. When a company sends an agent buyer to research vendors in bulk, vendors whose parameters cannot be extracted directly get flagged as opaque, or land at the bottom of the shortlist. Publishing basic specs, the pricing model, and the minimum purchase lets the product get through the machine screening stage. Custom requirements can then go to a sales conversation.
+
+### When reworking an existing B2B landing page, which machine-extractable information should be added first?
+
+We recommend adding it in three steps. First, above the fold and in the core sections, state an unambiguous product definition, the industries it serves, and the deployment options. Second, put system specs and compliance credentials in a structured table or list, with certificate names and numbers. Third, publish the basic pricing basis and minimum purchase. After these changes, agent buyers can extract and compare the page efficiently, and human buyers can quickly see what the product is worth to them.

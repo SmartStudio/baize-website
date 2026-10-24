@@ -1,0 +1,80 @@
+---
+title: What Should an AI Agent Need Approval for in Gmail and Google Calendar?
+description: Claude's Gmail connector can search, draft, send, reply, and forward. Its Calendar connector can create, update, and delete events. Keep reads open; gate writes.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-read-mail-vs-calendar-send-cover.png
+coverAlt: A magnifying glass over orange-accented envelopes feeds a summary card; past a dashed divider, mail and a calendar go through a boom gate and an approval stamp before send, add, edit, and delete
+howto:
+  name: Map reads and writes before you turn on connectors
+  steps:
+    - name: Keep reads open
+      text: Searching mail, summarizing threads, listing drafts, and viewing calendars can run with looser approval.
+    - name: Gate writes
+      text: Sending, replying, and forwarding mail; creating, updating, and deleting calendar events; and the Drive equivalents (share, move, trash) default to Needs approval.
+    - name: Audit before relaxing
+      text: Sample 10 write actions. Each one needs an approval record or a written org policy. If records are missing, do not turn on Always allow.
+sourceHash: 'bba7d78bfbd4'
+---
+
+import noteFig from '../media/agent-read-mail-vs-calendar-send-fig-en.png'
+
+Once Gmail is connected, the first request most people make is "go through my email." The Anthropic Help Center states that Claude's Google Workspace connector can search, read, and draft email. Sending, replying, and forwarding ask for your confirmation every time by default. On the calendar side, the connector can view events and can also create, update, and delete them. Reading mail is one permission tier. Editing calendars and sending mail is another.
+
+<Figure src={noteFig} alt="Left: envelopes under a magnifying glass feed a summary card, labeled Read Mail. Right: an approval stamp on a boom gate stands before sending mail and adding, editing, or deleting calendar events, labeled Approve Writes" caption="Figure: Read Mail | Approve Writes" width="wide" border />
+
+## Reading email: search and summaries
+
+Common uses: search threads in natural language, summarize a conversation, pull context for a meeting, list emails still waiting for a reply. Per the documentation, Claude fetches only the minimum information needed, and only when you ask a question or request an action. It cannot read attachment contents, only their metadata. Its access matches the scope your Google account already has.
+
+Read tools can be set to Always allow, or run with looser approval. At this stage the agent usually has not changed anything outside your account. One caution still applies: do not paste a whole mailbox into a consumer chat app with model training turned on. See <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>. When usage is spread across employees' personal accounts, auditing gets harder. See <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>.
+
+## Sending email: approval by default
+
+From the Help Center FAQ: Claude can send, reply to, and forward Gmail messages, and by default it asks you before each one. On Team and Enterprise plans, the Owner decides whether members can switch this to "don't ask every time." The Google OAuth consent screen lists send-related permissions. That listing does not mean the product sends automatically by default.
+
+In practice, split drafting from sending. Drafting can stay on. Keep sending on Needs approval until you have sampled audits and a way to roll back. When you set guardrails for AI-assisted engineering, write read permissions and write permissions in separate columns. See <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>.
+
+## Calendar auto-send and schedule edits: write actions
+
+The Calendar connector can view events (including shared calendars), create, update, and delete events, find mutual free time, manage attendees and respond to invitations, and set up recurring meetings. Creating, editing, or deleting an event notifies attendees or changes room bookings. These are writes that reach other people.
+
+When people ask about "calendar auto-send," they usually mean one of two things: (1) the agent sends meeting invitations or updates on your behalf; (2) the agent works with Gmail to send out a schedule summary automatically. Treat both as write tools with Needs approval as the default. At the org level, go to Customize → Connectors → tool permissions and set each write or delete tool to Always allow, Needs approval, or Blocked. On Team and Enterprise plans, the Owner can tighten these org-wide. An individual user cannot loosen what the org has restricted.
+
+## How to set it up: map reads and writes, then connect
+
+- Reads: searching mail, summarizing, listing drafts, viewing calendars. These can run with looser approval.
+- Writes (approval by default): sending, replying, and forwarding mail; creating, updating, and deleting calendar events; the Drive equivalents (share, move, move to trash).
+- Org: the Owner sets the org-level allowed set first. Individuals can then tighten further in their own tool permissions. Do not start with Always allow on sending.
+- Acceptance check: sample 10 write actions. Each needs an approval record or a written org policy. If records are missing, do not turn on Always allow.
+
+```text
+Your job: within the authorized scope, search email and read calendar information. Stop and request approval before sending any email or creating, updating, or deleting any calendar event.
+When done, show me: the draft email body or draft event fields, the recipient/attendee list, and whether this action has user or policy approval.
+Do not: treat "help me reply" as permission to send automatically; edit shared calendars without approval; turn off Needs approval for send actions without sampled audits in place.
+```
+
+## AI agents reading email: FAQ
+
+### Will an agent that reads my email send messages on its own?
+
+Reading does not send anything. Sending, replying, and forwarding are separate capabilities, and Anthropic's documentation states that each requires approval by default. It is safer to split "summarize this email" and "send a reply" into two steps in your instructions.
+
+### Can a team turn off approval before sending?
+
+On Team and Enterprise plans, the Owner decides whether members can let write actions run without asking each time. Until the org allows it, an individual's attempt to set Always allow may be blocked. Even after it is allowed, keep sampled audits.
+
+### What should be approved before a calendar auto-send?
+
+At minimum: the event title and time, the attendee list, whether update notifications go out, and whether the event is written to a shared calendar. When Gmail is involved, the email body and recipients go into the same approval request. Configure calendar write permissions and Gmail send permissions separately. Do not bundle them into one "allow everything" switch.
+
+## Sources
+
+1. [Anthropic Help Center: Use Google Workspace connectors](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors)
+2. [Anthropic Help Center: Use connectors to extend Claude's capabilities](https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities)
+3. [9to5Google report (2026-08-18, Gmail sending with optional approval)](https://9to5google.com/2026/08/18/claude-can-now-send-emails-in-gmail-even-without-your-approval/)

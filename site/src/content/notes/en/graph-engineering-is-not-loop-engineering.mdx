@@ -1,0 +1,73 @@
+---
+title: "Graph Engineering vs Loop Engineering: Graphs Sit on Top of Loops"
+description: A loop decides when one agent checks its work and stops. A graph decides which loop runs first, who waits, and how state moves. Weak loops make graphs fail.
+lang: en
+pubDate: 2026-10-23
+category: Loop与方法论
+relatedService: loop-engineering
+ctaVariant: consulting
+author: Baize Tech
+cover: ../media/graph-engineering-is-not-loop-engineering-cover.png
+coverAlt: A self-loop on the lower layer, with several nodes joined by edges into a graph stacked on top of the loop instead of replacing it
+draft: false
+sourceHash: '3916ffa87b68'
+---
+
+Start with one concrete case. A coding agent writes code, runs the tests, fixes what fails, and hands off only when the tests pass. That is one loop. Now a second case. The coding agent hands off, and only then does a test agent start. If the tests fail, the work goes back to the coding agent. If they pass, a person still has to approve the merge. That is three loops, with waits, send-backs, and a human checkpoint between them. The second case adds a layer above loops that already run: who goes first, who waits, and which edge carries the state.
+
+The first layer is Loop Engineering. The second is Graph Engineering. One designs the node. The other designs the topology. Both terms stay in use.
+
+Public discussion often presents Graph as the upgraded version of Loop, as if adopting an orchestration framework means the loop layer no longer needs attention. That reading is wrong. A loop that does not know when to stop, or cannot tell whether its output passed, is a weak node in any graph, however well the graph is drawn. If you build the graph before the loops are sound, failures get larger and harder to trace. You cannot tell whether a node failed to finish its own work or whether an edge passed the wrong order, wait, or state.
+
+import graphFig from '../media/graph-engineering-is-not-loop-engineering-fig-en.png'
+
+<Figure src={graphFig} alt="On the left, one loop around a single node; on the right, several nodes joined by edges into a graph that still contains that loop" caption="Figure: Loop | Graph | Node | Edge. Left: one loop (plan, execute, observe, correct). Right: several loops joined by edges. The graph contains the loop and keeps it." width="wide" border />
+
+## What the node has to answer
+
+A loop can be accepted on its own once it answers four questions:
+
+1. What does this round plan to do?
+2. What gets checked afterward? Tests, a compile, a human spot check: there has to be one signal that decides pass or fail.
+3. How does it correct a failure, and how many rounds does it get?
+4. What counts as done: deliver when the bar is met, or declare failure and stop instead of spinning.
+
+That is the job of a loop. An experienced engineer does not ship code without checking tests and edge cases first. A loop turns that habit into how the agent works, instead of relying on a single generation to get it right. Details are in <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering? Make AI Check Its Work Before It Delivers</NoteLink>.
+
+A single node with a self-loop is already the smallest graph: one node with an edge back to itself. With only one loop, you do not need to design edges separately. The signal that you need a graph is a second component that waits on the first.
+
+## What the edge has to answer
+
+A graph does not ask how capable an agent is. It asks about topology:
+
+- Order: which node must finish before another can start.
+- Branching: which edge to take on a pass, and which node gets the work back on a fail.
+- Waiting: a human checkpoint, an external system, or another agent's output. Can the flow continue before all inputs arrive?
+- State: what the previous step leaves behind and what the next step reads. If the next step cannot read it, the edge was not designed to carry it.
+
+Any set of agents, tools, and human checkpoints that wait on each other forms a graph. The number of boxes on the diagram does not determine its quality. Quality depends on whether each edge answers three questions: under what condition it fires, what it carries, and what happens when it fails.
+
+So the answer to "Graph vs Loop" is direct. A graph contains loops and keeps them. In the figure, the self-loop from the left is still present on the right, as one of the nodes.
+
+## Why weak loops are harder to debug inside a graph
+
+When you run a single loop and it breaks, you go through that one cycle: plan, execute, observe, correct. You find the step where it stopped and the signal it used.
+
+Once the work is spread across a graph, the same failure has at least two distinct causes. In one, a node's own loop missed the bar: its tests failed, and it passed the work downstream anyway. In the other, the node passed and an edge was wrong: a step ran before it should have, a required human approval was skipped, or state was lost in transit. Both look like "the multi-agent system is unstable." The place to start debugging is different for each.
+
+Embedding a weak node in a large graph also amplifies the problem. A loop that spins without stopping wastes only its own rounds when it runs alone. Inside a graph, every downstream node waits on an upstream node with no stop condition, the whole graph stalls with it, and the logs get tangled together. The cause is treating an untested node as a unit you can wire edges to.
+
+## When you actually need a graph
+
+The signals are specific. "We are moving to multi-agent" is not one of them.
+
+- You already have one loop that can be accepted on its own, a second one appears, and the two wait on each other.
+- There is a checkpoint that requires human approval before work can continue.
+- The same state is read by two or more nodes, and a wrong read sends the rest of the chain off course.
+
+The signals that you do not need one yet are just as specific:
+
+- You have one agent and its quality is inconsistent. That means the loop lacks a stop condition and an acceptance signal. An orchestration framework will not fix it.
+- You want "we adopted a graph" to stand in for "we defined what passing means." More boxes on the diagram still leave each node unverifiable.
+
+Baize's order stays the same: define boundaries first, then automate. If a node cannot be verified, do not build the graph yet. First make each loop state when it checks itself and when it stops. Then decide how the loops connect. For consulting, book a diagnostic session.

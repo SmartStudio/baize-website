@@ -1,0 +1,87 @@
+---
+title: 'AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?'
+description: Agents can check IT change requests against configs, runbooks, and schedules. Release approval, change windows, and rollback owners still need human sign-off.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/it-change-management-agent-signoff-cover.png
+coverAlt: A robot inspects one server in a network topology with a magnifying glass while orange rings mark its impact; on the right, a reviewer holds a stamp over a change form
+sourceHash: '82ad450fa939'
+---
+
+import noteFig from '../media/it-change-management-agent-signoff-fig-en.png'
+
+When an agent joins IT change review, its job is to check the change against environment configuration, runbooks, and release schedules for conflicts and gaps, list the systems the change could affect, and confirm the rollback plan is complete. Three decisions stay with people who sign: the final change window, whether the change goes to production, and who owns the rollback if something fails. The agent's output is review material for the change advisory board (CAB). Reviewers verify it item by item against a checklist, then sign off.
+
+On October 14, Kyndryl, Toyota Systems, and Toyota Finance announced that Toyota Finance will use agents in production for infrastructure design, change management, and impact assessment of system changes. The agents work from Toyota Finance's own IT environment data, runbooks, and operations schedules to find inconsistencies and potential risks. Toyota Systems compared the approach to jidoka, Toyota's principle of automation that keeps human judgment in the loop.
+
+<Figure src={noteFig} alt="Left panel: an agent holding a checklist reviews a server stack together with a human reviewer. Right panel: a magnifying glass over one server shows which systems in the topology it affects" caption="Figure: IT Change Review | Impact Analysis" width="wide" border />
+
+## What the agent does in a review
+
+Without an agent, CAB members read every change request themselves and can miss low-level configuration details. An agent can run four checks first.
+
+Check 1: the change request matches the configuration management database (CMDB). For a change to database connection pool settings, the agent pulls the production environment spec and topology and checks the target cluster, ports, and OS version for typos or environment mismatches.
+
+Check 2: the release schedule does not collide with business freeze windows. The agent compares the release calendar, promotions, financial close windows, and other tickets, and flags timing collisions or concurrent changes on the same network segment.
+
+Check 3: the runbook has no missing steps. Against the standard template's pre-checks, step-by-step actions, expected outputs, and health-check scripts, the agent flags tickets that lack a verification step or a rollback path.
+
+Check 4: the blast radius across related systems. Using call-chain diagrams and firewall policies, the agent lists the upstream applications and dependent microservices this upgrade could affect and tags each with its business tier.
+
+## What data the agent needs, and what to do when it goes stale
+
+The agent needs four kinds of data:
+
+1. Configuration baselines and asset topology: the CMDB, cloud resource tags, and service call relationships.
+2. Mature runbook templates and past successful tickets.
+3. The release schedule, including business freeze periods.
+4. Each system's service level agreement (SLA) and incident severity criteria.
+
+Stale data is the most common failure in automated review. If the CMDB topology has not been updated in six months, or the microservice architecture has changed while the docs lag behind, the agent's list of affected systems will be badly wrong.
+
+The fix is to have the agent record the version and timestamp of each data source it used. When key dependency data is older than the agreed sync interval, the agent puts "Topology freshness in doubt" at the top of its report and hands it to a systems architect to verify the real call chain.
+
+## Which steps always need a human signature
+
+Release approval. Whether a change enters the production release queue affects overall business stability and cross-team coordination. An authorized on-duty reviewer decides.
+
+Change window tradeoffs. When technical risk conflicts with business urgency, the business owner and the head of operations decide. Example: an emergency patch needs 30 minutes of downtime. They choose between shipping on schedule and waiting for a low-traffic window.
+
+High-risk changes and rollback owners. For high-severity changes such as core database schema changes or backbone routing rule updates, the architecture board signs off as a group even when the agent raises no issues. The change request must also name a specific person to execute the rollback, and the change owner writes the rollback trigger conditions on the request.
+
+Before expanding scope, set up production-grade owners and rollback procedures for critical systems. See <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>
+
+## How reviewers verify the agent's conclusions
+
+First, spot-check the reasoning. Reviewers pick two or three key findings and trace them back to confirm the agent derived them from the actual configuration chain and did not match on similar wording.
+
+Second, look for implicit dependencies. Large language models handle architecture that is written down in documents. They often lack evidence for implicit business dependencies, such as services decoupled through a third-party message queue or linked by scheduled database polling. Reviewers use their operations history to ask follow-up questions about these blind spots.
+
+Third, confirm the rollback commands work. The agent can only tell whether the text contains rollback commands. Reviewers confirm the rollback scripts have run successfully in staging and that the data snapshots the rollback needs already exist.
+
+## Start with low-risk standard changes
+
+Start with use cases whose results can be checked on the spot. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+In practice, start with routine low-risk standard changes, such as scaling dev environment resources, tuning static parameters, or patching mature services. Have the agent run a parallel "shadow review" on these tickets, and compare its findings with the human review results over a period of time.
+
+During the trial, track the agent's false positive and false negative rates. Once each type of miss has been traced and covered by a rule, and the false positive rate is down to an acceptable level, extend the agent to complex changes that touch databases and the network layer.
+
+## IT change review: FAQ
+
+### Once an agent does the pre-checks, can we cancel the CAB meeting?
+
+We don't recommend it. The agent filters out missing items and checks configurations, which saves the meeting time on first-pass review. Complex business tradeoffs, cross-team scheduling, and operations on core assets still need to be confirmed in person at the meeting.
+
+### If a change causes an outage through an implicit dependency the agent missed, who is responsible?
+
+The engineer who submitted the change and the reviewer who approved it. The agent is a support tool that provides reference material and cannot be held accountable for incidents. That is why release approval stays with engineers and reviewers who sign.
+
+### When the agent's impact analysis disagrees with the human assessment, who decides?
+
+The architect or tech lead with final responsibility for that system decides. Both sides pull the live CMDB capture logs and the repository configuration and compare them on the spot. If no one can confirm that the data behind the agent's impact analysis is accurate, prepare for the blast radius in the human assessment, complete the rollback plan, and then decide.

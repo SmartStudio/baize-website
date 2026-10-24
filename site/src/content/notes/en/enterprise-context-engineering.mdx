@@ -1,0 +1,98 @@
+---
+title: "Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents"
+description: AI agents stall in production when company knowledge conflicts or goes stale. Make context reliable, executable, and auditable, one workflow at a time.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: loop-engineering
+author: Baize Tech
+cover: ../media/enterprise-context-engineering-cover.png
+draft: false
+sourceHash: 'b5c6f517091e'
+---
+
+In 2026, the gap between companies comes from one question: has the company turned its own knowledge into context that an agent can rely on, act on, and be audited against? The choice of model and the number of agents deployed matter less.
+
+Without good context, an agent handles surface-level Q&A and generic tasks. With it, an agent can complete a multi-step business process from start to finish, reliably.
+
+This determines whether a company can keep operating once agents do real work.
+
+## Good in demos, hard to run in production
+
+Enterprise adoption has moved in stages: first trials of large language models, then knowledge bases, now agents.
+
+The barrier to entry has collapsed. After open-source agent frameworks such as OpenClaw (its mascot is a lobster, so Chinese users call running one "raising a lobster") took off, one person could set up a working agent in an evening. It opens a browser, edits files, sends email, and fills in forms. It takes actions as well as answering questions. Companies launched internal agent pilots in waves.
+
+Most pilots ended the same way: good in demos, hard to run in production.
+
+In a demo, the questions are hand-picked, the data is clean, and the workflow has one step. In real operations, the same quote exists in three systems with three different numbers. Process rules live in one employee's head instead of a document. Nobody can state where the permission boundaries are. The more information the agent receives, the more likely conflicting sources pull it off course.
+
+The root cause is poor context quality.
+
+import beforeAfterFig from '../media/enterprise-context-engineering-fig-1-en.png'
+
+<Figure src={beforeAfterFig} alt="Before-and-after diagram: company knowledge poured straight into an agent produces a broken chain labeled Hallucinations; the same knowledge filtered through a Context Layer produces a closed Business Loop" caption="Figure: Company Knowledge | Hallucinations | Context Layer | Business Loop. The same company knowledge, dumped straight into an agent, produces hallucinations and drift. Filtered and organized first, it supports a stable business process. The model is identical in both cases; the layer in between differs." width="wide" border />
+
+## From prompt engineering to context engineering
+
+The industry's focus has shifted from prompt engineering to **context engineering**.
+
+Anthropic defines context engineering as the practice of curating and maintaining the optimal set of information that enters the model at inference time.
+
+The operative word is optimal, as opposed to maximal. When context windows grew, many teams responded by putting everything in: the full knowledge base, the full ticket history, the full code repository. This creates problems. Irrelevant information dilutes the model's attention. Outdated documents override correct answers. Two conflicting sources leave the model swinging between two directions.
+
+Prompt engineering asks how to phrase one request. Context engineering asks what the model actually holds at the moment it makes a decision. The first is a writing technique. The second is an engineering discipline with its own systems and maintenance.
+
+A strong model with bad context still produces an agent that hallucinates, drifts, and fails to deliver.
+
+## One person can run an agent; a company can't, yet
+
+Feeding the wrong information is the first problem. The second is permissions.
+
+When an individual runs an agent, the worst case is deleted files on their own laptop or a messed-up personal account. They absorb the cost and start over the next evening. A company can't work that way. An agent that takes real actions and goes wrong touches real orders, real money, and real customers.
+
+This is sometimes called the **lobster paradox**, after OpenClaw's mascot: the more you want the agent to do, the more permissions it needs, and the more permissions it has, the more a mistake costs. To make it useful you have to give it room. Once you give it room, nobody can guarantee it won't cause damage.
+
+Many companies first tighten permissions. Taken far enough, the agent shrinks back into a chat window that looks things up and writes drafts. It is safe and no longer useful.
+
+Adjusting the permission level does not resolve the paradox. Three questions do. Are the facts the agent relies on **reliable**? Is the scope of what it can do **clearly defined**? Can its actions be **traced afterward**?
+
+These three questions map to the three pillars below.
+
+## Reliable, executable, auditable
+
+"Turning company knowledge into agent context" sounds like a transfer job: load the documents into a vector database and stop there. Three engineering properties decide the outcome, and each answers one of the questions above. Missing any one of them sends the agent back to surface-level Q&A.
+
+**Reliable** means each piece of knowledge has a single source of truth, an expiry date, and a rule for resolving conflicts. If the CRM, the finance system, and a slide deck each show a different contract value for the same customer, any figure the agent cites is a gamble. Being able to find a document is not enough. The document found has to be good enough to base a decision on.
+
+**Executable** means the context includes the structure an agent needs to take action, beyond text it can retrieve: which API to call, how to fill in the parameters, where the permission boundary sits, and when it must stop and hand off to a person. A paragraph describing the refund policy can only answer questions. A refund rule with the API, parameters, and approval thresholds attached lets the agent complete the refund.
+
+**Auditable** means every decision can be traced back to the context the agent saw at the time. When something goes wrong, you need to tell whether the model reasoned badly or the team fed it the wrong input. Without this layer, every incident gets filed under "AI is unreliable." Nobody can fix it, and nobody will approve the next step forward.
+
+Auditability is the precondition for granting more permissions. Teams expand an agent's permissions only when they can trace what it did. The answer to the lobster paradox is to back every permission granted with a source, a stopping boundary, and a record.
+
+import pillarsFig from '../media/enterprise-context-engineering-fig-2-en.png'
+
+<Figure src={pillarsFig} alt="Three pillars labeled Reliable, Executable, and Auditable hold up a slab where a robot completes a ring of puzzle pieces labeled Agent Loop" caption="Figure: Agent Loop | Reliable | Executable | Auditable. The three pillars support one outcome: whether the agent can complete a real business process. Remove any one and the process cannot run end to end." width="wide" border />
+
+Together, the three properties form infrastructure. They belong to no single department's project. Every agent application in the company builds on them.
+
+<Callout type="tip" title="Related reading">
+Context governs what goes into each round. Loops govern how the agent checks its own output after each round. They are the input and output ends of the same chain. See <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering? Make AI Check Its Work Before It Delivers</NoteLink>.
+</Callout>
+
+## Where the dividing line sits
+
+To tell whether a company has crossed the line, ask one question: **can an agent complete a full business process on its own?**
+
+If it can't, the agent stays at the assistant level: answering questions, drafting documents, summarizing meetings. These save time for individuals. The company's processes do not change.
+
+If it can, the agent moves to the process level. It finds the correct facts, calls real systems, stops when it reaches a boundary, and leaves a record that can be reviewed afterward. At that point the way the company operates starts to change.
+
+## Where to start
+
+Do not start by building an "enterprise context platform." That usually turns into another project that demos well.
+
+Work in the other direction. Pick one real business process that can run end to end: a refund, a support ticket handoff, a compliance check. For that process only, make the knowledge it depends on reliable, executable, and auditable. Once it runs, the structure becomes a template, and the second process costs much less.
+
+Get one working process first, then talk about a platform. Baize Tech works the same way with clients: the first question is which business process should be handed to an agent first, and the choice of agent framework comes after.
