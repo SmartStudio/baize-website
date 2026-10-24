@@ -63,6 +63,8 @@ Okta 在文中列了四个问题，用来评估一个 Agent 网关靠不靠谱�
 
 处理多智能体协同或办公机器人接入时，审计链路可参考 <NoteLink slug="grok-bot-enterprise-access-audit">企业开通 Grok Bot，权限和审计要先定什么</NoteLink>。出问题时，靠两个身份就能直接查清发起人和执行路径。
 
+指令由另一个 Agent 转来时，身份和授权怎么核，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 协作时，另一个 Agent 转来的指令能不能直接照做</NoteLink>。
+
 ## 企业落地排查：先查哪几类 Agent 还在用共享账号
 
 第一类是连接敏感数据的查询类 Agent。连着薪酬、财务、客户和核心代码库的助手，优先换掉共享账号，接入网关按提问者权限过滤结果。

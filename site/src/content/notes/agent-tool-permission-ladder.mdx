@@ -55,6 +55,8 @@ import noteFig from './media/agent-tool-permission-ladder-fig.png'
 
 读和发送如何拆开，可以参照 <NoteLink slug="agent-read-mail-vs-calendar-send">Agent 读邮件可以，改日历发信要先批什么</NoteLink>。撤掉发送权限以后，仍可保留整理邮件和起草回复的能力。
 
+接入第三方 MCP 服务器之前要查的安全项，见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。
+
 ## 资金和不可逆操作：可以一直由人执行
 
 付款、删除没有备份的数据、提交无法撤销的业务指令，适合放到最后评估。Agent 可以准备材料和检查缺项，执行权长期留给人。开放其他工具后运行正常，也不能据此推定它适合处理资金。
@@ -68,6 +70,8 @@ import noteFig from './media/agent-tool-permission-ladder-fig.png'
 Agent 工具权限尽量按任务发放。凭证只允许本次需要的动作和数据范围，到期或任务结束就失效。最小权限要落在工具端：即使 Agent 提出了越界请求，系统也不执行。共享管理员账号会让任务范围和实际能力脱节。
 
 操作日志记录任务、操作者、工具、目标对象、关键参数、批准人、执行结果和撤回结果。敏感字段做脱敏，日志本身也限制访问，不记录完整凭证。收回权限时同步停止排队任务，处理已执行动作，再由负责人确认恢复到哪一层。
+
+多个 Agent 之间转交任务时，转来的指令也按这套权限判断，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 协作时，另一个 Agent 转来的指令能不能直接照做</NoteLink>。
 
 ## Agent 工具权限：常见问题
 

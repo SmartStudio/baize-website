@@ -49,6 +49,8 @@ import noteFig from './media/export-site-geo-lead-attribution-fig.png'
 
 CRM 可以参考 HubSpot 的做法。它把联系人来源分成「原始」和「最近」两个字段，AI 来的记成 AI Referrals，下一层再记具体平台，比如 chatgpt.com。识别条件是：referrer 是它认得的 AI 域名，或者 utm 参数里带这些域名。用别的 CRM，照这个结构建字段就行。
 
+WhatsApp 询盘交给 AI 分拣后，来源怎么记，见 <NoteLink slug="export-inquiry-whatsapp-email-attribution">询盘来源怎么记：AI 分拣 WhatsApp 询盘后</NoteLink>。
+
 ## 怎么设：六步
 
 1. **GA4 建自定义渠道组。** 复制默认渠道组，新建一个「AI 助手」渠道，条件选「来源匹配正则」，写进 chatgpt、perplexity、gemini、copilot、claude、deepseek 这些来源。拖到 Referral 前面，GA4 按顺序把访问放进第一个匹配的渠道。来源是 chatgpt.com、媒介为空的访问，也会被这条规则收进来，不再落进 Unassigned。自定义渠道组可以回溯应用到旧数据。标准版媒体资源最多建 2 个。
