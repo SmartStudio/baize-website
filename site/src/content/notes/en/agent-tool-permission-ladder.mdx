@@ -1,0 +1,86 @@
+---
+title: Which AI Agent Tool Permissions Should a Company Grant First?
+description: Grant AI agent tool permissions by consequence. Read-only first, then internal drafts, then capped writes. Humans approve external sends and keep payments.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-tool-permission-ladder-cover.png
+coverAlt: A small white robot holding an orange key stands at the foot of a white staircase; the steps hold a magnifying glass, a document, a database, an envelope, and a safe, with orange railings between steps
+sourceHash: '7c9a7a5c6633'
+---
+
+Open agent tool permissions in this order: read-only queries first, then internal drafts and reversible writes. Writes to business systems get hard caps. External sends need human approval before they go out. Payments and irreversible actions can stay with a human indefinitely. Each time you add a permission, write down three things: what the agent may now do, who is affected if it gets it wrong, and who can stop it.
+
+import noteFig from '../media/agent-tool-permission-ladder-fig-en.png'
+
+<Figure src={noteFig} alt="Left: a robot guards a toolbox of locked tool compartments, representing agent tool access. Right: a staircase with green locked panels between steps, rising from a magnifying glass to a safe, representing the permission ladder" caption="Figure: Agent Tool Access | Permission Ladder" width="wide" border />
+
+Inside one tool, looking up a customer record, editing a customer field, and emailing a customer carry different consequences. Split these actions apart when you set up the connector. Do not hand the agent the permissions of a whole account. The sections below order the actions by consequence. Promotion to the next level is based on run logs and review results.
+
+## Read-only queries: confirm it finds the right person and the right records
+
+Start by letting the agent search the knowledge base, read records tied to the task, and write summaries. Before you turn this on, limit the departments, projects, fields, and date ranges it can query. If the task is a status summary for one project, give it that project's files only. Do not also expose other customers' contracts or employee records.
+
+Read-only access can still cause harm. The agent may merge two customers with the same name, treat an old quote as the current price, or put unrelated personal data into a summary. Review its output against the sources. Check whether it picked the wrong record, cited outdated content, and whether it stops to ask when information is missing.
+
+Before moving up to drafting, confirm three things: each of these errors has a way to be detected, out-of-scope queries are blocked by the system, and the owner can reconstruct the query history from logs. If the agent pulls data across customers, narrow its read scope first. If it sees records it should not see, revoke the related access credentials, find the cause, and only then restore access. Adding one more line to the prompt and letting it keep running is not a fix.
+
+## Internal drafts: where they are stored and who uses them next
+
+Next, allow meeting-note drafts, task lists awaiting confirmation, and internal notes that do not trigger any downstream process. Conditions: drafts are clearly marked, stored separately from official records, can be deleted or restored, and no other system treats them as confirmed results.
+
+To decide whether a write belongs at this level, trace what happens after it. If an internal note triggers a customer notification, treat it as an external action. If a task draft auto-assigns work, it has already gone past drafting. A "Draft" label in the UI does not replace this check.
+
+At this level, watch what people edit in the drafts, whether the agent repeatedly overwrites other people's changes, and whether a failed retry creates a duplicate. Consider limited writes to official records only after it reliably keeps human edits, repeated requests do not create duplicate writes, and rollback has been tested. If it overwrites edits or a downstream system misuses a draft, drop back to text-only output and have a person save it manually.
+
+## Internal system writes: limit the fields and the blast radius
+
+Before the agent writes to a system of record, list the objects and fields it may change. For example, it may update the status of the current task, but not the owner, the customer account, or the contract amount. The execution layer also caps the scope of a single change, the cumulative number of changes, and the call rate. The business owner sets the exact caps based on how much impact the business can absorb.
+
+Test rollback before you open writes. Saving the old value is not enough. On restore, check whether someone has updated the record since. Writing the old value back blindly can erase later, correct edits. On a conflict, stop and hand it to the owner.
+
+Signals to watch: wrong target records, duplicate writes, blocked over-limit attempts, and failed restores. Find and fix the cause, verify again, and let the owner decide whether to widen scope. After a batch of wrong edits or a failed restore, close the write path and keep query and drafting abilities. Queued tasks must also re-check permissions before they run. They cannot reuse an approval granted before the permission was revoked.
+
+To wire these checks into production, use <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink> to confirm owners, handoff paths, and rollback conditions item by item.
+
+## External actions: what a person approves must match what runs
+
+Sending email, submitting proposals to customers, and changing data that affects a customer's rights all go to human approval first. Payments go through this step too, and are further limited by the money rules in the next section. Before approval, show the reviewer the target, the full content, any amounts, and a before/after diff together, so the reviewer can see exactly what will happen.
+
+Bind each approval to one action. If the recipient, attachment, body, or customer field changes, resubmit. A previous approval cannot cover new content, and an approval that times out cannot default to "approved." Right before the tool call, the execution layer checks the approval record against the current parameters again.
+
+At this level, track rejection reasons, what reviewers changed, and any case where content was swapped after approval. Only routine actions with fixed scope and verifiable content are candidates for a separate discussion about automation. New customers and new commitments still go to a person. If something was sent in error or approval was bypassed, suspend the send tool, cancel pending sends, and then audit what has already gone out.
+
+For how to split reading from sending, see <NoteLink slug="agent-read-mail-vs-calendar-send">An Agent Can Read Email. What Needs Approval Before It Edits Calendars or Sends Mail?</NoteLink>. After you revoke send permission, the agent can keep sorting email and drafting replies.
+
+## Money and irreversible actions: these can stay with a person
+
+Payments, deleting data without a backup, and submitting business instructions that cannot be undone belong at the end of the evaluation. The agent can prepare materials and check for missing items. Execution stays with a person long term. Clean runs with other tools do not show that the agent is fit to handle money.
+
+If you do connect an execution tool, first confirm that the system enforces approver authority, payee, amount limits, and duplicate-execution checks, and rehearse how to shut it off. When monitoring, focus on whether parameters changed and whether the agent resubmits when the result is unclear. If a payment request times out, check the transaction status first. Do not pay again.
+
+If the target does not match, a request repeats, or the result cannot be confirmed, stop further actions and have a person reconcile the accounts. A transfer that already went through may need a separate recovery process. Revoking the permission does not return the money, and reports should not say it did. This level has no automatic promotion. If the verification conditions are not all in place, it stays closed.
+
+## Issue short-lived credentials per task and log the evidence
+
+Issue agent tool permissions per task where possible. A credential covers only the actions and data this task needs, and expires when its time is up or the task ends. Enforce least privilege in the tool layer: if the agent requests something out of scope, the system refuses to run it. A shared admin account breaks the link between task scope and what the agent can actually do.
+
+Operation logs record the task, the actor, the tool, the target object, key parameters, the approver, the result, and any rollback result. Mask sensitive fields, restrict access to the logs, and never log full credentials. When you revoke a permission, stop queued tasks at the same time, deal with actions already executed, and have the owner confirm which level to restore to.
+
+## Agent tool permissions: FAQ
+
+### If the model answers accurately, can it get write access right away?
+
+No. Answer accuracy tests content. Writes also involve the target object, duplicate execution, and restore results. Verify those behaviors in a limited scope first, then decide which fields and actions to open.
+
+### When something goes wrong, do we shut down the whole agent?
+
+Pause the affected action first. If it sent a wrong email, remove its send ability. If it read records it should not have, also tighten its read scope. If you cannot tell how far the impact goes, stop the whole task, review what has already run, and then restore.
+
+### Should the permission ladder move up on a fixed schedule?
+
+The permission ladder moves on review results, not on days in operation. Before each expansion, confirm that the previous level's issues are resolved, the next level's limits are configured, and revocation and handoff paths have been tested. Payments and irreversible actions can keep human review indefinitely.

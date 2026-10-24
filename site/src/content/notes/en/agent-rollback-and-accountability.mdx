@@ -1,0 +1,82 @@
+---
+title: 'AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable'
+description: An AI agent took a wrong action. Stop it and revoke credentials in hour one, roll back by action type, replay the action log, and assign accountability by role.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-rollback-and-accountability-cover.png
+coverAlt: An emergency lever has been pulled, and a green curved arrow pulls a row of falling dominoes back upright
+sourceHash: 'ca13b3f1ed53'
+---
+
+When an AI agent executes a wrong action, stop the damage first, roll back second, and discuss accountability last. Agent rollback has three steps. First, stop the actions: hit the kill switch, narrow the credentials, pause the triggers. Second, undo by action type: reversible actions use the soft-delete window, recoverable ones are restored from backup, and irreversible ones get a correction and compensation. Third, use the action log to reconstruct what ran and who authorized it. Accountability follows roles agreed before launch. Nobody is made a scapegoat after the fact.
+
+import noteFig from '../media/agent-rollback-and-accountability-fig-en.png'
+
+<Figure src={noteFig} alt="Five stations on one platform, left to right, joined by green arrows: a pressed stop button, a key pulled back into a safe, three sorting bins, a dot-matrix action log, and four pawn pieces" caption="Figure: Kill Switch | Revoke Keys | Undo by Type | Action Log | Role Owners" width="wide" border />
+
+## The first hour: stop the actions and revoke credentials
+
+When you find that an agent has executed something wrong, spend the first hour cutting the chain. Do not let the agent "fix" it on its own.
+
+Railway's official blog, on April 29, 2026, noted that a person who makes a mistake stops and asks for help, while an agent that makes a mistake often keeps going, and sometimes makes things worse while trying to fix the first error. Our recommendation for the scene: hit the kill switch, pause triggers, freeze the remaining actions in the same batch, then narrow or revoke the credentials the agent uses, and preserve the logs.
+
+Harness published *State of Agent DLC 2026* on September 10, 2026. It surveyed 700 technical staff at large enterprises in July 2026, across the US, UK, France, Germany, and India. 76% believed they could disable or roll back a misbehaving agent within 15 minutes. Only 33% had a kill switch in production, and only 39% had automated rollback. The report says most teams have some way to undo, but it is often manual, such as redeploying code, and does not fit in 15 minutes. We recommend making a kill switch standard before launch.
+
+## Roll back by action type: undo, restore, and compensate
+
+Writes have different consequences, so one rollback method will not cover them. We recommend classifying actions before launch into three groups: reversible, recoverable, and irreversible.
+
+The first group is reversible actions: drafts or staged objects that can be withdrawn through a reverse API call within a time window. Railway's blog post of April 29, 2026 describes the case. A customer's AI agent found a long-lived Railway API token on the local machine and called the legacy volume-delete endpoint (volumeDelete) on a production volume. The token had account-level scope, the broadest available. Before the incident, a volume deleted through the API was removed immediately with no undo, while the dashboard offered a 48-hour undo window. Railway changed the API so that every delete is a 48-hour soft delete first, and backup deletion is also delayed.
+
+The second group is recoverable actions. Data was overwritten, but a backup exists. In the Railway incident, a cascading delete on the legacy path made the backups shown in the UI look unavailable. The off-site disaster-recovery copies were intact, the database was restored, and all data was recovered. Actions in this group are recovered from snapshots and disaster-recovery copies.
+
+The third group is irreversible actions: sent emails, payments, quotes. These can only be handled with corrections and compensation. Our practice is to send a correction notice once the error is confirmed and hand the case to a person.
+
+## Reconstruct the scene: replay the execution and authorization chain from action logs
+
+Reconstruction has to answer three questions: what the agent did, in what order, and who authorized the tool calls. That comes from action logs and approval logs. The model's text output cannot stand in for parameters and a timeline.
+
+SecurityHQ and Datadog surveyed 204 security leaders at mid-size and large organizations, published on October 15, 2026. 76% said they had formally defined accountability for AI decisions, yet 45% had experienced an agent incident where accountability was unclear. Only 49% could reconstruct every action from the past 30 days. After a critical incident, 17% reconstructed it within minutes, 51% took hours, 23% took days, and 9% took longer or could not say.
+
+In the University of Michigan's EECS 498 course, Applied Agentic Software Engineering, offered in fall 2026, students build human approval before dangerous operations, rule-based auto-approval with a decision log, and six stop conditions for an agent. We recommend logging each tool call's inputs, return values, and authorizing credential, so the whole chain can be replayed.
+
+## How to split accountability: assign roles in advance, do not blame individuals
+
+Decide before launch who is accountable when a task goes wrong.
+
+We recommend running the post-incident review by four roles, without pursuing the individual who wrote the prompt. The authorizer is accountable for authorization that got out of control. The agent owner is accountable for rules and monitoring. The credential provider is accountable for credential custody. The platform and vendors are accountable for underlying defects.
+
+Also decide who leads the response for each type of failure. A hypothetical: a procurement reconciliation agent makes a duplicate payment. The agent owner stops the damage and freezes the batch. If a manager skipped the review step to speed things up, the authorizer is accountable. If an engineer put a credential with no spending limit into the config, the credential provider is accountable.
+
+For how far an agent can go before a person must sign off, see <NoteLink slug="it-change-management-agent-signoff">AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?</NoteLink>. For separating recommendation risk from execution risk before scaling, see <NoteLink slug="agent-governance-before-scale">Agent governance has to come before scale: a bad recommendation can be ignored, a bad execution has already happened</NoteLink>.
+
+## What to change after the review: narrow credentials, add undo windows and stop conditions
+
+The review should end in engineering changes that prevent the same failure.
+
+First, narrow credential scope. Tokens follow least privilege: no account-level scope, and short-lived with regular rotation. In the Railway case, the agent got a long-lived account-level token and used it to delete a production volume.
+
+Second, add undo windows to high-risk writes. Deletes and external-facing APIs default to soft delete or delayed execution, as Railway now does, which leaves time to withdraw the action.
+
+Third, fill in stop conditions. The orchestration layer sets interrupt rules in advance, including a failure limit, a blast-radius threshold, and alerts. Crossing any of them halts the agent immediately.
+
+For the order in which to open tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Which AI Agent Tool Permissions Should a Company Grant First?</NoteLink>.
+
+## Agent rollback: FAQ
+
+### Why not let the agent call its own tools to roll back after an error?
+
+Railway's blog notes that an agent that makes a mistake often keeps going, and sometimes makes things worse while trying to fix the first error. The safer approach: an external system hits the kill switch and pulls the credentials, then the engineering pipeline takes over and runs the agent rollback by rule.
+
+### We already have regular database backups. Why design a separate agent rollback mechanism?
+
+Regular backups are built for full disaster recovery. Restoring takes a long time and overwrites other data that was fine. In the cases we see, an agent error usually requires undoing one batch of actions, such as records changed by mistake in a single batch. A dedicated agent rollback mechanism combines soft-delete windows, reverse undo calls, and compensation to withdraw specific actions and restore the scene.
+
+### How should business teams and engineering assign accountability for an agent incident?
+
+Assign accountability from the role table agreed in advance, and do not pursue the individual who wrote the prompt. During the review, the team works through the action log. If a manager approved an overly broad review-exempt scope, the authorizer is accountable. If a trigger threshold did not take effect, the agent owner is accountable. If a local credential was exposed, the credential provider is accountable. If the platform path had a defect, the vendor fixes it.

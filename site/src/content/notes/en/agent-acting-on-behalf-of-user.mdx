@@ -1,0 +1,88 @@
+---
+title: When an AI Agent Calls Systems for an Employee, Whose Identity and Permissions Apply?
+description: Each agent call should carry both the employee's and the agent's identity, limiting access to what both allow, so a shared service account can't leak data.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-acting-on-behalf-of-user-cover.png
+coverAlt: An employee hands a glowing orange credential to an agent, with a translucent figure of the employee behind the agent as they walk toward server racks
+sourceHash: '86d5c506e574'
+---
+
+When an agent queries data or calls tools for an employee, every call should carry two identities: the employee who made the request and the agent that performs the action. This is the problem agent identity solves. The agent's allowed actions are the intersection of the two. An action must fall within what the agent is permitted to do and within what the requesting employee is personally authorized to do. If one shared, high-privilege service account runs tasks for everyone, the agent can fetch out-of-scope data for people who lack access. That is a confused deputy problem, and it leaves no visible trace in the backend audit logs.
+
+Many teams take a shortcut when they connect an agent. They set up one service account with global permissions in the backend. A business user asks a question in the front end, and the agent uses that credential to call the underlying systems. Those systems have no idea who the work is for. The person asking inherits global permissions indirectly.
+
+import noteFig from '../media/agent-acting-on-behalf-of-user-fig-en.png'
+
+<Figure src={noteFig} alt="Left: an agent wearing an ID badge stands in front of an open gate. Right: an employee hands a key to an agent, which then goes on to access servers." caption="Figure: Agent Identity | Delegated Access" width="wide" border />
+
+## One example of a confused deputy: a contractor gets executive pay data
+
+A confused deputy is a common privilege-escalation risk in automated workflows. A service that legitimately holds high privileges is used, on purpose or by accident, to perform an action for a low-privilege user that the user is not allowed to perform.
+
+On October 8, Okta described its Agent Gateway, now generally available. The gateway requires every tool-call credential to name both the requesting user and the executing agent. It exchanges credentials using the delegation flow in RFC 8693 (OAuth 2.0 Token Exchange). The agent's allowed actions are the intersection of what the gateway permits and what the user is personally authorized to do. Okta's example is an HR assistant that runs on a service account able to read every employee record. A contractor asks for the CEO's salary and gets it.
+
+In this example, the contractor can only read the public attendance policy in the HR system and has no access to executive pay. The HR assistant's backend service account has read-only access to the whole database. The contractor asks, "Summarize executive compensation." The database sees a valid credential and lets the query through. The agent has fetched data for someone with no right to it. The audit log records only "HR assistant queried the compensation table." The person who asked does not appear anywhere.
+
+## Why prompt rules alone can't stop privilege escalation
+
+Some teams try to patch this in the prompt. They add a line to the system instructions such as "Do not share salary information with anyone outside HR."
+
+Natural-language prompts cannot enforce permissions. Models follow instructions with some variance, and coaxing or prompt injection can get around the rule. The underlying credential has also opened every door.
+
+Databases and APIs check only the token presented to them. If the token has access to the whole database, the storage layer lets the request through. Enforce permissions at the gateway, where requests can be blocked, not in the prompt.
+
+For separating read permissions from write actions, see <NoteLink slug="agent-read-mail-vs-calendar-send">An agent can read email. What must be approved before it edits calendars or sends mail?</NoteLink>
+
+## A second problem with shared credentials: revoking one breaks everything, so no one revokes it
+
+Inside many companies, a service account created for AI tools ends up reused by agents across several teams. One runs reports, one pulls tickets, one cleans sales leads.
+
+Okta notes that revoking a shared credential disconnects every agent that uses it, so in practice no one revokes it. When the credential is compromised and someone wants to revoke it, every business process using it starts failing. The fix gets postponed indefinitely.
+
+## Four questions to answer before a tool call
+
+Okta lists four questions for judging whether an agent gateway is trustworthy. Use them when choosing a gateway or auditing the one you have:
+
+1. What credential does the MCP server receive, and who issued it? For your audit: the credential should be issued by the company identity provider (IdP), carry a digital signature and an expiry, and not be a static key hard-coded in a config file.
+
+2. Can the gateway prove which user this call is for? For your audit: the gateway must be able to prove which current employee is behind the call, not just attach a vague agent name.
+
+3. Whose consent authorized this agent to access that MCP server? For your audit: you should be able to look up the consent record and see which employee consented to which MCP server. If no record exists, treat access as unauthorized.
+
+4. Does the agent hold any credential that works without going through the gateway? For your audit: check the agent's local environment for stored keys that connect directly to databases or APIs and would let it bypass the gateway.
+
+## Logs must show which agent did what for whom
+
+A single-identity log records only "Service account A exported the users table at time T." It does not show who asked for the export. Security staff cannot tell routine analysis from an unauthorized probe.
+
+A compliant log records both sides: employee Jane Smith, through the sales assistant agent, called the customer lookup API and read the contact list. The employee ID and the agent ID are bound together.
+
+For audit trails in multi-agent setups or workplace bot rollouts, see <NoteLink slug="grok-bot-enterprise-access-audit">Rolling out Grok Bot at a company: what to decide first on permissions and auditing</NoteLink>. When something goes wrong, the two identities show both the requester and the execution path.
+
+## Rollout checklist: which agents still use shared accounts
+
+1. Query agents connected to sensitive data. Assistants connected to payroll, finance, customer data, or core code repositories go first. Replace the shared account, route them through the gateway, and filter results by the requester's permissions.
+
+2. Shared agents open to multiple departments or to contractors. Users of these tools have very different permission levels, so a single account invites privilege escalation. Switch them to identity delegation.
+
+3. Execution agents that can write data, change status, or move money. For any action that modifies data, sends notifications, or goes through approval, check the requesting employee's permissions and log both identities in full.
+
+## Agent identity: FAQ
+
+### The employee already signed in on the front end. Why does the backend lose the user's identity?
+
+The front-end session usually exists only between the user and the gateway. When the agent calls microservices or databases, many systems do not pass the employee's identity along. They send the request with a global service account instead. The employee's identity is dropped in the backend, and the backend receives only a generic machine token.
+
+### Does dual-identity, intersection-based authorization add noticeable latency?
+
+A well-built identity delegation setup does not add noticeable delay. Gateways usually exchange tokens through OAuth and cache the result for a short period within its validity window after the first exchange. A token exchange usually takes far less time than the model takes to generate a response. Measure it before launch to confirm.
+
+### How should a company govern employees' delegated authorization to personal AI tools?
+
+An administrator registers delegated authorization first: which agents may call which systems on behalf of employees. Employees may delegate only to registered agents. They should not authorize unreviewed external AI tools to use their company accounts. When an agent is retired or an employee leaves, revoke the matching delegated authorization at the same time.

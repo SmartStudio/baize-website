@@ -1,0 +1,94 @@
+---
+title: 'Agent Sprawl: How to Inventory Employee-Built AI Agents and Their Owners'
+description: After opening low-code agent building to staff, start an agent register. Record purpose, owner, systems, credentials, triggers, and last run, then tier by risk.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-sprawl-inventory-cover.png
+coverAlt: A crowd of small white robots scattered across the floor; an orange magnifying glass picks one out, and in a tray beside it the registered robots stand in neat rows, each wearing an orange tag
+sourceHash: 'bc60011f639a'
+---
+
+Once employees can build agents on a low-code platform, run a baseline inventory before you scale further. Start an agent register. For each agent, record its purpose, builder, owner, connected systems and data, credentials, trigger type, and last run time. With that baseline in place, assign a risk tier based on the data each agent touches and the actions it can take. Retire and archive agents that have gone unused for a long time, have no owner, or have broken connections.
+
+Self-built internal tools are spreading fast. On October 8, 2026, the Spanish carrier Orange Spain and Google Cloud announced that employees had built more than 1,000 custom AI agents on the low-code framework in Gemini Enterprise. The agents cover HR, IT, sales, and customer service. Business teams set up their own workflows for routine tasks, so IT does not become a bottleneck. As the count grows, though, few people can say how many automated processes are running company-wide, which ones read and write core databases, and which ones nobody has maintained in months.
+
+import noteFig from '../media/agent-sprawl-inventory-fig-en.png'
+
+<Figure src={noteFig} alt="Left: a cubby cabinet where every agent wears a tag and sits next to its owner and a checklist. Right: an agent hiding behind a wall, exposed by a green spotlight" caption="Figure: Agent Inventory | Shadow Agent" width="wide" border />
+
+## Set the register fields first: seven items that record what runs and who owns it
+
+An agent inventory records seven basic items per agent.
+
+Purpose. What the agent does on a given day. Write "pulls a summary of support tickets every Friday," not a generic label like "work assistant."
+
+Builder and current owner. When the configuration drifts or a business dispute comes up, the current owner makes the call.
+
+Connected systems and data scope. Which internal systems and tables the agent calls. Reading public documents and reading customer phone numbers carry very different risk.
+
+Credential ownership. Whether the agent runs on a personal access token, a shared team account, or a dedicated service account. Flag every background task that runs on personal credentials as a separate line in the register.
+
+Trigger type. Manual click, webhook event, or scheduled run. Scheduled and event-driven agents run with nobody watching, so they are more likely to keep consuming resources.
+
+Last run time. The time of the most recent call. Agents that have not been called in a long time are usually abandoned.
+
+Risk tier. A label based on data exposure and the impact of the agent's actions, used to sort agents for handling.
+
+## Four places to look: finding agents wherever they live
+
+Central platform admin console. Enterprise low-code platforms usually provide an admin dashboard. Export the workflow list, publish status, and call logs from there.
+
+Connector authorization records. Many self-built agents connect to the CRM, ERP, or email. Review the OAuth grant list in each system to find personal accounts that have quietly connected to it.
+
+API credential and access key inventory. Review API key issuance records in the gateway and the cloud platform. When a business user has requested database credentials and the calls come from a hosted platform, the key leads you to the agent.
+
+Self-reporting by business teams. Send each department a questionnaire to fill the gaps: local scripts and lightweight setups with no scheduler attached. Give formal support to the setups that teams report.
+
+To limit initial scope before opening agent building to everyone, see <NoteLink slug="enterprise-ai-pilot-vs-accounts-for-all">Why Should an Enterprise AI Pilot Start With One Department?</NoteLink>.
+
+## Tier by risk: what data the agent can reach and what it can do
+
+Low risk. Reads only public information or a general knowledge base and writes nothing to external systems. Damage is limited. Register these agents and let the business team maintain them.
+
+Medium risk. Reads sensitive internal data, such as unmasked sales records or employee salaries, or creates to-dos and drafts. Wrong output can leak information or force rework. Assign an owner and record the query scope.
+
+High risk. Has direct write access to production systems: changing CRM status, emailing customers, adjusting inventory, or moving money. If one of these agents goes wrong, the loss is immediate. Put them under central monitoring and require human approval.
+
+## Agents with no owner
+
+A CIO Dive report on October 16, 2026, said about a quarter of AI agents in enterprise environments run unmonitored. For any agent the inventory cannot match to an owner, turn off its automatic triggers and keep its configuration. For the handover process, see <NoteLink slug="agent-owner-when-employee-leaves">Who Owns an AI Agent When the Employee Who Built It Leaves?</NoteLink>
+
+## Review cadence and retirement rules: clear out idle agents and broken connections
+
+Run a full review on a cycle your team sets, with explicit cleanup rules.
+
+Activity check. If an agent has not been triggered within the agreed period, notify its owner. If the owner does not respond, move the agent to dormant.
+
+Credential and connection health. Pause scheduling for agents whose OAuth tokens have expired or whose internal API calls keep failing, so failed retries stop consuming resources.
+
+Owner still in role. When the owner moves or leaves, ask the department to name a new owner.
+
+## Using the results: put governance effort on two kinds of agents
+
+Govern two kinds of agents first. The first is high-risk agents with external write or outbound send permissions. Check that they have action limits and a rollback mechanism. The second is medium- and high-risk agents that touch core sensitive data on personal credentials. Move them to dedicated least-privilege service accounts and narrow their read scope.
+
+For the large number of personal productivity assistants, keeping the basic register entry current is enough. Once the inventory has surfaced the high-risk agents, see <NoteLink slug="agent-governance-before-scale">governing agents before you scale: a bad recommendation can be ignored, a bad action has already happened</NoteLink> for the guardrails to build next.
+
+## Agent inventory: FAQ
+
+### What pushback does IT get when it inventories agents that business teams built?
+
+Business teams often worry that IT will tighten permissions or take away their freedom to build. Register low-risk read-only agents without adding approvals. IT manages credentials and monitoring on the business team's behalf and focuses its checks on unauthorized writes and leaked credentials.
+
+### Should existing agents be fixed all at once or in batches?
+
+In batches. Lock down high-risk agents that write to production or touch sensitive data first. Give medium-risk agents a deadline to remediate and replace shared credentials. Register low-risk personal assistants gradually during routine reviews.
+
+### How can a company find shadow agents running without approval?
+
+Shadow agents usually bypass the central platform, but accessing internal systems leaves records. Check SSO logs for unregistered AI app authorizations, the API gateway for personal tokens with unusually high call volume, and the email gateway for unreported auto-forwarding rules. When you find one, freeze its credentials first, then have the user register it.

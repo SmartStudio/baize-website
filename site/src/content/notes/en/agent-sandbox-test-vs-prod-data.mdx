@@ -1,0 +1,63 @@
+---
+title: Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?
+description: Test agents on a synthetic company first. Eon's Era mocks Salesforce, Zendesk, and Slack APIs with MCP endpoints, and says to re-check in staging on real data.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-sandbox-test-vs-prod-data-cover.png
+coverAlt: A model company inside a glass sandbox with an agent under test, next to a closed gate leading to real CRM filing cabinets
+sourceHash: '607c028730a0'
+---
+
+Run pre-launch agent tests on synthetic company data first, then connect the real CRM. The order has three steps: test correctness and permissions in a simulated environment, re-check answers on real data in staging, and only then go to production. Testing directly against a production CRM means one bad run can corrupt customer records.
+
+import noteFig from '../media/agent-sandbox-test-vs-prod-data-fig-en.png'
+
+<Figure src={noteFig} alt="Left: a three-step launch test from sandbox to staging to production. Right: a mock company with tidy, consistent records next to a run-down building with a messy pile of real-world records" caption="Figure: Agent Launch Test | Mock Company Data | Sandbox | Staging | Production" width="wide" border />
+
+## What a simulated company environment can test
+
+On October 8, 2026, Eon released Era, a free tool. You pick an industry, a company size, and the systems you need, and it generates a fictional company. Customers, opportunities, tickets, call logs, chats, and documents stay consistent across systems. (Source: [Eon blog](https://www.eon.io/blog/era-build-and-test-ai-agents))
+
+1. **The APIs match the real ones.** Era returns data in the REST formats of Salesforce, HubSpot, Zendesk, Jira, Slack, and other vendors. Each system also has an MCP endpoint. After testing, point the agent at the production URLs.
+2. **Each test can use a new company.** Environments are generated from parameters, and the same parameters produce the same company. You can spin one up per CI run and delete it afterward.
+3. **Permissions can be checked.** The Era README on GitHub says tests can assert on answers, on tool selection, and on whether a read-only agent wrote any data. (Source: [eon-io/era README](https://github.com/eon-io/era))
+
+## Scores are comparable only when answers have a fixed key
+
+In September 2026, the Eon team posted a paper on arXiv. Code computes each question's answer from the generated data, and grading is exact match. Nine models each answered the same 33 questions three times. Accuracy ranged from 42.4% to 76.8%. Averages by question type: simple filters 92.6%, cross-system 39.6%, multi-hop 3.7%. (Source: [arXiv 2609.09853](https://arxiv.org/abs/2609.09853))
+
+A second paper from the same team tests "hidden knowledge." Examples: a commitment made to a customer on a phone call, or which of several records the company actually uses. The evidence exists in the systems, but not in the record the question names. Across 12 agents, the best answered 18 of 24 attempts correctly. Four models got at most 6 right under both procedures. (Source: [arXiv 2609.30055](https://arxiv.org/abs/2609.30055))
+
+For a company, these results mean an agent with CRM access can still miss business context that spans several systems. Write test questions for this case before launch.
+
+## Synthetic data does not replace staging
+
+Era's own documentation states it plainly: the environment is 100% synthetic, it does not replace a staging system with real data, and you should validate in your own staging environment before launch.
+
+Synthetic data tests whether the workflow is correct and whether permissions hold. Free-text junk in structured fields, legacy dirty data, and duplicate customer names only show up in real data.
+
+Division of work before launch:
+
+1. Simulated environment: functional questions, cross-system questions, and read-only permission assertions. Run on every change.
+2. Staging: de-identified real data. Spot-check answers.
+3. Production: roll out to a small group. Start read-only, then grant write access.
+
+Re-run the simulated environment whenever you change a prompt, switch models, or add a tool. Tools like Era can plug into CI and run on every commit.
+
+For what to decide before scaling, see <NoteLink slug="agent-governance-before-scale">Agent governance has to come before scale</NoteLink>. For engineering guardrails, see <NoteLink slug="engineering-guardrails-for-ai">Software engineering in the AI-native era: from writing code to constraining code</NoteLink>.
+
+## Agent launch testing: FAQ
+
+### Can I run agent launch tests directly on my production CRM?
+Not recommended. During testing, an agent may write or delete the wrong records. Get it working in a simulated environment first, then re-check in staging.
+
+### Do scores from a simulated environment predict production results?
+Only for the workflow and permission layer. How messy your real data is has to be checked in staging.
+
+### Where does synthetic company data come from? Do I have to build it?
+You can build it or use an existing tool. Eon's Era generates synthetic data for a whole company by industry and size, with data consistent across systems. Eon says it is free for developers. If you build your own, at minimum make customers, opportunities, and tickets match across several systems. Otherwise you cannot test cross-system questions.

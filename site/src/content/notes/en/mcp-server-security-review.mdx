@@ -1,0 +1,74 @@
+---
+title: What to Check Before Connecting a Third-Party MCP Server
+description: A third-party MCP server is a program your AI agents run inside your network. Check its run account, path and URL checks, auth, patching, and key rotation.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/mcp-server-security-review-cover.png
+coverAlt: A white server hovers above a slot in its base while an orange robotic arm inspects it with a magnifying glass; a three-item checklist beside it has two items checked
+sourceHash: 'e8ea41bccd78'
+---
+
+import noteFig from '../media/mcp-server-security-review-fig-en.png'
+
+Connecting a third-party MCP server means installing an executable program inside the corporate network that AI assistants can call. A feature demo does not tell you whether it is safe. Before connecting it, verify four items: the permission boundary of the account it runs under, how it validates paths and URLs in parameters, authentication and version tracking, and a credential rotation plan for when something goes wrong. Review the prompt and resource channels as well as the tool endpoints.
+
+<Figure src={noteFig} alt="On the left, a server with a jade shield and padlock stands for MCP server security; on the right, a magnifying glass inspects a plug and socket, standing for the review before connecting" caption="Figure: Secure MCP Server | Onboarding Review" width="wide" border />
+
+## A real case: arbitrary file read through a prompt endpoint
+
+On October 5, 2026, Grafana published CVE-2026-89039 in an official security advisory. It scored 6.5 (medium) and affects mcp-k6, the MCP server for Grafana's k6 load-testing tool, from version 0.3.0 up to (not including) 0.7.0. A caller who invoked the `convert_playwright_script` prompt with an ordinary file path could read any file the service account could read, including SSH keys and cloud credentials in the home directory. The service restricted the working directory marked with an `@` prefix, but an attacker could bypass that with a symbolic link inside the working directory that pointed outside it. Version 0.7.0 fixes the issue.
+
+The MCP protocol exposes tools, and it also exposes prompt templates (prompts) and context resources (resources). If the code does not validate its input, any entry point that reads local files can become a way for an attacker to pull credentials out of the internal network.
+
+## Step 1: Run account and environment isolation
+
+Developers debugging locally often start third-party MCP servers under their own developer accounts. That is high risk. The server process inherits the user's full file read permissions, so the `.ssh/id_rsa` private key, cloud access keys, and local browser cache are all readable by the process. If the component has a file-read bug like the one above, an attacker who gets those keys may be able to log in to other machines or cloud accounts.
+
+Run the server under a dedicated low-privilege service account instead. The account has no admin rights. Its home directory stays empty and holds no login credentials. For file sharing and sandbox isolation principles, see <NoteLink slug="grok-bot-shared-computer-isolation">How to isolate files when several Bots share one cloud computer</NoteLink>. Confine the process to its own run directory. If the code has a read bug, the most it can read is that empty directory.
+
+## Step 2: Input validation, and why string prefix checks miss symlinks
+
+Third-party MCP servers usually expose parameters that accept file paths, URLs, or queries. During review, open each endpoint and read how the underlying code decides whether a parameter is valid. Many open-source implementations only do a string prefix comparison, for example checking that a path starts with the project directory.
+
+A string prefix check is easy to bypass. An attacker can create a symbolic link inside a trusted directory that points to a sensitive system file, or use relative paths to climb out of the directory. Correct code resolves the real physical path through an OS-level call before touching the file, then confirms the target sits inside an allowlist of permitted directories.
+
+For parameters that accept URLs, check whether the code can restrict the destinations it will reach. If the MCP server accepts any network address, it can be used for server-side request forgery (SSRF) to probe the company's internal metadata service or database ports.
+
+## Step 3: Authentication and version tracking
+
+If the MCP server runs as a local child process, confirm that standard input and output between the parent and child process are protected by OS access controls. If it communicates over a network port, configure strong identity tokens or mutual TLS. Do not let any machine on the local network connect to it without credentials.
+
+MCP servers in the open-source ecosystem release often, and security fixes usually ship in version upgrades. When a company adopts a third-party component, name one person to track security advisories from the upstream repository. When a new version ships, validate it in a test environment and then upgrade. An upgrade involves more than swapping files. Check for interface changes so that old prompts or tool calls do not break and stop business workflows.
+
+Before connecting the server to core business systems, run boundary and fault-tolerance tests against its tool endpoints with synthetic data. For the approach, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>.
+
+## Step 4: Incident response plan and approval checklist
+
+Record three things in the onboarding register: which machines the MCP server runs on, which system account it uses, and which business-system access tokens it can reach. If upstream discloses a high-severity vulnerability, or logs show unusual probing, the operations team can act right away.
+
+First, stop the MCP process and remove its tools and prompt endpoints from the agent orchestration layer to cut off external calls.
+
+Second, upgrade the component to the fixed version named in the advisory and review the patch logic the maintainers published.
+
+Third, rotate every key and access token that the run account and related business systems exposed. A restart alone does not close the exposure. Assume an attacker read the credentials while the vulnerability was open and kept copies.
+
+Turn these four items into a standard checklist, and screen every connection request from business teams against it.
+
+## MCP server security: FAQ
+
+### The MCP protocol has a spec. Why does a company still need to review each server?
+
+The protocol defines the message format. It does not guarantee the quality of third-party code. MCP defines the signaling for tools, prompts, and resources, but how a server reads files, validates parameters, and manages process permissions depends on how its author wrote the code. If the author writes logic with path traversal or unauthorized access, the protocol cannot block it. The company has to review at the OS level and the code level.
+
+### If the MCP server only has read access, is the risk gone?
+
+Read-only access still carries serious data-leak risk. Many security incidents involve sensitive data being read out, with nothing written or destroyed. If the server's run account can read local SSH keys, cloud platform tokens, or internal database backups, an attacker who exploits a read-only bug can extract those credentials and use them for a larger intrusion from outside. A read-only feature still needs a narrow read scope, and sensitive credentials still need to be removed from the account.
+
+### Without a dedicated security team, how do we run onboarding reviews for third-party MCP servers?
+
+Use a short checklist built on three actions. First, separate the run identity from the development environment: give each MCP server its own low-privilege system account, and clear private keys and config files out of its home directory. Second, narrow directory and network permissions with the OS's built-in containers or directory permissions, and open only the folders the server needs. Third, record an owner and the upstream project URL on the review form, subscribe to release notifications, and update and restart promptly when a vulnerability is disclosed.
