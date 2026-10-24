@@ -1,0 +1,84 @@
+---
+title: "AI Data Queries Return Two Sales Figures: Which Metric Definition Do You Trust?"
+description: When natural-language data queries return two different sales figures, the fix is a governed metric dictionary the model must check before it writes SQL.
+lang: en
+pubDate: 2026-10-24
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-data-query-metric-definitions-cover.png
+coverAlt: On a dark green background, two pillars of different heights stand on a base, a green beam rests diagonally across their tops, and a glowing green plumb bob hangs from the middle
+sourceHash: '758b6799f11f'
+---
+
+import noteFig from '../media/ai-data-query-metric-definitions-fig-en.png'
+
+When an AI data query tool returns two conflicting sales figures, the query logic has drifted away from the company's approved business definitions. Business users asking in plain language rarely say whether they mean tax-inclusive sales, invoiced and collected revenue, or net sales after returns. If the model guesses which field to use, the operating numbers come out wrong. The standard setup has four parts. The company keeps one metadata dictionary. The model parses the question and matches it to an approved definition before it touches any table. It outputs the calculation logic and scope together with the query. Finance and the data team maintain the dictionary together.
+
+<Figure src={noteFig} alt="A tabletop with five stations from left to right joined by green arrows: a blank question card in a stand, a green-spined dictionary under a magnifying glass, a stack of blocks with one glowing green, a pillar with a blank hanging tag, and a two-lock cabinet with a notebook on top" caption="Figure: Parse Question | Match Definition | Build Query | Annotate Result | Team Upkeep" width="wide" border />
+
+## Parse the natural-language question: extract business entities and dimensions
+
+A business user types a question into the chat box. The parsing service splits it into time, organization, and business entity.
+
+Take a question about last quarter's sales in one region. The model first pulls out the grammatical parts. It does not go looking for tables yet. It identifies the time range as the previous quarter, the scope as a specific sales region, and the measure as a sales amount. It turns the question into a semantic triple: time range, analysis dimension, candidate metric.
+
+The person acting at this step is the business user. They can phrase the question casually. The interface offers autocomplete suggestions that prompt them to add a product line or department.
+
+Once the parsing service has normalized the parameters, it sends them to the enterprise metadata lookup layer as input for definition matching.
+
+## Match the approved business definition: force a metadata and formula lookup
+
+Using the parsed entities, the model searches the company's semantic metric layer for the matching approved formula.
+
+The system makes the model call the metadata dictionary first. The model does not browse hundreds or thousands of raw database tables. In the dictionary, for example, sales splits into three definitions: gross order value, cash actually collected as recorded by finance, and net shipped value after discounts and allowances. If the question is ambiguous, the model defaults to the baseline definition used in management reports and flags the alternative definitions a reader could confuse it with. For how to attach business definitions and context rules in a structured way, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+The data asset team sets the mapping rules at this step. Data engineers assign each core metric a unique identifier code and a calculation formula. The model is not allowed to infer meaning from field names.
+
+After the system locks a single metric definition code, it passes the parameters to the query builder.
+
+## Generate a governed query: enforce data permissions and calculation scope
+
+The query engine uses the bound definition to generate a database query that runs under access controls.
+
+The model reads the standard field mappings and assembles a structured query. The system injects preset filters into the query automatically, such as excluding internal test transactions, excluding canceled orders, and limiting the scope to specific legal entities. A database security gateway blocks unauthorized queries and masks data according to the requester's role. A regular sales rep cannot see line items that include gross margin or floor prices.
+
+System security policy runs this step without human input. The database audit module checks the query syntax, estimates resource cost, and blocks expensive full-table scans.
+
+The gateway runs the approved query and pulls aggregated results from the analytical database.
+
+## Return the result with a note: show the number and disclose its scope
+
+When the interface displays the final number, it also shows the business definition and calculation basis behind it.
+
+Below the amount, the system adds a short note on the definition. The note states that the figure uses finance's net collections definition, covers payments already received minus returns and refunds in the period, and excludes orders still under review. If the user wants to compare against order value, a one-click toggle switches the view. For results that can be checked on the spot, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+The business user reviews the result at this step. Before citing the number in a report, a manager reads the note to confirm the figure fits the meeting topic. This avoids cross-department disputes caused by mismatched numbers.
+
+The interface logs whether users accept the result or switch definitions. The team uses these logs to tune the system.
+
+## Finance and data team maintenance: align definitions on a schedule and keep a change log
+
+Finance and data engineering meet on a regular schedule to review business changes and manage the metadata dictionary over its life cycle.
+
+When the company introduces a new settlement policy, changes distributor rebate rules, or adds an online sales channel, a finance analyst files a metric change request. The data engineering team updates the formula in a test environment, changes the metadata mappings, and records detailed version notes.
+
+A joint human review closes this step. The finance director and the head of the data team both sign off on the new rule. Before release, the system replays a sample of recent common questions and calculates how much each number shifts under the new definition.
+
+The approved metadata version goes to production. The model uses it on the next question.
+
+## AI data queries: FAQ
+
+### Why not let the LLM read the database schema and write SQL directly?
+
+Reading the raw schema leads to hallucinated data and logic errors. Real company databases contain legacy tables, temporary staging tables, and redundant fields with similar names, such as several columns with "amount" in the name. The model lacks the company's business context. It cannot tell which table is the accounting record of truth, so it often joins the wrong tables. A separate metric semantic layer fixes this: people define the approved logic, and the model calls it by rule.
+
+### Sales and finance read the same term differently. How should the system show it?
+
+Show both, with one marked as primary. The first card shows the definition most often used by the requester's department. Below it, the system lists the other department's figure and explains how the calculation differs. For a sales user, the card shows gross order value, notes that returns are not deducted, and keeps finance's collected amount in a collapsed panel. Both departments then discuss the same set of visible numbers.
+
+### When building a semantic layer, how do you settle metric definitions that finance and business teams disagree on?
+
+Set up a cross-department process for ruling on metadata. A data governance committee leads it and brings finance analysts and frontline business managers together to go through the core operating metrics. Where a term is disputed, the committee does not force a single field. It can split the term into standard metric names with clear qualifiers and fix both formulas in the semantic layer. When a question is ambiguous, the query interface shows the difference between the two definitions and lets the user pick the one that fits the decision.

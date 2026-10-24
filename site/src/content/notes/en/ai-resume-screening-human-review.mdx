@@ -1,0 +1,76 @@
+---
+title: "AI Resume Screening: Should a Human Review the Candidates the Agent Rejects?"
+description: A recruiting agent speeds up resume screening, but rejected candidates should not be archived unseen. Set up borderline spot checks, appeals, and audit logs.
+lang: en
+pubDate: 2026-10-24
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-resume-screening-human-review-cover.png
+coverAlt: On a deep green background, a stack of blank pages slides across a tilted sieve; most fall into a gray bin, and a magnifying glass pulls one page back to a tray on the right with a green arc of light
+sourceHash: '8dd5d939d1e0'
+---
+
+import noteFig from '../media/ai-resume-screening-human-review-fig-en.png'
+
+Candidates rejected by a recruiting agent should not be deleted or archived without anyone looking. The company needs a layered human review process. A model can extract structured work history fast and compare it with job requirements. It misreads nonstandard resumes, career changers, and unusual phrasing. A workable setup: the recruiting team defines hard skill requirements tied directly to the job. The model outputs a score and the reasons for each rejection. A fixed share of rejected candidates with borderline scores gets a human spot check. Candidates get an appeal channel, so qualified people are not cut by mistake.
+
+<Figure src={noteFig} alt="Five stations on one tabletop, linked left to right by green arrows: a resume stack under a scanner gantry, three score bars of different heights, a gate that diverts some pages into a side tray, a mailbox with an envelope in the slot, and a magnifying glass on a paper tray with a green arrow sending one page back" caption="Figure: Parse & Match | Overall Score | Rule Filter | Auto Reply | Audit & Appeal" width="wide" border />
+
+## Reading the resume and the job requirements: extract qualifications and verify them
+
+After a candidate applies, a parser pulls skills and project experience from the text and compares them field by field with the job criteria.
+
+The model reads documents in any layout. It parses education, skills, years of experience, and key projects into structured fields. At this stage the model only extracts facts. It checks whether the candidate has the required qualifications in the job description, such as specific industry experience or proficiency in a particular software tool. The parser does not read personal traits unrelated to job performance, such as appearance, hometown or place of origin, or marital and parental status.
+
+The human owner of this step is the recruiting domain expert. During system setup, the recruiting team separates baseline requirements from nice-to-haves and defines a skill synonym list, so the model does not miss a match because a term is spelled or phrased differently. Once the parser finishes extraction, it pushes the profile to the scoring service.
+
+## Scoring, ranking, and weighting: output a number based on job competencies
+
+The scoring engine applies the job's weighting model, computes an overall score for each candidate, and outputs the reason behind each item.
+
+The model scores how well the candidate matches each dimension: skills, industry background, and project relevance. It sums these into an overall score. It also writes a short rationale: which experience meets expectations and which requirement is missing. The scoring logic should stay rule-based and transparent. For where automated decisions should stop and organizational risk control takes over, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+The hiring manager sets the score thresholds in this step. Based on how competitive each role is, the hiring manager divides candidates into three bands: a high-score shortlist band, a borderline band, and a low-score rejection band. The scoring engine only ranks. It does not issue rejections for borderline candidates.
+
+After scoring, the system tags each candidate with a status for their band and routes them to the next step.
+
+## Rule-based rejection and band boundaries: separate clear mismatches from borderline cases
+
+The system routes candidates by score band and preset rules, and keeps clear rejections apart from uncertain profiles.
+
+A profile that scores below the rejection line and lacks a required hard qualification gets a "suggested rejection" tag. A candidate in the borderline band, for example one whose total is close to the passing line but who has worked at a leading company in the field, gets a "human review" tag. The system holds that profile in a pending pool and does not send a rejection letter.
+
+A recruiter sorts this pool by hand. The recruiter reviews the borderline resumes in one pass and decides who gets an interview, based on how urgently the business unit needs to hire that quarter. When a team needs people fast, the recruiter can move a candidate onto the first-round interview list manually. Until a human confirms, the system keeps the profile status locked, so a machine misjudgment does not lose the candidate.
+
+## Candidate replies and status notices: send an explanation and keep a record for follow-up
+
+Once a rejection is confirmed, the notification service sends the candidate a standard reply and archives the profile.
+
+After the system receives final confirmation of a rejection, it sends the notice by email or SMS. The message uses neutral, polite standard wording. It thanks the candidate for applying and explains how their profile matched the current role's requirements. In the back end, the system creates a workflow log for the candidate: initial screening time, the model's score breakdown, the reviewer's employee ID, and the final decision. For the same spot-check and quality-control logic after an automated process, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
+
+The recruiting lead owns the notification policy. The lead sets a delay between the decision and the notice, so a candidate does not get a rejection minutes after applying. After the notice goes out, the profile moves into the talent pool with its full evaluation record kept for review.
+
+## Human spot checks and appeal review: check for scoring bias on a schedule and update the rules
+
+The recruiting operations team spot-checks rejected profiles on a schedule and handles review requests from candidates.
+
+People run this step. Recruiting quality staff sample a fixed share of rejected resumes on a schedule, with a focus on profiles near the rejection line. If a spot check shows the model missed project experience written in an unusual layout, or a candidate submits an appeal through the company's official email address, quality staff pull the original resume and reassess it. If the miss is confirmed as a parsing error, a person restores the candidate to the hiring process.
+
+At this stage the system collects every case where a human overturned the model and tallies the causes. If the data shows the model has trouble recognizing terms in a specific field, the team updates the parsing rules and scoring prompts. Review results feed the next model iteration, so screening quality is more stable in the next hiring round.
+
+## Recruiting agents: FAQ
+
+### Why not let the model learn screening preferences from the traits of past hires?
+
+Self-learning tends to amplify unconscious bias in historical data. If most past hires came from certain schools or share a similar background, the model will treat those non-job traits as screening criteria. Candidates with different backgrounds but matching skills then get rejected as a pattern. People should set competency criteria tied directly to job output, and the model should score against those written rules. Do not let it infer hidden patterns from historical data on its own.
+
+### How long should a company keep the review window open for candidates the model rejected?
+
+The review window should cover at least the full hiring cycle for that role. The exact length depends on the company's data retention policy and local regulations. During the window, the candidate's original resume, the model's score breakdown, and the workflow log stay retrievable at any time. If a candidate disputes the result, or the business unit finds in later interviews that the pipeline is too thin and needs a wider pool, the recruiting team can search rejected profiles quickly and reassess them.
+
+### For large-scale campus recruiting with automated resume screening, how should the company set human spot-check rates and criteria?
+
+Use stratified sampling for human spot checks. The borderline group, scored between the shortlist line and the rejection line, gets the highest sampling rate. The middle score range can get a lower rate. For the lowest scores, check a small sample to confirm the hard requirements. Set the exact rates based on the number of openings and the record of past misjudgments. During spot checks, focus on whether the model extracted the core tech stack and hands-on projects correctly, so no qualified graduate is dropped because of a text parsing error.

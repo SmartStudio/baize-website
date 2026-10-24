@@ -1,0 +1,75 @@
+---
+title: Who Owns a Missed Defect in AI Visual Inspection, and How Much Manual Checking Should Stay?
+description: When AI visual inspection lets a defect through, saved images and logs decide who is liable. How to split model and inspector duties and tune manual spot checks.
+lang: en
+pubDate: 2026-10-24
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+cover: ../media/ai-visual-inspection-spot-check-cover.png
+coverAlt: A camera on a dark green gantry casts a green beam onto metal discs on a conveyor; one disc is pushed into a side chute, next to a green-rimmed magnifying glass
+draft: false
+sourceHash: 'd147cb637f2b'
+---
+
+import noteFig from '../media/ai-visual-inspection-spot-check-fig-en.png'
+
+When AI visual inspection misses a defect after go-live, the saved images and the operating procedure decide who is liable. The program passes parts with high-confidence "good" scores. It holds suspected defects and low-confidence parts for review. Manual recheck intensity follows defect severity and line conditions. To judge a miss later, the plant must keep the raw captures and the inference records, and must write down where the model's job ends and the inspector's begins. Without those records, nobody can trace or correct the miss.
+
+<Figure src={noteFig} alt="Five stations on one tabletop, left to right, linked by green arrows: a post-mounted camera aimed at a part, a forked track pushing a part into a side bin, a ring magnifier over a part, an open album with one image tile outlined in green, and a looped track sending images back into a small box" caption="Figure: Capture & Pass | Divert to Check | Human Review | Trace by Image | Feed Back Samples" width="wide" border />
+
+## Capture & Pass: the camera shoots, the algorithm passes good parts
+
+A part arriving at the station triggers the industrial camera, which captures images from several angles. The program runs the defect model and crops local regions for scratches, dirt, dents, and missing components. The model computes a confidence score from the features. Parts scoring above the pass threshold go straight to the next operation on the conveyor. The system logs the file name, the verdict, and the timestamps locally.
+
+Line operators place each part flat and square so tilt does not cast shadows. Maintenance staff clean the lens and the light-source covers on a schedule and check the lights for brightness decay. If an image comes back heavily overexposed or dark and blurred, the system raises an alert. Line staff stop the line, clean the optics, and recalibrate the light source.
+
+## Divert to Check: suspect parts go down the recheck chute
+
+When the model finds a scratch over the limit, or the confidence score falls in the undecided band, the control system signals the sorter to push the part into the recheck chute. The system crops the suspect region, marks the suspected defect, and writes it to the review queue with the lot number, mold number, and camera ID. It counts rejections in real time and sends a warning to the shop-floor control console when rejections come in a run.
+
+After the program's verdict, a sorting cylinder pushes the part into the recheck bin so it cannot mix with good parts. When the position sensor confirms the push, the inspection station screen shows the pending list and the reviewer takes over.
+
+## Human Review: an inspector checks real defect versus false alarm
+
+The inspector scans the part's barcode at the recheck station. The screen shows the raw capture and the marks. The inspector looks at the physical part, by eye or under a magnifier, and checks whether the scratch depth and area meet the defect standard. If the part is defective, the inspector picks a defect code and puts it in the reject bin. If the flag came from dust or glare, the inspector clears it as a false positive in the system and returns the part to the good-parts lane. For how other automated decision systems set up human review, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
+
+The quality reviewer makes the final call on whether a part passes. Inspectors submit part status under their own account by badge scan. The system locks the verdict to the inspector's employee ID and blocks anyone from clicking on another station's behalf. Recheck data flows to the quality system in real time so shift leads can see where defects cluster.
+
+## Trace by Image: pull the raw capture to find who is responsible
+
+The quality engineer looks up the part's serial number and retrieves the camera images and inference results from the time it shipped. Three cases follow:
+
+- The raw image already shows the defect, but the model scored it as good. The model has a blind spot. Responsibility sits with the team that delivered the model and the party that operates the system.
+- The raw image shows no defect. The damage came later, from handling or secondary oxidation. Responsibility sits with the downstream line operation.
+- The system flagged the part and sent it to the review queue, and an inspector released it by mistake. Responsibility sits with the human reviewer.
+
+The quality manager brings the line, equipment, and algorithm teams together to review the records and assigns responsibility from the facts. Misses are not dumped on frontline workers or suppliers by default. The conclusions go into the quality analysis report and drive process fixes and model tuning.
+
+## Feed Back Samples: rerun the evaluation on missed and false-alarm images
+
+Engineers pull high-resolution images of missed parts from the logs. Quality experts relabel the defect outlines and classes. The cleaned samples go into the training set, and the engineering team adjusts weights and retrains. The new model does not replace the old one directly. It must pass every regression task on the offline test set, with checks on recall for historical typical defects and on the false-positive rate for good parts. For how to design the eval task set and how many runs to require, see <NoteLink slug="agent-eval-suite-pass-rate-variance">How Many Tasks and Runs Does an AI Agent Eval Need Before Launch?</NoteLink>.
+
+The quality technical committee approves the new model before release. After it passes offline evaluation, it runs silently in the background alongside the old model for a period, with results compared side by side. The switch happens after the process supervisor signs off.
+
+## AI visual inspection: FAQ
+
+### When a missed defect reaches the customer, is the supplier, the line, or the quality department responsible?
+
+Assign responsibility from the raw captures and the operating records. If the raw image clearly shows the defect and the model passed it, the fault is in the algorithm and its training samples, and the supplier and technical team own the fix. If the system correctly flagged the part and a recheck operator released it by mistake, responsibility sits with the quality department's recheck operator. If the part was intact at capture and the damage came from later packing or transport, the line's packing or logistics step is responsible. Each step's saved records show which case applies.
+
+### At which points should the line raise manual recheck intensity?
+
+Raise the review rate in four situations:
+
+1. New material or a new lot of raw material arrives, with different surface reflectance or texture.
+2. A mold has been repaired or tooling has been changed; small deformations can cause misjudgments.
+3. Shop lighting, lenses, or light sources have been serviced or adjusted.
+4. The detection model has just been updated and is in transition.
+
+Once the metrics are stable again, the shift lead returns the recheck rate to normal.
+
+### After a plant deploys visual inspection, how should the manual spot-check strategy and ratio change?
+
+The quality engineer sets the spot-check ratio by defect severity, process stability, and the cost of a defect escaping. There is no fixed number. Critical defects that affect safety or key functions keep a high manual spot-check ratio. Minor cosmetic flaws can get less review while the line runs steadily. When the shop goes through a changeover, major equipment overhaul, or sharp swings in temperature and humidity, the quality manager raises the manual recheck rate in the system so outside disturbances do not let defects slip through.
