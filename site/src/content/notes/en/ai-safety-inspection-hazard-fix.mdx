@@ -1,0 +1,64 @@
+---
+title: "AI Safety Inspection Flags a Hazard: Who Signs Off on the Fix?"
+description: Factories and construction sites use AI safety inspection to capture on-site hazards. The algorithm captures risk images. A safety officer verifies, grades, and assigns each case. The responsible team fixes it by the deadline, and the officer closes it after an on-site recheck.
+lang: en
+pubDate: 2026-10-24
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-safety-inspection-hazard-fix-cover.png
+coverAlt: An overhead inspection camera casting a green beam, a striped safety barrier, a traffic cone, and a clipboard with a green check mark, on a dark green background
+sourceHash: '57c09547f7a4'
+---
+
+Workshops and construction sites mount high-definition cameras, and inspectors walk the site with handheld terminals. AI safety inspection can capture hazards around the clock: a worker without a hard hat, materials blocking an aisle, an extinguisher with low pressure. Once the image exists, managers often do not know who reviews and signs the corrective action notice, which team owns it, or who checks the fix and closes it. If the algorithm turns each capture straight into a penalty notice for workers, false alarms from swaying branches, glare, or shadows cause disputes. If captures pile up in the back office with no owner, they are only screenshots on a server. To make inspection work, define who owns each step: capture, verification, grading and assignment, on-site fix, and recheck.
+
+import noteFig from '../media/ai-safety-inspection-hazard-fix-fig-en.png'
+
+<Figure src={noteFig} alt="Five stations on one platform, left to right, joined by green arrows: a camera on a stand, a magnifying glass over a photo, a tray of work orders, a traffic cone with a wrench, and a clipboard with a green check mark" caption="Figure: Algorithm Captures the Hazard | Safety Officer Signs to Close" width="wide" border />
+
+## Capture and detection: cameras and handheld terminals record the site
+
+Fixed surveillance cameras and handheld inspection devices send video streams to the detection program. The algorithm analyzes each frame. It looks for missing protective equipment, work at height without a safety line, hot work without a fire watch, and tote boxes stacked in aisles. When it finds a suspect frame, it crops an image that shows the person, the action, and nearby reference objects. It adds a timestamp and the work-zone location.
+
+The vision algorithm gives each capture a confidence score. In the early phase, while detection rates are still being tuned for a complex site, see <NoteLink slug="ai-visual-inspection-spot-check">Who Owns a Missed Defect in AI Visual Inspection, and How Much Manual Checking Should Stay?</NoteLink>. Strong backlight, rain, fog, or dust on the lens lowers image quality. The program marks those images as low-confidence and reminds the control room to schedule lens cleaning, so noise does not distort back-office analysis.
+
+## Officer verification: filter false alarms and environmental noise
+
+Captured images go to the safety workbench first. They do not become formal penalty notices. A full-time safety officer reviews each flagged clip on screen. The officer opens the record, looks at the still image, and also pulls a short video clip to judge the motion. A worker who takes off a helmet for a short drink in the rest area is compliant. So is a cleaner who carts an extinguisher away for routine maintenance. In those cases the officer rejects the capture in the back office and notes what actually happened.
+
+Entries the officer confirms as real hazards move into the formal workflow. Images judged as false alarms get a label and go into the sample library, where engineers use them to retrain the model. Human verification keeps misjudgments out of the management workflow, so false alarms do not erode the cooperation of site crews.
+
+## Grading and assignment: set priority and name the responsible department
+
+After confirming a hazard, the officer selects a hazard grade in the system and picks the responsible unit. The program suggests a grade based on preset safety rules. Fallen material in a normal aisle is a routine defect. Work at height with no fall protection is a major hazard. When you design execution permissions and responsibility boundaries in business systems, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+After grading, the officer selects the responsible team and its lead, and generates an electronic corrective action notice. The notice records the capture location, a description of the hazard, the basis for the grade, and the deadline. The team lead gets a phone notification right away and acknowledges it. The notice status changes from "pending dispatch" to "in progress".
+
+## On-site fix: the responsible team acts, with an emergency handoff
+
+When the team lead receives the notice, they send crew members to the location. The crew moves boxes out of the aisle, replaces the seals on fire equipment, and reminds workers to wear protective gear correctly. They complete each required action. When the work is done, the assignee stands at the original spot, takes an after photo from the same angle, ticks the resolved items on the terminal, and submits a recheck request.
+
+Some dangers threaten life and health: signs of a pit collapse, a gas leak alarm, a tilting column at height. Workers and officers on site must stop work, evacuate, and respond on the spot. They must not wait for the algorithm to produce an image or for a notice to pass through several approvals. The first rule is to cut off the source of danger on site, immediately.
+
+## Recheck and closure: compare against the site and sign to close
+
+After the responsible department submits its fix report, the system must not close the case from the uploaded photo alone. The safety officer follows the work order and goes back on site with a terminal. The officer stands at the same spot and checks that the hazard is actually gone. A photo taken from a distance can hide things. The officer confirms in person that the aisle is clear and that equipment interlocks are back in place.
+
+When the recheck passes, the officer signs on the handheld terminal, and the notice status changes to "closed". If the recheck finds that the problem was only covered up, or that the cleanup left the same risk in place, the officer marks it as failed on the spot, attaches new photos, and sends it back for rework. At regular safety meetings, the management team pulls the corrective action ledger. They review where frequent hazards occur and which departments they cluster in, and push teams to improve how tools are stored and how work is done.
+
+## AI safety inspection: FAQ
+
+### AI safety inspection often flags shadows or glare as hazards. How can officers avoid review fatigue?
+
+A pile-up of false alarms makes reviewers go numb. First, have engineers extract the times and locations where false alarms cluster, and improve the algorithm's background modeling and glare suppression. In the workflow, the system should silently group low-confidence images instead of sending pop-up alerts to the officer. The officer labels them in batches when free. The workshop can also adjust camera angles, add lens hoods, or change lighting levels to reduce glare at the physical source. This cuts the number of alerts the officer has to answer for nothing.
+
+### What should the site do when the algorithm finds an urgent hazard that could cause a serious accident?
+
+A serious hazard needs a response in seconds. The normal dispatch workflow is too slow. When the system captures an open flame, unauthorized entry into a confined space, or a badly unstable scaffold, it should trigger the on-site audible and visual alarm directly. At the same time, it should place high-priority phone calls to the workshop director and the safety officer on duty. Workers who see the hazard and the shift lead have the authority to sound the alarm, order an evacuation, and cut off gas and power. The crew uses nearby equipment to put out fires or remove the hazard. After the situation is under control, the safety officer enters the record in the system and reviews the cause.
+
+### When contractor crews create hazards, who coordinates the fix?
+
+Contractor staff change often, and the management chain is long. A staff member from the company's contracting engineering department leads the coordination. When AI safety inspection captures a contractor violation, the safety officer verifies it and sends the work order to the contracting engineer and the contractor's site lead. The contractor's on-site safety representative drives the fix. The contracting engineer does a first review, and then the company's safety officer rechecks on site and signs. The contracting department links inspection results to the contractor's performance review under the contract. This holds contractor leads accountable for safety and makes sure fixes get done.
