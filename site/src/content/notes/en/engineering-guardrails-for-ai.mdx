@@ -1,0 +1,107 @@
+---
+title: 'Engineering Guardrails for AI Coding: From Writing Code to Constraining It'
+description: AI coding amplifies the engineering discipline you already have. Five guardrails keep output stable - behavior oracles, types, fast tests, traces, refactors.
+lang: en
+pubDate: 2026-10-23
+category: AI编程
+relatedService: dev-workflow
+author: Baize Tech
+cover: ../media/engineering-guardrails-for-ai-cover.png
+draft: false
+sourceHash: '717b3499ef71'
+---
+
+import amplifierFig from '../media/engineering-guardrails-for-ai-fig-1-en.png'
+import fencesFig from '../media/engineering-guardrails-for-ai-fig-2-en.png'
+
+AI has made writing code cheap and fast. Teams used to compete on how quickly they could write code. Now the gap between teams is whether their systems stay stable, controllable, and maintainable while AI writes a large share of the code.
+
+The bottleneck has moved. Syntax and typing speed no longer limit a team. Four things do: clear architectural intent, rigid system boundaries, fast feedback loops, and disciplined refactoring. Without them, AI produces system bloat, logic drift, noisy tests, and runaway technical debt. It can generate thousands of lines in minutes. It can also push a system into an unmaintainable state in minutes.
+
+<Figure src={amplifierFig} alt="AI output passes through engineering guardrails toward controlled growth; without guardrails it piles up as code sprawl" caption="Figure: Fast AI Output | Guardrails | Controlled Growth | Code Sprawl" width="wide" border />
+
+The developer's role has to change from writing code line by line to designing the system. The main job is to constrain AI's near-unlimited code generation with deterministic engineering guardrails. There are five of them.
+
+## 1. Stop chasing coverage; check behavior against an oracle
+
+Test coverage is losing its value as a quality metric. AI is very good at gaming metrics.
+
+Ask it to raise coverage from 80% to 100% and it will generate a large number of tests for edge branches, low-value exceptions, and error paths that almost never occur. The report looks good. The codebase gets heavier, the test suite gets noisier, and the team has a harder time telling which tests encode important behavior. A typical waste: AI writes careful tests for low-level failures like "the random number generator is broken," which have almost no debugging value. Test files grow, and the tests that cover business boundaries, architectural contracts, and security get buried.
+
+The replacement target is **behavior alignment**: build an executable behavior oracle that defines what correct means.
+
+When refactoring an existing system, the most reliable oracle is the running system itself, not its documentation. Build high-frequency behavior regression tests against the real external dependencies and lock down the key behavior boundaries. One example: run more than a thousand behavior tests against an S3-compatible system to confirm behavior is identical before and after the refactor.
+
+When building a new system, first write a single-threaded "toy version" that is slow but simple and correct. It does not need to be fast or elegant. Its only job is to define correct behavior. Every later concurrency optimization, architecture upgrade, or module split must keep matching that original oracle.
+
+Use executable behavior as the definition of the system. Documents go stale, contain ambiguities, and miss details. A behavior test either passes or fails.
+
+## 2. Move checks the type system can do out of runtime
+
+As code volume grows, runtime problems grow with it, especially in permissions, state transitions, and concurrency safety. These bugs rarely show up as a feature that is plainly wrong. They show up at rare moments in complex contexts. The classic case is TOCTOU (time-of-check to time-of-use): the check passes, but by the time the action runs, the condition has changed. Covering these cases with runtime tests is expensive and leaves gaps.
+
+A more effective approach is to encode the security constraint as a type constraint instead of adding more tests.
+
+For example, in Rust, define an `AuthorizedRequest` type that business code cannot forge, and change every core low-level API to accept only that type instead of a plain request object. An unauthorized call cannot reach the function boundary. The compiler rejects it.
+
+A row of `if` statements that check permissions works differently. The type approach is physical isolation enforced by the compiler. The `if` approach is a reminder that depends on every human and every AI remembering to write the check correctly each time. Once the type system carries the critical paths, many runtime security tests no longer need to be written and maintained, and many vulnerabilities never enter the system.
+
+This approach has the most leverage in strongly, statically typed languages. Rust gets the most out of it. Go and TypeScript in strict mode also benefit a lot. Dynamic languages cannot enforce constraints at the same level and have to rely on more runtime assertions and tests.
+
+## 3. Zero flaky tests and a 2-minute feedback loop
+
+AI-assisted development is efficient only when feedback is fast and results are stable. Once the test suite starts to flake, AI picks up bad habits quickly.
+
+The cause is in the training data. It is full of habits human teams built up over years: a test that fails sometimes is fine, just rerun it; an unstable assertion gets loosened; an inconsistent result gets skipped for now. AI inherits these patterns and amplifies them.
+
+So the team needs a hard rule: **zero flaky tests**. No unstable test stays on the main branch. Once "occasionally fails" is allowed, both AI and people lose trust in the feedback system, and code changes start to rest on intuition instead of deterministic signals.
+
+The second rule is to keep the full test loop **under 2 minutes**. This is a practical threshold. If the full suite runs in 2 minutes, developers and AI can keep a cycle of frequent attempts, fast fixes, and continuous refactoring. They can run many experiments overnight and track down intermittent race conditions quickly. If the suite takes 10 to 20 minutes, team behavior changes: commits get less frequent, AI runs fewer verifications, problems surface later, and the cost of finding them rises fast.
+
+Many teams say they value testing, but their test systems are too slow to support their development pace. These systems break down faster with AI, because AI produces output faster than slow feedback can check it.
+
+Holding the 2-minute line requires strong isolation. Mock slow external IO where possible. Replace network dependencies where possible. Run databases locally where possible. Speed and stability come before production fidelity. A test suite has to be fast and stable before it can constrain AI.
+
+## 4. Without a readable trace, AI debugging is guesswork
+
+Many teams have noticed the same pattern: AI writes code quickly and fixes ordinary bugs quickly, but its quality drops on concurrency bugs, intermittent exceptions, and problems that span long call chains.
+
+The main cause is poor input. If you give it only "this sometimes throws an error" or a vague error log, it does not have enough runtime facts and has to guess. A typical result is that it edits a set of code that looks related but is not the cause. The bug stays, and new technical debt comes in.
+
+A better prompt will not fix this. An engineering fix will: build a lightweight trace mechanism early.
+
+This does not mean a large, expensive observability platform that only production systems can justify. It means a diagnostic tool that works during development and captures the key event chain quickly. At minimum it should record key events, timestamps, state changes, lock contention, and request paths.
+
+When a rare failure happens, you give the AI a complete runtime trace instead of an error description. With a trace, the AI works differently. It does not guess where the problem might be. It follows the event chain: which state changed first, which lock was acquired late, which step was not synchronized, which retry pushed the system into a bad state. Debugging moves from trial and error on a black box to reasoning along a recorded path. In this scenario AI can locate problems much faster than a human, provided the trace exists first.
+
+Keep the trace lean. Heavy collection overhead changes system behavior, especially during performance and high-concurrency testing. Record only the minimum information needed to support causal inference.
+
+## 5. Large refactors become routine; behavior boundaries stay fixed
+
+With the cost of generating code this low, refactoring stops being a quarterly project and becomes a frequent activity.
+
+Many teams used to avoid large refactors even when they knew where the problems were. They could not afford the changes, the testing, or the regression checks. AI lowers the cost of all three. Once behavior boundaries are locked, code that nobody dared touch can be split, replaced, and verified quickly.
+
+This produces a new normal: adding and deleting more than 100,000 lines in a week, breaking a single file of tens of thousands of lines into modules, replacing an entire abstraction layer, unifying interface boundaries. These will become common. Humans set direction, constraints, and acceptance criteria. AI does the high-volume execution.
+
+The discipline is one rule: **change the structure as much as needed, but do not break the behavior oracle**. As long as behavior tests do not regress and core contracts hold, a large refactor is healthy evolution. An AI-driven large refactor without an oracle behind it goes out of control easily. The changes look fast while the system drifts away from its original, correct logic.
+
+On top of this, AI can add a layer of static auditing. It is well suited to structured review at the merge-request level, and it catches blind spots that recur in human review: missing boundary validation, inconsistent permission paths, dangerous defaults, incomplete error propagation, and asymmetric resource release. It does not replace a senior engineer's judgment, but it can handle the first, high-frequency security screen, catch a meaningful share of real issues early, and cut a lot of rework later.
+
+<Figure src={fencesFig} alt="Five engineering guardrails, Behavior Oracle, Type Fence, Zero Flaky Tests, Runtime Trace, and Bounded Refactor, surround AI code generation" caption="Figure: Behavior Oracle | Type Fence | Zero Flaky Tests | Runtime Trace | Bounded Refactor | AI Code Gen" width="wide" border />
+
+## The work has moved from writing code to constraining code
+
+AI does not make systems stable on its own. It amplifies the engineering system you already have. Clear system boundaries get amplified into efficiency. Loose engineering discipline gets amplified into chaos.
+
+With AI, the engineering goal is to keep a growing volume of code under control. Five methods:
+
+- Use executable behavior oracles instead of coverage numbers that look good and measure little.
+- Use static types for physical isolation, and move security constraints to compile time.
+- Use zero flaky tests and a 2-minute feedback loop so AI always works in a high-quality loop.
+- Use lightweight traces so debugging rests on runtime facts instead of guesses.
+- Refactor often to keep the system clean, without letting any change break behavior boundaries.
+
+Prompts do not produce stability. System constraints do. Teams that build these constraints first can absorb the development throughput AI brings. Teams that stop at "have AI write more code" will hit system complexity sooner.
+
+Baize Tech designs these guardrails for clients: behavior boundaries, type contracts, feedback loops, diagnostic traces, and refactoring discipline, so that AI throughput lands in a controlled structure instead of becoming the next round of technical debt.
