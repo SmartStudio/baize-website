@@ -6,6 +6,7 @@ import BaseLayout from './BaseLayout.astro';
 import RelatedNotes from '../components/notes/RelatedNotes.astro';
 import { categoryLabel } from '../lib/notes';
 import { localePath, withBase } from '../lib/i18n';
+import { orgRef } from '../lib/organization';
 
 interface Props {
   title: string;
@@ -78,12 +79,6 @@ const ogAsset = cover ? await getImage({ src: cover, width: 1200, format: 'jpeg'
 const ogImage = ogAsset ? '/' + ogAsset.src.slice(base.length) : undefined;
 const ogImageAbs = ogImage ? new URL(ogImage, site).href : undefined;
 
-const publisher = {
-  '@type': 'Organization',
-  name: '白泽明理',
-  logo: { '@type': 'ImageObject', url: new URL('/og-default.png', site).href },
-};
-
 const blogLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -94,8 +89,8 @@ const blogLd = {
   datePublished: pubDate.toISOString(),
   // Google 建议 dateModified 始终存在;没改过就等于发布时间。
   dateModified: (updatedDate ?? pubDate).toISOString(),
-  author: { '@type': 'Organization', name: author },
-  publisher,
+  author: { '@type': 'Organization', name: author, url: new URL(homePath, site).href },
+  publisher: orgRef(lang),
   // 没有 image 就拿不到文章富媒体的大图卡片,只会是纯文字结果。
   ...(ogImageAbs ? { image: [ogImageAbs] } : {}),
   articleSection: displayCategory,
@@ -130,14 +125,15 @@ const howToLd = howto
 
 const jsonLd = [blogLd, breadcrumbLd, ...(howToLd ? [howToLd] : [])];
 
-const SERVICE_CTA: Record<string, string> = {
-  services: '五项工程服务总览',
-  'dev-workflow': 'AI 研发流设计',
-  'loop-engineering': 'Loop Engineering 设计',
-  delivery: '想法到产品端到端交付设计',
-  gateway: 'LLM API 网关设计',
+// relatedService 比现行四项服务分得细,这里把它映射到服务页对应服务的锚点。
+const SERVICE_CTA: Record<string, { label: string; anchor: string }> = {
+  consulting: { label: 'AI 转型咨询', anchor: '#consulting' },
+  'dev-workflow': { label: 'AI 研发流设计', anchor: '#fde' },
+  'loop-engineering': { label: 'Loop Engineering 设计', anchor: '#fde' },
+  delivery: { label: '想法到产品端到端交付', anchor: '#fde' },
+  gateway: { label: 'LLM API 网关设计', anchor: '#tools' },
 };
-const serviceLabel = (relatedService && SERVICE_CTA[relatedService]) || '五项工程服务';
+const serviceCta = (relatedService && SERVICE_CTA[relatedService]) || { label: 'AI 工作流', anchor: '' };
 const isApiArticle = isEnglish && ctaVariant === 'api';
 const cta = isApiArticle
   ? {
@@ -161,12 +157,12 @@ const cta = isApiArticle
       }
     : {
         eyebrow: '下一步',
-        title: `想把「${serviceLabel}」落到你的团队？`,
-        body: '白泽明理提供设计、规范、蓝图与指导，不下场代做，帮你把这条路径走稳。',
+        title: `想把「${serviceCta.label}」落到你的团队？`,
+        body: '白泽明理提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持四项服务。先用 30 分钟免费诊断，找出第一条该改的流程。',
         primaryLabel: '预约咨询',
         primaryHref: `${base}contact/`,
         secondaryLabel: '查看服务详情',
-        secondaryHref: `${base}services/`,
+        secondaryHref: `${base}services/${serviceCta.anchor}`,
       };
 ---
 <BaseLayout
@@ -208,7 +204,7 @@ const cta = isApiArticle
     {cover && (
       <div class="bz-art__wide">
         <figure class="bz-art__cover">
-          <Image src={cover} alt={coverAlt ?? title} class="bz-art__cover-img" widths={[760, 1120, 1680]} sizes="(max-width: 1184px) 100vw, 1120px" loading="eager" />
+          <Image src={cover} alt={coverAlt ?? title} class="bz-art__cover-img" widths={[760, 1120, 1680]} sizes="(max-width: 1184px) 100vw, 1120px" loading="eager" fetchpriority="high" />
         </figure>
       </div>
     )}

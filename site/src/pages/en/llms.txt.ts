@@ -22,12 +22,14 @@ const PAGES: Array<[string, string, string]> = [
   ['/en/services/', 'Services', 'Consulting, training, forward deployed engineering, and tools: scope and deliverables'],
   ['/en/method/', 'Method', 'How an engagement runs, from diagnosis to rollout'],
   ['/en/about/', 'About', 'The team and the Formal eXplainable AI working standard'],
+  ['/en/notes/', 'Notes', 'Notes on putting AI to work in real teams, filterable by topic'],
   ['/en/contact/', 'Contact', 'Book a call by email or the contact form'],
 ];
 
 const EXTRAS: Array<[string, string, string]> = [
   ['/en/rss.xml', 'RSS feed', 'Updates to the English notes'],
   ['/sitemap-index.xml', 'Sitemap', 'Index of every crawlable page'],
+  ['/llms.txt', 'Chinese site', 'Chinese index, with every note in Chinese'],
 ];
 
 export const GET: APIRoute = async ({ site }) => {

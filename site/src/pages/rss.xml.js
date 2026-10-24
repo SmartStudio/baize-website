@@ -10,8 +10,9 @@ export async function GET(context) {
 
   return rss({
     title: '明理笔记 · 白泽明理',
-    description: '白泽明理关于 AI 接入、工程与落地的笔记。',
+    description: '白泽明理关于企业 AI 转型的笔记。',
     site: context.site,
+    customData: '<language>zh-cn</language>',
     items: notes.map((n) => ({
       title: n.data.title,
       description: n.data.description,

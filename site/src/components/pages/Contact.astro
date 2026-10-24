@@ -8,6 +8,7 @@ import ContactForm from '../ContactForm.astro';
 import qr from '../../assets/wechat-qr.png';
 import { localePath, type Lang } from '../../lib/i18n';
 import type { ContactCopy } from '../../i18n/contact';
+import { orgRef } from '../../lib/organization';
 
 interface Props {
   lang: Lang;
@@ -17,11 +18,22 @@ interface Props {
 }
 
 const { lang, copy: t, alternates, switchPath } = Astro.props;
+const path = localePath('/contact/', lang);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: t.title,
+  description: t.description,
+  url: new URL(path, import.meta.env.SITE).href,
+  inLanguage: lang,
+  about: orgRef(lang),
+};
 ---
 <BaseLayout
   title={t.title}
   description={t.description}
-  path={localePath('/contact/', lang)}
+  path={path}
+  jsonLd={jsonLd}
   lang={lang}
   alternates={alternates}
   switchPath={switchPath}

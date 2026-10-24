@@ -15,3 +15,6 @@
 
 /og-default.png
   Cache-Control: public, max-age=2592000
+
+/og-default-en.png
+  Cache-Control: public, max-age=2592000
