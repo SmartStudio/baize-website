@@ -1,0 +1,102 @@
+---
+title: What Is AEO, and How Is It Different from Search Ranking?
+description: A top search ranking does not mean AI Overviews, ChatGPT, or Perplexity will cite you. AEO tracks citations in AI answers. The missing step is the answer block.
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/what-is-aeo-vs-search-ranking-cover.png
+coverAlt: "Search ranking versus a cited answer block: a high ranking does not mean an answer engine will cite you"
+howto:
+  name: Audit citations first, then fix answer blocks
+  steps:
+    - name: Map current citations
+      text: Run 10–20 real customer questions through Google AI Overviews, ChatGPT, and Perplexity. Record whether your brand appears, which URLs are cited, and which competitor claims are quoted.
+    - name: Add a short answer to each page
+      text: On pages that rank but never appear in AI answers, add a 40–60 word extractable answer under the H1 or an H2, followed by the supporting evidence.
+    - name: Accept the work by citations
+      text: Two weeks after the changes, rerun the same questions. Track ranking changes and AI answer citations separately.
+sourceHash: '0efb406cf712'
+---
+
+A page can rank in the top few search results and still be missing from the answer when a user asks ChatGPT or Perplexity, or when Google shows an AI Overview. A high ranking does not mean a model will cite the page. AEO (Answer Engine Optimization) tracks one thing: whether the answer an AI gives links to your page or mentions your brand. Standard SEO is still the foundation. A page has to be crawlable and indexed first. Once that foundation is in place, one step remains: the page needs an answer block that a model can lift and cite directly. This note only touches on zero-click search. A later note will cover it in detail.
+
+import noteFig from '../media/what-is-aeo-vs-search-ranking-fig-en.png'
+
+<Figure src={noteFig} alt="Search ranking versus a cited answer block: ranked results on the left, an extractable short answer cited by an answer engine on the right" caption="Figure: Search Ranking | Answer Block Cited" width="wide" border />
+
+## What is AEO?
+
+AEO means writing content that is clear and easy to extract, so that AI answer engines cite your page, link to it, or mention your brand when they generate a response. Common answer engines include Google AI Overviews and AI Mode, ChatGPT, Perplexity, and Gemini.
+
+HubSpot's definition is direct: AEO is about getting content selected for AI-generated direct answers. Traditional SEO competes for rankings and clicks on the results page. AEO competes for citation slots and brand mentions inside the answer text. Contently's 2026 guide makes the same point: the target has moved from the ten blue links to the paragraph a model generates and the source labels attached to it.
+
+Google Search Central's guidance for site owners is more practical. AI Overviews and AI Mode have no extra code requirements, and there is no special "AI Overview schema." To be eligible for these features, a page still needs to be indexed, allowed to show a snippet, and compliant with standard SEO practices. The industry often treats AEO or GEO as a new discipline. Google Search Central's 2026 guide states plainly that optimizing for generative AI search experiences is still standard SEO.
+
+In practice, do not split these into two competing projects. SEO covers whether a page can be crawled, indexed, and ranked on the results page. AEO covers citation rate and extraction quality inside model answers. If the SEO foundation is weak, the page never enters the model's candidate pool.
+
+## What is missing after you rank: the answer block
+
+The missing step is an extractable answer block.
+
+When an AI answer engine reads a page, it prefers short passages that answer a question on their own: 40–60 words that state the core answer up front, followed by evidence, data, and limits. HubSpot's optimization advice follows the same order: give the conclusion first, then the evidence. If the main conclusion sits three screens down, the subheadings are indirect, or key facts are scattered through a long story, a human reader may keep scrolling. A model usually skips the page.
+
+Industry data shows rankings and AI citations drifting apart. According to public figures compiled by Leapd: in mid-2025, about 76% of the sources cited in Google AI Overviews also ranked in the top 10 organic results for the same query. By early 2026, Ahrefs measured that overlap at about 38%, and one BrightEdge dataset put it near 17%. The exact numbers vary with the test sample, but the trend is the same: a top ranking no longer guarantees an AI source slot. In standalone products such as ChatGPT and Perplexity, cited links overlap even less with Google's organic top 10. A top ranking only meets the entry requirement.
+
+A usable answer block usually meets these five criteria:
+
+- **One question, one answer**: Write the section heading as the question users search for. The first sentence under it gives a clear answer.
+- **Self-contained**: The passage makes sense when lifted out of context. Define proper nouns on first use.
+- **Verifiable**: Cite sources or update dates for key data, business definitions, and procedures. Avoid claims you cannot back up.
+- **Clear formatting**: Use tables for parameter comparisons and numbered lists for processes. Do not put a core conclusion only in an image. It needs matching text.
+- **One fact per paragraph**: Each paragraph covers one core fact in short sentences, so a model can quote it directly.
+
+A page that ranks but has no structured answer block can still serve human readers, but a model cannot find a short passage worth citing. Citation odds improve when the answer blocks are well structured and the SEO foundation is solid.
+
+## How to apply it: audit citations first, then fix answer blocks
+
+This does not need a formal project. Spend one week reworking your key existing pages so models can extract from them.
+
+**1. Map your current citations**
+
+Pick 10 to 20 real customer questions. Ask each one in Google (check whether an AI Overview appears), ChatGPT, and Perplexity. Record three things: whether the AI response mentions your brand or product, which specific URL it cites, and which competitor claims it quotes. Google Search Console only reports traffic from Google Search. It cannot measure citations in other AI engines, so this check needs manual sampling or a third-party monitoring tool.
+
+**2. Add short answers to key pages**
+
+On pages that already rank organically but have never been cited by AI, add a 40–60 word direct answer below the H1 or at the start of key H2 sections, followed by the supporting evidence. Cut promotional lines like "We are an industry-leading..." Write factual sentences a model can quote directly: what X is, where it applies, and the specific steps. Put comparison data in tables and processes in lists.
+
+**3. Update the substance**
+
+Industry monitoring shows that pages with substantive updates in the past year are cited noticeably more often. Correct outdated numbers, update procedures, and refresh the applicable rules. Changing the footer year to 2026 by itself has no effect.
+
+**4. Accept the work by citation data**
+
+Two weeks after the update goes live, rerun the original set of questions. Check three metrics: total citations, whether the brand description is accurate, and whether models still cite old data. Record ranking changes separately from AI citation rate. An organic search report does not substitute for AEO acceptance.
+
+If your team already uses agents to generate content at scale, make "every section opens with a short answer" a fixed rule. See <NoteLink slug="engineering-guardrails-for-ai">Software Engineering in the AI-Native Era: From Writing Code to Constraining Code</NoteLink>. If your source material is still scattered across personal accounts and private chat windows, consolidate it under shared rules first. See <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink> and <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>.
+
+## What is AEO: FAQ
+
+### What exactly does AEO optimize?
+
+It optimizes whether AI answer engines select, cite, and mention your page content when they generate a response. The core acceptance metrics are total citations, accuracy of brand mentions, and visibility rate for priority questions. AEO does not replace indexing and ranking. It adds clear, extractable, verifiable answer blocks to the pages you already have.
+
+### Why does a page that ranks still not get cited in AI answers?
+
+The most common reason is that the page has no short answer a model can extract directly: the conclusion comes too late, the wording is vague, key information appears only in images, or the data has not been updated in a long time. In Google's system, the page must also meet the prerequisites of being indexed and eligible to show a snippet. A high ranking shows the page is relevant to the query. To be cited by AI, the model also has to find a complete, standalone sentence in the body text that it can use as evidence.
+
+### How do AEO and SEO relate? Should we stop doing SEO?
+
+Do not stop. SEO covers crawling, indexing, domain authority, and results-page ranking, which is the underlying basis most AI answer engines use to pick sources. AEO builds on SEO to raise citations and brand mentions in AI-generated answers. Google Search Central's 2026 guide states that, from Google Search's perspective, optimizing for generative AI search experiences is still standard SEO. Site owners do not need AEO hacks such as chunking or a dedicated llms.txt file. Maintain one set of high-quality pages: build rankings on the foundation, and write answer blocks in the body that models can extract easily.
+
+## Sources
+
+1. [Google Search Central, "Optimizing your website for generative AI features on Google Search"](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
+2. [Google Search Central, "AI features and your website"](https://developers.google.com/search/docs/appearance/ai-features)
+3. [HubSpot Glossary, "AEO (Answer Engine Optimization)"](https://www.hubspot.com/glossary/aeo-answer-engine-optimization)
+4. [Contently, "What Is Answer Engine Optimization (AEO)? A 2026 Definition Guide"](https://contently.com/2026/02/03/what-is-aeo-answer-engine-optimization/)
+5. [HubSpot Blog, "How to optimize for AI overviews (AIOs): A complete 2026 playbook"](https://blog.hubspot.com/marketing/optimize-for-ai-overviews)
+6. [Leapd, "How ChatGPT, Google AI Overviews, and Perplexity Source Information in 2026"](https://www.leapd.ai/blog/ai-visibility/how-chatgpt-google-ai-overviews-and-perplexity-source-information-in-2026)
