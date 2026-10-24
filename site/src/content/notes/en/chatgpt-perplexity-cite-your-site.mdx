@@ -1,0 +1,82 @@
+---
+title: How to Get ChatGPT and Perplexity to Cite Your Website
+description: To get cited by ChatGPT and Perplexity, allow OAI-SearchBot, PerplexityBot, and Perplexity-User, then give key pages a short answer that crawlers can extract.
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/chatgpt-perplexity-cite-your-site-cover.png
+coverAlt: A small robot rolls toward an open gate next to an answer panel with orange accents and a location pin
+howto:
+  name: Check citation readiness in three steps over one week
+  steps:
+    - name: Check robots.txt and the WAF
+      text: Allow OAI-SearchBot, PerplexityBot, and Perplexity-User. To opt out of training only, block GPTBot on its own.
+    - name: Rework 3 to 5 core pages
+      text: Add a 40- to 60-word answer under the H1, put specs in tables, and confirm curl returns the full HTML without logging in.
+    - name: Measure citation rate with real questions
+      text: Wait at least 24 hours after the changes, test 10 to 20 real questions in ChatGPT and Perplexity, then retest two weeks later and compare.
+sourceHash: '580befee1492'
+---
+
+import noteFig from '../media/chatgpt-perplexity-cite-your-site-fig-en.png'
+
+To get ChatGPT or Perplexity to cite your website in their answers, check crawler access first, then page text. OpenAI documents two separate crawlers: OAI-SearchBot, which powers citations in ChatGPT search, and GPTBot, which collects data for model training. Perplexity uses PerplexityBot to build the links shown in answers and Perplexity-User to fetch pages live when a user asks a question. Each company says robots.txt changes take about 24 hours to apply. The model also needs text to extract: crawlers must be able to read the full body of the page, and the page should give a direct answer of 40 to 60 words right under the H1.
+
+<Figure src={noteFig} alt="Two models: an open gate labeled Allow Search Bots and an answer board with a check mark labeled Citable Answers" caption="Figure: Allow Search Bots | Citable Answers" width="wide" border />
+
+## Allow both companies' search crawlers
+
+Many sites block training crawlers by adding `User-agent: GPTBot` and `Disallow: /` to robots.txt.
+
+According to OpenAI's developer documentation, GPTBot crawls public web pages to train foundation models. The crawler that cites pages in ChatGPT search results and answers is OAI-SearchBot. The two crawlers are independent. Blocking GPTBot does not remove a site from ChatGPT search citations. If robots.txt blocks OAI-SearchBot, the site's pages will not appear as sources in ChatGPT search answers; they can still appear as plain navigational links. OpenAI publishes the crawler's IP ranges in searchbot.json. robots.txt changes take about 24 hours to apply.
+
+Perplexity's documentation splits the work the same way. PerplexityBot indexes pages and surfaces results and links in answers; it is not used to train foundation models. Perplexity-User fetches page content live when a user asks a question directly. Both companies say rule changes take about 24 hours to apply. If the site sits behind a CDN or WAF, the firewall may block these crawlers by mistake. Allowlist them using the IP JSON files each company publishes.
+
+Google Search Central gives different guidance for AI Overviews and similar features. Google has no separate AI crawler and no dedicated schema. If regular Googlebot can crawl and index the page and the text follows standard SEO practice, nothing else is required. ChatGPT and Perplexity each require their own search crawler to be allowed at the server and firewall level. Setting up llms.txt at the site root will be covered in a separate note.
+
+## Give pages text that can be extracted directly
+
+Once crawlers are allowed, whether a model cites a page depends on how the text is structured.
+
+1. **Write key conclusions as plain text.** Do not publish specs, prices, or core steps as images only. Crawlers cannot read details inside an image, and a model cannot quote an image as text evidence in an answer.
+2. **Remove unconditional login walls and CAPTCHAs.** If a page forces a redirect to a login screen or shows a CAPTCHA to automated requests, OAI-SearchBot and Perplexity-User only see the block page and never reach the body.
+3. **Put a short answer directly under each heading.** Following the answer-block guidance in <NoteLink slug="what-is-aeo-vs-search-ranking">What Is AEO, and How Is It Different from Search Ranking?</NoteLink>, write a 40- to 60-word factual statement directly under the H1 or H2, then give the publish date, source, or test environment. Each page should answer one clearly defined question.
+
+If your team publishes content with automation scripts, make a short answer under every heading a required rule; see <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>. If the facts you draw on are scattered across many places, set up a single process for collecting them first; see <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>.
+
+## How to use it: a three-step check over one week
+
+A site owner can work through the citation requirements in three steps within a week.
+
+**Step 1: Check robots.txt and WAF rules**
+Open robots.txt at the site root and confirm it explicitly allows `OAI-SearchBot`, `PerplexityBot`, and `Perplexity-User`. To keep original data out of model training, a single `User-agent: GPTBot` block with `Disallow: /` is enough. Review the CDN or firewall block logs and confirm that neither company's published IPs are being blocked.
+
+**Step 2: Rework the body text of 3 to 5 core pages**
+Pick 3 to 5 product or technical pages that answer a clear question. Check whether each has a direct answer under the H1. List core specs in a table, number the steps, and add an updated date. Confirm that the full HTML text loads in a browser incognito window or through curl without logging in.
+
+**Step 3: Run a baseline test with 10 to 20 questions**
+Wait at least 24 hours after changing the configuration. Collect 10 to 20 real questions from customers and enter each one into ChatGPT and Perplexity with search turned on. Record whether your page link appears in each answer and calculate the current citation rate. Two weeks later, run the exact same questions again, record the results, and compare.
+
+## Getting ChatGPT to cite your website: FAQ
+
+### How do I get ChatGPT to cite my website?
+
+First, allow `OAI-SearchBot` in robots.txt and allow its published IP ranges in your WAF. Second, make sure the full page text can be crawled without logging in. Third, put a 40- to 60-word direct answer with an updated date under the H1 so the system can extract a complete fact.
+
+### If I block GPTBot, will ChatGPT still cite my site?
+
+Yes. According to OpenAI's documentation, GPTBot only crawls pages for model training. OAI-SearchBot is the crawler used for ChatGPT search citations. Blocking GPTBot does not affect whether your site appears as a ChatGPT search source. Only blocking OAI-SearchBot removes it from ChatGPT search answers.
+
+### How do I measure citation rate?
+
+Collect 10 to 20 customer questions related to your business and enter them into ChatGPT and Perplexity with search turned on. Count the questions whose answers include a link to your site and divide by the total number of questions. That gives the baseline citation rate for this question set. Two weeks after changing robots.txt and the answer text, run the same question set again and compare.
+
+## Sources
+
+1. [OpenAI Developers, "Overview of OpenAI Crawlers"](https://platform.openai.com/docs/bots)
+2. [Perplexity Docs, "Perplexity Crawlers"](https://docs.perplexity.ai/guides/bots)
+3. [Google Search Central, "AI features and your website"](https://developers.google.com/search/docs/appearance/ai-features)

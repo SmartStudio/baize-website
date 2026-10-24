@@ -1,0 +1,81 @@
+---
+title: "Robot Imitation Learning: Who Still Writes the Motion Script?"
+description: BeyondMimic tracks human motion on a real humanoid, from cartwheels to sprints. Waypoints, joystick control, and obstacle avoidance still need human-written costs.
+lang: en
+pubDate: 2026-10-23
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/robot-video-imitation-vs-motion-script-cover.png
+coverAlt: Glass panels of human walking poses feed a humanoid robot; a hand sets orange keyframe markers above a board where a second robot follows a waypoint path
+howto:
+  name: Lock the reference and the costs before calling a motion learned
+  steps:
+    - name: Fix the reference first
+      text: Fix the robot model, the reference motion set, and the tracking success criteria before expanding to more skills.
+    - name: Write the costs next
+      text: For downstream tasks, write checkable costs first (distance to target, collision clearance, keyframe spacing), then turn on guidance.
+    - name: Close out on hardware
+      text: Deploy to the real robot only clips that already pass in simulation and in short-range field tests. Handle long-horizon planning in a separate layer; do not expect a 0.64-second prediction window to cover it.
+sourceHash: '78837514b03f'
+---
+
+import noteFig from '../media/robot-video-imitation-vs-motion-script-fig-en.png'
+
+Demos show a humanoid robot doing cartwheels, sprints, and back-to-back spin kicks. A common question follows: does anyone still need to write motion scripts? BeyondMimic ([arXiv:2508.08241](https://arxiv.org/abs/2508.08241), project page [beyondmimic.github.io](https://beyondmimic.github.io/)) splits the pipeline into two stages. Stage one uses reinforcement learning for motion tracking, which transfers human reference motions to the real robot. Stage two uses latent diffusion with classifier guidance, so simple cost functions can compose downstream tasks at test time. Imitation can teach a robot dynamic motions. When the task changes, a person still has to define the goal and the cost.
+
+<Figure src={noteFig} alt="Left: reference motion tracking runs stably on a humanoid robot. Right: a person writes cost functions or keyframes for downstream tasks." caption="Figure: Learned Motion | Who Writes Scripts" width="wide" border />
+
+## Imitation first makes the motion stable
+
+The open-source motion tracking code is at [HybridRobotics/whole_body_tracking](https://github.com/HybridRobotics/whole_body_tracking). One MDP and one set of hyperparameters can train many dynamic skills, with no per-motion tuning. The paper states that about 2.5 hours of human motion data were used for training. About 30 representative motions were validated on the real robot, including single-leg balance, aerial cartwheels, sprints, dances, and sports poses. The tracking target is the reference motion's relative body pose. Global drift is allowed, which eases sim-to-real transfer.
+
+The input to the tracking stage is still a human motion reference: a kinematic sequence retargeted to the robot. The system does not watch a short video and produce a production-ready policy. A person still sets the recipe: where the reference comes from, which body links to track, and how termination conditions are set.
+
+## Downstream tasks rely on test-time guidance
+
+Stage two distills many tracking policies into one latent diffusion model. At test time, guidance takes a differentiable cost supplied by a person. Examples: velocity or joystick commands, waypoints, SDF-based obstacle avoidance, or future keyframes injected at 0.2-second intervals for motion inpainting. The paper demonstrates joystick teleoperation, waypoint navigation, obstacle avoidance, and a sequence that goes from walking into a cartwheel and back to walking. It claims no retraining is needed for each new task.
+
+The person no longer writes a full time series of joint angles. The person writes task costs and keyframes. If the cost or the keyframes are wrong, the robot follows the wrong goal. The paper lists its own limits: the prediction horizon is about 0.64 seconds; coarse goals work well and fine-grained goals work less well; the start and end phases are less stable under guidance; guidance weights still need light tuning.
+
+## What humans still write in the motion script
+
+- Reference motion: which human motion to capture or select, and how to retarget it to the target robot.
+- Task layer: velocity and waypoints, the obstacle field, the keyframe schedule. These are the goals composed at test time.
+- Close-out: guidance weights, safety and termination conditions, and whether real-robot latency and state estimation are stable enough.
+
+For a design-first workflow, see <NoteLink slug="design-first-ai-dev-workflow">How Should a Small Team Design Its First AI Coding Workflow?</NoteLink>. For the split between orchestrating and editing files yourself, see <NoteLink slug="from-coder-to-orchestrator">From Coder to Agent Orchestrator: How AI Changes a Developer's Job</NoteLink>. For engineering guardrails, see <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>.
+
+## How to use it: lock the reference and the costs before calling a motion learned
+
+- Fix the robot model, the reference motion set, and the tracking success criteria before expanding to more skills.
+- For downstream tasks, write checkable costs first (distance to target, collision clearance, keyframe spacing), then turn on guidance.
+- Deploy to the real robot only clips that already pass in simulation and in short-range field tests. Handle long-horizon planning in a separate layer; do not expect a 0.64-second prediction window to cover it.
+
+```text
+Your job: train or load a tracking policy from the selected human reference motions. Downstream tasks accept only explicit costs or a keyframe table.
+When done, show me: the reference motion source and retargeting notes, the list of cost function terms, the guidance weights, and whether simulation and the real robot use the same recipe.
+Do not: treat a demo video as a production-ready motion script; claim "task adaptation complete" without obstacle avoidance or termination conditions; push unverified long-horizon goals into short-horizon guidance.
+```
+
+## Robot video imitation: FAQ
+
+### If a robot learns from imitation, do we stop writing motion scripts?
+
+The robot can learn the reference motion. The task layer still has to be specified separately. BeyondMimic's tracking still needs a human reference. To change waypoints, teleoperate, or avoid obstacles, a person still supplies costs or keyframes. The script moves up from per-frame joint angles to a reference plus task costs.
+
+### Can the open-source pipeline go straight to production?
+
+The open-source tracking repository and the project page provide a reproducible recipe and real-robot demo clips. Production also needs robot calibration, latency handling, state estimation, and on-site safety procedures. The paper lists limits too: a short horizon, weak fine-grained goals, and less stable transitions. Add acceptance tests on site to cover them.
+
+### What does "motion script" mean here?
+
+Here the motion script covers three things: which reference motions to use, which costs or keyframes to compose at test time, and how guidance and safety boundaries are closed out. You may no longer hand-write joint angles for every frame. If the boundaries are unclear, a learned motion still cannot be reused for a new task.
+
+## Sources
+
+1. [BeyondMimic project page](https://beyondmimic.github.io/)
+2. [arXiv:2508.08241 BeyondMimic: From Motion Tracking to Versatile Humanoid Control via Guided Diffusion](https://arxiv.org/abs/2508.08241)
+3. [Open-source motion tracking: HybridRobotics/whole_body_tracking](https://github.com/HybridRobotics/whole_body_tracking)
