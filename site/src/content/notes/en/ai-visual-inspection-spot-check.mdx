@@ -11,7 +11,7 @@ author: Baize Tech
 cover: ../media/ai-visual-inspection-spot-check-cover.png
 coverAlt: A camera on a dark green gantry casts a green beam onto metal discs on a conveyor; one disc is pushed into a side chute, next to a green-rimmed magnifying glass
 draft: false
-sourceHash: 'd147cb637f2b'
+sourceHash: '2fcf0a4d18fe'
 ---
 
 import noteFig from '../media/ai-visual-inspection-spot-check-fig-en.png'
@@ -32,6 +32,8 @@ When the model finds a scratch over the limit, or the confidence score falls in 
 
 After the program's verdict, a sorting cylinder pushes the part into the recheck bin so it cannot mix with good parts. When the position sensor confirms the push, the inspection station screen shows the pending list and the reviewer takes over.
 
+For whether to stop the line when process data shows an anomaly, see <NoteLink slug="spc-anomaly-ai-line-stop">AI Flags an SPC Anomaly: Who Decides Whether to Stop the Line?</NoteLink>.
+
 ## Human Review: an inspector checks real defect versus false alarm
 
 The inspector scans the part's barcode at the recheck station. The screen shows the raw capture and the marks. The inspector looks at the physical part, by eye or under a magnifier, and checks whether the scratch depth and area meet the defect standard. If the part is defective, the inspector picks a defect code and puts it in the reject bin. If the flag came from dust or glare, the inspector clears it as a false positive in the system and returns the part to the good-parts lane. For how other automated decision systems set up human review, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
@@ -47,6 +49,8 @@ The quality engineer looks up the part's serial number and retrieves the camera 
 - The system flagged the part and sent it to the review queue, and an inspector released it by mistake. Responsibility sits with the human reviewer.
 
 The quality manager brings the line, equipment, and algorithm teams together to review the records and assigns responsibility from the facts. Misses are not dumped on frontline workers or suppliers by default. The conclusions go into the quality analysis report and drive process fixes and model tuning.
+
+For how repair know-how gets into work orders when AI diagnoses equipment faults first, see <NoteLink slug="maintenance-work-order-ai-diagnosis">AI Equipment Fault Diagnosis: Getting Veteran Technicians' Know-How into Work Orders</NoteLink>.
 
 ## Feed Back Samples: rerun the evaluation on missed and false-alarm images
 

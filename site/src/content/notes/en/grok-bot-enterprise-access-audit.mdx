@@ -20,7 +20,7 @@ howto:
       text: Turn on Enforce Auto-review and add team Ask first rules for outbound email, payments, production deploys, and accepting legal terms. Configure Network Controls. Set Execution on Local Computer to Never allow.
     - name: Define the audit scope
       text: The Audit Log covers control-plane changes and can be filtered by grok_bot and streamed to a SIEM. Tool actions need Action Recording, exported over OpenTelemetry.
-sourceHash: '8a60d98b0d68'
+sourceHash: '0aff1a240c9d'
 ---
 
 import noteFig from '../media/grok-bot-enterprise-access-audit-fig-en.png'
@@ -89,6 +89,8 @@ Records which tool actions the Bot took: redacted shell commands, connector call
 
 To see who changed permissions, who created a Bot, or who connected an MCP server, check the Audit Log.
 To see which tools a Bot called during a given task, turn on Action Recording first, then export over OpenTelemetry.
+
+For brand monitoring with the Bot after rollout, including what the daily digest covers and when to call a person, see <NoteLink slug="grok-bot-x-brand-monitoring-digest">Brand Monitoring on X with Grok Bot: What the Daily Digest Should Say and When to Escalate</NoteLink>.
 
 ## Grok Bot enterprise access: FAQ
 

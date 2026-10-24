@@ -20,7 +20,7 @@ howto:
       text: 'Before ingestion, complete four items: sensitivity classification, a single version of each document, sign-off from a business owner, and freshness rules.'
     - name: Fine-tune after retrieval passes
       text: After retrieval passes acceptance, scope vertical fine-tuning (tone and format) as a separate project, and state in writing that the model is not the source of truth for facts.
-sourceHash: 'f09b66503e10'
+sourceHash: '7342d5c9e17d'
 ---
 
 A common request in procurement meetings: we want a vertical industry model, so we will fine-tune it on our own data first. When prices, policies, and product specs change every week, the "industry knowledge" written into the weights goes stale fast, and every correction means another training run. The more common order in practice: connect the enterprise knowledge base for retrieval-augmented generation (RAG) first, then decide whether to fine-tune for tone and task format.
@@ -54,6 +54,8 @@ Once the knowledge base answers factual questions reliably, teams usually fine-t
 - Raise task success rates on top of retrieval results, without replacing retrieval
 
 The training set still needs versioning and de-identification. Fine-tuning does not resolve permissions or conflicting documents. If training ends and workflows stay the same, both the model and the knowledge base sit unused; see <NoteLink slug="all-hands-ai-training-workflow-unchanged">Company-Wide AI Training Is Done. Why Haven't Workflows Changed?</NoteLink>. For a design-first path, see <NoteLink slug="design-first-ai-dev-workflow">How Should a Small Team Design Its First AI Coding Workflow?</NoteLink>.
+
+For how veteran technicians' diagnostic know-how gets into work orders in equipment maintenance, see <NoteLink slug="maintenance-work-order-ai-diagnosis">AI Equipment Fault Diagnosis: Getting Veteran Technicians' Know-How into Work Orders</NoteLink>.
 
 ## How to use it: run the knowledge base checklist before approving fine-tuning
 

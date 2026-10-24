@@ -20,7 +20,7 @@ howto:
       text: On the first landing, store UTM parameters, referrer, and landing page in a first-party cookie and write them into hidden fields on submit. Add an optional "How did you find us?" field with AI options.
     - name: Tag WhatsApp and email, and fix the CRM rules
       text: Prefill a page code in wa.me links and a subject in mailto links. Write the original source once. Keep self-reported and tracked source in separate columns. Record inquiries with no source signal as "Unknown".
-sourceHash: '7668420c3c41'
+sourceHash: 'fe680234cb9c'
 ---
 
 import noteFig from '../media/export-site-geo-lead-attribution-fig-en.png'
@@ -51,6 +51,8 @@ To answer "how many inquiries came from AI," read several data sources together.
 | Email | Which page the email came from | Prefilled subject in the mailto link, or a different inbox address per page | The tag is lost if the buyer starts a new email |
 
 For the CRM, HubSpot's setup is a usable reference. It splits contact source into "original" and "latest" properties. Contacts from AI are recorded as AI Referrals, and the next level records the platform, such as chatgpt.com. HubSpot identifies them when the referrer is an AI domain it recognizes, or when the UTM parameters contain one of those domains. In another CRM, build fields with the same structure.
+
+For how to record lead source after AI sorts WhatsApp inquiries, see <NoteLink slug="export-inquiry-whatsapp-email-attribution">How to Record Lead Source When AI Sorts WhatsApp and Email Inquiries</NoteLink>.
 
 ## How to set it up: six steps
 

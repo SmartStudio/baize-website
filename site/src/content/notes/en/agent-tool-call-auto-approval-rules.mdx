@@ -11,7 +11,7 @@ author: Baize Tech
 draft: false
 cover: ../media/agent-tool-call-auto-approval-rules-cover.png
 coverAlt: A white porcelain robot places blank tool pieces into a tray while one piece sits alone in an orange cradle at the table's edge, where a person inspects it
-sourceHash: 'ef441d8e8cc4'
+sourceHash: '555d3666a9e1'
 ---
 
 Auto-approval for agent tool calls works in three layers. Layer one: code rejects calls that should never reach a person, such as invalid arguments or paths outside the allowed scope. Layer two: rules approve low-risk calls automatically. Layer three: every other call is held for a person. Each approval or block writes a log entry that names the rule it matched. Approval judges the call itself. The reason the model gives for the call does not count.
@@ -57,6 +57,8 @@ The course notes say to show the approver the full call. For a file write, show 
 The course notes also state that approval covers the command, not the explanation. The first version of the approval layer trusts the purpose the model states. The course lists this as a weakness that a later session attacks directly.
 
 Our view: the model's explanation of its own call can be wrong. Under a malicious instruction, the model can also invent a compliant-sounding reason. Approval logic should match rules only against the arguments and diffs the model actually produced.
+
+For how detailed the reasons should be when a procurement agent proposes a supplier shortlist, see <NoteLink slug="procurement-agent-supplier-shortlist">How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?</NoteLink>.
 
 ## Log every call and keep hardening the rules
 

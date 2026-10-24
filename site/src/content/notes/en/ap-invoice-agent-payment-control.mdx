@@ -11,7 +11,7 @@ author: Baize Tech
 draft: false
 cover: ../media/ap-invoice-agent-payment-control-cover.png
 coverAlt: A payment pipeline where an agent handles documents at the start, three lit gates in the middle are staffed by people, and documents that pass go into a vault for release
-sourceHash: '2dda01678c79'
+sourceHash: '81e98599cb60'
 ---
 
 import noteFig from '../media/ap-invoice-agent-payment-control-fig-en.png'
@@ -35,6 +35,8 @@ Finance automation used to stop at invoice capture and a first pass of the three
 An AP agent now goes further. It extracts the invoice, checks it against the contract and the goods receipt, and posts the journal entry. It then calls the payment API to send the money and, after payment, reconciles against the bank statement.
 
 Before connecting the workflow to bank disbursement, the team needs defensive rules across the whole chain. For the governance approach, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+For supplier selection before payment and how to write shortlist reasons, see <NoteLink slug="procurement-agent-supplier-shortlist">How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?</NoteLink>.
 
 ## Resolving mismatches: the agent can investigate, the decision needs evidence
 
@@ -67,6 +69,8 @@ Special expense policies: sensitive categories such as travel and meals, gifts, 
 Period and budget: if an invoice crosses a fiscal year boundary, or the project budget cannot cover the payment, the agent stops and hands it to a person.
 
 Before giving the agent more autonomy, define the human takeover path for each type of exception. For a checklist, see <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>.
+
+On the bidding side, an agent may draft the tender response. For who covers the disqualification clauses, see <NoteLink slug="bid-agent-tender-response">When an AI Agent Drafts Your Bid, Who Guards Against Disqualification?</NoteLink>.
 
 ## Batch review, segregation of duties, and post-payment reconciliation
 
