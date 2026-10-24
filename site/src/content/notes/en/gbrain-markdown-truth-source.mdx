@@ -8,7 +8,7 @@ relatedService: loop-engineering
 author: Baize Tech
 draft: false
 cover: ../media/gbrain-markdown-truth-source-cover.png
-sourceHash: '6f13428b7e8e'
+sourceHash: '0735f7f9f682'
 ---
 
 If you treat knowledge management as a storage problem, the plan is to pick a database, load the documents, and make queries convenient. If you treat it as a compilation problem, the plan changes. The raw signal exists in one place. The database is a build artifact compiled from that signal. When the database breaks, you delete it and rebuild it from scratch.
@@ -45,9 +45,9 @@ GBrain gives every page two fixed sections. At the top is **Compiled Truth**, th
 
 ## Retrieval: beyond vectors, check whether facts actually connect
 
-Retrieval stacks four strategies. Vector search (HNSW index) and keyword search (BM25) run in parallel. RRF (Reciprocal Rank Fusion) merges the two result lists. A graph-traversal signal boosts the merged results, and a reranker runs last. GBrain's own BrainBench results: with the graph layer off, P@5 (how many of the top 5 results are relevant) is about 18%. With the graph layer on, P@5 rises to 49.1% and R@5 (how many of the relevant results appear in the top 5) reaches 97.9%.
+Retrieval stacks four strategies. Vector search (HNSW index) and keyword search (BM25) run in parallel. RRF (Reciprocal Rank Fusion) merges the two result lists. A graph-traversal signal boosts the merged results, and a reranker runs last. GBrain's evaluation repo, gbrain-evals, [re-ran BrainBench on 2026-09-09](https://github.com/garrytan/gbrain-evals/blob/main/docs/benchmarks/2026-09-09-retrieval-refresh.md). On 145 relationship questions, a specialized graph adapter scored a P@5 (how many of the top 5 results are relevant) of 34.2% and an R@5 (how many of the relevant results appear in the top 5) of 97.9%. The reference hybrid search scored 19.2% and 68.7%. A note added on 2026-09-28 says the graph adapter knows the four question templates in advance, so its score is an upper bound. The repo calls the gap a comparison between whole systems, not a lift from the graph alone. The earlier 49.1% / 97.9% figures are marked invalid.
 
-The reason for the gap: vector search finds content that is semantically similar, and the graph finds content that is factually connected. The two often return different result sets. Ask "who works at Acme," and vector search can only find passages that mention "Acme" and "work" in similar language. The graph follows the `works_at` edge directly, even if the source text never put the two words in the same sentence.
+The two methods look for different things. Vector search finds content that is semantically similar, and the graph finds content that is factually connected. The two often return different result sets. Ask "who works at Acme," and vector search can only find passages that mention "Acme" and "work" in similar language. The graph follows the `works_at` edge directly, even if the source text never put the two words in the same sentence.
 
 import retrievalFig from '../media/gbrain-markdown-truth-source-fig-2-en.png'
 
