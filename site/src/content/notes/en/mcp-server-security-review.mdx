@@ -29,7 +29,7 @@ The MCP protocol exposes tools, and it also exposes prompt templates (prompts) a
 
 Developers debugging locally often start third-party MCP servers under their own developer accounts. That is high risk. The server process inherits the user's full file read permissions, so the `.ssh/id_rsa` private key, cloud access keys, and local browser cache are all readable by the process. If the component has a file-read bug like the one above, an attacker who gets those keys may be able to log in to other machines or cloud accounts.
 
-Run the server under a dedicated low-privilege service account instead. The account has no admin rights. Its home directory stays empty and holds no login credentials. For file sharing and sandbox isolation principles, see <NoteLink slug="grok-bot-shared-computer-isolation">How to isolate files when several Bots share one cloud computer</NoteLink>. Confine the process to its own run directory. If the code has a read bug, the most it can read is that empty directory.
+Run the server under a dedicated low-privilege service account instead. The account has no admin rights. Its home directory stays empty and holds no login credentials. For file sharing and sandbox isolation principles, see <NoteLink slug="grok-bot-shared-computer-isolation">Do Grok Bots Share Files? Isolating Bots on One Cloud Computer</NoteLink>. Confine the process to its own run directory. If the code has a read bug, the most it can read is that empty directory.
 
 ## Step 2: Input validation, and why string prefix checks miss symlinks
 

@@ -1,0 +1,85 @@
+---
+title: "AI Video Ads: Producing More vs. Passing Brand Review"
+description: Models can make dozens of AI video ads a day; fewer pass brand and platform review. China's labeling rules, Google's AI ad labels, and a pre-scale review gate.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-video-ads-vs-brand-review-cover.png
+coverAlt: A grey 3D machine pours out rows of video frames that funnel through an orange review gate, leaving a few frames beside shield and stamp icons
+howto:
+  name: Lock the review criteria first, then scale up
+  steps:
+    - name: Safe to batch
+      text: Scripts and shot templates already cleared against the brand color, banned-word, competitor-name, and likeness-release checklists. The position of the visible AI label is written into the template.
+    - name: Human review before launch
+      text: Health or earnings claims, before-and-after comparisons, real people's likeness and voice, digital-human presenters, and scenes with minors. The model outputs a risk list with timecodes; a person makes the approval call.
+    - name: Rejected by default
+      text: Embedded metadata is missing after editing or transcoding; the visible label appears only in the first frame; the disclosure wording does not match the ad platform's local requirements.
+sourceHash: '6e27f6391ab8'
+---
+
+For one selling point, a model can generate dozens of AI video ads in a day. Once legal, brand, and the ad platforms reject what fails their checks, most of those assets never go live. Output counts how many videos were generated. Approved count counts how many passed brand review, platform review, and legally required AI labeling. Producing more and passing brand review are measured by two different counts.
+
+import noteFig from '../media/ai-video-ads-vs-brand-review-fig-en.png'
+
+<Figure src={noteFig} alt="Producing more videos vs. passing brand review: output counts generated videos, approved count counts videos that pass review; visible labels and embedded metadata together make up the labeling requirement" caption="Figure: More Videos | Brand-Approved" width="wide" border />
+
+## China: keep both the visible label and the embedded metadata
+
+In March 2025, the Cyberspace Administration of China (CAC) and three other agencies issued the [Measures for Labeling AI-Generated and Synthetic Content](https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm) (in Chinese), effective September 1, 2025. A mandatory national standard, GB 45438-2025 (Cybersecurity technology: Labeling method for AI-generated and synthetic content), took effect on the same date. The CAC also published an [official Q&A](https://www.cac.gov.cn/2025-03/14/c_1743654685899683.htm) (in Chinese). The Measures split labels into two types: explicit labels that viewers can see, and implicit labels embedded in file metadata. Article 4: a video must show a prominent notice on its opening frames and in an appropriate position around playback, and may add more in the middle or at the end. The explicit label must survive download, copy, and export. Article 6: platforms verify implicit labels and add a notice around the published content. These articles apply to commercial ad assets.
+
+On January 9, 2026, the Shanghai Administration for Market Regulation issued [Guidance on Promoting the Regulated and Healthy Development of Internet Platform Advertising](https://www.shanghai.gov.cn/gwk/search/content/2c984a729b92b990019ba06d36224232) (in Chinese; document no. Hu Shi Jian Guang Gao [2025] 354). Its rules:
+
+- If an ad contains generative AI or deep-synthesis content, the publisher must state so up front with wording such as "This ad uses AI technology" or "This ad was generated with AI technology," and label it prominently.
+- An ad that uses a digital virtual human needs a separate disclosure, and the virtual human must be clearly distinguishable from a real person's name or likeness.
+- AI must not be used to produce false or illegal ads.
+- Creating a digital human from a real person's likeness requires written authorization that defines the scope of use.
+
+On the platform side, the guidance describes review as "AI screening + human re-check + dynamic spot checks."
+
+## Platform disclosure: Google Ads adds AI labels and C2PA
+
+On July 9, 2026, Google announced [New AI transparency labels for Google Ads](https://blog.google/products/ads-commerce/google-ads-ai-transparency-labels/). My Ad Center on Search, YouTube, and Discover now has a "How this ad was made" entry that shows whether an ad was generated or edited with generative AI. Assets made with Google's own tools get the disclosure automatically. For assets made elsewhere, the advertiser checks the box. The [Google Ads Help page](https://support.google.com/google-ads/answer/17140115) states that SynthID and C2PA can be embedded at the metadata layer, and that some regions (such as the EU, India, and New York) require a visible label in the ad itself. Google's [C2PA product update](https://blog.google/innovation-and-ai/products/google-gen-ai-content-transparency-c2pa/) states that its ad-serving systems read C2PA metadata for review and policy enforcement.
+
+## Move the review criteria into the batch workflow
+
+Before producing AI video ads in bulk, the team defines what the review of AI-generated content blocks. For account permissions, model-call logging, and audit, see <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>. For rule checks and automated blocking placed early in the pipeline, see <NoteLink slug="engineering-guardrails-for-ai">Software Engineering in the AI-Native Era: From Writing Code to Constraining Code</NoteLink>. For building design acceptance criteria into the production steps, see <NoteLink slug="design-first-ai-dev-workflow">How Should a Small Team Design Its First AI Coding Workflow?</NoteLink>.
+
+## How to use it: lock the review criteria first, then scale up
+
+- **Safe to batch:** Scripts and shot templates already cleared against the brand color, banned-word, competitor-name, and likeness-release checklists. The position of the visible AI label is written into the template.
+- **Human review before launch:** Health or earnings claims, before-and-after comparisons, real people's likeness and voice, digital-human presenters, and scenes with minors. The model outputs a risk list with timecodes; a person makes the final call.
+- **Rejected by default:** Embedded metadata is missing after editing or transcoding; the visible label appears in only one opening frame; the disclosure wording does not match the ad platform's local requirements.
+
+```text
+Your job: pre-check finished videos against the brand banned-word list + the labeling checklist.
+When done, show me: a list of rejection risks (with timecodes), whether the visible label stays on screen for the whole video, whether the embedded metadata is still present, and which shots need human sign-off.
+Do not: auto re-render to get around a rejection; remove or alter labels; record "the model says it's compliant" as passing brand review.
+```
+
+## AI video ads: FAQ
+
+### Why do more AI video ads still fail brand review?
+
+Output counts the total number of generated assets. Approved count counts the assets that meet brand standards, platform rules, and legal labeling requirements. If banned words, likeness releases, and label positions are not locked before batch generation, most assets get stopped at legal review or platform review.
+
+### How must AI video ads be labeled in China?
+
+Under the CAC Labeling Measures, a video must show a prominent notice on its opening frames and around playback, exported files must keep the explicit label, and platforms verify the implicit metadata. Under the Shanghai guidance, an ad must state wording such as "This ad uses AI technology," and digital humans need a separate disclosure.
+
+### What does an AI-generated content review check?
+
+The main checks: whether the legally required explicit and implicit labels are complete; whether there is written authorization for any real person's likeness and voice; whether the ad contains false claims or absolute superlatives; and what disclosure the ad platform requires (such as Google's AI labels or C2PA metadata).
+
+## Sources
+
+1. [Cyberspace Administration of China et al., Measures for Labeling AI-Generated and Synthetic Content (2025-03-14, in Chinese)](https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm)
+2. [Cyberspace Administration of China, Q&A on the Measures for Labeling AI-Generated and Synthetic Content (2025-03-14, in Chinese)](https://www.cac.gov.cn/2025-03/14/c_1743654685899683.htm)
+3. [Shanghai Administration for Market Regulation, Guidance on Promoting the Regulated and Healthy Development of Internet Platform Advertising (Hu Shi Jian Guang Gao [2025] 354, in Chinese)](https://www.shanghai.gov.cn/gwk/search/content/2c984a729b92b990019ba06d36224232)
+4. [Google Ads Blog, New AI transparency labels for Google Ads (2026-07-09)](https://blog.google/products/ads-commerce/google-ads-ai-transparency-labels/)
+5. [Google Ads Help, About generative AI disclosures on Google Ads](https://support.google.com/google-ads/answer/17140115)
+6. [Google Keyword Blog, Expanding content transparency with C2PA](https://blog.google/innovation-and-ai/products/google-gen-ai-content-transparency-c2pa/)

@@ -1,0 +1,78 @@
+---
+title: "AI Customer Service Compliance: Who Owns What the Bot Promises?"
+description: "China's GB/T 47746-2026 took effect Sept 1, 2026. AI agents may answer order questions; refunds, discounts, and compensation need human or formal sign-off."
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-cs-can-reply-vs-who-owns-liability-cover.png
+coverAlt: "Auto-reply versus who owns key commitments: shipping and order questions get automatic answers, while refunds, compensation, and price changes need human or formal-process confirmation"
+howto:
+  name: Lock the commitment boundary before turning on auto-reply
+  steps:
+    - name: Safe to auto-reply
+      text: Shipment tracking, order status, and verbatim restatements of published prices and return or exchange rules. Every answer cites its source or knowledge base entry ID.
+    - name: Requires human or formal-process confirmation
+      text: Price negotiation, discount commitments, refund completion, compensation amounts, contract changes, and fault determination. The AI only collects materials and opens a ticket. It never writes "approved."
+    - name: Route to a human by default
+      text: The customer asks for a human; personal safety or property is at risk; a sensitive keyword fires; the session times out; or looping replies pass a threshold. Hand off the full conversation history so the customer does not repeat anything.
+sourceHash: 'd12554df79b3'
+---
+
+import noteFig from '../media/ai-cs-can-reply-vs-who-owns-liability-fig-en.png'
+
+China's national standard GB/T 47746-2026, *Customer contact services: Requirements for collaboration between human and intelligent customer service*, took effect on September 1, 2026. The State Administration for Market Regulation (SAMR) and the Standardization Administration of China (SAC) published it on May 25, 2026. The full record is on China's National Public Service Platform for Standards Information. A common pattern on the company side: the AI answers shipping and order-status questions, then stalls at refunds, compensation, and price changes behind the line "AI replies are for reference only." Answering automatically and owning the commitment are two separate questions.
+
+<Figure src={noteFig} alt="Auto-reply versus who owns key commitments: on the left, standard questions flow through automatic answers; on the right, refunds, compensation, and price changes pass a gate where a human confirms" caption="Figure: Can Auto-Reply | Who Owns Promises" width="wide" border />
+
+## The new standard closes the "blame the AI" exit
+
+A CCTV News report on September 1, 2026 ([republished by Sina Finance](http://finance.sina.com.cn/roll/2026-09-01/doc-iniqihzt8120908.shtml)) listed the consumer complaints: the option to reach a human is hard to find, bots loop the same scripted replies, and platforms deflect with "AI answers do not represent the company's position." According to the report, the standard requires a convenient, smooth switch between AI and human agents. After a handoff, the customer's information carries over and the customer is not asked the same questions again. AI agents handle standardized questions first. Human agents handle complex and safety-related issues first.
+
+For prices, discounts, refunds, compensation, and contract changes, the report states that the AI may explain rules, collect materials, and open tickets. Final confirmation belongs to a human agent or a formal process. A business cannot refuse to honor a commitment on grounds such as "algorithm-generated content has no legal effect." The company is responsible for what its AI agent says. Data from the China Consumers Association (CCA) shows after-sales service made up 26.79% of all complaints in the first half of 2026. The CCA singled out three problems: false promises by AI customer service, difficulty reaching a human agent, and inaccurate generated content.
+
+The "GB/T" prefix marks a recommended (voluntary) national standard. On its own it is not an administrative penalty provision. Complaints, contract references, and regulatory spot checks will still use it as the yardstick. Before launching an AI agent, build an AI customer service compliance checklist against this yardstick. That costs less than arguing "model hallucination" after the fact.
+
+## Agent liability sits with the company, because the model has no legal personhood
+
+AI is not an independent legal person. Output from an AI agent on an official channel is part of the service the business provides. The report repeatedly cites one type of case: in a delivery rider's appeal, the AI first agreed to a refund, then a human agent reversed it as "for reference only." The point drawn from such cases: a company that builds the channel and supplies the knowledge base cannot shift agent liability onto "the algorithm" when something goes wrong.
+
+This is the same placement question as in <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>. When a recommendation system makes a mistake, a person can still decline the recommendation. When an execution chain or a customer-facing commitment chain speaks, the consequence has already reached the user. In customer service, "speaking" means stating a price, a refund, or a compensation amount. If the boundary is not written down, a model that tends to agree with the customer will offer terms the company later refuses to honor.
+
+For the risk of pasting original contracts into a consumer chat app, see <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>. If service channels are spread across personal accounts and unknown API relays, audit and accountability are harder to pin down. See <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>
+
+## How to apply it: lock the commitment boundary, then turn on auto-reply
+
+- **Safe to auto-reply:** Shipment tracking, order status, and verbatim restatements of published prices and return or exchange rules. Every answer cites its source or knowledge base entry ID.
+- **Requires human or formal-process confirmation:** Price negotiation, discount commitments, refund completion, compensation amounts, contract changes, and fault determination. The AI only collects materials and opens a ticket. It never writes "approved."
+- **Route to a human by default:** The customer asks for a human; personal safety or property is at risk; a sensitive keyword fires; the session times out; or looping replies pass a threshold. Hand off the full conversation history. Never make the customer explain the issue again.
+
+```text
+Your job: answer standardized questions against the customer service knowledge base. When a request involves a refund, compensation, a price change, or a contract change, stop automatic confirmation.
+When you finish, I want to see: the knowledge base entries you cited, whether a human handoff was triggered, and whether the conversation was synced to the human agent.
+Do not: use "for reference only" to retract a discount or refund statement this channel has already sent; hide the option to reach a human; treat a low price the model offered in passing as a binding contract.
+```
+
+## AI customer service compliance: FAQ
+
+### Does what an AI customer service agent says count as a company commitment?
+
+On a company's official customer service channel, the AI agent's output is part of the business's service. Under GB/T 47746-2026, in effect since September 1, 2026, as reported in the press, a company cannot refuse to honor a commitment it has made simply by citing "algorithm-generated" or "does not represent the company's position."
+
+### Can the AI approve refunds or compensation on its own?
+
+The reported requirement: for prices, discounts, refunds, compensation, and contract changes, the AI may explain rules, collect materials, and open tickets. A human agent or a formal process makes the final confirmation. Auto-replies stop at "explain the rule and open a ticket." They never reach "approved."
+
+### Who carries agent liability?
+
+An AI agent is not an independent legal person. The company configures the channel, the knowledge base, the permissions, and the public-facing wording, so agent liability falls on the business. The compliance steps: write down which answers can be automatic and which need human confirmation, keep a conversation audit trail, and make sure customers can always reach a human. Arguing "hallucination" after launch does not replace these steps.
+
+## Sources
+
+1. [GB/T 47746-2026, SAMR open standards page (in Chinese; published 2026-05-25, effective 2026-09-01)](https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=0E87FFCB90EF54C0F997F7DF9AE52FC0)
+2. [National Public Service Platform for Standards Information, standard details (in Chinese)](https://std.samr.gov.cn/gb/search/gbDetailed?id=52AF72FB028C403AE06397BE0A0AD6A8)
+3. [CCTV News, republished by Sina Finance (in Chinese, 2026-09-01)](http://finance.sina.com.cn/roll/2026-09-01/doc-iniqihzt8120908.shtml)
+4. [Sanyi Life, republished by MarsBit (in Chinese, 2026-09-03)](https://news.marsbit.co/20260903140115288906.html)

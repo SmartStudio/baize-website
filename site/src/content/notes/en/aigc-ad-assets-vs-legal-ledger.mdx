@@ -1,0 +1,120 @@
+---
+title: What Should a Legal Ledger Track for AI-Generated Ad Creatives?
+description: China's AI content labeling rules took effect 2025-09-01. An ad legal ledger needs source, generation process, and license fields, plus who logs each one.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/aigc-ad-assets-vs-legal-ledger-cover.png
+coverAlt: A 3D camera rig and conveyor feed ad photos and video frames toward a large ledger clipboard with three slots, beside legal scales, with orange accents
+howto:
+  name: Check the ledger fields before an ad goes live
+  steps:
+    - name: Fill all three field groups
+      text: Complete source, generation process, and license or consent fields before talking about launch speed.
+    - name: Three roles, one ledger row
+      text: Production, legal, and media buying add fields to the same ledger row ID. The asset library and the ledger must match.
+    - name: Any gap stops the launch
+      text: Run the checklist before paid media goes live. A finished creative without a ledger row ID stays out of the media queue by default.
+sourceHash: '0e1684a31d90'
+---
+
+China's Measures for Labeling AI-Generated and Synthetic Content (the "Labeling Measures") took effect on September 1, 2025, together with the mandatory national standard GB 45438-2025. As of September 2026, both have been in force for a year. Ad teams now produce creatives faster, but their legal ledgers often miss three field groups: source, generation process, and license or consent. Check these fields before a paid ad goes live. If you wait for a platform spot check or a regulator inquiry and backfill then, the records often do not match.
+
+import noteFig from '../media/aigc-ad-assets-vs-legal-ledger-fig-en.png'
+
+<Figure src={noteFig} alt="Ad creatives coming out of a production machine on the left, an arrow to a legal ledger on the right with source, generation process, and license rows" caption="Figure: Ad Creatives | Legal Ledger" width="wide" border />
+
+## Missing fields: source, generation process, license
+
+The ledger needs at least three field groups, plus one group of verification fields on the media side.
+
+**1. Source**
+- Tool, model name and version, or the service provider's code
+- Whether the asset is deep synthesis or AI-generated (mark yes / no / mixed edit)
+- Hash of the original file or a content ID (matching the production ID in the implicit label)
+- Explicit label status: added / exemption requested and recorded / not applicable, with a reason
+- Implicit label status: whether the metadata is still present, and whether it was rechecked after transcoding
+
+**2. Generation process**
+- Summary of the prompt or generation parameters. If the prompt contains sensitive business information, record a redacted version. See <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>
+- Exact generation time, operator, and account
+- Human edit trail: who cropped, dubbed, face-swapped, added text overlays, or re-rendered, and when
+- Export and transcoding log: note which step may strip the metadata
+
+**3. License (license / consent)**
+- Written authorization for a real person's likeness, voice, and name, with scope and expiry date
+- Contract numbers for licensed stock assets, commercial fonts, background music, and brand elements
+- Whether a digital human or virtual avatar is clearly distinguishable from a real person, and the matching authorization files
+- If a contract requires disclosure of training data or third-party components, the basis for that disclosure
+
+**4. Media verification fields (keep them in the same table)**
+- Ad platform and ad account
+- The platform's creative submission ID
+- Whether the disclosure text (for example, "This ad was created using AI") matches the finished creative
+- Log retention start and end dates. When a user requests delivery without an explicit label, the related logs must be kept for at least 6 months by law. A company can extend this internally to cover the campaign period
+
+The Labeling Measures define two kinds of labels. An explicit label must be clearly visible to users. An implicit label is written into the file metadata and includes the generation attribute, the service provider's name or code, and a content ID. Under the Labeling Measures, anyone who publishes AI-generated content must disclose it, and no organization or individual may deliberately remove, alter, forge, or hide a label. China's Advertising Law separately prohibits false or misleading content in ads. If an AI creative invents product effects, fakes a before-and-after comparison, or uses a real person's likeness without permission, and the ledger cannot produce generation records or authorization files, the compliance risks stack.
+
+## Who logs what: production, legal, and media buying
+
+| Role | Primary fields | Handoff |
+| --- | --- | --- |
+| Production / creative | Source tool and version, prompt summary, generation time, human edit trail, label status before and after export | Finished file + ledger row ID |
+| Legal / compliance | Likeness and voice authorization, commercial licenses, explicit-label exemption requests and log retention, review against false-advertising rules | Links to authorization files, expiry dates |
+| Media buying | Platform, account, creative ID, disclosure text, launch and takedown times, spot-check screenshots | Platform receipt or dashboard screenshot |
+
+One person owning every field will miss some. Give each creative one unique ledger row ID, and have the three roles fill their own fields in that row. Avoid a setup where finished creatives go straight into the asset library and the ledger is a separate sheet that does not match. If production runs on employees' personal subscriptions, call logs and tool versions are hard to trace. See <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>
+
+## Pre-launch check: tick every box, then launch
+
+Before a paid ad goes live, go through the checklist item by item. If any item is missing, pause the launch.
+
+- Source: tool and model version are complete. For a mixed edit, the AI-generated seconds are marked.
+- Labels: the explicit label sits where the rules require and was not cropped on export. After transcoding, the file was rechecked and the implicit metadata is intact.
+- Disclosure: the publishing-side disclosure is in place. The disclosure text on the platform matches the finished creative.
+- License: real-person likeness, voice, music, fonts, and brand elements all have written authorization that has not expired.
+- Advertising Law: product effects, before-and-after comparisons, data sources, and quoted claims all have documentation. Absolute claims (superlatives such as "best" or "No. 1") do not pass without legal approval.
+- Retention: the ledger row ID, finished file, authorization files, and platform creative ID are archived together with a stated retention period.
+
+Bulk production can be as fast as the team wants. A creative not bound to a ledger row ID does not enter the media queue.
+
+## How to run it: an agent fills the ledger, a person approves launch
+
+Give the sorting and field-filling work to an agent. Keep the launch decision with a person. When you add guardrails to AI development, data entry and launch approval must sit with separate permissions. See <NoteLink slug="engineering-guardrails-for-ai">Software engineering in the AI-native era: from writing code to constraining code</NoteLink>
+
+```text
+Your job: add a ledger row for each AIGC ad creative, using four groups: source / generation process / license / media verification.
+Input: path or URL of the finished creative, export records from the generation tool, path to the authorization folder, target ad platform.
+When you finish, I want to see:
+1) Ledger table (one row per creative): tool version, generation time, operator, edit trail, explicit/implicit label status, authorization number and expiry, platform creative ID (if available), retention end date
+2) Missing-field list, sorted by severity: missing license / missing label / missing source
+3) Pre-launch check result: pass / hold, with the reason
+Do not: delete labels or re-render to bypass them; record "the model says it is compliant" as legal approval; invent authorization numbers or creative IDs; submit anything to the ad platform.
+```
+
+Fields that can be pulled automatically in bulk: tool name, generation timestamp, file hash, implicit label in the metadata. Fields that need human review and approval: whether the license scope covers this ad channel, the disclosure text, effect and comparison claims, and the final launch sign-off.
+
+## AIGC ad creatives: FAQ
+
+### Why do AIGC ad creatives need a separate ledger?
+
+A platform spot check, a regulator inquiry, or an internal review will ask three questions: who generated it, how it was edited, and whether you had the right to use it. A folder of finished videos without source, production, and license records cannot be reconstructed afterward. The ledger is the compliance record for each ad asset. It holds the evidence the law requires and the trail for assigning responsibility.
+
+### What do you record for explicit and implicit labels?
+
+For the explicit label, record the notice users can see, such as on-screen text, a corner badge, or a voice disclosure, and confirm it survived export. For the implicit label, record the file metadata: generation attribute, service provider name or code, and content ID. Recheck the metadata after any video transcode. The Labeling Measures and the mandatory national standard GB 45438-2025 took effect on September 1, 2025. Under the rules, if a user requests content without an explicit label, the service provider must set out responsibilities in the user agreement and keep the logs for at least 6 months. Record the exemption request and the log retention end date in the ledger.
+
+### What is the minimum set of fields for an ad legal ledger?
+
+Three groups at minimum: source (tool and model, whether AI-generated, content ID), generation process (prompt summary, operator account, record of human edits), and license proof (likeness and voice authorization, contract numbers and expiry dates for licensed assets). Also record explicit and implicit label status, the platform creative ID, and the archive retention end date. Ad content must meet the truthfulness requirements of China's Advertising Law. With complete fields, the team has a basis for self-audits and for responding to claims. Without them, the team may not even find who handled the asset when it is investigated.
+
+## Sources
+
+1. [Cyberspace Administration of China and three other agencies, Measures for Labeling AI-Generated and Synthetic Content (Guoxinban Tongzi [2025] No. 2), in Chinese](https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm)
+2. [Cyberspace Administration of China, press release on the four agencies jointly issuing the Labeling Measures, in Chinese](https://www.cac.gov.cn/2025-03/14/c_1743654685899683.htm)
+3. [Chinese Government Website, notice issuing the Measures for Labeling AI-Generated and Synthetic Content, in Chinese](https://www.gov.cn/zhengce/zhengceku/202503/content_7014286.htm)
+4. [Cyberspace Administration of China and others, Provisions on the Administration of Deep Synthesis of Internet Information Services, in Chinese](https://www.cac.gov.cn/2022-12/11/c_1672221949354811.htm)
