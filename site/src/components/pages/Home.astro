@@ -6,9 +6,12 @@ import { getCollection } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NoteCard from '../NoteCard.astro';
-import promoCover from '../../assets/video/promo-cover.png';
-import promoWebm from '../../assets/video/fxai-promo-720p.webm?url';
-import promoMp4 from '../../assets/video/fxai-promo-720p.mp4?url';
+import promoCoverZh from '../../assets/video/promo-cover.png';
+import promoWebmZh from '../../assets/video/fxai-promo-720p.webm?url';
+import promoMp4Zh from '../../assets/video/fxai-promo-720p.mp4?url';
+import promoCoverEn from '../../assets/video/promo-cover-en.png';
+import promoWebmEn from '../../assets/video/fxai-promo-en-720p.webm?url';
+import promoMp4En from '../../assets/video/fxai-promo-en-720p.mp4?url';
 import { localePath, noteSlug, pairNotes, withBase, type Lang } from '../../lib/i18n';
 import { CATEGORIES, categoryLabel, categorySlug } from '../../lib/notes';
 import type { HomeCopy } from '../../i18n/home';
@@ -33,16 +36,22 @@ const latestNotes = notes.slice(0, 6);
 const topics = CATEGORIES.map((c) => ({ c, n: notes.filter((x) => x.data.category === c).length })).filter((x) => x.n > 0);
 const topicHref = (c: (typeof CATEGORIES)[number]) => href(`/notes/category/${categorySlug(c)}/`);
 
+const PROMO_MEDIA = {
+  'zh-CN': { cover: promoCoverZh, webm: promoWebmZh, mp4: promoMp4Zh, uploadDate: '2026-10-23' },
+  en: { cover: promoCoverEn, webm: promoWebmEn, mp4: promoMp4En, uploadDate: '2026-10-24' },
+} satisfies Record<Lang, unknown>;
+const promo = PROMO_MEDIA[lang];
+
 const siteUrl = Astro.site ?? new URL('https://fxai.ai/');
-const promoVideoJsonLd = t.promo && {
+const promoVideoJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'VideoObject',
   name: t.promo.video.name,
   description: t.promo.video.description,
-  thumbnailUrl: new URL((await getImage({ src: promoCover, width: 1920 })).src, siteUrl).href,
-  contentUrl: new URL(promoMp4, siteUrl).href,
+  thumbnailUrl: new URL((await getImage({ src: promo.cover, width: 1920 })).src, siteUrl).href,
+  contentUrl: new URL(promo.mp4, siteUrl).href,
   duration: 'PT58S',
-  uploadDate: '2026-10-23',
+  uploadDate: promo.uploadDate,
   inLanguage: lang,
   transcript: t.promo.video.transcript.join('\n'),
 };
@@ -80,21 +89,19 @@ const promoVideoJsonLd = t.promo && {
     </div>
   </section>
 
-  {t.promo && (
-    <section id="promo" class="wrap promo-wrap">
-      <div class="promo" data-promo>
-        {/* preload="none"：4.8 MB 只在点击后才下载。 */}
-        <video controls playsinline preload="none" hidden>
-          <source src={promoWebm} type="video/webm" />
-          <source src={promoMp4} type="video/mp4" />
-        </video>
-        <button class="promo__cover" type="button" aria-label={t.promo.playLabel}>
-          <Image src={promoCover} alt={t.promo.coverAlt} widths={[640, 1280, 1920]} sizes="(max-width: 1240px) 100vw, 1176px" />
-          <span class="promo__play" aria-hidden="true">{t.promo.play}</span>
-        </button>
-      </div>
-    </section>
-  )}
+  <section id="promo" class="wrap promo-wrap">
+    <div class="promo" data-promo>
+      {/* preload="none"：4.8 MB 只在点击后才下载。 */}
+      <video controls playsinline preload="none" hidden>
+        <source src={promo.webm} type="video/webm" />
+        <source src={promo.mp4} type="video/mp4" />
+      </video>
+      <button class="promo__cover" type="button" aria-label={t.promo.playLabel}>
+        <Image src={promo.cover} alt={t.promo.coverAlt} widths={[640, 1280, 1920]} sizes="(max-width: 1240px) 100vw, 1176px" />
+        <span class="promo__play" aria-hidden="true">{t.promo.play}</span>
+      </button>
+    </div>
+  </section>
 
   <section id="services" class="dark">
     <div class="wrap sec">
