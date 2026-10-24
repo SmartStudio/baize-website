@@ -22,7 +22,7 @@ howto:
       text: Sign out of sites you no longer need when a task ends. Do not paste credentials into ordinary chat.
     - name: Use a separate user for real isolation
       text: When a job needs its own computer and credential set, give it a separate Cursor user. Multiple Bots on one account cannot split the file system.
-sourceHash: '37dcef64ae80'
+sourceHash: '0d2fb5157276'
 ---
 
 import noteFig from '../media/grok-bot-shared-computer-isolation-fig-en.png'
@@ -55,6 +55,8 @@ The shared workspace is `/workspace`. Keep persistent project files there. Treat
 Deleting a Bot removes its configuration, conversations, and Routines. Files on the machine and website logins stay. You have to clean them up yourself.
 
 Connectors (plugins) are account-level. Once installed, every Bot under your name can use them. OAuth tokens stay in Cursor's connector backend and are not written to the cloud computer's disk. Website sessions you logged into yourself in the browser do stay on the shared computer, and every Bot can reach them.
+
+For the security checks to run before connecting a third-party MCP server, see <NoteLink slug="mcp-server-security-review">What to Check Before Connecting a Third-Party MCP Server</NoteLink>.
 
 ## How to manage it
 

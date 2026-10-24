@@ -11,7 +11,7 @@ author: Baize Tech
 draft: false
 cover: ../media/agent-tool-permission-ladder-cover.png
 coverAlt: A small white robot holding an orange key stands at the foot of a white staircase; the steps hold a magnifying glass, a document, a database, an envelope, and a safe, with orange railings between steps
-sourceHash: '7c9a7a5c6633'
+sourceHash: 'd7bd922ac665'
 ---
 
 Open agent tool permissions in this order: read-only queries first, then internal drafts and reversible writes. Writes to business systems get hard caps. External sends need human approval before they go out. Payments and irreversible actions can stay with a human indefinitely. Each time you add a permission, write down three things: what the agent may now do, who is affected if it gets it wrong, and who can stop it.
@@ -58,6 +58,8 @@ At this level, track rejection reasons, what reviewers changed, and any case whe
 
 For how to split reading from sending, see <NoteLink slug="agent-read-mail-vs-calendar-send">What Should an AI Agent Need Approval for in Gmail and Google Calendar?</NoteLink>. After you revoke send permission, the agent can keep sorting email and drafting replies.
 
+For the security checks to run before connecting a third-party MCP server, see <NoteLink slug="mcp-server-security-review">What to Check Before Connecting a Third-Party MCP Server</NoteLink>.
+
 ## Money and irreversible actions: these can stay with a person
 
 Payments, deleting data without a backup, and submitting business instructions that cannot be undone belong at the end of the evaluation. The agent can prepare materials and check for missing items. Execution stays with a person long term. Clean runs with other tools do not show that the agent is fit to handle money.
@@ -71,6 +73,8 @@ If the target does not match, a request repeats, or the result cannot be confirm
 Issue agent tool permissions per task where possible. A credential covers only the actions and data this task needs, and expires when its time is up or the task ends. Enforce least privilege in the tool layer: if the agent requests something out of scope, the system refuses to run it. A shared admin account breaks the link between task scope and what the agent can actually do.
 
 Operation logs record the task, the actor, the tool, the target object, key parameters, the approver, the result, and any rollback result. Mask sensitive fields, restrict access to the logs, and never log full credentials. When you revoke a permission, stop queued tasks at the same time, deal with actions already executed, and have the owner confirm which level to restore to.
+
+When agents hand tasks to each other, judge the handed-off instruction against the same permission levels. See <NoteLink slug="agent-to-agent-trust-boundary">Should an AI Agent Follow Instructions Handed Off by Another Agent?</NoteLink>.
 
 ## Agent tool permissions: FAQ
 

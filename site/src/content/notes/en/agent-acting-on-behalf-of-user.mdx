@@ -11,7 +11,7 @@ author: Baize Tech
 draft: false
 cover: ../media/agent-acting-on-behalf-of-user-cover.png
 coverAlt: An employee hands a glowing orange credential to an agent, with a translucent figure of the employee behind the agent as they walk toward server racks
-sourceHash: '86d5c506e574'
+sourceHash: 'd567653c25e5'
 ---
 
 When an agent queries data or calls tools for an employee, every call should carry two identities: the employee who made the request and the agent that performs the action. This is the problem agent identity solves. The agent's allowed actions are the intersection of the two. An action must fall within what the agent is permitted to do and within what the requesting employee is personally authorized to do. If one shared, high-privilege service account runs tasks for everyone, the agent can fetch out-of-scope data for people who lack access. That is a confused deputy problem, and it leaves no visible trace in the backend audit logs.
@@ -65,6 +65,8 @@ A single-identity log records only "Service account A exported the users table a
 A compliant log records both sides: employee Jane Smith, through the sales assistant agent, called the customer lookup API and read the contact list. The employee ID and the agent ID are bound together.
 
 For audit trails in multi-agent setups or workplace bot rollouts, see <NoteLink slug="grok-bot-enterprise-access-audit">Rolling Out Grok Bot at Work? Settle Access and Audit Settings First</NoteLink>. When something goes wrong, the two identities show both the requester and the execution path.
+
+For how to check identity and authorization when an instruction comes from another agent, see <NoteLink slug="agent-to-agent-trust-boundary">Should an AI Agent Follow Instructions Handed Off by Another Agent?</NoteLink>.
 
 ## Rollout checklist: which agents still use shared accounts
 
