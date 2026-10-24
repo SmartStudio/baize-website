@@ -7,9 +7,11 @@ import RelatedNotes from '../components/notes/RelatedNotes.astro';
 import { categoryLabel } from '../lib/notes';
 import { localePath, withBase } from '../lib/i18n';
 import { orgRef } from '../lib/organization';
+import type { FaqItem } from '../lib/faq';
 
 interface Props {
   title: string;
+  seoTitle?: string;
   description: string;
   lang?: 'zh-CN' | 'en';
   alternates: { hreflang: string; path: string }[];
@@ -21,6 +23,7 @@ interface Props {
   relatedService?: string;
   ctaVariant?: 'consulting' | 'api';
   howto?: { name: string; steps: { name: string; text: string }[] };
+  faq?: FaqItem[];
   cover?: ImageMetadata;
   coverAlt?: string;
   path: string;
@@ -30,6 +33,7 @@ interface Props {
 
 const {
   title,
+  seoTitle,
   description,
   lang = 'zh-CN',
   alternates,
@@ -41,6 +45,7 @@ const {
   relatedService,
   ctaVariant = 'consulting',
   howto,
+  faq = [],
   cover,
   coverAlt,
   path,
@@ -123,7 +128,20 @@ const howToLd = howto
     }
   : null;
 
-const jsonLd = [blogLd, breadcrumbLd, ...(howToLd ? [howToLd] : [])];
+const faqLd = faq.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      inLanguage: lang,
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      })),
+    }
+  : null;
+
+const jsonLd = [blogLd, breadcrumbLd, ...(howToLd ? [howToLd] : []), ...(faqLd ? [faqLd] : [])];
 
 // relatedService 比现行四项服务分得细,这里把它映射到服务页对应服务的锚点。
 const SERVICE_CTA: Record<string, { label: string; anchor: string }> = {
@@ -166,7 +184,7 @@ const cta = isApiArticle
       };
 ---
 <BaseLayout
-  title={title}
+  title={seoTitle ?? title}
   description={description}
   path={path}
   jsonLd={jsonLd}

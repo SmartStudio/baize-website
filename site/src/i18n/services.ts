@@ -14,6 +14,8 @@ export type ServicesCopy = {
   services: Service[];
   how: { eyebrow: string; h2: string; steps: { k: string; t: string; d: string }[] };
   /** email:有这一项的语言在说明句后接一个邮箱链接(中文页说的是页脚二维码)。 */
+  /** 页面上可见的问答,同时生成 FAQPage JSON-LD。只写站内已有依据的事实,价格与客户案例等用户提供后再加。 */
+  faq?: { eyebrow: string; h2: string; items: { q: string; a: string }[] };
   book: { h2: Rich; p: string; email?: string; cta: string };
 };
 
@@ -196,6 +198,40 @@ export const en: ServicesCopy = {
       { k: '01', t: 'Diagnose', d: 'A free 30-minute call to confirm where you are and the first workflow to change.' },
       { k: '02', t: 'Plan', d: 'We deliver the architecture, SOPs, and acceptance criteria. Leadership decides whether to go ahead.' },
       { k: '03', t: 'Deliver', d: 'Training, embedded engineering, or tool development, accepted milestone by milestone. Methods are captured as Skills.' },
+    ],
+  },
+  faq: {
+    eyebrow: 'FAQ',
+    h2: 'Questions teams ask before the first call',
+    items: [
+      {
+        q: 'What happens in the free 30-minute call?',
+        a: 'You tell us how your team works today and the problem you most want solved. We confirm where you are and name the first workflow worth changing. The call is free and does not commit you to anything.',
+      },
+      {
+        q: 'Can we buy just one service?',
+        a: 'Yes. Each of the four services can be bought on its own. Teams that want the full path run them in order: consulting, training, forward deployed engineering, then tools.',
+      },
+      {
+        q: 'Do we have to continue after the plan?',
+        a: 'No. Work runs in three steps: diagnose, plan, deliver. After the plan, leadership decides whether to go ahead. You can stop after any step.',
+      },
+      {
+        q: 'How does remote delivery work?',
+        a: 'Delivery is remote-first. Training runs as live online sessions and working sessions. Forward deployed engineers join your team remotely and connect agents to your systems. Work is accepted milestone by milestone.',
+      },
+      {
+        q: 'Which systems can your engineers connect agents to?',
+        a: 'Our forward deployed engineers connect agents to CRM, ERP, and HR systems, and to internal tools. AI calls can go through one LLM API gateway that manages authentication, routing, rate limits, cost, and audit.',
+      },
+      {
+        q: 'What does our team keep after training?',
+        a: 'Each team keeps the AI Skills, SOPs, and context it builds during the sessions. They capture your conventions and business know-how and stay inside your organization.',
+      },
+      {
+        q: 'Which languages do you work in?',
+        a: 'English and Chinese. You can write to us in either language.',
+      },
     ],
   },
   book: {
