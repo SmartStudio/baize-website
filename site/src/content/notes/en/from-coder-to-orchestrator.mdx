@@ -1,0 +1,83 @@
+---
+title: "From Coder to Agent Orchestrator: How AI Changes a Developer's Job"
+description: AI handles throughput and humans handle judgment. How developer work moves from writing code to system design, agent orchestration, guardrails, and review.
+lang: en
+pubDate: 2026-10-23
+category: AI编程
+relatedService: dev-workflow
+author: Baize Tech
+cover: ../media/from-coder-to-orchestrator-cover.png
+draft: false
+sourceHash: '3be5cfaa3e35'
+---
+
+import loopFig from '../media/from-coder-to-orchestrator-fig-1-en.png'
+import layersFig from '../media/from-coder-to-orchestrator-fig-2-en.png'
+
+Software development is changing at the base level.
+
+A developer used to earn their keep by turning requirements into code. Output was capped by personal typing and coding speed, so it grew roughly linearly. Today AI can produce pages, APIs, tests, and whole features in a short time. The scarce skills are moving away from coding speed toward four others: defining the goal clearly, drawing clear system boundaries, keeping AI from breaking the architecture, and judging quickly whether a result is usable.
+
+Developers are moving from coder to **system designer** and **agent orchestrator**.
+
+## AI frees up capacity and multiplies the risk of losing control
+
+AI saves time. It also removes the linear cap on engineering capacity. One developer can start several agents at once, each working on a different task, branch, or sandbox. A prototype that took several days can now run within a few hours.
+
+AI does not follow architectural discipline by default. Without constraints, it produces large amounts of code that runs but is hard to maintain. It rebuilds what already exists, adds dependencies freely, changes the existing architecture without asking, and patches symptoms locally while the system problem stays. The result is a pile of AI slop.
+
+**AI can make code production ten times faster. It can make technical debt grow ten times faster too.**
+
+So set up guardrails before you let AI work on its own.
+
+## The development workflow gets a new order
+
+In traditional development, the editor is where work starts. AI-assisted development runs closer to this chain: **CLI → Editor → GitHub**.
+
+The CLI starts tasks, delegates them in parallel, and tracks their status. The editor stops being the main production tool and becomes a control board: read code, check diffs, make precise edits. GitHub handles asynchronous collaboration. Agents finish tasks in isolated environments and open draft pull requests. Humans review, edit, and merge.
+
+The core loop changes as well. Humans and AI no longer write code side by side. The loop is:
+
+**Define intent → Delegate tasks → Agents execute → Human verdict**
+
+<Figure src={loopFig} alt="Four-stage workflow: define intent, delegate tasks in parallel, agents execute, human verdict at a gate" caption="Figure: Define Intent | Delegate Tasks | Agents Execute | Human Verdict. A human defines intent and delegates in parallel, several agents execute at high throughput, and every output passes a human review gate before it merges." width="wide" border />
+
+The division of labor in one line: **AI handles throughput. Humans handle judgment.**
+
+## Constraining AI takes three layers
+
+A stable AI development process usually has three layers. Each layer is more specific than the one below it.
+
+**Layer one is `agents.md`.** It acts as the repository's constitution. It defines project goals, architecture principles, and prohibited actions, such as "Do not change the core architecture without approval" and "Do not add new infrastructure dependencies." It does not say how to do a task. It sets what must never happen.
+
+**Layer two is Skills.** Frequent development actions become fixed recipes: adding an API, writing tests, running a database migration, wiring up logging. The AI follows the recipe, which leaves less room for improvisation.
+
+**Layer three is custom agents.** Each agent has a defined role: backend security, performance tuning, test repair, documentation upkeep. They connect to external tools through MCP (Model Context Protocol) so they can carry a task from start to finish.
+
+<Figure src={layersFig} alt="Three stacked layers, repo constitution, skill recipes, and dedicated agents, supporting a block labeled AI execution" caption="Figure: Repo Constitution | Skill Recipes | Dedicated Agents | AI Execution. The bottom layer sets hard limits, the middle layer fixes repeatable actions, and the top layer assigns roles. Each layer is more specific, and together they keep AI execution on a controlled track." width="wide" border />
+
+All three layers do one job: keep what the AI can do inside a controlled track.
+
+<Callout type="tip" title="Related reading">
+This structure covers who applies the constraints and how they are organized. For what to constrain, five concrete engineering guardrails (behavior oracles, type fences, zero flakiness, readable run traces, and bounded refactoring), see <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>.
+</Callout>
+
+## From slide-deck proposals to working demos
+
+AI also changes how engineering teams communicate.
+
+The cost of going from idea to prototype has dropped sharply. Many concepts no longer need a dozen slides of explanation first. Ship a demo that runs. Decision makers who see a real product decide faster on four questions: Does the direction hold? Does the experience make sense? Is the technical complexity manageable? Is it worth more investment?
+
+Engineering collaboration is shifting from proposal-driven to results-driven.
+
+## Engineering judgment still matters
+
+AI will take on more and more code generation. It will not replace engineering judgment. The scarce skills remain problem abstraction, architecture design, technical trade-offs, boundary definition, quality review, and risk control.
+
+Writing code by hand was like cutting a tree with an axe: slow, with limited damage if you slip. AI is closer to a chainsaw. It is much faster, and it does much more damage when it gets out of control.
+
+The best developers in the AI era know what to write, what not to write, and how to keep machines working inside the right boundaries. The volume of code they write is a poor measure.
+
+**A developer's value is moving from code production to system design and engineering governance.**
+
+Baize Tech works on that second part: designing intent, boundaries, roles, and review gates so that AI throughput runs inside a controlled structure.

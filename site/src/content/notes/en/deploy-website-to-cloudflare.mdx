@@ -1,0 +1,56 @@
+---
+title: How to Deploy a Website to Cloudflare Pages for Free in Four Steps
+description: Connect a GitHub repo, set the build command, and add a custom domain to deploy a static site to Cloudflare Pages for free, with global CDN and free HTTPS.
+lang: en
+pubDate: 2026-10-23
+category: AI编程
+relatedService: delivery
+author: Baize Tech
+cover: ../media/deploy-website-to-cloudflare-cover.png
+draft: false
+howto:
+  name: Deploy a website to Cloudflare Pages for free
+  steps:
+    - name: Connect the repository
+      text: Sign in to the Cloudflare dashboard, open Workers & Pages, select Create application > Pages > Connect to Git, authorize GitHub, and select your repository.
+    - name: Configure the build
+      text: Pick a framework preset, enter the build command (for example, pnpm build) and the output directory (for example, dist). If the project lives in a subdirectory, set Root directory to that subdirectory.
+    - name: Run the first deployment
+      text: Click Save and Deploy. Cloudflare pulls the code, installs dependencies, and runs the build. Within tens of seconds the site is live on a free pages.dev subdomain.
+    - name: Add a custom domain
+      text: Add your domain under Custom domains. Cloudflare configures DNS and issues a free HTTPS certificate. Every later push triggers a new deployment.
+sourceHash: 'd47c50010f58'
+---
+
+import cfFig from '../media/deploy-website-to-cloudflare-fig-en.png'
+
+Once AI has written your website code, the next step is to publish it. This used to mean renting a server, installing Nginx, and requesting an SSL certificate. With Cloudflare Pages it takes a few clicks, and it is free for individuals and small teams. If you have built a static site with Astro, Next.js, Vite, or any other framework and pushed it to GitHub, the process below gets it live in about ten minutes, with a global CDN and free HTTPS included.
+
+## Why Cloudflare Pages
+
+Cloudflare Pages bundles static hosting, a global CDN, free SSL certificates, and continuous deployment into one service. You push code to GitHub, and it builds and publishes automatically. Cloudflare's edge network around the world serves the pages. Pages Functions add a lightweight serverless backend, for example to receive a contact form or call a third-party API, so you do not maintain a server. The free tier covers most company sites, blogs, and portfolios.
+
+## Deploy the site in four steps
+
+1. **Connect the repository**: Sign in to the Cloudflare dashboard, open Workers & Pages, select Create application > Pages > Connect to Git, authorize GitHub, and select your repository.
+2. **Configure the build**: Pick a framework preset (such as Astro). Enter the build command (usually `npm run build` or `pnpm build`) and the output directory (usually `dist`). If the project lives in a subdirectory of the repo, set Root directory to that subdirectory.
+3. **Run the first deployment**: Click Save and Deploy. Cloudflare pulls the code, installs dependencies, and runs the build. Within tens of seconds the site is live on a free `pages.dev` subdomain.
+4. **Add a custom domain**: Add your domain under the project's Custom domains. Cloudflare creates the DNS records and issues a free HTTPS certificate. From then on, every push to the main branch triggers a new deployment. This is continuous deployment.
+
+<Figure src={cfFig} alt="Four-step Cloudflare Pages deployment pipeline: connect the repo, configure the build, run the first deploy, add a domain" caption="Figure: Connect Repo | Configure Build | First Deploy | Add Domain" width="wide" border />
+
+## Two more things you get
+
+First, serverless functions. Add a `functions` directory to the project and write a handler. It can receive form submissions or proxy external APIs without a server, so a small backend does not require renting a machine. For example, put the file below at `functions/api/hello.ts`. After deployment the site has a `/api/hello` endpoint, with no server for you to maintain:
+
+```ts
+// functions/api/hello.ts — a Cloudflare Pages Function; the file path is the API route
+export const onRequestGet: PagesFunction = async (context) => {
+  const name = new URL(context.request.url).searchParams.get('name') ?? 'world';
+  return Response.json({ hello: name });
+};
+```
+
+Second, continuous deployment is on by default. You write content and code and push. The platform handles the build and the release.
+
+With deployment reduced to a push, the team spends its time on content, product, and user experience. At Baize Tech, we set up infrastructure so that it needs no attention after the first deployment.

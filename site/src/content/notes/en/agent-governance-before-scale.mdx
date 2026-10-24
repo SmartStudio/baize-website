@@ -1,0 +1,92 @@
+---
+title: "AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened"
+description: "Deloitte surveyed 3,235 leaders: 74% plan to use AI agents within two years, 21% report mature agent governance. Four checkable requirements, and why 21% is high."
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: gateway
+author: Baize Tech
+draft: false
+cover: ../media/agent-governance-before-scale-cover.png
+sourceHash: '75e0323bcf74'
+---
+
+import gateFig from '../media/agent-governance-before-scale-fig-1-en.png'
+import fourFig from '../media/agent-governance-before-scale-fig-2-en.png'
+
+Deloitte's [2026 State of AI in the Enterprise](https://www.deloitte.com/global/en/issues/generative-ai/state-of-ai-in-enterprise.html) (subtitle: The Untapped Edge) shows two numbers moving apart. Today 23% of companies use agentic AI at least moderately. Within two years that figure is expected to reach 74%. Only 21% say they already have a mature governance model for autonomous agents. The report titles this section "AI agents are scaling faster than the guardrails."
+
+Most industry reports end with "take governance seriously," and most readers agree and change nothing. This report goes further on two questions: why agent governance cannot reuse the existing model, and which specific capabilities count as "mature."
+
+## The human review step drops out of the process
+
+Page 20 of the report carries the point the rest depends on. Traditional AI systems produce recommendations that a person decides whether to adopt. Agents take actions directly: they place orders, send communications, and change systems.
+
+The difference is where a mistake gets stopped. With a recommendation system, the chain is: the model is wrong, a person sees the output, the person declines it, nothing happens. Human review works as a gate even when nobody designed it as one. With an agent, the chain is: the model is wrong, the agent executes, the consequence exists, a person finds out afterward. At the same error rate, the first case is a near miss. The second is an incident.
+
+<Figure
+  src={gateFig}
+  alt="Two panels: on the left, an AI output cart is stopped by a human review gate before reaching the system; on the right, an agent cart has reached the system and the gate is gone"
+  caption="Figure: AI + Review Gate | Agent, No Gate"
+  width="wide"
+  border
+/>
+
+Governance therefore has to move. Reviewing output after the fact is no longer enough. Teams need to define boundaries before the agent acts, monitor it while it acts, and keep a full trace afterward. Someone has to design each of these three stages, because no default human step will catch errors anymore.
+
+## The report's "mature" means four things you can check one by one
+
+Deloitte does not publish a scoring rubric. It does describe the capabilities mature governance requires in concrete terms. By the report's numbers, roughly 80% of respondents do not have them yet:
+
+1. **Clear boundaries**: a written definition of which decisions an agent can make on its own and which require human approval.
+2. **Real-time monitoring**: tracking agent behavior and flagging anomalies.
+3. **Complete audit trails**: capturing the full chain of agent actions, for accountability and for ongoing improvement.
+4. **Cross-functional structure**: IT, legal, compliance, and business unit leaders jointly set policy, monitor performance, and handle escalations.
+
+<Figure
+  src={fourFig}
+  alt="Boundaries, monitoring, and audit trail stand on a shared platform, with cross-functional connectors plugged into its base, forming the four requirements of agent governance"
+  caption="Figure: Boundaries | Monitoring | Audit Trail | Cross-Functional"
+  width="wide"
+  border
+/>
+
+Each of the four can be answered yes or no. A goal like "strengthen controls" cannot be verified; these can. The first three are system capabilities. The fourth is an organizational arrangement. Without it, the first three become a technical team negotiating with itself.
+
+The fourth is the one teams skip most often. It is not a system feature and does not map to a ticket. The report's recommendations section states the cost: companies whose senior leaders personally shape AI governance get significantly more business value than companies that hand the job entirely to technical teams. Where to draw the boundary is a business and legal decision. A technical team cannot set it alone and should not carry it alone.
+
+<Callout type="tip" title="Self-check: four questions">
+(1) Is the line between what an agent can do on its own and what needs human sign-off written down, or does each developer decide for themselves? (2) Is there one place where you can see what agents are doing right now, with anomalies flagged? (3) If something goes wrong, can you fully reconstruct the sequence of actions that led there? (4) Did legal and business owners help define the three items above, or has only the technical team discussed them?
+</Callout>
+
+## Discount the 21%
+
+The 21% is respondents' self-assessment, not the result of a third-party audit. Deloitte surveyed 3,235 IT and business leaders, director level to C-suite, across 24 countries in August and September 2025, split roughly evenly between IT and business. The data records what these people believe about their own organizations. The report did not independently verify the governance of any of them.
+
+The same report offers a comparison point. 42% of companies rate themselves highly prepared on strategy, and 30% rate themselves highly prepared on risk and governance. When respondents grade their own maturity or readiness, answers tend to run optimistic. Read the 21% as an upper bound.
+
+Another set of numbers shows how unresolved these issues are. The AI risks companies worry about most are almost all governance items: data privacy and security, 73%; legal, intellectual property, and regulatory compliance, 50%; governance capability and oversight, 46%; model quality, consistency, and explainability, 46%. Concern this concentrated indicates the problems are still open.
+
+## Governance does not mean a longer approval chain
+
+One possible reaction is to put every agent action through approval. That is the opposite extreme, and the report does not support it. Its recommendations section sets three limits:
+
+- Governance should **plug into existing risk and oversight structures**. It should not become a separate "shadow" function running in parallel.
+- The goal is clear, adjustable guardrails that let teams **move fast and stay safe**. Adding bureaucracy is not the goal.
+- Governance should be calibrated between risk management and innovation, so that oversight **enables experiments** instead of shutting them down.
+
+The report observes that the strongest performers take a measured path: **start with low-risk use cases and build governance capability as they expand.** They do not roll out at scale and patch governance later. They also do not wait for a complete governance framework before allowing anything into production. The first approach creates risk exposure. The second keeps a company in pilot mode indefinitely.
+
+This gives a more useful test than "do we have governance": **does your governance design make the team more willing to put agents into production, or less?** If less, the likely cause is governance in the wrong place. Approval chains are being used to cover work that belongs to boundary definitions and audit trails.
+
+<Callout type="tip" title="Related reading">
+Agents need a different governance model because they anticipate and act instead of only answering. That shift is covered in <NoteLink slug="ai-native-vs-ai-enhanced">AI Native vs. AI-Enhanced: Does Your System Still Work Without the AI?</NoteLink>. For which layer audit trails, permission boundaries, and call traceability belong in, see <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>. Making an agent's judgments traceable back to evidence is the subject of <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+</Callout>
+
+## Where to start
+
+In most teams today, agents are already running, but nobody has written down which actions an agent may take on its own and which need a person's approval. The answer lives in individual developers' heads, and nobody has treated it as a decision that needs an owner. A simple test: ask your team the question. If they cannot produce, within ten minutes, a list that legal and the business would both sign off on, you do not have boundaries yet.
+
+Go from easy to hard, and from technical to organizational. **Write down the boundaries first.** A two-column table is enough: actions the agent may take on its own, and actions that require human approval. **Add audit trails next.** Being able to reconstruct an incident is the prerequisite for every follow-up step. **Then add real-time monitoring.** Last, bring legal and the business formally into the process. The first two steps cost far less than most teams expect, and they remove most of the reasons a team hesitates to put agents into production.
+
+This is the problem the first tier of Baize Tech's service ladder addresses: connect AI in a stable, controlled, auditable way first, then turn it into engineering capability and products. If a company scales before it has these controls, every increase in agent usage also increases its risk exposure.
