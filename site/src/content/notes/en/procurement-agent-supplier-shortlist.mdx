@@ -1,0 +1,64 @@
+---
+title: How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?
+description: A procurement agent's supplier shortlist needs reasons buyers can verify and auditors can trace, tied to certificate dates, report numbers, and delivery records.
+lang: en
+pubDate: 2026-10-24
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+cover: ../media/procurement-agent-supplier-shortlist-cover.png
+coverAlt: On a dark green sorting table, a stream of off-white miniature factory blocks slides in from the left; most drop through a grate into a tray below, and three that pass rest in a green-edged tray on the right, each with a blank tag
+draft: false
+sourceHash: '857077c14c79'
+---
+
+import noteFig from '../media/procurement-agent-supplier-shortlist-fig-en.png'
+
+When a procurement agent drafts a supplier shortlist for a company, every inclusion and every rejection needs a reason that states the facts, the metrics compared, and the validity dates. A single score or a few vague comments gives the buyer nothing to verify and gives auditors nothing to trace later. The shortlist is an input to the purchasing decision. A buyer reviews it, an approver signs it, and people place the orders and release the payments. The more concrete the reasons, the faster the human review.
+
+<Figure src={noteFig} alt="A tabletop with five stations from left to right, linked by green arrows: a clipboard spec sheet with a gear, a magnifying glass over a stack of certificate cards, a balance scale weighing two crates, a three-tier shelf with green tags, and a document with a green wax seal and a fountain pen" caption="Figure: Read Requirements | Check Credentials | Compare History | Draft Shortlist | Human Sign-Off" width="wide" border />
+
+## Read requirements and constraints: part specs and delivery terms
+
+The agent first pulls the list of items to buy from the procurement system. From structured fields it extracts part material, tolerance range, environmental standards, and delivery location. From free-text notes on the purchase request it extracts unstructured requirements such as special packaging, on-site technical service, or a specified warranty period. For managing system permissions and task boundaries, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+The requesting department owns the part parameters and lead times. The buyer confirms the budget range and the purchasing method. If parameters are missing or technical requirements conflict, the system flags the gaps on screen. The buyer goes back to the business unit to fill them in, then has the system parse the request again.
+
+## Check the approved vendor list and credentials: business scope and license status
+
+The system starts from the approved vendor list. It checks each candidate's registered business scope, quality certification numbers, industry permits, and their expiry dates. It also checks the company's active status in the business registry and its litigation record. A supplier with an expired license, an abnormal registry status, or work outside its registered scope is marked ineligible. The system records which document lapsed and when.
+
+A qualification specialist maintains the eligibility criteria on a regular schedule. The category buyer checks business scope. Some suppliers submit a letter from the issuing authority while a license is being renewed. That kind of non-standard evidence goes to the specialist for a manual decision. The supplier enters the comparison only after the specialist approves it in the admin console and uploads the evidence.
+
+## Compare delivery history: lead times, yield, and quality records
+
+The system pulls past records from the ERP and quality systems and compares each supplier's history on similar parts. It lists the number of late deliveries, the incoming inspection defect rate, returned batches, and technical service response. If a new supplier has no delivery history, the system states that the history is empty and lists the sample inspection report number and the trial production score instead.
+
+A quality engineer decides who owns each past quality dispute, so that problems caused by production line setup are not counted as supplier defects. The buyer sets the metric weights in the admin console based on how sensitive the part is to lead time. When the comparison finishes, the system outputs a metric detail table for the next step.
+
+## Produce the shortlist and reasons: state the facts for each pick and each rejection
+
+The system ranks the candidates and writes a structured explanation for each one. For a supplier on the list, the reason might state that its pass rate meets the threshold, it holds the required certification, its past deliveries arrived on time, and its plant is close by. For a rejected supplier, the reason might state that its environmental certification has expired, or that it has an open corrective action from a recent delivery. The system does not write vague subjective assessments. Each reason maps to a specific work order, report number, or data field.
+
+After the agent finishes the text output, the shortlist report and its underlying data are packaged and locked so the algorithm cannot change them afterward. For handoff rules on end-to-end purchasing controls and payment risk, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+
+## Buyer review and sign-off: manual changes are logged and approved level by level
+
+The buyer opens the recommendation screen and spot-checks each candidate's credential attachments, delivery history details, and the stated reasons. Suppose the buyer finds that a rejected supplier recently completed an equipment upgrade and resolved the quality issue. The buyer can move that supplier onto the shortlist by hand, but must enter the reason in the system and upload the corrective action report. The system records the buyer's account, the step, and the supporting documents, and stores them next to the original recommendation.
+
+After review, the buyer submits the shortlist for approval in the system. The procurement manager and the finance approver check the change log and the reasons, and a person signs electronically in the system. Requests for quotation, price comparison, contract signing, purchase orders, and payment requests all go through the existing process, handled by people.
+
+## Procurement agents: FAQ
+
+### What audit risks arise if a procurement agent's shortlist reasons are too brief?
+
+Reasons that are too coarse make the decision impossible to audit later. If the system gives only an overall score or a label, an internal auditor doing a spot check cannot tell whether a selected supplier met every qualification requirement. The auditor also cannot tell whether a rejected supplier was late once because of an unusual event. A score with no facts behind it can hide personal preference or algorithmic bias, which creates compliance risk. Reasons should go down to the inspection report number, the certificate expiry date, and the defective batch records.
+
+### What records should a buyer keep when overriding a procurement agent's ranking?
+
+When a buyer changes the shortlist, the system should keep the before and after versions and the supporting documents. It should record the editor's account, the time of the change, which suppliers moved, and the buyer's written reason. For example, a buyer who moves a lower-ranked supplier up should upload a management exception approval email, a strategic partnership agreement, or an emergency supply request from the production line. A complete change trail lets the company explain the decision in a later internal audit and lowers procurement compliance risk.
+
+### After a company adopts a procurement agent, who maintains the onboarding rules for new suppliers?
+
+The procurement management department and the quality committee set the supplier onboarding rules. The procurement agent applies those rules when screening and has no authority to set or change the criteria. Compliance, category procurement specialists, and legal should define the entry conditions together, including certifications, factory audit score thresholds, and environmental metrics. New rules go into the system after management approval. A system administrator recalibrates the rule parameters on a regular schedule, and the procurement agent screens against the current criteria.
