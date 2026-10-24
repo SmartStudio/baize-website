@@ -1,0 +1,97 @@
+---
+title: Why Should an Enterprise AI Pilot Start With One Department?
+description: Run an enterprise AI pilot in one department on one scored workflow with written go/stop criteria. Giving every employee an AI account first is not a pilot.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/enterprise-ai-pilot-vs-accounts-for-all-cover.png
+coverAlt: One department runs a pilot along a workflow with entry and exit gates, next to account cards scattered everywhere
+sourceHash: '95b9116582a5'
+---
+
+Start an enterprise AI pilot with one department and one workflow you can score. That holds up better than giving every employee an AI account first. Accounts can be issued in a day. A pilot has to answer two questions: did this work get faster or more accurate, and can you contain it when something goes wrong? If you turn on access for everyone before the boundaries are set, the boundaries are hard to add later.
+
+For the risks of scattered accounts with no company-level entry point, see <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>. For training that ends while the ticket path stays the same, see <NoteLink slug="all-hands-ai-training-workflow-unchanged">Company-Wide AI Training Is Done. Why Haven't Workflows Changed?</NoteLink>.
+
+import noteFig from '../media/enterprise-ai-pilot-vs-accounts-for-all-fig-en.png'
+
+<Figure src={noteFig} alt="Left: one department runs one workflow through entry and exit gates. Right: accounts issued by group with an audit, compared with accounts handed to everyone at once" caption="Figure: Team AI Pilot | AI Account Rollout" width="wide" border />
+
+## First, look at the gap between many pilots and few deployments
+
+MIT Project NANDA's *The GenAI Divide: State of AI in Business 2025* (July 2025, a preliminary working paper based on about 300 public cases, interviews with 52 organizations, and a survey of 153 senior leaders) reports these figures:
+
+- Task-specific or custom enterprise GenAI: about 60% of organizations evaluated it, about 20% reached a pilot, and about 5% reached production.
+- General-purpose tools such as ChatGPT and Copilot: more than 80% of organizations explored or piloted them, and nearly 40% say they have deployed them. These tools mostly raise individual productivity and rarely show up in a measurable P&L.
+- Common reasons projects stall: brittle workflows, no learning from context, and poor fit with day-to-day operations.
+
+The same report describes an "enterprise paradox." Large companies with more than $100 million in revenue run the most pilots and assign the most staff, yet convert pilots to scale at the lowest rate. Mid-market companies do better. The top performers in that group move from pilot to full deployment in about 90 days on average. Large enterprises often take nine months or more.
+
+McKinsey's *The state of AI in 2025* (published November 2025) points to the same gap. AI use is widespread, but enterprise-level financial impact is still rare. High performers are more likely to redesign workflows from the ground up.
+
+Adding more departments or issuing more accounts does not close the gap between pilot and production. Lock in one real workflow inside one department first.
+
+## Why one department
+
+A one-department pilot narrows the scope enough to see the result.
+
+1. **One workflow**: tickets, quotes, customer service summaries, or first-pass contract review. Pick one that happens every week and has a baseline you can record. Do not use an open scope like "bring AI to marketing."
+2. **A small group**: usually from a handful of people up to about twenty. Larger than that, it is close to a full rollout and you cannot evaluate it as a pilot.
+3. **Written go/stop criteria**: before launch, write down the primary metric, the failure threshold, and the end date. When the pilot ends, the decision has to be one of three: expand, revise then expand, or stop.
+4. **Production conditions**: real data, rollback, and a human review step before output leaves the team. Passing in a demo environment does not count as passing the pilot.
+
+When the scope is too large, everything changes at once: tools, process, headcount, and permissions. At the end nobody can say which change made the difference. When the scope is too small, the result does not represent the team next door. Whether it generalizes to the whole company is a question for the next round.
+
+## Issuing AI accounts is not the pilot
+
+Giving everyone an AI account first makes it look like the company "already uses AI." NANDA describes a more common pattern, Shadow AI: only about 40% of companies bought an official LLM subscription, but employees at more than 90% of the companies surveyed said they use personal AI tools for work every day. While the official pilot stalls halfway, personal accounts are already running.
+
+So tie account issuance to the pilot:
+
+| Item | In a pilot | Often missing when you only issue accounts |
+| --- | --- | --- |
+| Who can use it | Pilot group roster / access granted by group | On for everyone by default, hard to take back |
+| Which work it is for | Written into the SOP and output checks | Everyone hunts for their own prompts |
+| Sensitive data | Approved channel, redaction, a do-not-paste list | Pasted into personal consumer accounts |
+| Success criteria | Baseline, then a score at the end of the period | Only activation and active-user rates |
+| Expanding to the next group | Based on the pilot's findings | Based on "everyone else has it" |
+
+Accounts only settle whether people can use the tool. The pilot tests whether that department's process was actually changed and whether it can be audited. If you issue first and add rules later, auditing and revoking access both cost more.
+
+## How to start the first round (copy this into a task brief)
+
+```
+Your job: pick one real ticket workflow in one department and run a 4–8 week pilot.
+Deliver before launch: the current SOP, baseline numbers, the primary metric and failure threshold, the pilot roster, and the data and human-review exit points.
+At the end of the period I want to see: results against the old baseline, whether to expand to the next group, and how the account issuance list should change.
+Do not: issue accounts to everyone first and add rules later; do not treat a demo environment as a production pilot.
+```
+
+In practice, three rules are enough:
+
+- The pilot group has a roster. Groups outside the pilot get no accounts yet, or read-only permissions only.
+- Review usage and output quality every week, not just activation rates.
+- At the end of the period, write up the findings before choosing the next department.
+
+## Enterprise AI pilot: FAQ
+
+### Why can't an enterprise AI pilot start company-wide?
+
+A company-wide launch has no control group and makes go/stop criteria hard to write. Get a scorable result from one department and one process first, then expand to more groups. NANDA's funnel for custom tools shows many evaluations and few production deployments. The larger the scope, the harder it is to see which step is stuck.
+
+### How long should a one-department pilot run, and what counts as a pass?
+
+A typical window is a few weeks to about two months. Write the primary metric and failure threshold before launch. A pass means the baseline moved, the human review step is stable, and you have a decision on whether to expand to the next group. The number of accounts activated is not a pass criterion.
+
+### We have not run an enterprise AI pilot yet. Can we issue AI accounts first?
+
+You can, but issue them by group, keep them revocable, and state what data people may paste. If you treat a company-wide rollout as a finished pilot, both Shadow AI and audit gaps grow. For how to consolidate the entry point, see <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>.
+
+## Sources
+
+1. [MIT Project NANDA, The GenAI Divide: State of AI in Business 2025 (PDF)](https://www.steelcase.com/content/uploads/2025/10/v0.1_State_of_AI_in_Business_2025_Report.pdf)
+2. [McKinsey, The state of AI (global survey / 2025 series)](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value)

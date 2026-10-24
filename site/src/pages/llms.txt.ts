@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { notePath, noteSlug, pairNotes } from '../lib/i18n';
 
 // llms.txt(https://llmstxt.org)是给大模型读的站点索引。规范要求:
 //   1. 一个 H1 标题;
@@ -38,6 +39,7 @@ const PAGES: Array<[string, string, string]> = [
 const EXTRAS: Array<[string, string, string]> = [
   ['/rss.xml', 'RSS 订阅', '明理笔记的更新源'],
   ['/sitemap-index.xml', '站点地图', '全站可抓取页面索引'],
+  ['/en/llms.txt', 'English site', 'English index'],
 ];
 
 export const GET: APIRoute = async ({ site }) => {
@@ -45,7 +47,8 @@ export const GET: APIRoute = async ({ site }) => {
   const item = ([path, name, desc]: [string, string, string]) =>
     `- [${name}](${abs(path)}): ${desc}`;
 
-  const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+  // 只收中文笔记;英文笔记在 /en/llms.txt。
+  const notes = [...pairNotes(await getCollection('notes')).zh.values()].sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
 
@@ -62,7 +65,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     '## 明理笔记',
     '',
-    ...notes.map((n) => `- [${n.data.title}](${abs(`/notes/${n.id}/`)}): ${n.data.description}`),
+    ...notes.map((n) => `- [${n.data.title}](${abs(notePath(noteSlug(n.id), 'zh-CN'))}): ${n.data.description}`),
     '',
     '## Optional',
     '',

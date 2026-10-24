@@ -1,0 +1,61 @@
+---
+import { getCollection, render } from 'astro:content';
+import NoteLayout from '../../../layouts/NoteLayout.astro';
+import Figure from '../../../components/notes/Figure.astro';
+import Figures from '../../../components/notes/Figures.astro';
+import Video from '../../../components/notes/Video.astro';
+import Callout from '../../../components/notes/Callout.astro';
+import NoteLinkEn from '../../../components/notes/NoteLinkEn.astro';
+import { relatedNotes } from '../../../lib/notes';
+import { alternates, noteLang, notePath, pairNotes } from '../../../lib/i18n';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  // pairNotes 保证每篇英文都有非 draft 的中文孪生,否则构建直接失败。
+  const { en } = pairNotes(notes);
+
+  return [...en].map(([slug, note]) => {
+    if (note.data.lang !== noteLang(note.id)) {
+      throw new Error(`Note ${note.id} declares lang ${note.data.lang} but its path says ${noteLang(note.id)}`);
+    }
+    const zhPath = notePath(slug, 'zh-CN');
+    return {
+      params: { slug },
+      props: {
+        note,
+        related: relatedNotes(note, notes),
+        alternates: alternates(zhPath, notePath(slug, 'en')),
+        switchPath: zhPath,
+        path: notePath(slug, 'en'),
+      },
+    };
+  });
+}
+
+const { note, related, alternates: alts, switchPath, path } = Astro.props;
+const { Content, headings } = await render(note);
+
+// MDX 作者照常写 <NoteLink>,英文路由把它换成按英文解析的版本。
+const mdxComponents = { Figure, Figures, Video, Callout, NoteLink: NoteLinkEn };
+---
+<NoteLayout
+  title={note.data.title}
+  description={note.data.description}
+  lang={note.data.lang}
+  alternates={alts}
+  switchPath={switchPath}
+  pubDate={note.data.pubDate}
+  updatedDate={note.data.updatedDate}
+  category={note.data.category}
+  author={note.data.author}
+  relatedService={note.data.relatedService}
+  ctaVariant={note.data.ctaVariant}
+  howto={note.data.howto}
+  cover={note.data.cover}
+  coverAlt={note.data.coverAlt}
+  path={path}
+  related={related}
+  headings={headings}
+>
+  <Content components={mdxComponents} />
+</NoteLayout>

@@ -1,0 +1,556 @@
+---
+/**
+ * 首页主体,中英两个路由共用(/、/en/)。文案在 i18n/home.ts,样式只在这里写一份。
+ */
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../NoteCard.astro';
+import promoCoverZh from '../../assets/video/promo-cover.png';
+import promoWebmZh from '../../assets/video/fxai-promo-720p.webm?url';
+import promoMp4Zh from '../../assets/video/fxai-promo-720p.mp4?url';
+import promoCoverEn from '../../assets/video/promo-cover-en.png';
+import promoWebmEn from '../../assets/video/fxai-promo-en-720p.webm?url';
+import promoMp4En from '../../assets/video/fxai-promo-en-720p.mp4?url';
+import { localePath, noteSlug, pairNotes, withBase, type Lang } from '../../lib/i18n';
+import { CATEGORIES, categoryLabel, categorySlug } from '../../lib/notes';
+import type { HomeCopy } from '../../i18n/home';
+
+interface Props {
+  lang: Lang;
+  copy: HomeCopy;
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const { lang, copy: t, alternates, switchPath } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = (zhPath: string) => withBase(base, localePath(zhPath, lang));
+
+const paired = pairNotes(await getCollection('notes'));
+const notes = [...(lang === 'en' ? paired.en : paired.zh).values()].sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestNotes = notes.slice(0, 6);
+// 只列有笔记的分类:空分类没有归档页,链过去就是 404。
+const topics = CATEGORIES.map((c) => ({ c, n: notes.filter((x) => x.data.category === c).length })).filter((x) => x.n > 0);
+const topicHref = (c: (typeof CATEGORIES)[number]) => href(`/notes/category/${categorySlug(c)}/`);
+
+const PROMO_MEDIA = {
+  'zh-CN': { cover: promoCoverZh, webm: promoWebmZh, mp4: promoMp4Zh, uploadDate: '2026-10-23' },
+  en: { cover: promoCoverEn, webm: promoWebmEn, mp4: promoMp4En, uploadDate: '2026-10-24' },
+} satisfies Record<Lang, unknown>;
+const promo = PROMO_MEDIA[lang];
+
+const siteUrl = Astro.site ?? new URL('https://fxai.ai/');
+const promoVideoJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: t.promo.video.name,
+  description: t.promo.video.description,
+  thumbnailUrl: new URL((await getImage({ src: promo.cover, width: 1920 })).src, siteUrl).href,
+  contentUrl: new URL(promo.mp4, siteUrl).href,
+  duration: 'PT58S',
+  uploadDate: promo.uploadDate,
+  inLanguage: lang,
+  transcript: t.promo.video.transcript.join('\n'),
+};
+---
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  path={localePath('/', lang)}
+  jsonLd={promoVideoJsonLd}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="hero wrap">
+    <div class="hero__copy">
+      <p class="badge"><span class="dot"></span>{t.badge}</p>
+      <h1>{t.h1.map((s) => (typeof s === 'string' ? s : 'em' in s ? <em>{s.em}</em> : 'nw' in s ? <span class="nw">{s.nw}</span> : <br />))}</h1>
+      <p class="hero__sub">{t.sub}</p>
+      <div class="hero__actions">
+        <a class="bz-button bz-button--primary bz-button--lg pill" href={href('/contact/')}>{t.primaryCta}</a>
+        <a class="bz-button bz-button--secondary bz-button--lg pill" href={href('/notes/')}>{t.secondaryCta}</a>
+      </div>
+    </div>
+    <div class="flow" aria-label={t.flow.label}>
+      <p class="flow__k">{t.flow.kicker}</p>
+      <div class="flow__box">
+        <p class="flow__h">{t.flow.before[0]}</p>
+        <p class="flow__steps">{t.flow.before[1]}</p>
+      </div>
+      <p class="flow__arrow" aria-hidden="true">↓</p>
+      <div class="flow__box flow__box--on">
+        <p class="flow__h">{t.flow.after[0]}</p>
+        <p class="flow__steps">{t.flow.after[1]}</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="promo" class="wrap promo-wrap">
+    <div class="promo" data-promo>
+      {/* preload="none"：4.8 MB 只在点击后才下载。 */}
+      <video controls playsinline preload="none" hidden>
+        <source src={promo.webm} type="video/webm" />
+        <source src={promo.mp4} type="video/mp4" />
+      </video>
+      <button class="promo__cover" type="button" aria-label={t.promo.playLabel}>
+        <Image src={promo.cover} alt={t.promo.coverAlt} widths={[640, 1280, 1920]} sizes="(max-width: 1240px) 100vw, 1176px" />
+        <span class="promo__play" aria-hidden="true">{t.promo.play}</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="services" class="dark">
+    <div class="wrap sec">
+      <p class="eyebrow eyebrow--on-dark">{t.services.eyebrow}</p>
+      <h2>{t.services.h2}</h2>
+      <div class="svc">
+        {t.services.items.map((s) => (
+          <div class="svc__card lift">
+            <span class="svc__n">{s.n}</span>
+            <a class="svc__t" href={href('/services/')}>{s.t} →</a>
+            <p class="svc__d">{s.d}</p>
+            <span class="svc__k">{t.services.related}</span>
+            <div class="svc__rel">
+              {s.rel.filter((c) => topics.some((x) => x.c === c)).map((c) => <a href={topicHref(c)}>{categoryLabel(c, lang)}</a>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="mingli-notes" class="soft">
+    <div class="wrap sec">
+      <div class="sec__head">
+        <div>
+          <p class="eyebrow">{t.notes.eyebrow}</p>
+          <h2>{t.notes.h2}</h2>
+        </div>
+        <a class="more" href={href('/notes/')}>{t.notes.more(notes.length)}</a>
+      </div>
+      <div class="notes">
+        {latestNotes.map((note) => (
+          <NoteCard
+            title={note.data.title}
+            description={note.data.description}
+            pubDate={note.data.pubDate}
+            category={note.data.category}
+            slug={noteSlug(note.id)}
+            cover={note.data.cover}
+            coverAlt={note.data.coverAlt}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="topics" class="wrap sec">
+    <p class="eyebrow">{t.topics.eyebrow}</p>
+    <h2>{t.topics.h2}</h2>
+    <div class="topics">
+      {topics.map((x) => (
+        <a class="topic lift" href={topicHref(x.c)}>
+          <span class="topic__t">{categoryLabel(x.c, lang)}<span class="topic__n">{t.topics.count(x.n)}</span></span>
+          <span class="topic__d">{t.topics.intros[x.c]}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="book" class="wrap book-wrap">
+    <div class="book">
+      <div>
+        <h2>{t.book.h2.map((s) => (typeof s === 'string' ? s : 'br' in s ? <br /> : null))}</h2>
+        <p>{t.book.p}{t.book.email && <> <!--email_off--><a href={`mailto:${t.book.email}`}>{t.book.email}</a><!--/email_off-->.</>}</p>
+      </div>
+      <a class="bz-button bz-button--dark bz-button--lg pill" href={href('/contact/')}>{t.book.cta}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-promo]').forEach((box) => {
+    const video = box.querySelector('video')!;
+    const cover = box.querySelector('.promo__cover')!;
+    cover.addEventListener('click', () => {
+      video.hidden = false;
+      cover.remove();
+      video.play();
+    });
+  });
+</script>
+
+<style>
+  .promo-wrap {
+    padding-bottom: 88px;
+  }
+  .promo {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--bz-dark);
+  }
+  .promo video:not([hidden]),
+  .promo__cover,
+  .promo__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .promo__cover {
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .promo__play {
+    position: absolute;
+    left: 7.8%;
+    bottom: 9%;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 22px 8px 8px;
+    border-radius: 999px;
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 0 0 8px rgba(20, 224, 160, 0.18);
+    transition: transform 0.2s;
+  }
+  .promo__play::before {
+    content: '';
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bz-on-accent)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6l10 6-10 6z' fill='%2314E0A0'/%3E%3C/svg%3E")
+      center / 22px no-repeat;
+  }
+  .promo__cover:hover .promo__play {
+    transform: scale(1.04);
+  }
+  @media (max-width: 767px) {
+    .promo-wrap {
+      padding-bottom: 56px;
+    }
+    .promo {
+      border-radius: 16px;
+    }
+    .promo__play {
+      left: auto;
+      right: 12px;
+      bottom: 12px;
+      padding: 4px;
+      font-size: 0;
+      gap: 0;
+      box-shadow: none;
+    }
+    .promo__play::before {
+      width: 36px;
+      height: 36px;
+      background-size: 18px;
+    }
+  }
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .sec {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(42px, 5.4vw, 76px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--bz-text-primary);
+  }
+  .nw {
+    white-space: nowrap;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--bz-accent-strong);
+  }
+  h2 {
+    margin: 0 0 40px;
+    font-weight: 800;
+    font-size: clamp(30px, 3.4vw, 44px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  .eyebrow--on-dark {
+    color: var(--bz-accent);
+  }
+  .pill {
+    border-radius: 999px;
+  }
+  .lift {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bz-shadow-soft);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lift,
+    .lift:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  .hero {
+    padding-top: 80px;
+    padding-bottom: 88px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    align-items: center;
+  }
+  .hero__copy {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+  .badge {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0 0 28px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--bz-chip);
+    color: var(--bz-accent-strong);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--bz-accent);
+  }
+  .hero__sub {
+    margin: 28px 0 0;
+    max-width: 580px;
+    font-size: 19px;
+    color: var(--bz-ink-700);
+  }
+  .hero__actions {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .flow {
+    flex: 1 1 380px;
+    background: var(--bz-dark);
+    color: #fff;
+    border-radius: 28px;
+    padding: 28px;
+  }
+  .flow p {
+    margin: 0;
+  }
+  .flow__k {
+    margin-bottom: 18px !important;
+    font-size: 13px;
+    color: var(--bz-on-dark-muted);
+  }
+  .flow__box {
+    background: var(--bz-dark-card);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .flow__box--on {
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+  }
+  .flow__h {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px !important;
+  }
+  .flow__steps {
+    font-size: 15px;
+    color: var(--bz-on-dark-2);
+  }
+  .flow__box--on .flow__steps {
+    color: var(--bz-on-accent);
+    font-weight: 600;
+  }
+  .flow__arrow {
+    text-align: center;
+    color: var(--bz-accent);
+    font-size: 20px;
+    margin: 8px 0 !important;
+  }
+
+  .dark {
+    background: var(--bz-dark);
+    color: #fff;
+  }
+  .svc {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .svc__card {
+    background: var(--bz-dark-card);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .svc__n,
+  .svc__k {
+    font-size: 13px;
+    color: var(--bz-on-dark-muted);
+  }
+  .svc__t {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+  }
+  .svc__d {
+    flex: 1;
+    margin: 0;
+    font-size: 15px;
+    color: var(--bz-on-dark-2);
+  }
+  .svc__rel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .svc__rel a {
+    border: 1px solid var(--bz-on-dark-line);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--bz-accent);
+    text-decoration: none;
+  }
+
+  .soft {
+    background: var(--bz-soft);
+  }
+  .sec__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .more {
+    margin-bottom: 40px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+    text-decoration: none;
+  }
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .topic {
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--bz-text-primary);
+    text-decoration: none;
+  }
+  .topic__t {
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .topic__n {
+    margin-left: 10px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--bz-chip);
+    color: var(--bz-accent-strong);
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+  .topic__d {
+    font-size: 14px;
+    color: var(--bz-text-secondary);
+  }
+
+  .book-wrap {
+    padding-bottom: 96px;
+  }
+  .book {
+    background: var(--bz-accent);
+    color: var(--bz-on-accent);
+    border-radius: 28px;
+    padding: 64px 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .book h2 {
+    margin: 0;
+    font-weight: 900;
+  }
+  .book p {
+    margin: 16px 0 0;
+    font-size: 18px;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 767px) {
+    .wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .sec {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+    .hero {
+      padding-top: 48px;
+      padding-bottom: 56px;
+      gap: 40px;
+    }
+    .book {
+      padding: 40px 24px;
+    }
+  }
+</style>

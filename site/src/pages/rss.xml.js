@@ -1,8 +1,10 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import { notePath, noteSlug, pairNotes } from '../lib/i18n';
 
 export async function GET(context) {
-  const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+  // 只收中文笔记;英文笔记在 /en/rss.xml。
+  const notes = [...pairNotes(await getCollection('notes')).zh.values()].sort(
     (a, b) => b.data.pubDate - a.data.pubDate
   );
 
@@ -14,7 +16,7 @@ export async function GET(context) {
       title: n.data.title,
       description: n.data.description,
       pubDate: n.data.pubDate,
-      link: `/notes/${n.id}/`,
+      link: notePath(noteSlug(n.id), 'zh-CN'),
     })),
   });
 }

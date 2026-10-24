@@ -1,0 +1,92 @@
+---
+title: "AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?"
+description: An AP agent that runs from invoice matching to payment needs match records, call-back checks on bank changes, duplicate checks, limits, batch review, and recon.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ap-invoice-agent-payment-control-cover.png
+coverAlt: A payment pipeline where an agent handles documents at the start, three lit gates in the middle are staffed by people, and documents that pass go into a vault for release
+sourceHash: '2dda01678c79'
+---
+
+import noteFig from '../media/ap-invoice-agent-payment-control-fig-en.png'
+
+When an accounts payable (AP) agent runs the whole chain from matching through exception handling, GL coding, and payment, several controls stay mandatory:
+
+- Mismatches between the invoice and the purchase order, contract, or goods receipt need a resolution record.
+- Changes to a supplier's bank account or payee details go through independent verification, by calling back a phone number already on file. The agent cannot make the change itself.
+- Every invoice goes through a duplicate check.
+- Transactions above approval limits, or outside policy or category rules, go to a human reviewer.
+- Each payment batch is reviewed before release and reconciled after payment, with an audit record at every step.
+
+Freehand released Freehand Pay on October 13. According to its press release, payment approval used to be the end of the automated workflow, and finance handled the release of funds. Now the agent carries approved invoices on through payment and reconciliation. The agent operates inside the approval limits, policies, and category rules the customer's finance team sets. Transactions outside those bounds go to human review, and every decision is logged for audit. Stripe provides the payment rails.
+
+<Figure src={noteFig} alt="Left panel: an AP agent checks a stack of documents and moves them toward payment. Right panel: a payment passes three locked gates in sequence before reaching a vault" caption="Figure: AP Agent | Payment Controls" width="wide" border />
+
+## Where the workflow used to stop, and the steps it now adds
+
+Finance automation used to stop at invoice capture and a first pass of the three-way match. After OCR and a PO check, the system produced a pending-approval list. Finance staff then did the rest by hand: building the payment batch in online banking, reviewing it, and sending the money.
+
+An AP agent now goes further. It extracts the invoice, checks it against the contract and the goods receipt, and posts the journal entry. It then calls the payment API to send the money and, after payment, reconciles against the bank statement.
+
+Before connecting the workflow to bank disbursement, the team needs defensive rules across the whole chain. For the governance approach, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+## Resolving mismatches: the agent can investigate, the decision needs evidence
+
+Small differences between the invoice amount and the PO or goods receipt are common. Typical causes are freight allocation, rounding in unit conversion, and normal shrinkage.
+
+The AP agent can do much of the investigation. It can look up the over/under-delivery tolerance in the contract, ask procurement in the team chat for a missing goods receipt, and email the supplier to confirm a unit price. How the agent resolves each difference must be visible.
+
+Each adjustment needs its supporting record: which supplementary note justifies the difference, who confirmed the discount, and which GL account it was booked to. If a difference exceeds the agreed tolerance, the agent only assembles the evidence and flags the issue for an accountant to review. It cannot write off the difference on its own.
+
+## Payee account changes: the agent cannot change bank details
+
+A common fraud in finance is supplier impersonation to redirect payments. The attacker compromises a supplier's mailbox, sends a legitimate-looking invoice, and adds a note: "Our bank account has changed, please pay the new account."
+
+If the agent updates the bank account in supplier master data based on that text, company money can go straight to the fraudster.
+
+The rule: the agent cannot change payee accounts. When the bank name or account number on an invoice does not match the system record, the agent holds that payment and notifies finance. The change goes through a separate verification path. Finance calls the landline listed in the contract to confirm with the supplier, obtains a signed written confirmation of the new bank account from the supplier (in China, a letter stamped with the company seal), and gets approval from the finance director. A person then updates the record in the system.
+
+## Detecting duplicate invoices and split invoices
+
+The first pattern is a disguised duplicate. For example, a supplier submits a printout of an e-invoice for payment, then a month later submits a scanned PDF of the same invoice. Another variant adds spaces or symbols before or after the invoice number to evade duplicate checks. The agent cross-checks invoice number, invoice date, amount, and contract number together.
+
+The second pattern is deliberate invoice splitting. To avoid a given approval tier, one purchase is split into several invoices, each just under the approval threshold. The agent scans how often the same supplier invoiced within a short window. When it finds signs of splitting, it combines the invoices and routes them for approval as one.
+
+## Limits, policy, and category rules: out-of-bounds goes to a human
+
+Approval limits: the finance lead sets the thresholds according to delegated approval authority. They decide which amounts can be paid directly after a clean match and which go to human review.
+
+Special expense policies: sensitive categories such as travel and meals, gifts, public relations, and consulting need a person to confirm the expense is genuine, even when the paperwork is complete.
+
+Period and budget: if an invoice crosses a fiscal year boundary, or the project budget cannot cover the payment, the agent stops and hands it to a person.
+
+Before giving the agent more autonomy, define the human takeover path for each type of exception. For a checklist, see <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>.
+
+## Batch review, segregation of duties, and post-payment reconciliation
+
+After reviewing individual invoices, the agent compiles a batch list. Before payment instructions go to the bank or payment provider, the treasury clerk or treasury manager checks the total amount and the number of payments, then approves the release.
+
+Duties must be separated. The person who sets business rules, the person who maintains supplier bank master data, and the person who gives final payment approval cannot be the same person. The agent's credentials follow the same rule. It can match documents and draft records. It cannot hold both the right to change master data and the right to release payment.
+
+After the money goes out, the agent pulls bank remittance records or the transaction feed from the payment provider and reconciles them line by line against the AP vouchers. If it finds a returned payment or an unmatched entry, it raises an alert and the team investigates.
+
+For a first deployment of an AP agent, start with suppliers whose bills are standard and fixed in amount, such as utilities, internet service, and fixed monthly rent. Once the verification logic runs cleanly, expand to more complex procurement.
+
+## AP agent FAQ
+
+### What changes in the treasury clerk's daily work after an agent is introduced?
+
+The clerk moves off repetitive work such as manual data entry and building payment batches in online banking, and spends the time on exceptions and cash oversight. The clerk no longer copies account numbers and amounts payment by payment. Instead, the clerk reviews the list of issues the agent flags, makes the call-back verification calls, and gives final approval for each payment batch.
+
+### How does the system handle a small difference between the invoice amount and the purchase order?
+
+The system usually routes it by preset tolerance rules. If the unit price or tax amount differs slightly and stays within tolerance, the system records the reason, adjusts the account coding, and releases the invoice. Finance and procurement set the tolerance in the contract. If the difference exceeds tolerance, the system flags it and sends it to procurement and the supplier to reconcile. It does not write off the difference automatically.
+
+### How should a company set up layered payment controls?
+
+Use three layers: before, during, and after payment. Before: isolate changes to supplier master data and require independent human verification through a separate channel. During: the AP agent enforces the three-way match, blocks duplicate invoices, and routes over-limit transactions to review, and the treasury clerk authorizes each batch. After: reconcile bank remittance records automatically and trace any unmatched entries, so every step leaves audit evidence.

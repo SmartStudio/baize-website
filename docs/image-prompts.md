@@ -35,7 +35,7 @@ Hard rules:
 - Use the built-in image_gen tool. No SVG. No ImageMagick or any tool to overlay text.
 - Swiss editorial 3D material style, small physical model feel, soft studio light, light contact shadows, full subject visible, generous safe margins.
 - Accent color is jade green #14E0A0 only. No orange, no IKB blue.
-- image_gen saves to ~/.codex/generated_images/<uuid>/exec-*.png. You MUST cp each file to the exact target path, then `ls -l` and `sips -g pixelWidth -g pixelHeight` it. Exit 0 does not mean the file exists.
+- image_gen saves to ~/.codex/generated_images/<your session id>/exec-*.png. Take the file from YOUR session's directory only, never "the newest file" under generated_images (other runs may be writing there in parallel). You MUST cp each file to the exact target path, then `ls -l` and `sips -g pixelWidth -g pixelHeight` it. Exit 0 does not mean the file exists.
 
 IMAGE 1 — COVER (wordless)
 Target: <repo>/site/src/content/notes/media/<slug>-cover.png

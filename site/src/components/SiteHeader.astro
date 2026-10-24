@@ -1,41 +1,41 @@
 ---
 import { Image } from 'astro:assets';
 import mark from '../assets/baize-mark.png';
+import { localePath, withBase, type Lang } from '../lib/i18n';
 
 interface Props {
-  lang?: 'zh-CN' | 'en';
+  lang?: Lang;
+  /** 对应语言版本的路径(不带 base);不传时切到对方语言的首页。 */
+  switchPath?: string;
 }
 
-const { lang = 'zh-CN' } = Astro.props;
+const { lang = 'zh-CN', switchPath } = Astro.props;
 const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL; // 恒以 / 结尾
-// 片段带尾斜杠:构建产物是 services/index.html,少一个斜杠 CF/GH Pages 就会 308。
+const href = (zhPath: string) => withBase(base, localePath(zhPath, lang));
+// 路径带尾斜杠:构建产物是 services/index.html,少一个斜杠 CF/GH Pages 就会 308。
 const NAV = [
-  { href: 'services/', label: '服务' },
-  { href: 'notes/', label: '明理笔记' },
-  { href: 'method/', label: '方法论' },
-  { href: 'about/', label: '关于白泽' },
+  { path: '/services/', zh: '服务', en: 'Services' },
+  { path: '/notes/', zh: '明理笔记', en: 'Notes' },
+  { path: '/method/', zh: '方法论', en: 'Method' },
+  { path: '/about/', zh: '关于白泽', en: 'About' },
 ];
-const NAV_EN = [
-  { href: 'https://api.fxai.ai/', label: 'API Home', external: true },
-  { href: 'https://api.fxai.ai/models', label: 'Models & Pricing', external: true },
-  { href: 'notes/', label: 'Chinese Notes', external: false },
-];
-const nav = isEnglish ? NAV_EN : NAV;
-const brandHref = isEnglish ? 'https://api.fxai.ai/' : base;
+const otherLang: Lang = isEnglish ? 'zh-CN' : 'en';
+const switchHref = withBase(base, switchPath ?? localePath('/', otherLang));
 ---
 <header class="hd">
   <div class="hd__inner">
-    <a class="hd__brand" href={brandHref}>
+    <a class="hd__brand" href={href('/')}>
       {/* eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它。 */}
       <Image class="hd__logo" src={mark} alt={isEnglish ? 'Baize Tech' : '白泽明理'} width={96} height={126} loading="eager" />
       <span class="hd__wm">baize</span>
-      <span class="hd__cn">白泽明理</span>
+      {!isEnglish && <span class="hd__cn">白泽明理</span>}
     </a>
     <button class="hd__toggle" aria-label={isEnglish ? 'Menu' : '菜单'} aria-expanded="false">≡</button>
     <nav class="hd__nav" aria-label={isEnglish ? 'Main navigation' : '主导航'}>
-      {nav.map((n) => <a href={'external' in n && n.external ? n.href : `${base}${n.href}`}>{n.label}</a>)}
-      <a class="hd__cta" href={isEnglish ? 'https://api.fxai.ai/sign-up' : `${base}contact/`}>{isEnglish ? 'Create an account' : '预约咨询'}</a>
+      {NAV.map((n) => <a href={href(n.path)}>{isEnglish ? n.en : n.zh}</a>)}
+      <a class="hd__lang" href={switchHref} hreflang={isEnglish ? 'zh-Hans' : 'en'} lang={otherLang}>{isEnglish ? '中文' : 'EN'}</a>
+      <a class="hd__cta" href={href('/contact/')}>{isEnglish ? 'Book a call' : '预约咨询'}</a>
     </nav>
   </div>
 </header>
@@ -99,8 +99,11 @@ const brandHref = isEnglish ? 'https://api.fxai.ai/' : base;
   .hd__nav a:hover {
     color: var(--bz-accent-strong);
   }
-  .hd__nav .hd__cta {
+  .hd__nav .hd__lang {
     margin-left: auto;
+    font-weight: 600;
+  }
+  .hd__nav .hd__cta {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -149,8 +152,10 @@ const brandHref = isEnglish ? 'https://api.fxai.ai/' : base;
       display: flex;
       align-items: center;
     }
-    .hd__nav .hd__cta {
+    .hd__nav .hd__lang {
       margin-left: 0;
+    }
+    .hd__nav .hd__cta {
       justify-content: center;
     }
   }

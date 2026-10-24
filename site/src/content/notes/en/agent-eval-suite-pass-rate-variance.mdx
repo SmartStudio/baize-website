@@ -1,0 +1,88 @@
+---
+title: How Many Tasks and Runs Does an AI Agent Eval Need Before Launch?
+description: Before launching an AI agent, run a fixed set of real business tasks several times each. Report pass rate, cost per run, latency, variance, and a failure list.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-eval-suite-pass-rate-variance-cover.png
+coverAlt: An oval test track on a round base, with a block circling the track, a green light trail looping several times, and a checkpoint gate on the track glowing green
+sourceHash: 'eb848dacb557'
+---
+
+Before an agent goes live, evaluate it on a fixed set of real business tasks. Run each task several times. Report pass rate, cost per run, latency, and variance. Then write a failure list of what the agent still cannot do. A single run is not enough to support a launch decision.
+
+import noteFig from '../media/agent-eval-suite-pass-rate-variance-fig-en.png'
+
+<Figure src={noteFig} alt="Four stations on a tabletop, left to right, linked by green arrows: a stack of fixed task cards, the same card copied into a row of trays, four beakers with uneven liquid levels and a bracket marking the gap, and a clipboard checklist with some rows marked by green dots" caption="Figure: Fixed Task Set | Repeat Runs | Pass-Rate Variance | Failure List" width="wide" border />
+
+## Choosing the task set: real business work with clear acceptance criteria
+
+Pull eval tasks from the company's real business processes. Each task needs a clear definition of done.
+
+Start from the tickets, reports, and customer requests that staff handle every day. Cover the main routine flow and the edge cases that are easy to get wrong. For an order reconciliation task, include complete, standard documents and also problem documents with missing fields or malformed formats. This checks whether the system recognizes the exception and stops.
+
+The University of Michigan's Fall 2026 course EECS 498-016, "Applied Agentic Software Engineering," is taught by Marcus Darden. The syllabus says an agent eval suite contains at least 8 tasks and is reported by pass rate. Treat 8 tasks as a starting line, and add more for each business area the agent covers. For preparing test data, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>
+
+The syllabus also says the course uses small models that students deploy themselves, because small models expose sloppy engineering. Our reading: a large model can often guess what a vague instruction meant, while a small model is more likely to fail outright on ambiguity or a format error. In an enterprise eval, one extra pass on a smaller model surfaces problems in prompts and tool definitions early.
+
+## How many runs per task: repeat each task and watch the variance
+
+The same model on the same business task does not take the same path or produce the same output on every run.
+
+Model generation is random. One successful run may have gotten past an ambiguity by chance, and the next attempt may get stuck at the same spot. If a team calls the agent ready after one clean run, it can break in routine work after launch.
+
+The syllabus says to run each task at least 3 times and report pass rate. Under the tweet that introduced the course, one reply shared a practitioner's experience: with only 3 runs per task, a single timeout drops the pass rate by 33%. The reply recommended at least 10 runs and tracking the variance.
+
+We recommend at least 10 runs for each core task in an enterprise eval. More runs filter out one-off noise and show where the model is unstable under a given prompt. Beyond the overall score, compare how the same task behaves across runs.
+
+## The four numbers to report: pass rate, cost per run, latency, and variance
+
+When signing off on an eval suite, the team collects four objective numbers: pass rate, cost per run, latency, and variance.
+
+The eval topics listed in the syllabus include task sets, pass rate, cost, and latency.
+
+Pass rate is the share of runs in which a task completes. Business rules or a validation script decide whether a run passed. The model does not grade itself.
+
+Cost per run should include the retries and the failed trajectories. In automated work, an agent that hits an error often retries and spends more tokens. Spread the cost of failed retries across the task, and the budget will match what you actually pay.
+
+Latency is end-to-end. Measure the full time from task trigger, through tool calls, to final close.
+
+Variance is the spread in time, consumption, and outcome across runs. It shows how stable the process is. If some runs of the same task finish in a few seconds and others hit the timeout limit, the agent's decision logic is branching in ways you have not controlled.
+
+## The failure list: state what the agent still cannot do
+
+The sign-off package also needs a failure list that breaks down the specific things the system cannot do yet.
+
+The syllabus says students submit a breakdown report at the end of the Analyze phase that states what the agent still cannot do, and the report is graded on the quality of the failures found.
+
+In enterprise deployments, many failures happen at edge details. Examples: on a customer quote request, an uncommon unit of measure in the text makes a tool call throw an error. In a multi-table comparison, the row count exceeds the preset window and the model drops the last rows. Put known issues like these on the list, and business staff can see where the system cannot act on its own.
+
+When accepting internal work or a vendor's solution, we recommend requiring this failure list as a deliverable. Use it to place human checkpoints at those edges before launch.
+
+## Pre-launch tests and post-launch metrics do different jobs
+
+The pre-launch eval suite sets the capability baseline and the acceptance bar. After launch, the work shifts to tracking business value over time.
+
+Pre-launch evals focus on behavior under fixed inputs: whether the task comes out right, whether it stays stable across runs, and what each run costs and how long it takes. The baseline from this stage is the control group for every later revision.
+
+Once the system is in production, the focus moves to end-to-end business value. For how to measure ticket close rate and cost against return after launch, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+When picking the first use cases, start with tasks whose results can be checked on the spot. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. Results in these use cases are easy to compare, so the pre-launch eval set is easier to build and automated acceptance after launch runs more smoothly.
+
+## Agent evals: FAQ
+
+### Why does a weaker, smaller model expose engineering problems more easily during evals?
+
+Small models are more sensitive to ambiguous prompt wording, malformed tool arguments, and the surrounding context. A large model can often use stronger reasoning to fill gaps in a loose instruction or guess a missing field, which hides problems underneath. If the system runs reliably on a small model because of precise tool definitions, input checks, and clear stop conditions, the engineering layer holds up. This is our judgment. The syllabus states only why the course uses small models.
+
+### Why can production still fail unexpectedly after the eval suite passes?
+
+The eval suite runs on a controlled, known dataset. It covers the common paths and edge cases the team has already identified. In production, changes to external system APIs, customer input in formats nobody anticipated, and network instability all produce abnormal inputs that the test set does not include. The eval suite is the entry bar for acceptance. Production still needs log audits, spending caps, and human review running alongside it.
+
+### Why should a team look at pass-rate variance when reporting test results?
+
+An average pass rate can hide instability. Take two tasks with the same average pass rate. One completes most of its steps on every run. The other scores perfectly on some runs and fails completely on others because a tool gets stuck in an infinite loop. Their pass-rate variance differs widely. Pass-rate variance measures how spread out results are across runs. High variance usually points to a random defect in the current prompt or retry logic. Including it in the report helps the team find these unreliable branches before launch.

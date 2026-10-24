@@ -1,0 +1,81 @@
+---
+/**
+ * 联系页主体,中英两个路由共用(/contact/、/en/contact/)。文案在 i18n/contact.ts,样式只在这里写一份。
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactForm from '../ContactForm.astro';
+import qr from '../../assets/wechat-qr.png';
+import { localePath, type Lang } from '../../lib/i18n';
+import type { ContactCopy } from '../../i18n/contact';
+
+interface Props {
+  lang: Lang;
+  copy: ContactCopy;
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const { lang, copy: t, alternates, switchPath } = Astro.props;
+---
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  path={localePath('/contact/', lang)}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="hero wrap">
+    <p class="badge"><span class="dot"></span>{t.badge}</p>
+    <h1>{t.h1.map((s) => (typeof s === 'string' ? s : 'em' in s ? <em>{s.em}</em> : 'br' in s ? <br /> : null))}</h1>
+    <p class="hero__sub">{t.sub}</p>
+  </section>
+
+  <section class="wrap layout-wrap">
+    <div class="layout">
+      <ContactForm lang={lang} />
+      <aside class="aside">
+        <p class="aside__k">{t.aside.kicker}</p>
+        <h2>{t.aside.h2}</h2>
+        <p class="aside__b">{t.aside.body}</p>
+        <!--email_off--><a class="mail" href="mailto:contacts@fxai.ai">contacts@fxai.ai <span aria-hidden="true">→</span></a><!--/email_off-->
+        {t.qr && (
+          <div class="qr">
+            <Image src={qr} alt={t.qr.alt} format="png" quality={90} loading="lazy" />
+            <span>{t.qr.caption}</span>
+          </div>
+        )}
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  h1 { margin: 0; font-weight: 900; font-size: clamp(38px, 4.8vw, 64px); line-height: 1.14; letter-spacing: -0.02em; color: var(--bz-text-primary); }
+  h1 em { font-style: normal; color: var(--bz-accent-strong); }
+  .hero { padding-top: 80px; padding-bottom: 56px; }
+  .badge { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 28px; padding: 6px 14px; border-radius: 999px; background: var(--bz-chip); color: var(--bz-accent-strong); font-size: 14px; font-weight: 500; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bz-accent); }
+  .hero__sub { margin: 28px 0 0; max-width: 620px; font-size: 19px; color: var(--bz-ink-700); }
+
+  .layout-wrap { padding-bottom: 96px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 380px); gap: 24px; align-items: start; }
+  .aside { background: var(--bz-dark); color: #fff; border-radius: 28px; padding: 36px 32px; display: flex; flex-direction: column; gap: 14px; }
+  .aside__k { margin: 0; font-size: 14px; font-weight: 600; color: var(--bz-accent); }
+  .aside h2 { margin: 0; font-size: 26px; font-weight: 800; color: #fff; }
+  .aside__b { margin: 0; font-size: 15px; color: var(--bz-on-dark-2); }
+  .mail { align-self: flex-start; margin-top: 4px; padding: 10px 18px; border-radius: 999px; background: var(--bz-accent); color: var(--bz-on-accent); font-weight: 700; text-decoration: none; }
+  .qr { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 12px; font-size: 13px; color: var(--bz-on-dark-muted); }
+  .qr img { width: 160px; height: 160px; object-fit: contain; border-radius: 16px; background: #fff; padding: 10px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .hero { padding-top: 48px; padding-bottom: 40px; }
+    .layout-wrap { padding-bottom: 64px; }
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+title: Your AI Agent Pilot Works. What Does It Need Before Production?
+description: Agent pilots run on clean data with engineers watching. Production brings messy data, cross-system writes, and real consequences. Five checks before you scale.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-pilot-to-production-checklist-cover.png
+coverAlt: A robot walks from a small pilot under a glass dome into a production floor fitted with orange guardrails, a stop gate, and a rollback arrow
+sourceHash: '55e42d1e4bec'
+---
+
+A working agent pilot is still some distance from production. What is usually missing when you scale an agent pilot is runtime control, error recovery, and clear ownership. A stronger model does not supply any of these. This note covers how pilot and production environments differ, then gives a checklist to complete before scaling.
+
+
+import noteFig from '../media/agent-pilot-to-production-checklist-fig-en.png'
+
+<Figure src={noteFig} alt="Left: the environment shift when an agent pilot scales to production. Right: runtime guardrails checking actions between the agent's intent and the system write" caption="Figure: Pilot to Scale | Runtime Guardrails" width="wide" border />
+
+## Five conditions that flip between pilot and production
+
+A pilot usually runs smoothly because of five preconditions:
+1. Input data has been cleaned. Incomplete formats and conflicting meanings are removed.
+2. The workflow is heavily trimmed. Only the main happy path remains.
+3. Users are engineers or business staff who already know how to write prompts.
+4. The engineering team watches the whole run and can step in the moment something goes wrong.
+5. The system has read-only access. A mistake causes no financial loss and no regulatory exposure.
+
+All five flip in production. Real business data is full of unstructured noise and legacy formats. The agent has to perform real writes across business systems such as CRM and ERP. Operators have no prompt-debugging experience. A wrong call leads directly to financial loss and compliance risk.
+
+An EY report from September 2026 found that enterprises are adopting AI faster than their operating models can keep up. According to the report, the main barriers to scale are workflows that were never redesigned and governance that never reached runtime. Model access is usually not the biggest constraint.
+
+## Five checks before scaling an agent
+
+Before connecting an agent to core business processes, verify these five modules one by one.
+
+**1. Workflow redesign**
+
+Traditional workflows are designed around manual work. They have many steps and depend on layers of approval. Adding an agent requires breaking the workflow down into a state machine.
+
+Redesign the workflow for autonomous execution. Specify which steps the agent advances on its own, which actions keep a final human sign-off, and which exceptions fall under predefined rules. If the workflow is not redesigned, the agent becomes one more layer on top of the old process, and a chain of serial approvals leaves it stuck at waiting steps.
+
+**2. Runtime guardrails**
+
+Written security policies are not enough. The system needs code-level runtime guardrails. They sit between the model's proposed action and the actual write to the underlying system. Each action is checked first, then allowed through.
+
+Runtime guardrails include three mechanisms:
+- An allowlist for tool calls with strict parameter schema validation, which blocks undeclared system calls.
+- A permission sandbox for high-risk writes, which caps the maximum amount per task, the number of records modified, and the request rate.
+- A data loss prevention filter for sensitive data, which scans both inputs and outputs for compliance.
+
+**3. Named owners and a handoff path**
+
+Once engineers stop watching every run, a specific person or team has to be accountable for automated execution.
+
+Before scaling, assign three types of owners at the organizational level. The business owner confirms business rules. The technical owner monitors availability and latency. The compliance owner assesses data and operational risk. The system also needs a built-in path for human takeover. When the agent fails several calls in a row, its confidence drops below a threshold, or it detects conflicting intents, the system stops automated execution and hands the full context to the responsible business staff.
+
+**4. Rollback and end-to-end tracing**
+
+An agent is ready for write operations only when its errors can be undone and investigated.
+
+For writes, the engineering team must provide atomic rollback. If the agent is interrupted during a batch update or an order submission, the system automatically restores the original transaction state. Prompt inputs, reasoning traces, external API parameters, and return values are written to a tamper-evident log in structured form. This supports post-incident reconstruction and compliance audits.
+
+**5. End-to-end outcome metrics**
+
+Measuring how an agent performs in production requires metrics that cover the whole workflow.
+
+A production dashboard should track four core metrics: end-to-end task completion rate, frequency of human corrections, compute and API cost per task, and number of compensating retries after errors. A business line has grounds to send more traffic to the agent only when the human intervention rate keeps falling and unit cost stays under control.
+
+## Linking testing and governance gates
+
+Beyond the checklist, scaling has to connect with pre-launch testing and with company-wide governance rules.
+
+Stress-testing edge cases with simulated data before launch is an effective way to surface unknown failures early. For test design, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>.
+
+A defensive rule set that covers the system's full lifecycle limits the business risk of automated writes. The principles are in <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+
+## Scaling an agent pilot to production: FAQ
+
+### Why do agents with strong benchmark scores often fail in production?
+Public benchmarks mostly measure single-turn or few-turn reasoning within closed boundaries, and the inputs are usually well formatted. Real production environments are full of nonstandard dirty data, network jitter, timeouts, and unexpected responses from upstream systems. Large models have no built-in defense against these conditions. Once external variables fall outside what the prompt context anticipated, the model is likely to make wrong calls or retry repeatedly.
+
+### When scaling, should a company redesign workflows first or build technical guardrails first?
+Run both in parallel, with a defined order. Technical guardrails handle safety: they keep logic defects from causing data tampering or financial loss. Workflow redesign handles efficiency: it decides how far automation can go. In practice, set the blocking rules for write permissions first so the system has a fallback, then adjust task steps gradually to fit the business.
+
+### What modules make up runtime guardrails in production?
+Runtime guardrails in production usually have three layers. The input layer filters sensitive data and detects prompt injection. The decision layer uses policy-as-code to check that tool calls are on the allowlist and that parameters are valid. The execution layer sets limits on high-risk writes, capping the amount per task, the number of records modified, and the request rate; anything over the limit is blocked or routed to a human. All three layers run independently of the model and block unauthorized actions according to external rules.
+
+Complete these five checks one by one, connect the human handoff path, then open up business traffic step by step.

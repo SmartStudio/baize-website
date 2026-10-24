@@ -1,0 +1,9 @@
+---
+import Contact from '../../components/pages/Contact.astro';
+import { en } from '../../i18n/contact';
+import { alternates, localePath } from '../../lib/i18n';
+
+const zhPath = localePath('/contact/', 'zh-CN');
+const enPath = localePath('/contact/', 'en');
+---
+<Contact lang="en" copy={en} alternates={alternates(zhPath, enPath)} switchPath={zhPath} />

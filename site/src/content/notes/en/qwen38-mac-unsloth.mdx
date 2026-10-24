@@ -2,13 +2,12 @@
 title: Run Qwen3.8-27B Locally on Mac with Unsloth
 description: Pick an Unsloth Dynamic GGUF from Apple Silicon unified memory, then run Qwen3.8-27B with Desktop, Studio, or llama.cpp. On 32GB Macs, use UD-Q4_K_XL (~17.9GB).
 lang: en
-alternatePath: /notes/qwen38-mac-unsloth/
 pubDate: 2026-08-16
 category: AI编程
 relatedService: gateway
 ctaVariant: api
 author: Baize Tech
-cover: ./media/qwen38-mac-unsloth-cover.png
+cover: ../media/qwen38-mac-unsloth-cover.png
 coverAlt: A model cube with an orange core sits on a laptop, connected to a translucent memory slab that represents unified memory
 howto:
   name: Run Qwen3.8-27B on a Mac with Unsloth
@@ -21,6 +20,7 @@ howto:
       text: Download the matching file from unsloth/Qwen3.8-27B-GGUF. On 32GB, that file is UD-Q4_K_XL.
     - name: Chat with thinking-mode sampling
       text: Use temperature 1.0, top_p 0.95, and top_k 20. Start context at 8192, then raise it only if RAM remains.
+sourceHash: '78f361ac1ab7'
 ---
 
 Qwen3.8-27B runs on Apple Silicon unified memory. Unsloth's 4-bit Dynamic GGUF is about 18GB. A 24GB Mac can load it if you keep context short. 32GB is the comfortable default. Follow Unsloth's [Qwen3.8 guide](https://unsloth.ai/docs/models/qwen3.8) and download weights from [unsloth/Qwen3.8-27B-GGUF](https://huggingface.co/unsloth/Qwen3.8-27B-GGUF).
@@ -41,7 +41,7 @@ If the machine does not have that RAM, or you only need to call the model, [Baiz
 
 Qwen3.8-27B includes vision and reasoning, a native 256K context (YaRN can extend to 1M), tool calling, and MTP. Thinking is on by default. You can set `reasoning_effort` to `xhigh`, `medium`, `low`, or `none`.
 
-import fig from './media/qwen38-mac-unsloth-fig-en.png'
+import fig from '../media/qwen38-mac-unsloth-fig-en.png'
 
 <Figure
   src={fig}
@@ -187,7 +187,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-New accounts currently receive **$10 in starter credit**. Use it on a real task before you decide whether local weights are worth the RAM. Copy the live model ID from the [Models page](https://api.fxai.ai/models). The setup steps are in the <NoteLink slug="openai-compatible-open-model-api">Baize OpenAI-compatible API guide</NoteLink>.
+New accounts currently receive **$10 in starter credit**. Use it on a real task before you decide whether local weights are worth the RAM. Copy the live model ID from the [Models page](https://api.fxai.ai/models). The setup steps are in the <NoteLink slug="baize-open-model-api">GLM 5.3 API for Codex, DeepSeek Harness, and Oh My Pi</NoteLink>.
 
 ## Shortest path
 
@@ -196,5 +196,3 @@ To run it locally first: install [Unsloth Desktop](https://unsloth.ai/download/m
 To attach an editor or your own service: `llama-server` plus the same Unsloth GGUF.
 
 If the machine cannot hold the file, or the team needs one shared catalog: [create a Baize API account](https://api.fxai.ai/sign-up).
-
-<NoteLink slug="qwen38-mac-unsloth">Read the Chinese version.</NoteLink>

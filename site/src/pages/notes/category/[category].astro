@@ -1,297 +1,37 @@
 ---
 /**
- * 分类归档页 /notes/category/<slug>/
- *
- * 归档页最容易变成「薄内容」——一堆标题列表、没有独立价值,反而稀释权重。两个防线:
- *   1. getStaticPaths 只为「有笔记的分类」出页。「AI普及」「安全可信」目前是 0 篇,
- *      不会产出空壳页;等哪天有笔记了,归档页自动出现,不用改代码。
- *   2. 每个分类有自己的导语(CATEGORY_INTROS),说清这一类在回答什么问题,而不是套模板。
+ * 分类归档页 /notes/category/<slug>/。只为「中文有笔记的分类」出页,空分类不出空壳页。
+ * 英文同分类也有页时才配对 hreflang;没有时语言切换落到英文笔记列表。
  */
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import NoteCard from '../../../components/NoteCard.astro';
-import { CATEGORIES, CATEGORY_INTROS, categorySlug } from '../../../lib/notes';
+import NotesCategory from '../../../components/pages/NotesCategory.astro';
+import { alternates, localePath, pairNotes } from '../../../lib/i18n';
+import { CATEGORIES, categorySlug } from '../../../lib/notes';
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes', ({ data }) => !data.draft && data.lang === 'zh-CN');
-  const liveCategories = CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
+  const { zh, en } = pairNotes(await getCollection('notes'));
+  const zhNotes = [...zh.values()];
+  const enNotes = [...en.values()];
+  const live = (notes: typeof zhNotes) => CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
+  const zhLive = live(zhNotes);
+  const enLive = live(enNotes);
 
-  return liveCategories.map((category) => ({
-    params: { category: categorySlug(category) },
-    props: {
-      category,
-      // 只把「同样有页面的分类」传下去做互链——链到空分类就是死链。
-      siblings: liveCategories.filter((c) => c !== category),
-      notes: notes
-        .filter((n) => n.data.category === category)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-    },
-  }));
+  return zhLive.map((category) => {
+    const zhPath = localePath(`/notes/category/${categorySlug(category)}/`, 'zh-CN');
+    const enPath = enLive.includes(category) ? localePath(`/notes/category/${categorySlug(category)}/`, 'en') : null;
+    return {
+      params: { category: categorySlug(category) },
+      props: {
+        category,
+        siblings: zhLive.filter((c) => c !== category),
+        notes: zhNotes.filter((n) => n.data.category === category),
+        alternates: alternates(zhPath, enPath),
+        switchPath: enPath ?? localePath('/notes/', 'en'),
+      },
+    };
+  });
 }
 
-const { category, notes, siblings } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const site = import.meta.env.SITE;
-
-const intro = CATEGORY_INTROS[category];
-const path = `/notes/category/${categorySlug(category)}/`;
-const canonical = new URL(path, site).href;
-const description = `明理笔记 · ${category}：${intro}`;
-
-const collectionLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: `${category} · 明理笔记`,
-  description,
-  url: canonical,
-  inLanguage: 'zh-CN',
-  isPartOf: { '@type': 'Blog', name: '明理笔记', url: new URL('/notes/', site).href },
-  mainEntity: {
-    '@type': 'ItemList',
-    numberOfItems: notes.length,
-    itemListElement: notes.map((n, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      url: new URL(`/notes/${n.id}/`, site).href,
-      name: n.data.title,
-    })),
-  },
-};
-
-const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', site).href },
-    { '@type': 'ListItem', position: 2, name: '明理笔记', item: new URL('/notes/', site).href },
-    { '@type': 'ListItem', position: 3, name: category },
-  ],
-};
+const { category, notes, siblings, alternates: alts, switchPath } = Astro.props;
 ---
-<BaseLayout
-  title={`${category} · 明理笔记`}
-  description={description}
-  path={path}
-  jsonLd={[collectionLd, breadcrumbLd]}
->
-  <section class="hero">
-    <div class="wrap hero__in">
-      <p class="crumb"><a href={`${base}notes/`}>明理笔记</a> / {category}</p>
-      <div class="hero__row">
-        <div class="hero__copy">
-          <p class="hero__badge">专题</p>
-          <h1>{category}</h1>
-          <p class="hero__lead">{intro}</p>
-        </div>
-        <div class="hero__stat">
-          <p class="hero__num">{notes.length}</p>
-          <p class="hero__lbl">篇笔记</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap sec">
-    <p class="eyebrow">本专题</p>
-    <h2>全部笔记</h2>
-    <div class="grid">
-      {notes.map((note) => (
-        <NoteCard
-          title={note.data.title}
-          description={note.data.description}
-          pubDate={note.data.pubDate}
-          category={note.data.category}
-          slug={note.id}
-          cover={note.data.cover}
-          coverAlt={note.data.coverAlt}
-          lang={note.data.lang}
-        />
-      ))}
-    </div>
-  </section>
-
-  <nav class="wrap more" aria-label="其他分类">
-    <p class="eyebrow">换个话题</p>
-    <div class="more__links">
-      <a class="chip" href={`${base}notes/`}>全部笔记</a>
-      {siblings.map((c) => (
-        <a class="chip" href={`${base}notes/category/${categorySlug(c)}/`}>{c}</a>
-      ))}
-    </div>
-  </nav>
-
-  <section class="wrap book-wrap">
-    <div class="book">
-      <div>
-        <h2>先聊 30 分钟，<br />找出第一条该改的流程。</h2>
-        <p>不收费。也可以微信扫页脚二维码直接聊。</p>
-      </div>
-      <a class="bz-button bz-button--dark bz-button--lg pill" href={`${base}contact/`}>预约咨询 →</a>
-    </div>
-  </section>
-</BaseLayout>
-
-<style>
-  .wrap {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-  .hero {
-    background: var(--bz-dark);
-    color: var(--bz-on-dark);
-  }
-  .hero__in {
-    padding-top: 40px;
-    padding-bottom: 80px;
-  }
-  .crumb {
-    margin: 0 0 48px;
-    font-size: 14px;
-    color: var(--bz-on-dark-muted);
-  }
-  .crumb a {
-    color: inherit;
-    text-decoration: none;
-  }
-  .crumb a:hover {
-    color: var(--bz-on-dark);
-  }
-  .hero__row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 48px;
-    align-items: flex-end;
-  }
-  .hero__copy {
-    flex: 999 1 560px;
-    min-width: 0;
-  }
-  .hero__badge {
-    display: inline-flex;
-    margin: 0 0 24px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: var(--bz-dark-card);
-    color: var(--bz-accent);
-    font-size: 14px;
-    font-weight: 600;
-  }
-  h1 {
-    margin: 0;
-    font-weight: 900;
-    font-size: clamp(40px, 5.6vw, 76px);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-  }
-  .hero__lead {
-    margin: 28px 0 0;
-    max-width: 620px;
-    font-size: 19px;
-    color: var(--bz-on-dark-2);
-  }
-  .hero__stat {
-    flex: 0 1 200px;
-    padding: 20px;
-    border-radius: 16px;
-    background: var(--bz-dark-card);
-  }
-  .hero__num {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 800;
-  }
-  .hero__lbl {
-    margin: 0;
-    font-size: 14px;
-    color: var(--bz-on-dark-muted);
-  }
-  .sec {
-    padding-top: 80px;
-    padding-bottom: 56px;
-  }
-  .eyebrow {
-    margin: 0 0 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--bz-accent-strong);
-  }
-  h2 {
-    margin: 0 0 40px;
-    font-weight: 800;
-    font-size: clamp(28px, 3.2vw, 40px);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-  }
-  .more {
-    padding-bottom: 80px;
-  }
-  .more__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
-    padding: 0 18px;
-    border: 1px solid var(--bz-border-subtle);
-    border-radius: 999px;
-    color: var(--bz-ink-700);
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .chip:hover {
-    border-color: var(--bz-ink-900);
-    color: var(--bz-text-primary);
-  }
-  .chip:focus-visible {
-    outline: 3px solid var(--bz-focus-ring);
-    outline-offset: 2px;
-  }
-  .pill {
-    border-radius: 999px;
-  }
-  .book-wrap {
-    padding-bottom: 96px;
-  }
-  .book {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-    align-items: center;
-    justify-content: space-between;
-    padding: clamp(32px, 5vw, 56px);
-    border-radius: 20px;
-    background: var(--bz-accent);
-    color: var(--bz-on-accent);
-  }
-  .book h2 {
-    margin: 0 0 12px;
-  }
-  .book p {
-    margin: 0;
-    font-size: 16px;
-  }
-  @media (max-width: 640px) {
-    .wrap {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-    .crumb {
-      margin-bottom: 32px;
-    }
-    .sec {
-      padding-top: 56px;
-    }
-  }
-</style>
+<NotesCategory lang="zh-CN" category={category} notes={notes} siblings={siblings} alternates={alts} switchPath={switchPath} />

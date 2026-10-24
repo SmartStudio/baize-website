@@ -1,42 +1,52 @@
 ---
 import { Image } from 'astro:assets';
 import qr from '../assets/wechat-qr.png';
+import { localePath, withBase, type Lang } from '../lib/i18n';
 
 interface Props {
-  lang?: 'zh-CN' | 'en';
+  lang?: Lang;
 }
 
 const { lang = 'zh-CN' } = Astro.props;
 const isEnglish = lang === 'en';
 const base = import.meta.env.BASE_URL;
+const href = (zhPath: string) => withBase(base, localePath(zhPath, lang));
 const year = new Date().getFullYear();
+const SITE_LINKS = [
+  { path: '/services/', zh: '服务', en: 'Services' },
+  { path: '/method/', zh: '方法论', en: 'Method' },
+  { path: '/about/', zh: '关于白泽', en: 'About' },
+  { path: '/contact/', zh: '预约咨询', en: 'Contact' },
+];
+const RESOURCE_LINKS = [
+  { path: '/notes/', zh: '明理笔记', en: 'Notes' },
+  { path: '/rss.xml', zh: 'RSS', en: 'RSS' },
+  { path: '/llms.txt', zh: 'llms.txt', en: 'llms.txt' },
+];
 ---
 <footer class="ft">
   <div class="ft__inner">
     <div class="ft__brand">
-      <p class="ft__wm">baize <span>白泽明理</span></p>
-      <p>{isEnglish ? 'AI Native transformation: consulting, training, FDE.' : '企业 AI Native 转型：咨询、培训、FDE 驻场。'}</p>
+      {isEnglish ? <p class="ft__wm">baize</p> : <p class="ft__wm">baize <span>白泽明理</span></p>}
+      <p>{isEnglish ? 'Remote-first AI transformation: consulting, training, forward deployed engineering.' : '企业 AI Native 转型：咨询、培训、FDE 驻场。'}</p>
       <!--email_off--><a href="mailto:contacts@fxai.ai">contacts@fxai.ai</a><!--/email_off-->
     </div>
     <div class="ft__col">
       <span class="ft__h">{isEnglish ? 'Site' : '站点'}</span>
-      <a href={`${base}services/`}>服务</a>
-      <a href={`${base}method/`}>方法论</a>
-      <a href={`${base}about/`}>关于白泽</a>
-      <a href={`${base}contact/`}>预约咨询</a>
+      {SITE_LINKS.map((l) => <a href={href(l.path)}>{isEnglish ? l.en : l.zh}</a>)}
     </div>
     <div class="ft__col">
       <span class="ft__h">{isEnglish ? 'Resources' : '资源'}</span>
-      <a href={`${base}notes/`}>明理笔记</a>
-      <a href={`${base}rss.xml`}>RSS</a>
-      <a href={`${base}llms.txt`}>llms.txt</a>
+      {RESOURCE_LINKS.map((l) => <a href={href(l.path)}>{isEnglish ? l.en : l.zh}</a>)}
     </div>
-    <div class="ft__qr">
-      <Image src={qr} alt={isEnglish ? 'Baize Tech WeChat QR code' : '白泽明理微信二维码'} format="png" quality={90} loading="lazy" />
-      <span>{isEnglish ? 'Scan on WeChat' : '微信扫码咨询'}</span>
-    </div>
+    {!isEnglish && (
+      <div class="ft__qr">
+        <Image src={qr} alt="白泽明理微信二维码" format="png" quality={90} loading="lazy" />
+        <span>微信扫码咨询</span>
+      </div>
+    )}
   </div>
-  <p class="ft__meta">© {year} 白泽明理 Baize Tech</p>
+  <p class="ft__meta">© {year} {isEnglish ? 'Baize Tech' : '白泽明理 Baize Tech'}</p>
 </footer>
 <style>
   .ft {

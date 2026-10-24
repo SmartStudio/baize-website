@@ -10,7 +10,6 @@ const notes = defineCollection({
       title: z.string(),
       description: z.string(),
       lang: z.enum(['zh-CN', 'en']).default('zh-CN'),
-      alternatePath: z.string().regex(/^\/notes\/[^/]+\/$/).optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.enum(['AI普及', 'AI编程', '企业落地', '安全可信', 'Loop与方法论', '案例复盘']),
@@ -20,6 +19,8 @@ const notes = defineCollection({
       coverAlt: z.string().optional(),
       author: z.string().default('白泽明理'),
       draft: z.boolean().default(false),
+      // 英文篇专用:翻译时中文源文件的 sha256 前 12 位,`pnpm i18n:status` 据此判断译文是否过期。
+      sourceHash: z.string().regex(/^[0-9a-f]{12}$/).optional(),
       howto: z
         .object({
           name: z.string(),

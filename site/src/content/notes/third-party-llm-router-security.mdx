@@ -1,7 +1,6 @@
 ---
 title: "不明 LLM 中转站为什么危险：一次 Agent 供应链投毒的复盘"
 description: "从 V2EX 的 Codex 中转站脚本注入事件，拆解不明 LLM 中转站、Agent Full Access、凭据窃取与安全 LLM 网关的防御闭环。"
-alternatePath: /notes/third-party-llm-router-security-guide/
 pubDate: 2026-08-23
 category: 安全可信
 relatedService: gateway
@@ -135,5 +134,3 @@ import securityFig from './media/third-party-llm-router-security-fig-zh.png'
 不明中转站与宿主机高权限执行放在一起，是 Agent 时代的供应链风险。公开个案已经说明，攻击者可以把环境检查的外衣套在数据收集指令外，再借自动化执行读取本地资产。
 
 不要用“中转站看起来便宜”替代安全判断。对不可信模型链路，默认关闭无人值守权限，运行在无凭据沙盒中，严格限制网络出口。团队需要统一接入时，自建或自管 LLM 网关直连模型提供商，不在链路上再引入无法审计的中转节点。
-
-<NoteLink slug="third-party-llm-router-security-guide">Read the English version.</NoteLink>

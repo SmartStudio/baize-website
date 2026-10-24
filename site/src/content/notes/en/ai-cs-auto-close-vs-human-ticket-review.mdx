@@ -1,0 +1,86 @@
+---
+title: "AI Customer Service Auto-Close: Why Tickets Still Need Human Review"
+description: An AI bot marking a chat resolved does not clear the ticket. How to split auto-close from human ticket review, as China's GB/T 47746-2026 standard does.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-cs-auto-close-vs-human-ticket-review-cover.png
+coverAlt: "Auto-close vs. human ticket review: a robot arm checks off a ticket, tickets stack in a tray, and a reviewer with a magnifier sends one back in a loop"
+howto:
+  name: Draw the allowlist before you turn on auto-close
+  steps:
+    - name: Allowlist
+      text: Only standardized, verifiable issue types that involve no money and no safety commitments.
+    - name: Mandatory review
+      text: Refunds, compensation, price changes, safety issues, explicit requests for a human, repeat contacts with complaints, and questions the knowledge base cannot answer.
+    - name: Sampling and feedback
+      text: Sample a fixed share per day or per shift. Every rejected ticket must feed back into the rules or the knowledge base. Tickets with missing fields cannot auto-close.
+sourceHash: '2ef7d8abb4e7'
+---
+
+import noteFig from '../media/ai-cs-auto-close-vs-human-ticket-review-fig-en.png'
+
+A common dashboard view: the AI customer service bot marks a conversation "resolved," and the ticket closes with it. The support manager still pulls a batch of tickets for people to check. China's national standard GB/T 47746-2026 (Customer contact services: requirements for collaboration between human and intelligent customer service) took effect on 2026-09-01. Beyond task assignment and handoff to human agents, it sets closed-loop requirements for ending service, satisfaction ratings, generating service tickets, and collaborative improvement. Auto-close decides how a conversation ends. Human ticket review checks whether the close was correct. This note covers only these two process steps. Who stands behind the bot's commitments is covered in <NoteLink slug="ai-cs-can-reply-vs-who-owns-liability">AI Customer Service Compliance: Who Owns What the Bot Promises?</NoteLink>.
+
+<Figure src={noteFig} alt="Auto-close vs. human ticket review: on the left, a bot marks the conversation resolved; on the right, a reviewer samples tickets and sends some back for mandatory human review" caption="Figure: Auto-Close | Ticket Review" width="wide" border />
+
+## What auto-close covers
+
+Auto-close usually means the system ends the bot-side conversation by rule and writes a resolution code. Published interpretations of the standard say it sets requirements for when human and AI agents may end service, and for closed-loop handling such as satisfaction ratings and service ticket generation. In practice, common triggers are: the customer confirms there is nothing else, the session times out with no activity, or a standardized question has been answered from the knowledge base.
+
+Most auto-closable items can be checked against a record: shipment tracking, order status, a restatement of a published policy. The close record should carry three fields: the knowledge base article or rule ID, whether the conversation was ever handed to a human, and whether the conversation summary was written to the ticket. Without these three fields, "resolved" is a flag on the conversation. Nobody can audit the close.
+
+## What human ticket review adds
+
+Human ticket review does not reopen the conversation with the customer. It runs QA and corrections on tickets that have already been generated or closed:
+
+1. **Sampling QA**: Pull a fixed share of auto-closed tickets. Check that the resolution code matches what the customer asked for, and look for tickets closed while the customer was still asking questions.
+2. **Mandatory review queue**: Refunds, compensation, price changes, safety issues, escalating frustration, multiple contacts within 24 hours, and questions the bot's knowledge base cannot answer. These should go to a human during the conversation. If one was auto-closed by mistake, review must reopen or reassign it.
+3. **Fix the foundation**: Tickets that were wrongly closed, wrongly routed, or stuck in repeated scripted replies past a threshold feed back into the knowledge base, the handoff thresholds, and the routing rules. A note on one conversation does not fix the cause.
+
+Press coverage summarizes the standard this way: AI agents take standardized questions first, and human agents take complex and safety-related questions first. A handoff between AI and human must carry over the customer's identity and history so the customer does not repeat the story. Review checks three things: handoffs that should have happened and did not, records that should have been kept and were not, and whether the close reason is correct.
+
+## How the two steps connect
+
+- Conversation layer: the issue matches the auto-close allowlist → write the resolution code and article ID → create or update the ticket → optional satisfaction survey.
+- Ticket layer: the issue is outside the allowlist, or the ticket is drawn for QA → human review queue → pass: close and archive; fail: reopen, reassign, or fix the knowledge base, then close.
+- Reporting layer: track "auto-close volume" and "review rejection rate" separately. When the rejection rate rises, check routing and the knowledge base first. Do not start by tuning model parameters.
+
+When you add guardrails to AI development, assign close permission and review permission to different roles. See <NoteLink slug="engineering-guardrails-for-ai">Engineering Guardrails for AI Coding: From Writing Code to Constraining It</NoteLink>. If training ends and the SOP stays the same, auto-close rules drift away from what agents do on the floor. See <NoteLink slug="all-hands-ai-training-workflow-unchanged">Company-Wide AI Training Is Done. Why Haven't Workflows Changed?</NoteLink>.
+
+## How to apply it: draw the allowlist before you turn on auto-close
+
+- Allowlist: only standardized, verifiable issue types with no money or safety commitments.
+- Blocklist / mandatory review: refunds, compensation, price changes, safety issues, customers who explicitly ask for a human, repeat contacts with complaints in a short window, questions with no knowledge base answer.
+- Sampling: a fixed share per day or per shift. Every rejected ticket must feed back into the rules or the knowledge base.
+- Ticket fields: resolution code, article ID, handed to human (yes/no), reviewer, rejection reason. A ticket with missing fields cannot auto-close.
+
+```text
+Your job: within the allowlist, end standardized conversations and write the resolution code and knowledge base article ID. Do not auto-close if the conversation involves a refund, compensation, price change, safety issue, or a request for a human.
+When done, show me: resolution code, article ID, ticket number, and whether the ticket entered the human review queue.
+Do not: treat "the customer has not replied for a long time" as a resolved complex dispute; auto-close a ticket without an article ID; use auto-close to bypass mandatory handoff conditions.
+```
+
+## AI customer service auto-close: FAQ
+
+### If the AI bot auto-closes a conversation, can we skip creating a ticket?
+
+No. Interpretations of the standard place service ticket generation in the closed loop, alongside satisfaction ratings and collaborative improvement. Auto-close can trigger or update a ticket. It does not remove the ticket. Without a ticket, there is nothing to sample and no record to drive knowledge base fixes.
+
+### Which tickets must go through human ticket review?
+
+At minimum: money and liability items (refunds, compensation, price changes), safety issues, customers who explicitly ask for a human, repeat contacts with complaints in a short window, tickets closed even though the knowledge base had no answer, and auto-closed tickets drawn in sampling. Write the specific thresholds into the routing table. Do not leave them to agents' judgment in the moment.
+
+### How is human ticket review different from answering the customer again?
+
+Review works on tickets that have already been generated or closed. The reviewer checks the resolution code, the supporting material, and the routing, then decides whether to reopen, reassign, or change a rule. The on-shift agent handles the customer conversation. Review is QA and process improvement, and by default it does not ask the customer to tell the story a third time.
+
+## Sources
+
+1. [GB/T 47746-2026 on China's national standards public portal (published 2026-05-25, effective 2026-09-01; in Chinese)](https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=0E87FFCB90EF54C0F997F7DF9AE52FC0)
+2. [Keceyun: interpretation of the national standard (task assignment, ending service, satisfaction ratings, and the service ticket loop; in Chinese)](https://www.keceyun.com/policy/newsdetail/696015.html)
+3. [Guancha.cn reprinted report (2026-09-02, handoff to human agents and routing scenarios; in Chinese)](https://www.guancha.cn/economy/2026_09_02_829739.shtml)

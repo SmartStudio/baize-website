@@ -1,0 +1,255 @@
+---
+/**
+ * 笔记列表页主体,中英两个路由共用(/notes/、/en/notes/)。样式只在这里写一份,
+ * 免得两份 scoped 样式各自漂移。文案按 lang 取 COPY,路径一律经 lib/i18n。
+ */
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../NoteCard.astro';
+import { localePath, notePath, noteSlug, withBase, type Lang } from '../../lib/i18n';
+import { CATEGORIES, categoryLabel, categorySlug } from '../../lib/notes';
+
+interface Props {
+  lang: Lang;
+  /** 已按语言过滤、去掉 draft 的笔记。 */
+  notes: CollectionEntry<'notes'>[];
+  alternates: { hreflang: string; path: string }[];
+  switchPath?: string;
+}
+
+const COPY = {
+  'zh-CN': {
+    title: '明理笔记',
+    blogName: '明理笔记',
+    publisher: '白泽明理',
+    description: '白泽明理关于 AI 接入、工程与落地的笔记：接入安全、研发流程、Loop Engineering 与端到端交付。',
+    eyebrow: '明理笔记',
+    h1: '教程库',
+    lead: (n: number) => `关于 AI 接入、工程与落地的笔记，按话题筛选。共 ${n} 篇。`,
+    filterLabel: '按分类筛选笔记',
+    all: '全部',
+    empty: '该分类暂时还没有笔记，欢迎先看看其他话题。',
+    home: '首页',
+  },
+  en: {
+    title: 'Notes',
+    blogName: 'Baize Tech Notes',
+    publisher: 'Baize Tech',
+    description: 'Baize Tech notes on putting AI to work in real teams: engineering practice, security, governance, and rollout.',
+    eyebrow: 'Baize Tech Notes',
+    h1: 'Notes',
+    lead: (n: number) => `Notes on putting AI to work in real teams. Filter by topic. ${n} ${n === 1 ? 'note' : 'notes'}.`,
+    filterLabel: 'Filter notes by category',
+    all: 'All',
+    empty: 'No notes in this category yet. Try another topic.',
+    home: 'Home',
+  },
+} as const;
+
+const { lang, notes: input, alternates, switchPath } = Astro.props;
+const t = COPY[lang];
+const base = import.meta.env.BASE_URL;
+const site = import.meta.env.SITE;
+const path = localePath('/notes/', lang);
+
+const notes = [...input].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 空分类不出归档页(见 category/[category].astro),所以筛选条也只列有笔记的分类——
+// 免得点进去是个空页面。
+const liveCategories = CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
+
+const blogLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: t.blogName,
+  description: t.description,
+  url: new URL(path, site).href,
+  inLanguage: lang,
+  publisher: { '@type': 'Organization', name: t.publisher },
+  blogPost: notes.map((n) => ({
+    '@type': 'BlogPosting',
+    headline: n.data.title,
+    description: n.data.description,
+    url: new URL(notePath(noteSlug(n.id), lang), site).href,
+    datePublished: n.data.pubDate.toISOString(),
+    articleSection: n.data.category,
+    inLanguage: n.data.lang,
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t.home, item: new URL(localePath('/', lang), site).href },
+    { '@type': 'ListItem', position: 2, name: t.title },
+  ],
+};
+---
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  path={path}
+  jsonLd={[blogLd, breadcrumbLd]}
+  lang={lang}
+  alternates={alternates}
+  switchPath={switchPath}
+>
+  <section class="wrap lib-head">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.h1}</h1>
+    <p class="lead">{t.lead(notes.length)}</p>
+
+    {/* 筛选项是真链接,不是纯 JS 按钮:
+        - 抓取器顺着它发现分类归档页(否则归档页只有 sitemap 能找到,近乎孤儿);
+        - 无 JS 时点击直接跳归档页,功能不丢;
+        - 有 JS 时拦下来做即时筛选,并把地址栏同步成归档页地址——刷新会真的落到
+          那一页,而内容与筛选结果一致,不会出现「URL 说 A、内容是 B」。 */}
+    <nav class="filter" aria-label={t.filterLabel}>
+      <a class="chip is-active" href={withBase(base, path)} data-filter="all" aria-current="page">{t.all}</a>
+      {liveCategories.map((c) => (
+        <a class="chip" href={withBase(base, localePath(`/notes/category/${categorySlug(c)}/`, lang))} data-filter={c}>{categoryLabel(c, lang)}</a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="wrap lib-grid">
+    <div class="grid" id="notes-grid">
+      {notes.map((note) => (
+        <NoteCard
+          title={note.data.title}
+          description={note.data.description}
+          pubDate={note.data.pubDate}
+          category={note.data.category}
+          slug={noteSlug(note.id)}
+          cover={note.data.cover}
+          coverAlt={note.data.coverAlt}
+          lang={note.data.lang}
+        />
+      ))}
+    </div>
+    <p class="empty" id="notes-empty" hidden>{t.empty}</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .lib-head {
+    padding-top: 56px;
+    padding-bottom: 32px;
+  }
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bz-accent-strong);
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--bz-text-primary);
+  }
+  .lead {
+    margin: 12px 0 32px;
+    font-size: 18px;
+    color: var(--bz-ink-700);
+  }
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 1px solid var(--bz-border-subtle);
+    border-radius: 999px;
+    background: var(--bz-white);
+    color: var(--bz-ink-700);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .chip:hover {
+    border-color: var(--bz-ink-900);
+    color: var(--bz-text-primary);
+  }
+  .chip.is-active {
+    background: var(--bz-ink-900);
+    border-color: var(--bz-ink-900);
+    color: var(--bz-white);
+  }
+  .chip:focus-visible {
+    outline: 3px solid var(--bz-focus-ring);
+    outline-offset: 2px;
+  }
+  .lib-grid {
+    padding-top: 16px;
+    padding-bottom: 96px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .empty {
+    margin: 32px 0 0;
+    color: var(--bz-text-secondary);
+  }
+  @media (max-width: 640px) {
+    .wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .lib-head {
+      padding-top: 40px;
+    }
+  }
+</style>
+
+<script>
+  // 渐进增强:链接本身已经能用(直接跳分类归档页),这里把它升级成不刷新的即时筛选。
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.filter a'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#notes-grid [data-category]'));
+  const empty = document.getElementById('notes-empty');
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // 新标签页/中键打开等修饰键点击不拦截,让浏览器照常走真链接。
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e as MouseEvent).button !== 0) return;
+      e.preventDefault();
+
+      const filter = link.dataset.filter || 'all';
+
+      links.forEach((l) => {
+        const active = l === link;
+        l.toggleAttribute('aria-current', active);
+        if (active) l.setAttribute('aria-current', 'page');
+        l.classList.toggle('is-active', active);
+      });
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
+
+      if (empty) empty.hidden = visible !== 0;
+
+      // 地址栏同步到归档页地址:刷新/分享都会落到那一页,内容与当前筛选一致。
+      history.replaceState(null, '', link.getAttribute('href'));
+    });
+  });
+</script>
