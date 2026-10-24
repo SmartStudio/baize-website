@@ -10,7 +10,7 @@ howto:
   name: 把网站免费部署到 Cloudflare Pages
   steps:
     - name: 连接仓库
-      text: "登录 Cloudflare 控制台，进入 Workers & Pages，切到 Pages 标签页，点 Connect to Git，授权并选中你的 GitHub 仓库。"
+      text: "登录 Cloudflare 控制台，进入 Workers & Pages，点 Create application，选 Pages，再点 Connect to Git，授权并选中你的 GitHub 仓库。"
     - name: 配置构建
       text: "选好框架预设，填写构建命令（如 pnpm build）和输出目录（如 dist）；工程在子目录时把 Root directory 指到该子目录。"
     - name: 首次部署
@@ -27,7 +27,7 @@ howto:
 
 ## 四步把网站部署上线
 
-1. **连接仓库**：登录 Cloudflare 控制台，进入 Workers & Pages，切到 Pages 标签页，点 Connect to Git，授权并选中你的 GitHub 仓库。
+1. **连接仓库**：登录 Cloudflare 控制台，进入 Workers & Pages，点 Create application，选 Pages，再点 Connect to Git，授权并选中你的 GitHub 仓库。
 2. **配置构建**：选好框架预设（如 Astro），填写构建命令（通常是 npm run build 或 pnpm build）和输出目录（常见是 dist）。如果工程在仓库子目录里，记得把根目录（Root directory）指到那个子目录。
 3. **首次部署**：点击 Save and Deploy，Cloudflare 会拉取代码、安装依赖、执行构建，几十秒后你的网站就上线在一个 pages.dev 的免费二级域名上了。
 4. **绑定自定义域名**：在项目的 Custom domains 里添加你的域名，Cloudflare 自动配好 DNS 记录并签发免费 HTTPS 证书。之后每次往主分支推代码，都会自动触发重新部署——这就是持续部署。
