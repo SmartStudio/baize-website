@@ -1,0 +1,64 @@
+---
+title: 'AI Native vs. AI-Enhanced: Does Your System Still Work Without the AI?'
+description: Remove the AI from an AI-enhanced system and it still runs, only slower. Remove it from an AI Native system and nothing is left. One test to tell them apart.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: loop-engineering
+author: Baize Tech
+cover: ../media/ai-native-vs-ai-enhanced-cover.png
+draft: false
+sourceHash: 'dded5246ee47'
+---
+
+Most teams that call their product "AI Native" have added a plugin layer to an existing system. The feature list gains a few "smart" badges. The operating logic stays the same: the user acts first, then the AI responds. Remove the plugin and the system still runs. It gets a little slower and a little less helpful. That is AI-enhanced.
+
+In an AI Native system, AI is part of the structure. The system continuously monitors its environment, its users, and the state of the business. It uses predictive models to estimate what happens next, makes decisions, executes them, and corrects itself based on the results. Remove the AI and the system does not exist anymore.
+
+## First question: what is left if you remove the AI?
+
+"AI Native" has been used so often that almost any product calling a large-model API applies it to itself. The label does not tell you much. One question does: **If you remove the AI module completely, does the product and the business still work?**
+
+If yes, the system is AI-enhanced. AI is an extra tool. A person still starts every action, the main logic was written in advance, and AI runs errands to make those actions faster. If no, the system may be AI Native. It exists because of a loop of sensing, prediction, and decision. Take that loop out and you have an empty shell.
+
+import compareFig from '../media/ai-native-vs-ai-enhanced-fig-1-en.png'
+
+<Figure src={compareFig} alt="Two identical devices: on the left, a glowing brain hangs outside the device on a cable as an add-on; on the right, the brain is mounted inside the device frame as its backbone" caption="Figure: AI-Enhanced | Add-On Tool | AI Native | System Backbone" width="wide" border />
+
+Huawei Cloud and its Cloud Native Elite Club published an *AI-Native Technology and Practice* white paper. It states (our translation): "AI-Native is not an absolute, black-or-white state. It is a spectrum that marks how intelligent an application system is." On that basis it defines six levels, L0 to L5. The same white paper says that without built-in AI capability, "the system would cease to exist." That is the remove-the-AI test in the paper's own words. A spectrum means most systems sit somewhere in the middle. Use the question as a filter to rule out products that carry a "smart" label and would work the same without it. Do not use it as a strict yes-or-no verdict.
+
+## What "predict" and "act" mean in practice
+
+"Predict" means the system models future states and does not wait for events to happen. A supply chain system forecasts a raw-material shortage several days out and adjusts purchasing. A personal assistant reads your calendar and past behavior, concludes you are about to travel, and starts booking tickets and building an itinerary before you ask. A network operations system forecasts a traffic peak or a failure point and adds capacity or fails over in advance. Each of these acts before an alarm goes off.
+
+"Act" means the system executes after it predicts. It does not hand the conclusion to a person and wait for approval. This is the core capability of agentic AI: planning, calling tools, keeping state across multiple steps, and finishing the task. Technical material on agentic AI commonly describes a perceive-reason-plan-act-observe loop. Sense-predict-act-learn describes the same loop at a different level of detail.
+
+<Callout type="tip" title="A practical test">
+Ask two questions. 1. If you remove the AI module completely, does the product and the business still work? If not, the system may be AI Native. 2. Does the system wait for you to speak, or does it move toward a goal on its own? Only the second is predict-and-act. The first is a reactive tool with a new interface.
+</Callout>
+
+## Predict-and-act is already an engineering practice
+
+Telecom network operations is one of the fields furthest along with this loop. In its technical reviews, Ericsson describes a staged model for autonomous networks: observe, then recommend, then execute after human confirmation, then fully automatic. Forecasting a traffic peak and adding capacity, or predicting a failure point and failing over, both happen inside this staged model. Operators do not jump straight to full automation. At least one vendor has broken predict-and-act into steps that can be verified one level at a time.
+
+import loopCycleFig from '../media/ai-native-vs-ai-enhanced-fig-2-en.png'
+
+<Figure src={loopCycleFig} alt="Sense, predict, act, and learn stations connected end to end in a continuous loop" caption="Figure: Sense | Predict | Act | Learn" width="wide" border />
+
+Microsoft Research describes 2026 as the year autonomous agents start to collaborate, negotiate, and complete transactions on behalf of people and organizations. The same body of research repeats that AI can help people scale, and that people must make sure AI stays faithful to its original purpose. The more capable the predict-and-act loop, the more it needs someone checking that it has not drifted. Both requirements apply from the start.
+
+<Callout type="tip" title="Related reading">
+For the predict-and-act loop to run, it needs the plan, execute, observe, correct cycle described in Loop Engineering. See <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering</NoteLink>. Where each round's lessons are stored, and how to keep them trustworthy, are covered in <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink> and <NoteLink slug="gbrain-markdown-truth-source">AI Agent Memory Architecture: Markdown Is the Source of Truth, the Database Is a Disposable Cache</NoteLink>.
+</Callout>
+
+## Limits: the goal is reliability, not autonomy
+
+In high-risk, heavily regulated settings such as final medical diagnosis, large financial transactions, and legal decisions, human-in-the-loop review is still a hard requirement. In its healthcare work, Microsoft Research treats clinician validation in the loop as a necessary condition for connecting agents safely, not as a temporary compromise. Ericsson's autonomy model keeps an "execute after human confirmation" level for the same reason. The more capable the loop, the more clearly you need to mark where a human takes over.
+
+Fully autonomous predict-and-act places very high demands on the reliability of the world model, the accuracy of tool calls, and the completeness of safety guardrails. In 2026, most systems in real deployment still sit in the middle of the spectrum. Teams chose that out of caution.
+
+## Where to start
+
+When most teams want to build AI into a system, they start with an AI feature list: a summary here, a recommendation there, a chat box somewhere else. The list grows. The system's main logic does not change. The team is still adding plugins to the old system.
+
+Start with the opposite question: should this system be built around a sense-predict-act-learn loop? If yes, design how the loop runs first. Then choose the models and connect the tools. Baize Tech starts every Loop Engineering design here: decide how the loop closes, then decide what goes on the feature list.

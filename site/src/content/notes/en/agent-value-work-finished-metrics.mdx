@@ -1,0 +1,74 @@
+---
+title: "How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage"
+description: Call counts and active users don't show what an AI agent delivers. Track cycle time, rework rate, tool-switching cost, and agent overlap against team baselines.
+lang: en
+pubDate: 2026-10-23
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/agent-value-work-finished-metrics-cover.png
+coverAlt: A white robot hands a stack of finished documents to an employee with both hands; a checklist beside them shows five orange check marks
+sourceHash: '1f4fb9fc7307'
+---
+
+After a company rolls out agents, the first evaluation question is whether the team's work got finished. Model call volume comes second. API call counts, provisioned seats, and request volume show that people opened the tool. They do not show that the work got easier. An agent evaluation should track four groups of metrics: end-to-end time from request to completion, plus total output; the share of outputs that people edit or redo; the cost of switching between agents and checking their output; and overlap between agents that do the same job. Set a pre-launch baseline for each metric and measure it per business team. Do not use a single company-wide average.
+
+import noteFig from '../media/agent-value-work-finished-metrics-fig-en.png'
+
+<Figure src={noteFig} alt="On the left, a gauge with a jade needle stands for agent evaluation; on the right, tasks on a conveyor belt pass through an inspection gate and pile up in a checked stack, standing for completion rate" caption="Figure: Agent Evaluation | Completion Rate" width="wide" border />
+
+## The usage-dashboard trap
+
+Many company dashboards lead with call counts, token consumption, and active users.
+
+Heavy usage can be a sign of failure. An employee who asks the same agent the same question several times is often getting off-target answers and rewriting the prompt. The dashboard records high engagement. The business records rework. For how budget control works under usage-based billing, see <NoteLink slug="ai-usage-pricing-budget">Can an annual budget still control usage-based AI pricing?</NoteLink>.
+
+When usage counts as the result, teams look for ways to get employees to click more, and the bottlenecks in the workflow stay hidden. Evaluate what the business delivers.
+
+## The data: leaders and frontline staff see agents differently
+
+On October 16, 2026, CIO Dive reported on an Asana survey of more than 4,500 CIOs, AI leaders, and employees in the US and UK. 68% of leaders use three or more agents each week. Among employees, the figure is 36%. Fewer than a quarter of employees say their current agents can handle the tasks they most need help with.
+
+The survey also measured the hidden cost of agent sprawl. Among employees who use agents daily, nearly half say about 10% of their working time goes to switching tools, working out which agent to use, managing outputs, and resolving conflicts. 38% of respondents say more than a quarter of agent work is duplicated or overlapping.
+
+Arnab Bose, Asana's chief product officer, said CIOs should look less at agent activity and start measuring whether work actually gets done and which work matters most to teams and the business. The report also notes that employees who work alongside agents every day are more likely to see agents act on incomplete context or produce conflicting outputs, so their caution has a basis. Our view: management should not read this caution as resistance. On the gap between training and real workflows, see <NoteLink slug="all-hands-ai-training-workflow-unchanged">Company-Wide AI Training Is Done. Why Haven't Workflows Changed?</NoteLink>.
+
+## Four metrics to track
+
+First, delivery cycle time and total output. Pull data from the project management system or the ticketing backend. For a specific workflow, such as customer complaint responses, report production, or first-pass contract review, measure the time from task creation to final delivery. Compare before and after automation: did the team close more tickets in the same period, and did per-item cycle time drop?
+
+Second, rework and correction rate. Measure how much of each deliverable a person changes before it ships. If an analyst deletes or rewrites more than half of an agent-drafted research report, or agent-generated code gets sent back for a rewrite in code review, the tool's output usually cannot ship as is. The change ratio between first draft and final version measures how usable the agent is.
+
+Third, tool-switching and verification overhead. Measure the extra coordination and checking employees do to work with AI tools. If one task requires moving data back and forth between three or four agents, or spending a long time checking output line by line for fabricated data, that friction offsets the gains from automation.
+
+Fourth, duplication and conflicting outputs. Check whether several agents in a team do the same kind of work. When departments each launch similar tools, data sources diverge, definitions conflict, and someone has to reconcile the numbers.
+
+## Set baselines per team, not company-wide
+
+Work differs by role. Legal contract review depends on precise clauses. Engineering depends on unit test pass rates. Sales lead handling depends on speed. A single company-wide efficiency figure that mixes every department's usage does not show where to make changes.
+
+Use the business team as the unit of evaluation. Before an agent launches, record the team's historical baseline for the same tasks: average manual handling time, error rate, and monthly volume. After a settling-in period, measure the same numbers the same way and compare before and after.
+
+## Three actions once the data is in
+
+First, consolidate. Merge agents with overlapping functions, shut down configurations nobody uses, and fold scattered tools into standard shared workflows.
+
+Second, reset development priorities. Put development resources first into the tasks employees say they most need help with and that current agents still handle poorly.
+
+Third, fill in missing context. Agents often answer poorly because permissions and data sources were never connected. For steps with high rework rates, provide structured databases or business knowledge bases so the agent makes fewer errors from missing information.
+
+## Agent evaluation: FAQ
+
+### Are call counts and token consumption useless for evaluation?
+
+Call counts and token consumption are cost and system-health metrics. Use them to account for compute spend, check that system load is stable, and catch scripts stuck in call loops. To see how much time a tool saved and how much work it completed, look at business delivery results. Do not report cost as output.
+
+### Frontline employees are cautious about new tools. How should management read that?
+
+Frontline caution usually comes from seeing where agents fail every day. As the survey notes, employees who run business processes directly know best how models fail when context is missing. Forcing company-wide adoption can push bad data downstream. Management should take the specific friction points employees report seriously, and use the frequent errors and rework cases they flag as inputs for improving prompts and filling in system data.
+
+### How should a team collect data to measure end-to-end completion rate?
+
+Put the instrumentation in the business systems where work actually flows, not only in the chat window. The engineering team can add automation tags in the ticketing system, CRM, or code repository. When an agent starts or routes a task, log the time the task enters the automated step. If the task passes downstream acceptance and closes without being sent back by a person, count it as one successful automated delivery. Completion rate = tasks closed without being sent back ÷ total tasks that entered the workflow.

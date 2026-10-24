@@ -15,7 +15,8 @@
     "favicon:gen": "node scripts/gen-favicon.mjs",
     "test": "vitest run",
     "check:i18n": "node scripts/check-i18n-dist.mjs dist",
-    "i18n:status": "node scripts/i18n-status.mjs"
+    "i18n:status": "node scripts/i18n-status.mjs",
+    "i18n:links": "node scripts/i18n-links.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.3",
