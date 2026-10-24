@@ -1,0 +1,79 @@
+---
+title: "Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot"
+description: Code and math can be checked instantly; long-cycle work cannot. Rank enterprise AI use cases by feedback loop length. Digital ads already run a closed loop.
+lang: en
+pubDate: 2026-10-23
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-verifiable-work-first-cover.png
+coverAlt: A workbench with instant right-or-wrong feedback, next to a business process with a long feedback loop where results stay out of sight
+sourceHash: '031a6df7ca2f'
+---
+
+This is note 03 in our podcast reading series. It can be read on its own.
+
+On a podcast episode, Ben Thompson argued that coding and math are where large language models have improved fastest, because answers in both can be checked on the spot. Code gets feedback from compilers and test cases. Math derivations run on a strict symbolic system.
+
+There is little evidence yet that this ability carries over to long-cycle work that is hard to verify. When enterprises pick AI use cases, they often ignore how long the feedback loop is. Work with long cycles and many outside variables does not translate benchmark gains into business results. In commerce, digital advertising is one of the few areas with an instant verification loop built in.
+
+import noteFig from '../media/ai-verifiable-work-first-fig-en.png'
+
+<Figure src={noteFig} alt="Left: AI use cases ranked by feedback loop length, shown as an hourglass beside a long road fading into fog. Right: a verifiable task loop from draft to check to approval" caption="Figure: AI Use Cases | Verifiable Tasks" width="wide" border />
+
+## Verifiable domains and the open world: from game boards to real business
+
+Computers handle problems with clear rules and closed boundaries well. Chess and Go have fixed rules, and every move gets an immediate win-probability signal. A model playing itself inside those boundaries gets a definite signal from every attempt.
+
+Software development has a similar loop. A syntax error, an API response, or a passing or failing test can be judged within seconds. Cheap, high-frequency automated checks let models iterate fast.
+
+Most enterprise work has no such check. Business planning, reorganizations, and PR strategy have no automated validators. Results take months to show and are affected by outside variables. Without an immediate standard of judgment, a model cannot correct itself through trial and error. Its output stays at the level of imitating a writing style, and delivery quality cannot be guaranteed.
+
+## Internet text records the results of thinking, rarely the process
+
+LLM pretraining relies on public internet text. Most of what accumulates on the public web is the final result of human thinking.
+
+Research reports, papers, and open-source repositories record finished versions. The outlines authors revised, the hypotheses they dropped, and the error branches they ruled out rarely end up on a web page.
+
+A model trained on that text has seen huge numbers of conclusions and argument structures, and it can write analysis summaries in a convincing industry voice. Faced with a real problem that has no standard answer, it lacks records of how people form hypotheses about unknown variables, test them, and rule them out one by one. Without an external tool giving real-time right-or-wrong feedback, fluent writing does not mean the reasoning holds.
+
+## What current capability can already earn: healthcare's potential and its friction
+
+Technical progress and commercial adoption move at different speeds. One pragmatic camp in the industry describes itself as reluctant accelerationists. Their view is that even if base model capability stopped at today's level, existing information extraction, summarization, and coding assistance would keep enterprises busy for a long time.
+
+Adoption difficulty varies by industry. Healthcare can save physicians' professional hours, but the friction is direct: strict regulatory approval, scattered and sensitive data, a very high cost of misdiagnosis, and clinical outcomes that take years of follow-up to confirm. Results cannot be verified on the spot and compliance must be cleared, so the path to revenue is long.
+
+When an enterprise evaluates an AI use case, it should first work out what a verification loop will cost to build.
+
+## Ad systems: an industrial market with a verification loop measured in seconds
+
+In commerce, digital advertising made AI's industrial loop work early.
+
+After each ad impression, clicks, add-to-carts, and orders flow back in real time. Every prediction the model makes is checked against real user behavior within seconds.
+
+The underlying approach has evolved. Early systems matched keywords and tags. They then moved to high-dimensional vector retrieval. Today they use generative architectures that predict conversion probability from behavior sequences.
+
+Ad traffic is huge. A small gain in prediction accuracy, multiplied by that traffic, becomes revenue you can see. Very short verification cycles plus immediate settlement let platforms carry high training and inference costs and keep earning a return on compute.
+
+## Enterprise priorities: build the feedback loop first, then scale
+
+Most companies that do not run ad platforms cannot copy that infrastructure. When picking AI use cases, they should focus on steps with short feedback loops and low verification cost.
+
+Customer service quality checks, invoice matching, extracting key fields from documents, and writing unit tests share one trait: results can be checked directly against rules or objective facts. A script or a lookup table can flag differences on the spot, with no long subjective review by staff.
+
+Start with a small, well-defined process. Do not hand general-purpose AI accounts to every employee. We cover scope control and cross-department coordination for pilots in <NoteLink slug="enterprise-ai-pilot-vs-accounts-for-all">Why Should an Enterprise AI Pilot Start With One Department?</NoteLink>. Get data collection, generation, and verification working in one business process, produce measurable return metrics, then consider rolling out to other teams.
+
+## AI use cases: FAQ
+
+### Why can't enterprises choose AI use cases by benchmark scores alone?
+Public benchmarks test standardized question sets. The questions have definite answers and are graded automatically. Real enterprise work involves unstructured input, changing rules, and ambiguous communication, with no automatic grading standard. A model with high scores can still make factual errors that are hard to spot in a workflow without immediate checks.
+
+### Are LLMs useless for business steps with long feedback cycles?
+In work with long cycles and many variables, an LLM should not make final decisions, but it can serve as a support tool. In strategy research, for example, a model cannot output a business decision, but it can handle steps such as extracting figures from competitors' financial reports or categorizing survey responses. Breaking long-cycle work into intermediate outputs that can be checked against objective facts lets people review each piece independently and lowers risk.
+
+### What counts as a verifiable task, and how do you judge it?
+A verifiable task has three basic traits. First, the standard of judgment is objective and clear: there are rules, code execution results, or a reference table of objective facts. Second, verification costs less than generation: checking whether the output is right takes far less time and labor than writing it from scratch. Third, the feedback cycle is short: a system or a person can give a verdict right after the action happens. If a business step meets all three, treat it as a priority starting point.
+
+Can AI capability you built for yourself be sold to others? Next in the series: why Amazon keeps becoming its own first customer.
