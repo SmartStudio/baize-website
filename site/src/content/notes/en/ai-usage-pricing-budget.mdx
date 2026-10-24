@@ -1,0 +1,60 @@
+---
+title: Can an Annual IT Budget Handle Usage-Based AI Pricing?
+description: Microsoft 365 E7 is $99 per user per month, with agent overage billed in Copilot Credits. Usage pricing needs monthly decisions; most budgets are set yearly.
+lang: en
+pubDate: 2026-10-23
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-usage-pricing-budget-cover.png
+coverAlt: A stack of annually bound budget books next to a usage meter that ticks forward month by month
+sourceHash: '024b6f881fff'
+---
+
+import noteFig from '../media/ai-usage-pricing-budget-fig-en.png'
+
+This is note 02 in our podcast reading series. It can be read on its own.
+It stands on its own.
+
+In a podcast episode, Ben Thompson argued that usage-based AI pricing forces companies to decide every month how much to spend, while most companies set their budget once a year. When IT and procurement renew Microsoft 365 or buy AI seats, the quote now carries two lines: a seat fee and a usage fee for overage. Split the two before you build the budget.
+
+<Figure src={noteFig} alt="Left, a stack of per-seat license badges as the fixed seat fee; right, a meter printing monthly usage bills as the rolling inference cost" caption="Figure: AI Usage Pricing | Inference Cost" width="wide" border />
+
+## Microsoft E7: seat fee plus usage fee
+
+Microsoft began selling Microsoft 365 E7 on May 1, 2026. The list price is $99 per user per month ($100 in the podcast), and it includes Microsoft 365 Copilot. Agents that employees use are covered within fair-use limits at no extra charge.
+
+Usage above that is metered in Copilot Credits. Pay-as-you-go is $0.01 per Credit, billed through Azure at month end. Companies can also buy a capacity pack of 25,000 Credits for $200 per month, about $0.008 per Credit. Unused Credits do not roll over.
+
+One reading: a small group of heavy users burns far more tokens than $100 a month can cover. Microsoft wants most employees to stay on the flat price and asks companies to plan extra spend only for that small group.
+
+## Per-seat spend is easy to budget; usage spend is not
+
+Under per-seat licensing, each new hire adds one license fee. The cost is set when the hire is approved and needs no further review. It behaves like a capital expense: one decision.
+
+Usage pricing needs a new decision every month. Most companies have no process for that. They budget once a year, and adjusting usage allowances monthly does not fit that cycle.
+
+## Monthly bills lead to price comparison
+
+Once a company reviews its Microsoft bill and usage every month, it starts asking whether each product is worth the money and whether to split work across vendors. Microsoft has long sold one price that covers everything an office needs. Usage pricing weakens that pitch.
+
+Track usage by person and by tool. For how to reconcile it, see <NoteLink slug="coding-agent-spend-audit-on-gateway">Why Coding Agent Spend Doesn't Reconcile With Company Books</NoteLink>.
+
+## Open-source models still cost money to run
+
+Calling open-source models "free" is inaccurate. You do not pay for model development, but inference still has to run, and you pay for it. Kimi, the model from China's Moonshot AI, is one example: its inference cost per answer is noticeably higher.
+
+## Usage-based AI pricing: FAQ
+
+### How do you budget for usage-based AI pricing?
+Split the seat fee from the usage fee. Budget seat fees annually by headcount. Set a monthly cap on usage fees, leave headroom for overage, and review once a month.
+
+### How does Microsoft E7 charge for overage?
+Agent usage above the included amount is metered in Copilot Credits. Pay-as-you-go is $0.01 per Credit, billed through Azure at month end. The prepaid capacity pack is 25,000 Credits for $200 per month, with no rollover.
+
+### Why does inference cost vary so much between employees using the same AI tool?
+Most people use AI like a search engine or to look up a recipe. Serving them costs about as much as loading a web page. At the other end, some people have the model think for a long time to work through a mathematical proof. Each extra second of thinking costs another second of compute. The two groups' inference costs are far apart.
+
+Where does usage spend pay off most? Next in the series: start by giving AI the work whose results can be checked on the spot.

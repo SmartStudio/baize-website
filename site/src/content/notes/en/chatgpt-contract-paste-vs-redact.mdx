@@ -1,0 +1,96 @@
+---
+title: Should You Paste a Contract into ChatGPT? Redact It First
+description: CISA's acting director uploaded a For Official Use Only contract to public ChatGPT. Consumer plans may train on inputs. Redact names, amounts, and seals first.
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/chatgpt-contract-paste-vs-redact-cover.png
+coverAlt: An original contract with proprietary details covered by orange redaction bars feeds into a model cube instead of a personal chat window
+howto:
+  name: Redact a contract before giving it to a model
+  steps:
+    - name: Remove proprietary details
+      text: Strip party names, amounts, seals, bank accounts, and internal reference numbers before you choose a channel.
+    - name: Skip the consumer chat app
+      text: Consumer ChatGPT may use inputs for training, and a personal Plus plan is still a consumer plan. Send contracts through an enterprise workspace or the API, which do not train on data by default.
+    - name: Ask only for an issue list
+      text: Have the model list missing clauses and the page numbers to check. Do not ask it to restore redacted content or give legal advice.
+sourceHash: 'c9c554a1abfd'
+---
+
+Legal teams hear this request all the time: drop the contract into ChatGPT and let it take a first pass. It saves time. It is also a common way contracts leak through AI tools.
+
+In January 2026, Politico reported that the acting head of the US cybersecurity agency uploaded procurement contract files marked For Official Use Only to the public version of ChatGPT. Putting an original contract into a personal chat window does not mean the model will review the terms for you. Consumer ChatGPT may use inputs for training by default, and a paid Plus plan is still a consumer plan. Enterprise channels do not train on data by default. Remove party names, amounts, seals, and accounts first, then ask the model for an issue list.
+
+import noteFig from '../media/chatgpt-contract-paste-vs-redact-fig-en.png'
+
+<Figure src={noteFig} alt="On the left, an original contract with seals goes to a consumer endpoint; on the right, a redacted document goes into a model channel that outputs an issue list" caption="Figure: Original to Chat | Remove Seals | Redact, Then Send | Issue List" width="wide" border />
+
+On January 27, 2026, [Politico reported](https://www.politico.com/news/2026/01/27/cisa-madhu-gottumukkala-chatgpt-00749361) that CISA acting director Madhu Gottumukkala uploaded procurement contract documents marked For Official Use Only to the public version of ChatGPT. The files were not classified, but the government had designated them as not for public release. CISA's own outbound monitoring raised an alert, and the Department of Homeland Security then ran a damage assessment. A CISA spokesperson told reporters that he had been approved for short-term use under DHS controls, last in mid-July 2025, and that ChatGPT remains blocked by default. That approval did not cover putting original files into a public chat app. The reports did not confirm that the content entered the model or that other users could retrieve it, so do not describe it that way.
+
+The same pattern played out three years earlier. [Bloomberg reported on May 2, 2023](https://www.bloomberg.com/news/articles/2023-05-02/samsung-bans-chatgpt-and-other-generative-ai-use-by-staff-after-leak) that after Samsung found employees had uploaded internal source code to ChatGPT, it restricted ChatGPT, Bard, and similar tools on company devices and networks. Its stated reason: data sent to external servers is hard to retrieve and delete. In June 2026, [The Korea Herald](https://www.koreaherald.com/article/10767379) and other outlets reported that Samsung had moved to enterprise channels and was rolling out ChatGPT, Gemini Enterprise, and Claude to its affiliates. Samsung blocked the consumer chat tools first and opened enterprise channels later.
+
+## Public ChatGPT and enterprise ChatGPT are separate channels
+
+OpenAI's policy page says content individuals submit to ChatGPT (and to Sora and Operator) "may be used to train" models unless they opt out. [How your data is used to improve model performance](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/) treats individual services and business products separately. An official post from May 6, 2026, [How ChatGPT learns about the world while protecting privacy](https://openai.com/index/how-chatgpt-protects-privacy/), puts it plainly: "Users should not share sensitive information in ChatGPT that they wouldn't want to be used or reviewed." Paying for Plus or Pro keeps you in the same consumer relationship. It does not buy enterprise privacy terms.
+
+Business products follow different rules. [ChatGPT Business, ChatGPT Enterprise, and the API](https://openai.com/business-data/) do not use inputs or outputs for training by default. Training requires an explicit opt-in.
+
+Two questions often get mixed up:
+
+1. **Training** decides whether the model learns from your contract. Turning off "Improve the model for everyone" only stops training on **new conversations**. A thumbs-up or thumbs-down rating can still send the whole conversation for training. Opting out does not apply retroactively to older conversations already used.
+2. **Retention** decides whether the server still keeps a copy. Temporary Chat does not appear in history, does not write to memory, and is not used for training. OpenAI still says it may keep the content for a period for safety review (the help center says it is deleted after up to 30 days). It is not a confidentiality measure. Zero data retention is an API feature for eligible customers. It is not a default setting in personal ChatGPT in the browser.
+
+So "we have an enterprise account" only answers the training question. Which channel the original went through, whether it sat in a personal browser, and whether the provider can still see the signature page are separate questions. A ChatGPT account an employee bought personally is not an enterprise channel. France's data protection authority, CNIL, published a [FAQ in July 2024](https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative) with a firmer line for employees: do not submit personal data or confidential company or government information to consumer generative AI tools.
+
+This is the entry point that <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink> is meant to close. When accounts sit with individuals, contracts leave through private chat windows and the organization cannot see it. To route usage through an auditable entry point, see <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>. Unofficial ChatGPT mirror sites and unknown API resellers are worse places for original files. See <NoteLink slug="third-party-llm-router-security">Third-Party LLM Router Security: Why Cheap Proxies Put Agent Credentials at Risk</NoteLink>.
+
+China has rules here too. Article 4 of the [Interim Measures for the Management of Generative AI Services](https://www.gov.cn/zhengce/zhengceku/202307/content_6891752.htm) requires both providers and users of these services to protect trade secrets. Article 11 obliges **providers** to protect users' inputs and usage records. The Measures do not set a specific penalty for an employee who pastes a contract into an overseas consumer chat app. If the contract contains personal information or "important data" (a regulated data category under Chinese law), pasting it into a personal overseas account can also trigger China's Personal Information Protection Law (PIPL): its notice-and-consent requirements, its rules on sensitive data such as financial accounts, and its cross-border transfer requirements. This describes the legal structure. No published penalty cases exist for it yet.
+
+## How to do it: redact first, then ask the model for issues
+
+"Can the model read contracts" and "can it receive the original" are two different questions. The repeatable process has one shape:
+
+- **Full text is fine:** published product descriptions and clause structures that have already been redacted.
+- **Must be redacted:** full party names, legal representatives, contacts, addresses, phone numbers, emails, contract numbers, price and payment milestones, bank accounts, client names, and project code names that can be traced back. Mask them, or paste the sentence pattern without the real values.
+- **Human review only, kept out of the model by default:** signature pages, seal pages, scans with cross-page seals, indemnity and penalty figures, commitments to third parties, and the governing law, jurisdiction, and arbitration venue in dispute resolution clauses. Images reveal identity more easily than text, so do not upload whole PDF pages. The model returns only "issue list + page numbers to check," and a person checks those against the unredacted original.
+
+Write the model's task as one job, not "take a look at this contract":
+
+```text
+Your job: flag risky clause patterns in this redacted draft.
+When you finish, I want: a list of missing items (confidentiality, payment, acceptance, breach, termination, dispute resolution) and the page numbers a person should check.
+Do not: restore redacted names or numbers, give legal advice, or recommend signing.
+```
+
+Treat the output as pending review. Do not send it straight out by email or paste it into the contract system. Enterprise and API plans do not train by default, but that does not mean the counterparty agreed to let you share the real document with OpenAI, and it does not satisfy cross-border transfer or trade secret clauses. Keep original files away from unknown API resellers and unofficial ChatGPT mirror sites. After redaction, organizational use should still go through the company's own entry point and audit trail, not one personal account per employee.
+
+## Pasting contracts into ChatGPT: FAQ
+
+### Can I paste a contract straight into ChatGPT?
+
+Not the original. Consumer ChatGPT, including Plus, may use inputs for training by default, and OpenAI itself tells users not to submit sensitive information they would not want used or reviewed. Enterprise channels do not train by default, but that does not mean you can paste the real document without review.
+
+### How do I redact a contract first?
+
+Remove full party names, contact details, contract numbers, prices, bank accounts, and client names. Do not upload whole signature or seal pages. Keep the clause structure, have the model produce an issue list with page numbers, and have a person check against the unredacted original.
+
+### If a contract leaks through ChatGPT, who is responsible?
+
+The counterparty holds you to the confidentiality clause you signed. The chat app is not a party to it. CNIL places responsibility for employee use of consumer generative AI on the organization. In China, the Interim Measures mainly regulate service providers and set no specific penalty for pasting a contract. Trade secrets and personal information in the contract remain your obligations under cross-border transfer, notice, and confidentiality rules. The Cyberspace Administration of China (CAC) has published no case of a company penalized for pasting a contract. That does not mean no one is liable.
+
+## Sources
+
+1. [Politico, Trump's acting cyber chief uploaded sensitive files into a public version of ChatGPT (2026-01-27)](https://www.politico.com/news/2026/01/27/cisa-madhu-gottumukkala-chatgpt-00749361)
+2. [Ars Technica, US cyber defense chief accidentally uploaded secret government info to ChatGPT](https://arstechnica.com/tech-policy/2026/01/us-cyber-defense-chief-accidentally-uploaded-secret-government-info-to-chatgpt/)
+3. [OpenAI, How your data is used to improve model performance](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/)
+4. [OpenAI, How ChatGPT learns about the world while protecting privacy (2026-05-06)](https://openai.com/index/how-chatgpt-protects-privacy/)
+5. [OpenAI, Business data privacy, security, and compliance](https://openai.com/business-data/)
+6. [Bloomberg, Samsung Bans ChatGPT, Google Bard, Other Generative AI Use by Staff After Leak (2023-05-02)](https://www.bloomberg.com/news/articles/2023-05-02/samsung-bans-chatgpt-and-other-generative-ai-use-by-staff-after-leak)
+7. [The Korea Herald, Samsung bets on AI to reinvent how it works (2026-06-09)](https://www.koreaherald.com/article/10767379)
+8. [CNIL, Les questions-réponses de la CNIL sur l'utilisation d'un système d'IA générative (2024-07-18)](https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative)
+9. [Cyberspace Administration of China et al., Interim Measures for the Management of Generative AI Services (in Chinese)](https://www.gov.cn/zhengce/zhengceku/202307/content_6891752.htm)

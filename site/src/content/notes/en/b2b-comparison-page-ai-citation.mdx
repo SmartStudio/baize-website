@@ -1,0 +1,111 @@
+---
+title: How to Write B2B Comparison Pages That AI Assistants Cite
+description: "Siege Media data on 116 B2B sites: X vs Y pages correlate most with AI referrals. Lead with a verdict, a decision-axis table, fair trade-offs, stable names."
+lang: en
+pubDate: 2026-10-23
+category: AI普及
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/b2b-comparison-page-ai-citation-cover.png
+coverAlt: "A comparison page: two named products side by side along decision axes, with fair trade-offs stated"
+howto:
+  name: Write a B2B comparison page that AI assistants can cite
+  steps:
+    - name: Default to the X vs Y page type
+      text: Write an X vs Y page when the shortlist is down to two vendors or sales keeps hearing "how do you compare to Z?" Name both sides. Add alternatives and best-of pages after that.
+    - name: Give the verdict before the table
+      text: Under the H1, use two or three sentences to say which product fits which team, budget, or scenario. In the table, columns are products and rows are buying-decision axes.
+    - name: State fair trade-offs and use consistent entity names
+      text: Give each side at least one "when not to choose it" condition. Spell product and company names the same way in the title, table headers, body, and FAQ.
+sourceHash: '67fc669ff134'
+---
+
+import noteFig from '../media/b2b-comparison-page-ai-citation-fig-en.png'
+
+Siege Media sampled 116 B2B sites with GA4 data and about 1,112 transactional comparison-type pages. It measured referrals over a trailing 90-day window (ending around 2026-05-24) from ChatGPT, Perplexity, Claude, Gemini, Copilot, and Meta AI. Versus (X vs Y) pages showed a Spearman correlation of about 0.65 with AI referrals, roughly twice that of the next-best transactional template. In this note, a "comparison page" means a page that puts two (or a few) named products into a scannable table along buying-decision axes and states where each fits and what each gives up. The page is shaped around the question "A or B?", so a model can lift the whole page as an answer. Correlation does not prove causation, and content explains only about 28% of the variance in AI traffic. For the underlying concept, see <NoteLink slug="what-is-aeo-vs-search-ranking">What Is AEO, and How Is It Different from Search Ranking?</NoteLink>. This note covers one thing: how to structure a comparison page so it gets cited.
+
+<Figure src={noteFig} alt="Comparison page and Knowledge Graph: on the left, an X vs Y table with fair trade-offs; on the right, product and company names kept as the same entity across the body and the table" caption="Figure: Comparison Page | Knowledge Graph" width="wide" border />
+
+## How to write it: a comparison page structure AI can cite
+
+Pick the page type first, then the table axes, then the trade-offs.
+
+**1. Page type: X vs Y first, then alternatives and best-of**
+
+Buyers in a chat often ask "should I pick A or B?" directly. Siege attributes the pattern to structure: when a model answers a comparison question, it tends to cite pages already aimed at the "X vs Y" intent. Alternatives and best-of pages compete for the same citation slot with third-party lists such as G2 and Capterra. Suggested order:
+
+| Page type | When to write it | Watch out for |
+| --- | --- | --- |
+| X vs Y (comparison page) | The shortlist is down to two vendors, or sales keeps hearing "how do you compare to Z?" | Name both sides. The table axes must support a buying decision. |
+| Y alternatives | The buyer has settled on a competitor and wants a substitute | Do not disguise it as a neutral ranking. State how each alternative differs. |
+| Best-of / ranking | Category education, early discovery | Weakest correlation with AI referrals, though still positive. Do not rely on it for primary citations. |
+
+If a category really has three leaders and buyers compare all three together, add an A vs B vs C page (Siege has a separate write-up on triple-comparison pages). It does not replace the two-way pages. Do not use it as an excuse to put every pairwise combination on one page.
+
+**2. Open with the verdict, then the table**
+
+Under the H1, use two or three sentences to say which product fits which team, budget, or scenario. Do not open with "both have their strengths." Put the table right after. Columns are products; rows are decision axes. Example axes (adapt them to your category; do not pile up twenty rows of decorative specs):
+
+- Target team size or deployment model
+- Core capability boundaries (what it does and does not do)
+- Integrations and data import/export
+- Implementation and onboarding cost
+- Price tier or billing model (publish it if you can)
+- Compliance and security requirements (if buyers actually ask)
+
+Write cells as short phrases with checkable nouns and few adjectives. "Supports SSO (SAML)" is easier to extract than "enterprise-grade security."
+
+**3. Fair trade-offs and named entities**
+
+Give each side at least one "when not to choose us / when not to choose them" condition. Models are more willing to cite a page that reads like reference material than one that reads like an ad. Keep product and company names consistent across the page. Do not use an abbreviation in the title, the full name in the table header, and a marketing nickname in the body for the same product. When entity names are consistent, a system can tell which product each table column refers to. The third FAQ below covers this in more detail.
+
+**4. Expand along the decision axes, without storytelling**
+
+Give each important axis its own subheading: state the difference, the conditions where it applies, and the exceptions. Use numbers or ranges where you have them. A short FAQ at the bottom (for example, "How long does migration take?" or "Can we export our data?") should keep the same comparison tone. Crawler access, llms.txt, and answer-first sentence structure are covered in separate notes: <NoteLink slug="chatgpt-perplexity-cite-your-site">How to Get ChatGPT and Perplexity to Cite Your Website</NoteLink>, <NoteLink slug="llms-txt-how-to-write-useful">How to Write a Useful llms.txt File</NoteLink>, and <NoteLink slug="answer-first-for-answer-engines">How to Write Answer-First Content That Answer Engines Can Quote</NoteLink>. This note asks for four things: the page targets X vs Y, the table axes are scannable, the trade-offs are fair, and entity names are stable.
+
+## How to use it: checklist and agent guardrails
+
+Before publishing a comparison page, check these five items:
+
+1. **URL / H1** clearly reads "A vs B" rather than a vague "solution comparison."
+2. **Under the H1**, a one-sentence verdict (who fits what) comes before the table.
+3. **Table axes** are buying-decision axes (size, capability boundaries, integrations, implementation, price tier), not an internal feature list copied over.
+4. **Both sides** have at least one real weakness or "not a fit" condition.
+5. **Product and company names** are spelled the same way in the body and the table. To spot-check, give the table header plus one row to an assistant that cites web pages and see whether it can still say which product each column refers to.
+
+On page volume, Siege's buckets are correlation signals only. Sites with 6–20 comparison pages had median AI traffic about 350% higher than sites with 1–5; sites with 21+ were about 900% higher than 1–5. Make each page citable before adding more. Do not fabricate comparisons to pad the count.
+
+**Agent guardrails (paste into a writing or publishing agent)**
+
+```text
+When writing or editing a B2B comparison page:
+1. Default page type is X vs Y. The H1 and URL must include the official names of both products (or companies).
+2. After the H1, write the verdict (who fits what) before the table. Do not open with "both have their strengths" or "here is a full comparison."
+3. Table rows must be buying-decision axes. Cells state checkable facts. No empty adjectives.
+4. Each side gets at least one real "not a fit / weakness" item. Do not only criticize the competitor or only praise our product.
+5. Use the same entity name for each product and company throughout (headers, body, FAQ). Do not switch between abbreviations and marketing nicknames.
+6. This task does not produce a FAQPage/JSON-LD tutorial, does not change robots.txt or llms.txt, and does not build a GEO metrics dashboard.
+7. Use only numbers from verified sources. Do not invent citation rates or BrightEdge-style percentages.
+```
+
+## Comparison pages: FAQ
+
+### What is a B2B comparison page, and why do AI assistants cite it more often?
+
+A B2B comparison page usually follows the "X vs Y" structure: it puts two named products into a table along buying-decision axes and states where each fits and what each gives up. Across 116 B2B sites with GA4 data, Siege Media found that versus pages had a Spearman correlation of about 0.65 with AI search referrals, roughly twice that of the next-best transactional template. One common explanation: when a model answers "A or B?", it prefers to name pages already aimed at that intent.
+
+### How should I prioritize comparison pages, alternatives pages, and best-of lists?
+
+If the goal is AI referrals and "which of the two" questions, build versus pages first, then alternatives pages, then best-of lists. In Siege's data all three correlate positively, and versus pages correlate most strongly. Alternatives and best-of pages are more likely to compete for citation slots with third-party content such as G2 and Capterra. Consider an A vs B vs C page only in a market with three real leaders, and do not use it in place of two-way pages.
+
+### How does the Knowledge Graph relate to comparison pages? Do I need a Google knowledge panel?
+
+This note does not cover how to get a Google Knowledge Graph panel. Here the term means writing products and companies as stable, consistent entities: the same product uses the same official name in the title, table headers, body, and FAQ, with few ad hoc marketing nicknames or mixed abbreviations. When a comparison table gets cited, the system needs to tell who column A and column B are. Consistent entity naming helps AI and search systems match identities when they cite comparison content. Google Search Central's documentation on Organization structured data also lists disambiguating organizations as one of its purposes. This note only asks that entity names in the body and table stay consistent; it does not cover Schema markup or knowledge panel requests.
+
+## Sources
+
+1. [Siege Media, "The Content That Predicts B2B AI Traffic Most: Versus Pages" (Ross Hudgens, updated 2026-06-01)](https://www.siegemedia.com/research/versus-pages)
+2. [Google Search Central, "Organization structured data" (organization disambiguation, sameAs, etc.)](https://developers.google.com/search/docs/appearance/structured-data/organization)
+3. [Siege Media, "Triple-Comparison Pages: The GEO Play Two-Way Pages Miss"](https://www.siegemedia.com/strategy/triple-comparison-pages)

@@ -1,0 +1,62 @@
+---
+title: Why Coding Agent Spend Doesn't Reconcile With Company Books
+description: "Codex and Claude Code spend on personal keys won't match finance. Who reconciles, which log fields to keep, and why only gateway-issued credentials work."
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: gateway
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/coding-agent-spend-audit-on-gateway-cover.png
+coverAlt: Personal keys scattered on the floor, with orange lines feeding into a central organization ledger machine
+sourceHash: 'edbdf6540c11'
+---
+
+import spendFig from '../media/coding-agent-spend-audit-on-gateway-fig-en.png'
+
+Your team uses Codex and Claude Code. At month end, finance asks how much the company spent on AI. Engineering's number does not match finance's number, and neither matches the personal expense claims. In most cases the cause is where the usage is billed: on individual API keys, not on a company account.
+
+This page does not repeat the case against buying individual AI accounts. It covers three things: who reconciles, which fields the logs must keep, and why personal keys cannot enter the company books.
+
+<Figure src={spendFig} alt="Personal keys, organization billing, and API call logs all connected to one gateway entry" caption="Figure: Gateway Entry | Personal Keys | Org Billing | API Call Logs" width="wide" border />
+
+## Who reconciles
+
+"Whoever uses it files the claim" does not work as a reconciliation process. Finance needs one organization bill, broken down by project, business line, and role. Engineering needs to trace a single call back to a task and a repository. Both sides have to read from the same entry point.
+
+Assign three fixed roles:
+
+- Finance reviews the total and the per-project allocation.
+- The engineering lead reviews over-limit usage and abnormal calls.
+- The platform or gateway admin changes limits, issues keys, and keeps the logs.
+
+Every change to a spend cap must record who made it. A single email address on the model vendor's admin console is not enough.
+
+Related: <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>
+
+## Which fields the logs must keep
+
+Without these fields there is no company ledger. Each call needs at least:
+
+- Who: an organization member or role ID, not a personal chat display name
+- Which project, which repository, which task
+- Which model, how many tokens, how much it cost
+- When, which route it went out on, and whether it fell back to another model
+- Whether the call touched a sensitive path (a flag is enough; you do not need to keep the full text)
+
+Store these logs in your own collector or gateway. Do not rely on the model vendor's console alone. When the people managing that console change or the team splits, the record breaks.
+
+Related: <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>
+
+## Why personal keys can't enter the company books
+
+A personal key is paid by a personal card or a personal plan. Finance cannot book it: the invoice is issued to an individual, the charge may be in another currency, and promotional credits and family plans distort the amount. When an employee leaves and the key is revoked, the usage history goes with it. When two people work on the same task with separate keys, any per-project cost total will be wrong.
+
+Reconciliation can only run on credentials the organization issues: tokens from the gateway, or enterprise seats. Personal keys are fine for trials. They cannot serve as the basis for month-end reconciliation.
+
+The acceptance test: pick one month and total the spend by project. The total must match what finance actually paid, and opening any single charge must show the person and the task. If it does not match, the spend is still on personal accounts.
+
+Unified API endpoint: https://api.fxai.ai
+
+Related: <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>, <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>.

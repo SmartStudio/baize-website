@@ -1,0 +1,34 @@
+---
+title: What Is Loop Engineering? Make AI Check Its Work Before It Delivers
+description: Loop Engineering adds plan, execute, observe, and correct loops to AI work, so output is checked against clear criteria before it ships. How the three loops work.
+lang: en
+pubDate: 2026-10-23
+category: Loop与方法论
+relatedService: loop-engineering
+author: Baize Tech
+cover: ../media/what-is-loop-engineering-cover.png
+draft: false
+sourceHash: '4ea5855ca57c'
+---
+
+One-shot AI generation gives uneven results. The same task can come back accurate one time and far off the next. The usual cause is the process: nothing in it gives the model a chance to check its own output. Loop Engineering addresses that. It designs loops in which the AI verifies its result before handing it over.
+
+An experienced engineer does not commit code straight after writing it. They run the tests, look for missed edge cases, and only then open a review. Loop Engineering builds that habit into how the AI works: plan, execute, observe the result, correct what is wrong, and repeat for a few rounds before delivering.
+
+import loopFig from '../media/what-is-loop-engineering-fig-en.png'
+
+<Figure src={loopFig} alt="A closed loop of four steps: Plan, Execute, Observe, and Correct, connected by clockwise arrows" caption="Figure: Plan | Execute | Observe | Correct. Each round is more accurate than the last; the result ships only when it meets the bar." width="wide" border />
+
+In practice there are usually three loops:
+
+- **A development loop built around evaluation metrics.** Every change is checked against a defined standard of right and wrong.
+- **The agent's own plan, execute, observe, correct loop.** It handles complex multi-step tasks.
+- **A feedback loop in production.** Problems found in real use go back into the system, so the next round performs better.
+
+Once these loops run reliably, they leave behind reusable templates and evaluation sets. New tasks do not start from a blank design. For this reason Baize Tech treats Skills and accumulated knowledge as direct outputs of Loop Engineering, with no separate workstream to produce them.
+
+If your team already uses AI to generate code or content and quality swings from one run to the next, that is the point to design loops into the workflow.
+
+Related: <NoteLink slug="design-first-ai-dev-workflow">How Should a Small Team Design Its First AI Coding Workflow?</NoteLink>, <NoteLink slug="idea-to-product-delivery">From Idea to Product: How to Design an End-to-End AI Delivery Path</NoteLink>.
+
+For consulting, book a diagnostic session. Unified API endpoint: https://api.fxai.ai

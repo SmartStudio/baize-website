@@ -1,0 +1,77 @@
+---
+title: "How to Set an Enterprise AI Strategy: Amazon, Apple, and Microsoft's Three Bets"
+description: Start an AI strategy by picking your role. Amazon is its own first customer, Apple owns the entry point and buys models, Microsoft builds the middle layer.
+lang: en
+pubDate: 2026-10-23
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize Tech
+draft: false
+cover: ../media/ai-strategy-first-customer-cover.png
+coverAlt: A compass on a round stone pedestal, its green needle pointing to the middle of three forking stone paths, with a line of green light dots along that path
+sourceHash: 'a090fb83018e'
+---
+
+import noteFig from '../media/ai-strategy-first-customer-fig-en.png'
+
+This is note 04 in our podcast reading series. It can be read on its own.
+
+On a podcast episode, Ben Thompson said an enterprise AI strategy starts with one question: what role do you play in AI? He described three bets made by three large companies. Amazon becomes its own first and best customer, then sells what works internally. Apple holds the user entry point and buys models as needed. Microsoft does not chase the frontier. It builds the middleware between enterprises and models, as IBM did in the 1990s. Most companies should copy Amazon's sequence and Apple's buying posture, then decide whether they need outside help to build the middle layer.
+
+<Figure src={noteFig} alt="Three models side by side: on the left a workshop hands a gear out the door into a box; in the center a tray of model blocks sits in front of a locked door; on the right a glowing green layer sits between an old cabinet and a cube" caption="Figure: First Customer | Guard the Entry | Buy as Needed | Middle Layer" width="wide" border />
+
+## Amazon: be your own first and best customer
+
+Ben says AWS started from the needs of internal teams working together. The common story that Amazon rented out idle data center capacity is inaccurate. Logistics followed the same path. Amazon did not want to depend on UPS, FedEx, and USPS, so it built its own warehouse and delivery network. Once that network ran well, Amazon opened it to third parties.
+
+Hardware followed the same logic. Early versions of Graviton, Amazon's in-house server chip, and Trainium, its AI training chip, were weak. Amazon put the chips under managed services such as Redshift. Customers bought the service and did not know which processor ran underneath. Amazon used internal volume to iterate on the hardware and rented it out once it matured. Ben says Trainium now runs Anthropic workloads. Amazon's customer service is also moving to AI. Ben's view is that Amazon's core business is in the physical world, so AI disrupts it the least.
+
+To apply this, a company picks one internal process as its first customer and keeps the usage data and feedback in-house. Once the process runs well, it extends the setup to subsidiaries or customers. If a company only buys scattered accounts for employees, the organization retains no business data. See <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>. A company sees how models actually perform only after it wires model calls into its business workflows.
+
+## Apple: hold the entry point, buy models as needed
+
+Apple holds the user entry point. Ben says that when you own the customer relationship, suppliers come to you. The ideal setup runs models locally on the device, so inference uses the user's power and compute and the hardware maker avoids cloud spending. Ben also says the industry is not there yet. Apple currently rents Google Cloud capacity and buys Nvidia chips as well.
+
+This bet carries an inertia risk. Microsoft entered mobile operating systems early, but it treated the phone as a small PC and missed the mobile wave. Apple faces a similar test: whether its management treats AI as a phone accessory. Ben notes that AI is probabilistic while Apple excels at deterministic products. His example: the iPhone has never been recalled.
+
+For a company copying Apple, the priority is to keep control of customer relationships, business data, and core processes, and to buy models as needed. General-purpose models are consumables. Contracts should leave room to switch vendors and avoid lock-in to a single model ecosystem.
+
+## Microsoft: skip the frontier, build middleware, follow 1990s IBM
+
+Microsoft's current approach does not chase the technical frontier. It builds the platform between enterprises and models. Ben says Microsoft lets the model vendors compete with each other while it provides the platform enterprises build on, keeping the models at arm's length. In the 1990s IBM was in trouble. Enterprises wanted to get online but lacked the technical skills. IBM built a large consulting force and sold middleware between old mainframes and new network services. That business carried the company for another thirty years.
+
+Ben says middleware dulls the sharp edges of models and delivers the lowest common denominator of capability. Enterprise customers, however, value stability and backward compatibility.
+
+The risk to middleware is frontier models moving down the stack. Products such as Codex and Claude Cowork go straight for the human-computer interaction layer. Ben says these products target Microsoft's core. In his view Microsoft's strategy is sound, and it also has existential urgency behind it.
+
+## What the three bets mean for a company
+
+The right path depends on the assets a company already holds. Companies with heavy internal usage and process-heavy operations fit Amazon's sequence: refine the solution on real internal tickets, and make no external commitments until it runs well. Companies with stable customer relationships fit Apple's buying posture: keep the entry point and the business data, and buy models as needed.
+
+Middleware plus consulting connects old systems to new models and keeps things stable when models change. The cost is giving up the newest and best model capabilities. Purely digital companies face more pressure if they fall off the frontier. Ben thinks it is riskier for a digital company to stay off the frontier, and that Meta stays there mainly because its founder pushes it.
+
+Our recommendation: first decide which layer you must own, meaning the customer entry point, proprietary data, and approval rules. Buy or contract out the rest. A company that connects multiple models internally needs one access governance layer for authentication, auditing, and routing. See <NoteLink slug="what-llm-gateway-solves">What Does a Secure LLM API Gateway Solve?</NoteLink>. With that layer in-house, the company decides when to switch vendors.
+
+## Three questions to answer before choosing a path
+
+Before choosing a path, confirm three basic facts.
+
+Do you have enough internal usage to be your own first customer? If a process makes only a few dozen calls a week, the sample is too small and internal tuning cannot get going.
+
+Do you own the entry point? If your business touchpoints live inside third-party software, the platform can build in AI and squeeze out external tools.
+
+Do your old systems need middleware? If core business runs on legacy systems, connecting them directly to models tends to produce errors. An adapter layer is needed for translation and isolation.
+
+## Enterprise AI strategy: FAQ
+
+### Why can't a company copy the big tech playbook directly?
+Big tech companies have large R&D budgets and their own internal usage, so they can absorb the sunk costs of chip development and model trial and error. Most companies lack those resources, and doing low-level R&D spreads them thin. A company should borrow Amazon's internal-first sequence and Apple's focus on owning the entry point, and put its resources into the business steps where it holds proprietary data.
+
+### Why start with an internal process as the first customer?
+Internal processes have a clear tolerance for errors. Employees can point out mistakes directly, and the feedback loop is short. Going straight to external customers without internal testing invites complaints caused by model hallucinations. Once internal usage runs well and cost and accuracy stabilize, rolling out externally carries less risk.
+
+### What does an AI middle layer do for a company?
+An AI middle layer handles three jobs: decoupling, governance, and compatibility. First, it separates business systems from the underlying models, so switching models does not require rewriting business code. Second, it adds permission checks, data masking, and usage tracking to the call path, which lowers the risk of data leaks. Third, it converts the old interfaces of legacy systems into formats models can accept, so existing assets can connect to new models without disruption.
+
+Every one of these paths needs compute. Next in the series: how long the compute shortage will last, and who carries the risk.

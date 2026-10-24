@@ -37,7 +37,7 @@ Natural-language prompts cannot enforce permissions. Models follow instructions 
 
 Databases and APIs check only the token presented to them. If the token has access to the whole database, the storage layer lets the request through. Enforce permissions at the gateway, where requests can be blocked, not in the prompt.
 
-For separating read permissions from write actions, see <NoteLink slug="agent-read-mail-vs-calendar-send">An agent can read email. What must be approved before it edits calendars or sends mail?</NoteLink>
+For separating read permissions from write actions, see <NoteLink slug="agent-read-mail-vs-calendar-send">What Should an AI Agent Need Approval for in Gmail and Google Calendar?</NoteLink>
 
 ## A second problem with shared credentials: revoking one breaks everything, so no one revokes it
 
@@ -63,7 +63,7 @@ A single-identity log records only "Service account A exported the users table a
 
 A compliant log records both sides: employee Jane Smith, through the sales assistant agent, called the customer lookup API and read the contact list. The employee ID and the agent ID are bound together.
 
-For audit trails in multi-agent setups or workplace bot rollouts, see <NoteLink slug="grok-bot-enterprise-access-audit">Rolling out Grok Bot at a company: what to decide first on permissions and auditing</NoteLink>. When something goes wrong, the two identities show both the requester and the execution path.
+For audit trails in multi-agent setups or workplace bot rollouts, see <NoteLink slug="grok-bot-enterprise-access-audit">Rolling Out Grok Bot at Work? Settle Access and Audit Settings First</NoteLink>. When something goes wrong, the two identities show both the requester and the execution path.
 
 ## Rollout checklist: which agents still use shared accounts
 
