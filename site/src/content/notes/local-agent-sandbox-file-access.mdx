@@ -1,0 +1,56 @@
+---
+title: Agent 本地沙箱：哪些目录能读、哪些能写？
+description: 研发人员在本地运行编码助手，需要依靠 Agent 本地沙箱限制文件系统访问。沙箱写权限默认限定在项目目录与临时路径，读权限相对宽泛且需要单独拦截凭据文件，外网请求通过域名白名单放行。上线前需通过阻断命令验证隔离效果。
+pubDate: 2026-10-26
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/local-agent-sandbox-file-access-cover.png
+coverAlt: 深墨绿底上，玻璃箱里机器人在桌前翻绿色文件夹，箱外一把钥匙被一堵墙挡住
+---
+
+根据 [Google Cloud 官方博客](https://cloud.google.com/blog/topics/ai-infrastructure/introducing-agent-compute-engine-and-expanded-agent-governance) 二〇二六年十月二十二日发布的信息，Google 发布了 Agent Compute Engine，为每个 Agent 分配一台带独立内核的硬件隔离虚拟机，凭据在虚拟机外部注入并预计未来几个月开放预览。云端做底层隔离，开发者在本地电脑跑编码程序时，也要依靠 Agent 本地沙箱明确能读哪里、能写哪里。写操作默认只给项目和临时目录，读权限默认偏宽需单独拦截凭据，网络默认没有直连出口，沙箱也只能约束它包住的部分进程。
+
+import noteFig from './media/local-agent-sandbox-file-access-fig.png'
+
+<Figure src={noteFig} alt="沙箱托盘里放着工作目录和临时路径，箱外凭据保险箱被栏杆阻断，网络经白名单闸门通向外网，底部是沙箱校验按钮" caption="图：「Agent 本地沙箱」｜「文件读写边界」" width="wide" border />
+
+## 写权限只给项目和临时目录
+
+根据 [Claude Code 沙箱文档](https://code.claude.com/docs/en/sandboxing)，Claude Code 的 Bash 沙箱默认关闭，开启后可写路径仅限于当前工作目录、每用户临时目录与显式添加的目录。macOS 基于 Seatbelt 机制拦截，Linux 和 `WSL2` 环境基于 bubblewrap 限制。
+
+即使在项目目录内，`.bashrc`、`.zshrc`、`.gitconfig`、`.git/hooks` 与 `.vscode` 等配置文件仍拒写。根据 [Codex 沙箱文档](https://learn.chatgpt.com/docs/sandboxing)，Codex 提供三种模式：`read-only` 只能看文件，改动与命令需人工批准；`workspace-write` 可读文件并在工作区内修改；`danger-full-access` 去掉边界。多目录协作时用 `writable_roots` 增加可写路径，不用关掉沙箱。
+
+## 读权限默认宽且要单独拦凭据
+
+沙箱进程默认可以读取本机大部分常规目录，包括家目录下的 `~/.ssh` 和 `~/.aws/credentials` 等凭据。如果程序执行第三方脚本，本地凭据面临被读取的风险。
+
+要把敏感目录管住，需在配置里启用 `denyRead` 规则或 `credentials` 项，把密钥路径加入拒读列表。企业开放大模型编码能力时分阶段推进，具体路径见 <NoteLink slug="agent-tool-permission-ladder">企业给 Agent 开工具权限，先开哪类、后开哪类</NoteLink>。先保障只读与受限写入受控，再逐步开放系统级执行能力。
+
+## 网络限制和沙箱外的执行盲区
+
+沙箱环境内部没有直连公网出口，外发请求经本机转发并按允许的域名列表放行，允许列表起始为空。不在名单里的域名，按当前权限模式弹出确认或直接拒绝。
+
+沙箱只包 shell 命令，Claude 自带的文件工具、MCP 服务器和 hooks 在沙箱外。官方文档写明沙箱能降低风险，但不是完整的隔离边界。机制基于开源的 [sandbox-runtime 仓库](https://github.com/anthropics/sandbox-runtime)，该仓库标为 Beta Research Preview（研究预览版）。对于挂载的 MCP 服务器，核查要点见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。若 MCP 服务器拥有未受控读写权限，单靠命令行沙箱无法堵住数据泄露。
+
+## 正式用之前先执行拒绝命令
+
+检验策略是否生效，可以让工具在终端执行 `touch ~/sandbox-probe` 尝试在家目录创建文件。直接让程序发起一次越权操作，比人工核对配置更可靠。
+
+在 macOS 上，Seatbelt 正常运行时终端会返回 `Operation not permitted`，且家目录不产生新文件。如果测试时创建了文件，说明沙箱未正确启动或配置被穿透。此时先运行 `/sandbox` 查看沙箱是否开启、依赖是否装齐，排除隐患后再接入研发仓库。
+
+## Agent 本地沙箱：常见问题
+
+### 只给只读权限能不能防住代码被改？
+
+在 Codex 的 `read-only` 模式下改文件和跑命令都要先经人批准，能挡住没批准的修改；批准以后的改动不在这个模式的拦截范围里。这种模式适合代码审计与架构评审，防止工具擅自改动本地文件。
+
+### 为什么在可写目录里有些隐藏配置文件还是改不了？
+
+即使工作区设为可写，沙箱内部依然保护关键配置。`.git/hooks`、`.zshrc` 与 `.vscode` 等文件直接控制终端环境与提交流程，被随意篡改会引发未预期的执行行为。沙箱通过内置的拒绝写入名单锁定这些文件，保障开发环境不被污染。
+
+### 团队统一配置文件读写边界，放在哪一层？
+
+团队统一配置文件读写边界，放在企业统一下发的托管设置（managed settings）里。企业可以通过下发托管设置强制开启沙箱，配置 `allowUnsandboxedCommands: false` 禁止开发人员退回沙箱外重试命令，并通过 `failIfUnavailable` 设置在沙箱异常时阻断任务执行。这样每个人电脑上的边界一样，不靠个人自己配。
