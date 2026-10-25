@@ -21,7 +21,7 @@ A computer-use agent can operate a legacy business system that has no API. Its r
 
 ## Query and export: read the legacy UI and pull reports
 
-When a legacy business application has no API, the model uses visual grounding to find the menu tree, search box, and data grid. It enters a material code or order number, clicks Search, waits for the client to respond, and reads the text and numbers on screen. For multi-page tables, it scrolls, takes screenshots, parses them into a standard table, and saves the file locally. For the order in which to grant agent permissions, see <NoteLink slug="agent-tool-permission-ladder">Which AI Agent Tool Permissions Should a Company Grant First?</NoteLink>.
+When a legacy business application has no API, the model uses visual grounding to find the menu tree, search box, and data grid. It enters a material code or order number, clicks Search, waits for the client to respond, and reads the text and numbers on screen. For multi-page tables, it scrolls, takes screenshots, parses them into a standard table, and saves the file locally. For the order in which to grant agent permissions, see <NoteLink slug="agent-tool-permission-ladder">Agent Permission Management: How to Set Tool Access Levels and What to Grant First</NoteLink>.
 
 Business staff issue the query instructions and spot-check the data. Read-only actions do not change underlying records, so they are low risk. A staff member enters the lookup targets in the back end, and the system pulls and consolidates data across modules. After the export, the staff member checks that the grand total and the line count match.
 
@@ -29,7 +29,7 @@ Business staff issue the query instructions and spot-check the data. Read-only a
 
 The system reads the text of an invoice, delivery note, or request form. It locates each input field, enters the material code, specification, unit, and unit price, and tabs between fields. The model validates required fields, dates, and field lengths, then clicks Save Draft. The document stays in draft status. It creates no journal entry and updates no ledger.
 
-After filling the form, the model generates a checklist that compares the source document with the on-screen entries line by line, for a human to verify. For how to test this before connecting to a live system, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>.
+After filling the form, the model generates a checklist that compares the source document with the on-screen entries line by line, for a human to verify. For how to test this before connecting to a live system, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent Test Environment: Use Synthetic Data Before Connecting a CRM?</NoteLink>.
 
 ## Submit and post: leave actions that move money to a person
 

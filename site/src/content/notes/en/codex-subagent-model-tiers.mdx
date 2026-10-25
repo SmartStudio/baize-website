@@ -31,7 +31,7 @@ The main thread scopes the work, breaks it into tasks, and merges the results. I
 
 The docs split the models the same way. Use `gpt-6.1-sol` for ambiguous, multi-step work that needs planning, tool use, and validation. Use `gpt-6-luna` for narrowly scoped, clear, repeatable, or high-volume work. Use `gpt-6-astra` for the hardest end-to-end work.
 
-The same logic applies to deciding how much authority an agent gets. <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink> covers which production decisions stay with people and which an agent can execute on its own. In a local dev tool, the question becomes which decisions stay on the main thread and which go to a cheaper execution tier. In both cases, the cost and consequences of a decision determine where resources go.
+The same logic applies to deciding how much authority an agent gets. <NoteLink slug="agent-governance-before-scale">AI Agent Security Governance Must Come Before Scaling</NoteLink> covers which production decisions stay with people and which an agent can execute on its own. In a local dev tool, the question becomes which decisions stay on the main thread and which go to a cheaper execution tier. In both cases, the cost and consequences of a decision determine where resources go.
 
 ## Two config layers: global defaults and per-role files
 

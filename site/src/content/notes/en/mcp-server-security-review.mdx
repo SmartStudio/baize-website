@@ -1,6 +1,7 @@
 ---
-title: What to Check Before Connecting a Third-Party MCP Server
-description: A third-party MCP server is a program your AI agents run inside your network. Check its run account, path and URL checks, auth, patching, and key rotation.
+title: 'MCP Security Risks: Which 4 Items Should You Review Before Connecting?'
+seoTitle: "MCP Security Risks: 4 Checks Before Connecting"
+description: Third-party MCP servers let agents call code on your network. Check the accounts the servers run under, input paths, authentication, version maintenance and credential rotation.
 lang: en
 pubDate: 2026-10-23
 category: 安全可信
@@ -10,65 +11,69 @@ author: Baize AI
 draft: false
 cover: ../media/mcp-server-security-review-cover.png
 coverAlt: A white server hovers above a slot in its base while an orange robotic arm inspects it with a magnifying glass; a three-item checklist beside it has two items checked
-sourceHash: 'e8ea41bccd78'
+sourceHash: '11f367b7f7ed'
 ---
+
+Connecting a third-party MCP server means installing an executable program inside the corporate network that AI assistants can call. This creates MCP security risks. A feature demo alone is insufficient to assess MCP server security. Before connecting it, verify four items: the permissions of the account it runs under, path and URL validation in parameters, authentication and version tracking, and a plan to rotate credentials after an incident. Check prompt and static resource channels one by one, alongside the usual tool endpoints.
 
 import noteFig from '../media/mcp-server-security-review-fig-en.png'
 
-Connecting a third-party MCP server means installing an executable program inside the corporate network that AI assistants can call. A feature demo does not tell you whether it is safe. Before connecting it, verify four items: the permission boundary of the account it runs under, how it validates paths and URLs in parameters, authentication and version tracking, and a credential rotation plan for when something goes wrong. Review the prompt and resource channels as well as the tool endpoints.
-
 <Figure src={noteFig} alt="On the left, a server with a jade shield and padlock stands for MCP server security; on the right, a magnifying glass inspects a plug and socket, standing for the review before connecting" caption="Figure: Secure MCP Server | Onboarding Review" width="wide" border />
 
-## A real case: arbitrary file read through a prompt endpoint
+## What is an MCP server?
 
-On October 5, 2026, Grafana published CVE-2026-89039 in an official security advisory. It scored 6.5 (medium) and affects mcp-k6, the MCP server for Grafana's k6 load-testing tool, from version 0.3.0 up to (not including) 0.7.0. A caller who invoked the `convert_playwright_script` prompt with an ordinary file path could read any file the service account could read, including SSH keys and cloud credentials in the home directory. The service restricted the working directory marked with an `@` prefix, but an attacker could bypass that with a symbolic link inside the working directory that pointed outside it. Version 0.7.0 fixes the issue.
+MCP (Model Context Protocol) is a protocol Anthropic open-sourced in November 2024. It connects AI applications to external tools and data. An MCP server is a program that provides capabilities through this protocol. It can expose tools, prompt templates (prompts), and context resources (resources). When the MCP client in an AI application connects to it, the Agent can call these capabilities. An MCP server can run on an employee's computer or as a remote service. Wherever it runs, it uses an account's permissions and can read and write the files and systems that account can access.
 
-The MCP protocol exposes tools, and it also exposes prompt templates (prompts) and context resources (resources). If the code does not validate its input, any entry point that reads local files can become a way for an attacker to pull credentials out of the internal network.
+## A real case: MCP security risks from a prompt endpoint
 
-## Step 1: Run account and environment isolation
+Grafana disclosed CVE-2026-89039 in an official security advisory on October 5, 2026. The vulnerability scored 6.5 (medium) and affected its load-testing MCP server mcp-k6 from version 0.3.0 up to, but not including, 0.7.0. A caller could invoke the convert_playwright_script prompt with an ordinary file path and directly read any file accessible to the account running the service. This included SSH keys and cloud platform access credentials in its home directory. Even when the service restricted access to working directories with an @ prefix, an attacker could bypass the restriction through a symbolic link inside the working directory that pointed outside it. The issue was fixed in 0.7.0.
 
-Developers debugging locally often start third-party MCP servers under their own developer accounts. That is high risk. The server process inherits the user's full file read permissions, so the `.ssh/id_rsa` private key, cloud access keys, and local browser cache are all readable by the process. If the component has a file-read bug like the one above, an attacker who gets those keys may be able to log in to other machines or cloud accounts.
+MCP includes prompt templates (prompts) and context resources (resources) as well as tools. If the code fails to validate input, any endpoint that reads local files can let an attacker steal credentials from the internal network.
 
-Run the server under a dedicated low-privilege service account instead. The account has no admin rights. Its home directory stays empty and holds no login credentials. For file sharing and sandbox isolation principles, see <NoteLink slug="grok-bot-shared-computer-isolation">Do Grok Bots Share Files? Isolating Bots on One Cloud Computer</NoteLink>. Confine the process to its own run directory. If the code has a read bug, the most it can read is that empty directory.
+## Step 1: Service account and environment isolation
 
-## Step 2: Input validation, and why string prefix checks miss symlinks
+Developers debugging locally often start third-party MCP servers directly under their personal developer accounts. This is risky: the server process inherits the user's full file read permissions. The user's `.ssh/id_rsa` private key, cloud platform access keys, and local browser cache are all readable by that process. If the component has a file-reading vulnerability like the one above, attackers who obtain those keys may be able to log in to other machines or cloud accounts.
 
-Third-party MCP servers usually expose parameters that accept file paths, URLs, or queries. During review, open each endpoint and read how the underlying code decides whether a parameter is valid. Many open-source implementations only do a string prefix comparison, for example checking that a path starts with the project directory.
+Configure a dedicated low-privilege service account. Give it no administrator privileges. Keep its home directory empty and store no system login credentials there. For environment configuration principles for filesystem sharing and sandbox isolation, see <NoteLink slug="grok-bot-shared-computer-isolation">Do Grok Bots Share Files? Isolating Bots on One Cloud Computer</NoteLink>. Restrict the process to a dedicated runtime directory. Even if the code has a file-reading vulnerability, it can only read that empty directory.
 
-A string prefix check is easy to bypass. An attacker can create a symbolic link inside a trusted directory that points to a sensitive system file, or use relative paths to climb out of the directory. Correct code resolves the real physical path through an OS-level call before touching the file, then confirms the target sits inside an allowlist of permitted directories.
+## Step 2: Input validation; string prefix checks do not stop symbolic links
 
-For parameters that accept URLs, check whether the code can restrict the destinations it will reach. If the MCP server accepts any network address, it can be used for server-side request forgery (SSRF) to probe the company's internal metadata service or database ports.
+Third-party MCP servers usually expose parameters that accept file paths, URLs, or queries. During review, inspect each interface and read how the underlying code decides whether a parameter is valid. Many open-source implementations take a shortcut and only compare string prefixes, such as checking whether a path starts with the project directory.
+
+Validation based only on string prefixes is easy to bypass. An attacker can create a symbolic link inside a trusted directory that points to a sensitive system file, or use relative paths to climb out of the directory. Correct code must call a low-level operating system API to resolve the actual physical path before accessing a file. It must then confirm that the target file is inside an allowlist of permitted directories.
+
+For parameters that accept URLs, check whether the code can restrict access destinations. If the MCP server accepts arbitrary network addresses, an attacker could use it for server-side request forgery to probe metadata services or database ports on the company's internal network.
 
 ## Step 3: Authentication and version tracking
 
-If the MCP server runs as a local child process, confirm that standard input and output between the parent and child process are protected by OS access controls. If it communicates over a network port, configure strong identity tokens or mutual TLS. Do not let any machine on the local network connect to it without credentials.
+If the MCP server runs as a local child process, confirm that system access controls protect standard input and output between the parent and child processes. If it communicates over a network port, configure strong authentication tokens or bidirectional transport encryption. Do not allow arbitrary machines on the local network to connect without credentials.
 
-MCP servers in the open-source ecosystem release often, and security fixes usually ship in version upgrades. When a company adopts a third-party component, name one person to track security advisories from the upstream repository. When a new version ships, validate it in a test environment and then upgrade. An upgrade involves more than swapping files. Check for interface changes so that old prompts or tool calls do not break and stop business workflows.
+Open-source MCP servers release new versions frequently, and upgrades often fix security vulnerabilities. When a company adopts a third-party component, assign someone to track security advisories from the upstream repository. When the official project releases a new version, promptly validate it in a test environment and roll out the upgrade smoothly. During an upgrade, check interface specification changes as well as replacing files. This helps prevent business interruptions caused by old prompts or tool call methods failing.
 
-Before connecting the server to core business systems, run boundary and fault-tolerance tests against its tool endpoints with synthetic data. For the approach, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>.
+Before connecting to core business systems, use synthetic data to run boundary and fault-tolerance tests on tool interfaces. For the approach, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent Test Environment: Use Synthetic Data Before Connecting a CRM?</NoteLink>.
 
-## Step 4: Incident response plan and approval checklist
+## Step 4: Incident response plan and onboarding checklist
 
-Record three things in the onboarding register: which machines the MCP server runs on, which system account it uses, and which business-system access tokens it can reach. If upstream discloses a high-severity vulnerability, or logs show unusual probing, the operations team can act right away.
+Companies should record which machines the MCP server runs on, which system account it uses, and which business systems' access tokens it can reach in the onboarding register. If the upstream project discloses a high-severity vulnerability or logs show unusual probing, the operations team can act immediately:
 
-First, stop the MCP process and remove its tools and prompt endpoints from the agent orchestration layer to cut off external calls.
+First, immediately stop the MCP process and remove its tool and prompt endpoints from the Agent orchestration layer to block external calls.
 
-Second, upgrade the component to the fixed version named in the advisory and review the patch logic the maintainers published.
+Second, follow the security advisory to upgrade the component to a fixed version and check the officially published patch logic.
 
-Third, rotate every key and access token that the run account and related business systems exposed. A restart alone does not close the exposure. Assume an attacker read the credentials while the vulnerability was open and kept copies.
+Finally, rotate all keys and access tokens exposed through that service account and the related business systems. A service restart alone is insufficient. Assume potential attackers read and kept copies of the credentials while the vulnerability was exposed.
 
-Turn these four items into a standard checklist, and screen every connection request from business teams against it.
+Make these four items a standard checklist. Check each item when a business team submits a connection request.
 
-## MCP server security: FAQ
+## MCP security risks: FAQ
 
-### The MCP protocol has a spec. Why does a company still need to review each server?
+### The MCP protocol has a specification. Why must companies still review each server item by item?
 
-The protocol defines the message format. It does not guarantee the quality of third-party code. MCP defines the signaling for tools, prompts, and resources, but how a server reads files, validates parameters, and manages process permissions depends on how its author wrote the code. If the author writes logic with path traversal or unauthorized access, the protocol cannot block it. The company has to review at the OS level and the code level.
+The protocol defines only the standard format for exchanging messages. It does not guarantee the quality of third-party code. MCP defines communication signaling for tools, prompts, and resources. How a server reads files, validates parameters, and manages process permissions depends on its author's code. If an author lacks security awareness and writes code that permits path traversal or unauthorized access, the protocol itself cannot defend against it. Companies must verify both the operating system and code layers.
 
-### If the MCP server only has read access, is the risk gone?
+### If an MCP server has only read permissions, do we still need to worry about security risks?
 
-Read-only access still carries serious data-leak risk. Many security incidents involve sensitive data being read out, with nothing written or destroyed. If the server's run account can read local SSH keys, cloud platform tokens, or internal database backups, an attacker who exploits a read-only bug can extract those credentials and use them for a larger intrusion from outside. A read-only feature still needs a narrow read scope, and sensitive credentials still need to be removed from the account.
+Read-only permissions still carry serious data leakage risks. Many security incidents involve sensitive information being read without any data being written or destroyed. For example, if the account running the server can read local SSH keys, cloud platform tokens, or internal database backups, an attacker can exploit a read-only vulnerability to extract those credentials and then launch a larger intrusion from outside. Do not relax security checks just because a feature is read-only. Restrict what it can read and remove sensitive credentials.
 
-### Without a dedicated security team, how do we run onboarding reviews for third-party MCP servers?
+### How can a team review MCP server security without dedicated security staff?
 
-Use a short checklist built on three actions. First, separate the run identity from the development environment: give each MCP server its own low-privilege system account, and clear private keys and config files out of its home directory. Second, narrow directory and network permissions with the OS's built-in containers or directory permissions, and open only the folders the server needs. Third, record an owner and the upstream project URL on the review form, subscribe to release notifications, and update and restart promptly when a vulnerability is disclosed.
+A team without dedicated security staff can use a short checklist for MCP server security reviews. Focus onboarding reviews on three actions. First, separate the runtime identity from the development environment. Assign each MCP server a dedicated low-privilege system account and remove private keys and configuration files from its home directory. Second, narrow directory and network permissions. Use the operating system's built-in containers or directory permissions to restrict access, and open only the folders needed to run the server. Third, record the owner and upstream project URL on the onboarding review form. Subscribe to version update notifications, and update and restart promptly when a vulnerability is disclosed.

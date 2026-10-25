@@ -1,7 +1,7 @@
 ---
-title: "AI Agent Tool Call Approval: Which Calls to Auto-Approve and Which to Block"
-seoTitle: "AI Agent Tool Calls: What to Auto-Approve, What to Block"
-description: "Auto-approve agent tool calls in three layers: code boundary checks, rules, and human review. Check the arguments, not the model's reasons. Log every decision."
+title: 'Agent Tool Call Auto-Approval: Which Calls to Allow or Block'
+seoTitle: "Agent Tool Call Auto-Approval: Which Calls to Allow or Block"
+description: "Agent tool approval: code boundary checks, rule auto-approval, human review. Use arguments; ignore model reasons. Strict write checks. Log approvals and blocks."
 lang: en
 pubDate: 2026-10-23
 category: 企业落地
@@ -11,79 +11,73 @@ author: Baize AI
 draft: false
 cover: ../media/agent-tool-call-auto-approval-rules-cover.png
 coverAlt: A white porcelain robot places blank tool pieces into a tray while one piece sits alone in an orange cradle at the table's edge, where a person inspects it
-sourceHash: '555d3666a9e1'
+sourceHash: 'f535589d800f'
 ---
 
-Auto-approval for agent tool calls works in three layers. Layer one: code rejects calls that should never reach a person, such as invalid arguments or paths outside the allowed scope. Layer two: rules approve low-risk calls automatically. Layer three: every other call is held for a person. Each approval or block writes a log entry that names the rule it matched. Approval judges the call itself. The reason the model gives for the call does not count.
+Agent tool call auto-approval has three layers. First, code rejects calls that should not reach a person, such as calls with invalid arguments or paths outside the allowed scope. Second, rules automatically approve low-risk calls. Third, all other calls are blocked for human review. Every approval or block gets a log entry naming the matched rule. Approval checks the call itself and ignores the model's stated reason.
 
 import noteFig from '../media/agent-tool-call-auto-approval-rules-fig-en.png'
 
 <Figure src={noteFig} alt="On the left, a wrench, a key, and a document stand on pedestals, with a green check mark on the document. On the right, a wrench is held by a green clamp in front of a green-rimmed shield." caption="Figure: Auto-Approval | Block Rules" width="wide" border />
 
-## Where approval sits: code boundary checks first, no person involved
+## Where agent tool call approval belongs: code boundary checks before human review
 
-The approval layer sits after argument parsing and before tool execution.
+Put the approval layer after argument parsing and before tool execution.
 
-The University of Michigan's Fall 2026 course EECS 498-016, *Applied Agentic Software Engineering*, is taught by Marcus Darden. The course notes list the approval steps in order: parse the arguments, run code boundary checks, have a person allow or deny, then execute the call or return the denial as its result. Invalid arguments return an error directly. A path outside the repository is denied directly, without asking anyone.
+Marcus Darden teaches the University of Michigan's Fall 2026 course EECS 498-016, *Applied Agentic Software Engineering*. The lecture notes give this sequence: parse arguments, check boundaries in code, let a person allow or deny the call, then execute it or return the denial as the result. Code returns an error for invalid arguments and rejects paths outside the repository without asking a person.
 
-We recommend building the approval pipeline in the same order. If a required argument is missing, or the requested working directory is outside the preset scope, code blocks the call and returns an error. No person is involved. Only calls that pass the basic validity checks move on to rule-based and human routing.
+We recommend that companies build their approval pipelines in this order. If the argument format is incomplete or the requested working directory falls outside the preset scope, the underlying code should block the call and return an error without involving a person. Only calls that pass the basic validity checks proceed to routing by rules or human review.
 
-## Reads carry risk too: set block conditions on sensitive files
+## Reads carry risks too: set blocking conditions for sensitive files to prevent data leaks
 
-Reading local files and internal data can leak information. Do not approve all reads by default.
+Reading local files and internal data also risks data leaks. Do not approve all reads by default.
 
-The course notes say that at the start, every call stops for a person, reads included. A file read puts the file's contents into the context of the next request. With a hosted model endpoint, that content leaves the machine. Sensitive config files inside the repository also pass the basic directory boundary check. Later rules in the course then approve most reads automatically.
+The lecture notes say every call must stop for human approval at the start, including reads. Reading a file puts its contents in the context of the next request. With a hosted model endpoint, those contents leave the local machine. Sensitive configuration files inside the repository can also pass basic directory boundary checks. Later rules automatically approve most reads.
 
-In production environments, config files often hold private tokens, database connection strings, and service keys. If the model reads one of these files and sends it to an external hosted model, the secrets can leak.
+In business environments, configuration files often contain private tokens, database connection strings, and business system keys. If a model reads these files and sends them to an external hosted model, confidential information may leak.
 
-We recommend separate block conditions for sensitive config files, key directories, and system credentials. Approve other routine reads after confirming the path does not touch secrets.
+We recommend that companies set separate blocking conditions for sensitive configuration files, key directories, and system credentials. Allow other routine reads only after confirming that their paths do not access confidential assets.
 
-## What to auto-approve and what to block: tier by consequence
+## Which calls to auto-approve and which to block: use tiers based on consequences
 
-Limit auto-approval to low-risk calls with a contained blast radius. A person takes over writes with irreversible consequences.
+Limit auto-approval to low-risk calls whose impact can be controlled. A person should take over write operations with irreversible consequences.
 
-We recommend setting the approval scope by action type. Calls that do not change external state can be auto-approved: reading read-only business documents, querying public information, and writing temporary test data in an isolated directory.
+We recommend that companies define what to approve by action type. Calls that do not damage external state can be auto-approved. Examples include reading read-only business documents, querying public information, and writing temporary test data in an isolated directory.
 
-Hold these for human review on the spot: deleting critical data, sending email or tickets to outside parties, initiating payments or settlements, installing external packages, and running a script in the terminal that was just downloaded from outside.
+Calls that delete critical data, send emails or tickets to external parties, initiate payments or settlements, install external software packages, or run newly downloaded external scripts in a terminal should be blocked immediately for human review.
 
-For the order in which to grant tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Which AI Agent Tool Permissions Should a Company Grant First?</NoteLink>. For which steps of high-risk outbound actions keep a person in the loop, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>. Change sign-off and review before connecting external servers are separate processes and are not covered here.
+For a phased approach to granting tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Agent Permission Management: How to Set Tool Access Levels and What to Grant First</NoteLink>. For the steps in high-risk outbound operations that should retain human involvement, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>. Change sign-off and reviews before connecting to external servers are separate processes and are outside this article's scope.
 
-## What approval checks: the command and its arguments
+## What approval checks: commands and arguments; ignore model explanations
 
-The approval layer judges a call's risk from the actual command and arguments. It does not rely on the model's own summary.
+The approval layer must assess each call's risk from its actual command and arguments. It must not rely on the model's own summary.
 
-The course notes say to show the approver the full call. For a file write, show the diff, not only a byte count. Do not use the model's summary. When a call is denied, the system returns a tool message with the reason, so the model knows the call was denied.
+The lecture notes say to show the approver the full call. For file writes, show a diff; a byte count alone is insufficient. Do not use the model's summary. When a call is denied, the system returns a tool message with the reason so the model knows the call was denied.
 
-The course notes also state that approval covers the command, not the explanation. The first version of the approval layer trusts the purpose the model states. The course lists this as a weakness that a later session attacks directly.
+The lecture notes also say approval applies to the command alone. The first version of the approval layer trusts the purpose stated by the model. The course identifies this as a weakness to attack later.
 
-Our view: the model's explanation of its own call can be wrong. Under a malicious instruction, the model can also invent a compliant-sounding reason. Approval logic should match rules only against the arguments and diffs the model actually produced.
+Our view: the model's explanation of its own actions can be wrong. Malicious instructions can also lead it to invent reasons that appear compliant. Approval logic must match rules against the actual generated arguments and code diffs only.
 
-For how detailed the reasons should be when a procurement agent proposes a supplier shortlist, see <NoteLink slug="procurement-agent-supplier-shortlist">How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?</NoteLink>.
+For how much detail to include in the reasons when a procurement agent provides a supplier shortlist, see <NoteLink slug="procurement-agent-supplier-shortlist">How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?</NoteLink>.
 
-## Log every call and keep hardening the rules
+## Log every call and keep strengthening the approval layer: review mistaken approvals and blocks
 
-Auto-approval rules need ongoing tuning based on the logs.
+Tool call auto-approval rules need ongoing adjustments based on logs.
 
-The syllabus lists rule-based auto-approval with a decision log. The second half of the term has a dedicated topic on permission policies and how they fail, plus a lab that hardens the first version of the approval layer. The syllabus also describes a hackathon where students watch their agents run unattended to test their auto-approval rules.
+The syllabus lists rule-based auto-approval and decision logs. In the second half of the term, it includes a dedicated topic on permission policies and how they fail. One lab specifically strengthens the first version of the approval layer. The syllabus also describes a hackathon where students watch their agents run unattended to test how well their auto-approval rules work.
 
-We recommend four fields in each log entry: the exact command, the rule it matched, the decision (approve or block), and the reason. The ops team reviews the audit log on a schedule. They look for operations that should not have been approved and for normal business calls that were blocked by mistake, then update the rule set. The approval layer handles single calls only. For when a whole run should stop, see <NoteLink slug="agent-stop-conditions-decision-log">How to Set Stop Conditions for an Unattended AI Agent</NoteLink>.
+We recommend that companies log four fields: the exact command, the matched rule, the decision to allow or block, and the reason. Operations teams should review audit logs regularly for calls that should have been blocked and normal business instructions blocked by mistake. They should use these findings to update the rule set. The approval layer handles only individual calls. For when an entire run should stop, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
 
-## Tool call auto-approval: FAQ
+## Agent tool calls: FAQ
 
-### Why not leave every tool call decision to a person?
+### Why introduce auto-approval instead of leaving every tool call decision to a person?
 
-Our view: an agent often calls tools many times to finish one long task. If every simple file read or directory search needs a person to click Allow, that person becomes the bottleneck. Approvers also get tired and start approving without reading. Code boundary checks and explicit approval rules filter out most low-risk calls. The agent keeps running, and people review only the destructive, high-risk actions.
+Our view: in real business settings, agents often make many tool calls to complete a task with many steps. If a person must click Allow on-screen for every simple file read or directory search, human review soon becomes a bottleneck. Approvers can also tire and approve calls without checking. Code boundary checks and explicit approval rules filter out many low-risk calls. This keeps autonomous runs moving and lets people focus on destructive actions with high risks.
 
-### Why show approvers the diff instead of the model's summary?
+### Why show code diffs instead of model summaries in human approval requests?
 
-Our view: a model's text summary can miss a small but critical argument change. Under prompt injection, it can also describe the change in a misleading way. For example, the summary says the model only updated a comment in a config file, while the generated diff changes the database port or deletes validation logic. Send the diff and the exact arguments to the approval screen. The approver then sees which lines changed and where each request goes. This catches cases where the summary and the actual behavior differ.
+Our view: model-generated summaries can omit small but critical argument changes. Disruptive prompts can also lead to misleading explanations. For example, a model may claim it only updated configuration comments while its generated diff changes the database port or deletes validation logic. Showing code diffs and exact input arguments in the approval interface lets reviewers see which file lines changed and where requests are sent. This helps prevent risks from discrepancies between the summary and the actual behavior.
 
-### When a team first builds an approval layer, which block rules come first?
+### When first building agent security auditing and an approval layer, which blocking rules should come first?
 
-We recommend starting with the actions that have the widest impact and are hardest to undo. Define three conditions that block a call outright:
-
-1. Irreversible actions such as delete, wipe, or format.
-2. File writes whose target path touches system environment config, credentials and keys, or production database connections.
-3. Outbound network requests to destinations not on the internal trusted list.
-
-Once these three are in place, approve other routine operations one at a time based on business needs.
+When building agent security auditing and an approval layer, we recommend starting with actions that have the widest impact and are hardest to remedy. Define three conditions for blocking calls outright. First, block irreversible actions such as deleting, clearing, or formatting. Second, block file writes whose target paths involve system environment configuration, credentials and keys, or production database connections. Third, block external network requests whose destinations are not on the internal trusted list. Once these three conditions are defined, gradually approve other routine operations according to business needs.

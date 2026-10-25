@@ -54,7 +54,7 @@ We recommend running the post-incident review by four roles, without pursuing th
 
 Also decide who leads the response for each type of failure. A hypothetical: a procurement reconciliation agent makes a duplicate payment. The agent owner stops the damage and freezes the batch. If a manager skipped the review step to speed things up, the authorizer is accountable. If an engineer put a credential with no spending limit into the config, the credential provider is accountable.
 
-For how far an agent can go before a person must sign off, see <NoteLink slug="it-change-management-agent-signoff">AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?</NoteLink>. For separating recommendation risk from execution risk before scaling, see <NoteLink slug="agent-governance-before-scale">AI Agent Governance Before Scale: Bad Advice Can Be Rejected, Bad Actions Have Already Happened</NoteLink>.
+For how far an agent can go before a person must sign off, see <NoteLink slug="it-change-management-agent-signoff">AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?</NoteLink>. For separating recommendation risk from execution risk before scaling, see <NoteLink slug="agent-governance-before-scale">AI Agent Security Governance Must Come Before Scaling</NoteLink>.
 
 ## What to change after the review: narrow credentials, add undo windows and stop conditions
 
@@ -66,7 +66,7 @@ Second, add undo windows to high-risk writes. Deletes and external-facing APIs d
 
 Third, fill in stop conditions. The orchestration layer sets interrupt rules in advance, including a failure limit, a blast-radius threshold, and alerts. Crossing any of them halts the agent immediately.
 
-For the order in which to open tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Which AI Agent Tool Permissions Should a Company Grant First?</NoteLink>.
+For the order in which to open tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Agent Permission Management: How to Set Tool Access Levels and What to Grant First</NoteLink>.
 
 ## Agent rollback: FAQ
 

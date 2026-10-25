@@ -66,7 +66,7 @@ A company's own review page can also be built around one specific send. Put the 
 
 Keep approve, return for edits, and cancel send as separate actions. Record who viewed which version and when, what they decided, and the final send result. Keep the reason when an email is returned, so you can tell data errors, rules that did not fit, and wording problems apart.
 
-If nobody acts, the email keeps waiting. It never sends on timeout. If it waits too long, recheck the account status before sending. For splitting permissions, see <NoteLink slug="agent-read-mail-vs-calendar-send">What Should an AI Agent Need Approval for in Gmail and Google Calendar?</NoteLink>, and configure drafting and sending separately.
+If nobody acts, the email keeps waiting. It never sends on timeout. If it waits too long, recheck the account status before sending. For splitting permissions, see <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent Permissions: Reading Email Is OK. Does Sending Need Approval?</NoteLink>, and configure drafting and sending separately.
 
 ## Routine follow-ups can auto-send, with frequency and opt-out checks
 
@@ -76,7 +76,7 @@ Count frequency per contact, including pending emails from other reps and other 
 
 An API timeout is not a reason to resend. First check whether the email service accepted the message. If the result cannot be confirmed, hand it to a human, so the same email does not arrive twice. Logs should separate pending, submitted, and failed. Calling the tool does not mean the customer received the email.
 
-Before launch, test with simulated customers: a first touch, a discount, an ownership conflict, and an unsubscribe with emails still in the queue. Check which emails were held, who they went to, and whether sending actually stopped. For test setup, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Should You Test AI Agents on Synthetic Company Data Before Connecting Your CRM?</NoteLink>. If an email slips through, pause the related auto-send rules and review the sent log and the pending queue.
+Before launch, test with simulated customers: a first touch, a discount, an ownership conflict, and an unsubscribe with emails still in the queue. Check which emails were held, who they went to, and whether sending actually stopped. For test setup, see <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent Test Environment: Use Synthetic Data Before Connecting a CRM?</NoteLink>. If an email slips through, pause the related auto-send rules and review the sent log and the pending queue.
 
 ## CRM outbound agent: FAQ
 

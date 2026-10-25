@@ -54,7 +54,7 @@ For how repair know-how gets into work orders when AI diagnoses equipment faults
 
 ## Feed Back Samples: rerun the evaluation on missed and false-alarm images
 
-Engineers pull high-resolution images of missed parts from the logs. Quality experts relabel the defect outlines and classes. The cleaned samples go into the training set, and the engineering team adjusts weights and retrains. The new model does not replace the old one directly. It must pass every regression task on the offline test set, with checks on recall for historical typical defects and on the false-positive rate for good parts. For how to design the eval task set and how many runs to require, see <NoteLink slug="agent-eval-suite-pass-rate-variance">How Many Tasks and Runs Does an AI Agent Eval Need Before Launch?</NoteLink>.
+Engineers pull high-resolution images of missed parts from the logs. Quality experts relabel the defect outlines and classes. The cleaned samples go into the training set, and the engineering team adjusts weights and retrains. The new model does not replace the old one directly. It must pass every regression task on the offline test set, with checks on recall for historical typical defects and on the false-positive rate for good parts. For how to design the eval task set and how many runs to require, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>.
 
 The quality technical committee approves the new model before release. After it passes offline evaluation, it runs silently in the background alongside the old model for a period, with results compared side by side. The switch happens after the process supervisor signs off.
 
