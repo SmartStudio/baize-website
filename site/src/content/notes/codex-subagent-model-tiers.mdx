@@ -28,7 +28,7 @@ import hubFig from './media/codex-subagent-model-tiers-fig-1.png'
 
 文档对模型的分工和这个思路一致：`gpt-6.1-sol` 用于需要规划、工具调用、验证的模糊多步任务；`gpt-6-luna` 用于范围窄、目标清楚、可重复或走量大的任务；最难的端到端任务选 `gpt-6-astra`。
 
-判断「谁该有多大权限」用的是同一套逻辑：<NoteLink slug="agent-governance-before-scale">Agent 治理</NoteLink> 讨论生产环境里哪些决策留给人、哪些交给 Agent 自主执行。换到本地开发工具上，问题变成哪些决策留给主线程、哪些外包给便宜的执行档位。两处都按判断的成本和后果分配资源。
+判断「谁该有多大权限」用的是同一套逻辑：「<NoteLink slug="agent-governance-before-scale">AI Agent 安全治理要赶在扩规模之前</NoteLink>」一文讨论生产环境里哪些决策留给人、哪些交给 Agent 自主执行。换到本地开发工具上，问题变成哪些决策留给主线程、哪些外包给便宜的执行档位。两处都按判断的成本和后果分配资源。
 
 ## 两层配置：全局默认 + 按角色定制
 

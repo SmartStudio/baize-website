@@ -53,9 +53,9 @@ import noteFig from './media/agent-tool-permission-ladder-fig.png'
 
 这一层要看退回原因、审核人改了哪些内容，以及有没有批准后又被替换的情况。只有范围固定、内容可核验的例行动作，才适合单独讨论自动执行；新的客户、新的承诺继续交人看。发现错发或绕过审批，就暂停发送工具，取消待发任务，再核对已经执行的记录。
 
-读和发送如何拆开，可以参照 <NoteLink slug="agent-read-mail-vs-calendar-send">Agent 读邮件可以，改日历发信要先批什么</NoteLink>。撤掉发送权限以后，仍可保留整理邮件和起草回复的能力。
+读和发送如何拆开，可以参照 <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent 权限：读邮件行，发信要先批吗</NoteLink>。撤掉发送权限以后，仍可保留整理邮件和起草回复的能力。
 
-接入第三方 MCP 服务器之前要查的安全项，见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。
+接入第三方 MCP 服务器之前要查的安全项，见 <NoteLink slug="mcp-server-security-review">MCP 安全风险怎么查：接入前先审哪 4 项</NoteLink>。
 
 ## 资金和不可逆操作：可以一直由人执行
 
@@ -71,7 +71,7 @@ Agent 工具权限尽量按任务发放。凭证只允许本次需要的动作�
 
 操作日志记录任务、操作者、工具、目标对象、关键参数、批准人、执行结果和撤回结果。敏感字段做脱敏，日志本身也限制访问，不记录完整凭证。收回权限时同步停止排队任务，处理已执行动作，再由负责人确认恢复到哪一层。
 
-多个 Agent 之间转交任务时，转来的指令也按这套权限判断，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 协作时，另一个 Agent 转来的指令能不能直接照做</NoteLink>。
+多个 Agent 之间转交任务时，转来的指令也按这套权限判断，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 安全：转来的指令能直接照做吗</NoteLink>。
 
 ## Agent 权限管理：常见问题
 

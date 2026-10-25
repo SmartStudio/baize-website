@@ -23,7 +23,7 @@ import noteFig from './media/agent-eval-suite-pass-rate-variance-fig.png'
 
 任务集要梳理业务人员日常处理的真实工单、报表或客户诉求，覆盖常规主流程与易误判的边界情况。比如针对订单核对任务，既包含完整的标准单据，也放入缺字段或格式异常的问题单据，检验系统遇到异常时能否正确识别并停下。
 
-密歇根大学 2026 年秋季课程 EECS 498-016《Applied Agentic Software Engineering》由 Marcus Darden 主讲，课程大纲写道：Agent 的评测套件至少包含 8 个任务，按通过率报告。8 个任务适合作为起步线，我们建议按业务面再加。测试数据准备见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 接 CRM 之前，上线测试先跑模拟企业数据？</NoteLink>。
+密歇根大学 2026 年秋季课程 EECS 498-016《Applied Agentic Software Engineering》由 Marcus Darden 主讲，课程大纲写道：Agent 的评测套件至少包含 8 个任务，按通过率报告。8 个任务适合作为起步线，我们建议按业务面再加。测试数据准备见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 测试环境：接 CRM 前先用模拟数据？</NoteLink>。
 
 课程大纲写道，课程坚持用学生自己部署的小模型，理由是小模型会把粗糙的工程明显暴露出来。我们的理解是：大模型常能猜对含糊的指令，小模型遇到歧义或格式错误更容易直接失败。企业评测时换一个较小的模型跑一遍，能提早发现提示词和工具定义的毛病。
 

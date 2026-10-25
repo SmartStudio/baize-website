@@ -35,7 +35,7 @@ Okta 10 月 8 日介绍了已正式上线的 Agent Gateway。它要求每次工�
 
 数据库和接口只校验出示的令牌。只要令牌有全库权限，存储层就会放行。权限控制要落在网关上直接拦截，不能寄托在提示词上。
 
-读写权限与动作分离控制，可参考 <NoteLink slug="agent-read-mail-vs-calendar-send">Agent 读邮件可以，改日历发信要先批什么</NoteLink>。
+读写权限与动作分离控制，可参考 <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent 权限：读邮件行，发信要先批吗</NoteLink>。
 
 ## 共享凭证的另一个问题：一撤全断，往往没人撤
 
@@ -63,7 +63,7 @@ Okta 在文中列了四个问题，用来评估一个 Agent 网关靠不靠谱�
 
 处理多智能体协同或办公机器人接入时，审计链路可参考 <NoteLink slug="grok-bot-enterprise-access-audit">企业开通 Grok Bot，权限和审计要先定什么</NoteLink>。出问题时，靠两个身份就能直接查清发起人和执行路径。
 
-指令由另一个 Agent 转来时，身份和授权怎么核，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 协作时，另一个 Agent 转来的指令能不能直接照做</NoteLink>。
+指令由另一个 Agent 转来时，身份和授权怎么核，见 <NoteLink slug="agent-to-agent-trust-boundary">多 Agent 安全：转来的指令能直接照做吗</NoteLink>。
 
 ## Agent 身份安全排查：先查哪几类 Agent 还在用共享账号
 

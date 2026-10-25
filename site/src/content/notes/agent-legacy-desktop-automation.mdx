@@ -19,7 +19,7 @@ import noteFig from './media/agent-legacy-desktop-automation-fig.png'
 
 ## 查数与导出：看懂老软件界面并抓出报表
 
-老旧管理软件若缺少接口，模型通过视觉定位识别菜单树、搜索框与数据网格。程序输入物料编码或订单号点击查询，待客户端响应后读取界面文本与数值。模型把多页表格滚动截屏，解析为标准表格存到本地。权限分配的递进关系参考 <NoteLink slug="agent-tool-permission-ladder">企业给 Agent 开工具权限，先开哪类、后开哪类</NoteLink>。
+老旧管理软件若缺少接口，模型通过视觉定位识别菜单树、搜索框与数据网格。程序输入物料编码或订单号点击查询，待客户端响应后读取界面文本与数值。模型把多页表格滚动截屏，解析为标准表格存到本地。权限分配的递进关系参考 <NoteLink slug="agent-tool-permission-ladder">Agent 权限管理怎么分级：工具权限先开哪类</NoteLink>。
 
 业务人员负责下达查询指令和抽查数据。只读操作不改动底层数据，属于低风险动作。业务人员在后台填好查找目标，系统把跨模块的数据抓好汇总。导完之后，业务人员抽验总金额和项目行数对不对得上。
 
@@ -27,7 +27,7 @@ import noteFig from './media/agent-legacy-desktop-automation-fig.png'
 
 系统读取发票、送货单或申请单文本，定位输入框并填入物料代号、规格、单位与单价，模拟键盘跳格。模型对必填项、日期与字段长度执行校验，核验后点击保存草稿。单据停留在草稿状态，不生成分录，不更新台账。
 
-模型填完表后生成一张核对清单，逐行对照原始单据和界面填入的数据，等人工复验。程序在接入真实系统之前，验证流程见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 接 CRM 之前，上线测试先跑模拟企业数据？</NoteLink>。
+模型填完表后生成一张核对清单，逐行对照原始单据和界面填入的数据，等人工复验。程序在接入真实系统之前，验证流程见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 测试环境：接 CRM 前先用模拟数据？</NoteLink>。
 
 ## 提交与过账：涉及真金白银的操作留给人点
 

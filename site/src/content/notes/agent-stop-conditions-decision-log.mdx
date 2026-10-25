@@ -67,11 +67,11 @@ Agent 触发停止条件退出时，要在日志中留下供事后排查的完�
 
 停止条件负责管理整次运行的生命周期，并不负责判断某一个单次动作是否危险。
 
-课程讲义写到，停止条件负责结束运行，不负责判断单个动作。比如在命令行中删除关键数据或调用外部转账，即使这是任务第一步且未触碰任何上限，操作本身依然具有高风险。判断动作要靠审批层，见 <NoteLink slug="agent-tool-call-auto-approval-rules">Agent 的工具调用，哪些能按规则自动放行、哪些必须拦下</NoteLink>。
+课程讲义写到，停止条件负责结束运行，不负责判断单个动作。比如在命令行中删除关键数据或调用外部转账，即使这是任务第一步且未触碰任何上限，操作本身依然具有高风险。判断动作要靠审批层，见 <NoteLink slug="agent-tool-call-auto-approval-rules">Agent 工具调用自动审批：哪些放行、哪些拦下</NoteLink>。
 
-出错后怎么撤回与恢复是另一件事。我们建议企业在让 Agent 无人值守跑之前，把五个上限的数值写进上线验收单。工具权限分级见 <NoteLink slug="agent-tool-permission-ladder">企业给 Agent 开工具权限，先开哪类、后开哪类</NoteLink>。
+出错后怎么撤回与恢复是另一件事。我们建议企业在让 Agent 无人值守跑之前，把五个上限的数值写进上线验收单。工具权限分级见 <NoteLink slug="agent-tool-permission-ladder">Agent 权限管理怎么分级：工具权限先开哪类</NoteLink>。
 
-自动化规模扩大前的治理考量，见 <NoteLink slug="agent-governance-before-scale">Agent 治理要赶在扩规模之前：推荐错了能不采纳，执行错了已经发生</NoteLink>。从试点扩到生产的检查项，见 <NoteLink slug="agent-pilot-to-production-checklist">Agent 试点能跑通，扩到生产还缺哪几项？</NoteLink>。
+自动化规模扩大前的治理考量，见 <NoteLink slug="agent-governance-before-scale">AI Agent 安全治理要赶在扩规模之前</NoteLink>。从试点扩到生产的检查项，见 <NoteLink slug="agent-pilot-to-production-checklist">Agent 试点能跑通，扩到生产还缺哪几项？</NoteLink>。
 
 产线上由 AI 判读 SPC 异常时，什么情况停线，见 <NoteLink slug="spc-anomaly-ai-line-stop">SPC 异常判读交给 AI，要不要停线？</NoteLink>。
 
