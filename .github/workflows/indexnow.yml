@@ -16,9 +16,7 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: indexnow
-  cancel-in-progress: false
+# 不设 concurrency:每次 push 各自等自己的提交上线、各推各的 URL,排队的 run 不会被后来的顶掉。
 
 jobs:
   indexnow:

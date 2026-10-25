@@ -23,12 +23,25 @@ export function indexNowKey(publicDir = `${siteDir}public`) {
   return files[0].slice(0, -4);
 }
 
-/** frontmatter 里的 category 与 draft;文件不存在(已删除)返回 null。 */
-function noteMeta(file) {
-  const p = `${siteDir}${file.replace(/^site\//, '')}`;
-  if (!existsSync(p)) return null;
-  const fm = readFileSync(p, 'utf8').split(/^---$/m)[1] ?? '';
+const parseFm = (text) => {
+  const fm = text.split(/^---$/m)[1] ?? '';
   return { draft: /^draft:\s*true/m.test(fm), category: fm.match(/^category:\s*['"]?([^'"\n]+)/m)?.[1]?.trim() };
+};
+
+/**
+ * 笔记现在和改动前的 frontmatter(category、draft)。文件在某一侧不存在时那一侧为 null。
+ * 改动前一侧用 git show 读;没给 from(手动 --urls 模式不会走到这里)时只看现在。
+ */
+function noteMetaAt(from) {
+  return (file) => {
+    const p = `${siteDir}${file.replace(/^site\//, '')}`;
+    const now = existsSync(p) ? parseFm(readFileSync(p, 'utf8')) : null;
+    let before = null;
+    if (from) {
+      try { before = parseFm(git('show', `${from}:${file}`)); } catch { before = null; }
+    }
+    return { now, before };
+  };
 }
 
 /**
@@ -36,20 +49,25 @@ function noteMeta(file) {
  * 只映射能确定落在哪一页的文件;布局、样式这类全站改动不推,免得每次都把整站推一遍。
  * redirectLines 是 _redirects 里新增/删除的行,源地址也推,让搜索引擎早点看到 301。
  */
-export function pathsForChanges(files, { meta = noteMeta, redirectLines = [] } = {}) {
+export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines = [] } = {}) {
   const out = new Set();
   for (const f of files) {
     let m;
     if ((m = f.match(/^site\/src\/content\/notes\/(en\/)?([^/]+)\.mdx$/))) {
       const en = m[1] ? '/en' : '';
-      const info = meta(f);
-      if (info?.draft) continue;
+      const { now, before } = meta(f);
+      // 前后都不是已发布状态(新建草稿、草稿改草稿)就不推;从已发布改成草稿或删掉的要推,让搜索引擎看到 404。
+      const published = (x) => x && !x.draft;
+      if (!published(now) && !published(before)) continue;
+      const info = now ?? before;
       out.add(`${en}/notes/${m[2]}/`);
       out.add(`${en}/notes/`);
       out.add(`${en}/`);
       const cat = info?.category && CATEGORY_SLUGS[info.category];
       if (cat) out.add(`${en}/notes/category/${cat}/`);
-    } else if ((m = f.match(/^site\/src\/(?:i18n\/([a-z]+)\.ts|pages\/([a-z]+)\.astro|components\/pages\/([A-Za-z]+)\.astro)$/))) {
+    } else if ((m = f.match(/^site\/src\/pages\/fxai\/(privacy|terms)(\/en)?\.mdx$/))) {
+      out.add(`/fxai/${m[1]}/${m[2] ? 'en/' : ''}`);
+    } else if ((m = f.match(/^site\/src\/(?:i18n\/([a-z]+)\.ts|pages\/(?:en\/)?([a-z]+)\.astro|components\/pages\/([A-Za-z]+)\.astro)$/))) {
       const name = (m[1] ?? m[2] ?? m[3]).toLowerCase();
       if (name === 'home' || name === 'index') out.add('/').add('/en/');
       else if (PAGES.includes(name)) out.add(`/${name}/`).add(`/en/${name}/`);
@@ -66,12 +84,24 @@ export function pathsForChanges(files, { meta = noteMeta, redirectLines = [] } =
 // 在仓库根目录跑 git,改动文件路径统一是 site/... 形式。
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8', cwd: `${siteDir}..` }).trim();
 
+function isAncestor(sha, live) {
+  try {
+    try { git('cat-file', '-e', `${live}^{commit}`); } catch { git('fetch', '--quiet', 'origin', live); }
+    git('merge-base', '--is-ancestor', sha, live);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function waitForDeploy(sha, { timeoutMs = 20 * 60_000, everyMs = 20_000 } = {}) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     const res = await fetch(`${SITE}/build.txt`, { cache: 'no-store' }).catch(() => null);
     const live = res?.ok ? (await res.text()).trim() : '';
     if (live === sha) return;
+    // 线上已经是更新的提交(后一次 push 先部署完了):它包含本次改动,也算到位。
+    if (/^[0-9a-f]{40}$/.test(live) && isAncestor(sha, live)) return;
     console.log(`waiting for deploy of ${sha.slice(0, 7)} (live: ${live.slice(0, 7) || 'n/a'})`);
     await new Promise((r) => setTimeout(r, everyMs));
   }
@@ -92,7 +122,7 @@ async function main() {
     const files = git('diff', '--name-only', from, to, '--', 'site/').split('\n').filter(Boolean);
     const redirectLines = git('diff', '-U0', from, to, '--', 'site/public/_redirects')
       .split('\n').filter((l) => /^[+-]\//.test(l)).map((l) => l.slice(1));
-    paths = pathsForChanges(files, { redirectLines });
+    paths = pathsForChanges(files, { meta: noteMetaAt(from), redirectLines });
     if (!dryRun && paths.length) await waitForDeploy(to);
   }
   const urlList = paths.map((p) => new URL(p, SITE).href);
