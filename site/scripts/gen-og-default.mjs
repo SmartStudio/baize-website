@@ -47,7 +47,7 @@ const FONT = 'PingFang SC, Noto Sans SC, Poppins, sans-serif';
 const VARIANTS = [
   {
     file: 'og-default.png',
-    kicker: 'BAIZE TECH',
+    kicker: 'BAIZE AI',
     name: '白泽明理',
     nameSize: 76,
     tagline: ['企业 AI 转型：咨询、培训、FDE 驻场开发'],
@@ -55,7 +55,7 @@ const VARIANTS = [
   {
     file: 'og-default-en.png',
     kicker: 'AI TRANSFORMATION',
-    name: 'Baize Tech',
+    name: 'Baize AI',
     nameSize: 72,
     tagline: ['Consulting, team training, and', 'forward deployed engineering.'],
   },
