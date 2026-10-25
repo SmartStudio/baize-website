@@ -13,9 +13,9 @@ howto:
   name: 按总内存选择 Qwen3.8-27B 量化档
   steps:
     - name: 统计可用总内存
-      text: 统计主机当前可分配的独立显存或统一内存总量。
+      text: 统计主机可分配的总内存：纯 GPU 推理算显存，混合 offload 时算 RAM+VRAM，Apple Silicon 算统一内存。
     - name: 对照官方门槛选档
-      text: 16-19GB 选 4-bit；内存更小选 1-bit 到 3-bit；追求原精度且内存充足选 6-bit、8-bit 或 BF16。
+      text: 16-19GB 选 4-bit；内存更小选 1-bit 到 3-bit；内存充足时，接近原精度选 6-bit 或 8-bit，原精度选 BF16。
     - name: 预留 MTP 与上下文余量
       text: 开启多 Token 预测（MTP）时多预留 1-2GB 显存，长上下文需额外留出空间。
 ---
@@ -38,7 +38,7 @@ import noteFig from './media/qwen38-27b-vram-requirements-fig.png'
 
 1. **16-19GB 内存选 4-bit**：Qwen3.8-27B 本地运行的常见基准配置为 17GB RAM/VRAM 环境。4-bit 量化档位覆盖 16-19GB 显存区间，适用于 RTX 5080、RTX 4090 或配置 24GB 统一内存的 Mac 主机。
 2. **内存更小选 1-bit 至 3-bit**：可用内存处于 7-14GB 区间时，可根据显存上限下调至 1-bit（7-8GB）、2-bit（9-11GB）或 3-bit（12-14GB）。根据 2026 年 8 月 19 日更新，Unsloth GGUF 采用 Unsloth Dynamic V3.0，在相同体积下提供比常规量化约高 10% 的准确率。
-3. **追求原精度选 6-bit、8-bit 或 BF16**：硬件显存充裕时，可选择 6-bit（23-26GB）、8-bit（31GB）或 BF16（56GB）。搭载 Blackwell 架构的 24GB VRAM 显卡还可运行 NVFP4 档位，推理速度约为 BF16 的 1.5 倍。
+3. **接近原精度选 6-bit 或 8-bit，原精度选 BF16**：硬件显存充裕时，可选择 6-bit（23-26GB）、8-bit（31GB）或 BF16（56GB）。搭载 Blackwell 架构的 24GB VRAM 显卡还可运行 NVFP4 档位，推理速度约为 BF16 的 1.5 倍。
 4. **多 Token 预测需预留 1-2GB**：Qwen3.8-27B 原生支持 262,144 上下文长度（可通过 YaRN 扩展到 1M）。若推理引擎开启多 Token 预测（MTP），在上述权重显存之外需额外预留 1-2GB 显存余量。
 
 ## 和「在 Mac 上跑通」那篇怎么分工
