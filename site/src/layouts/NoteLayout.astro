@@ -85,6 +85,8 @@ const ogAsset = cover ? await getImage({ src: cover, width: 1200, format: 'jpeg'
 // CF 主站的资源(镜像 noindex、canonical 也指主站),所以去掉 base 再交给 Seo 拼域名。
 const ogImage = ogAsset ? '/' + ogAsset.src.slice(base.length) : undefined;
 const ogImageAbs = ogImage ? new URL(ogImage, site).href : undefined;
+const ogImageWidth = ogAsset?.attributes?.width as number | undefined;
+const ogImageHeight = ogAsset?.attributes?.height as number | undefined;
 
 const blogLd = {
   '@context': 'https://schema.org',
@@ -191,6 +193,9 @@ const cta = isApiArticle
   path={path}
   jsonLd={jsonLd}
   ogImage={ogImage}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
+  twitterCard="summary"
   ogImageAlt={coverAlt ?? title}
   ogType="article"
   article={{

@@ -18,6 +18,11 @@ interface Props {
   path: string;
   ogImage?: string;
   ogImageAlt?: string;
+  /** Pixel size of ogImage when provided (from getImage attributes). */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  /** Default large image; notes pass "summary" for a small left-side card. */
+  twitterCard?: 'summary' | 'summary_large_image';
   ogType?: 'website' | 'article';
   article?: { published: string; modified?: string; section?: string; author?: string };
   noindex?: boolean;
@@ -31,6 +36,9 @@ const {
   path,
   ogImage,
   ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
+  twitterCard = 'summary_large_image',
   ogType = 'website',
   article,
   noindex: forceNoindex = false,
@@ -43,6 +51,9 @@ const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
 const DEFAULT_OG = { src: lang === 'en' ? '/og-default-en.png' : '/og-default.png', width: 1200, height: 630 };
 const ogUrl = new URL(ogImage ?? DEFAULT_OG.src, site).href;
+// Default OG keeps 1200×630. Note covers keep real getImage size (typically 1200×675 for 16:9).
+const resolvedOgWidth = ogImage ? ogImageWidth : DEFAULT_OG.width;
+const resolvedOgHeight = ogImage ? ogImageHeight : DEFAULT_OG.height;
 // GH 镜像整站 noindex(去重指向 CF 主站);404 页则无论在哪个 target 都不该被收录
 const noindex = forceNoindex || import.meta.env.PUBLIC_DEPLOY_TARGET === 'ghpages';
 // 首页标题自带品牌名,不加后缀。其他页加上后缀会超过约 60 个半角宽度(中文按 2 计)时也不加:
@@ -66,11 +77,11 @@ const altLocale = lang === 'en' ? 'zh_CN' : 'en_US';
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogUrl} />
-{!ogImage && (
-  <>
-    <meta property="og:image:width" content={String(DEFAULT_OG.width)} />
-    <meta property="og:image:height" content={String(DEFAULT_OG.height)} />
-  </>
+{resolvedOgWidth != null && (
+  <meta property="og:image:width" content={String(resolvedOgWidth)} />
+)}
+{resolvedOgHeight != null && (
+  <meta property="og:image:height" content={String(resolvedOgHeight)} />
 )}
 {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
 <meta property="og:site_name" content={lang === 'en' ? 'Baize AI' : '白泽明理 Baize AI'} />
@@ -84,7 +95,7 @@ const altLocale = lang === 'en' ? 'zh_CN' : 'en_US';
     {article.author && <meta property="article:author" content={article.author} />}
   </>
 )}
-<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:card" content={twitterCard} />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogUrl} />
