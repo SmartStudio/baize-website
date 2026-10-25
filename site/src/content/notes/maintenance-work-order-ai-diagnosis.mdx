@@ -25,6 +25,8 @@ import noteFig from './media/maintenance-work-order-ai-diagnosis-fig.png'
 
 这一步的人工职责属于操作人员。操作工使用终端语音输入补充细节，说明故障发生时设备正在加工何种工件材质。系统将参数与文字描述绑定，生成报修批次号。网关将数据包发送给推理引擎，作为下一步诊断的输入。
 
+售后工程师上门时要把客户设备的运行数据传给 AI 诊断，能采哪些、要滤掉哪些，见 <NoteLink slug="field-service-ai-customer-device-data">售后上门 AI 要传客户设备数据，行吗？</NoteLink>。
+
 ## 推导原因与排查顺序：按风险等级输出处置建议
 
 推理模型检索设备技术规范与类似案例，输出候选诱因和排查路径清单。

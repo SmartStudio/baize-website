@@ -49,6 +49,8 @@ OpenAI 政策页写：个人向 ChatGPT（以及 Sora、Operator）提交的内�
 
 国内也不是无法可依。《[生成式人工智能服务管理暂行办法](https://www.gov.cn/zhengce/zhengceku/202307/content_6891752.htm)》第四条要求提供和使用服务时「保守商业秘密」；第十一条约束的是**提供者**保护使用者的输入信息和使用记录。办法不是「员工把合同贴进境外消费级聊天框」的单独罚则。合同里若有个人信息或重要数据，贴进境外个人账号，还可能碰到《个人信息保护法》的告知同意、金融账户等敏感信息规则，以及数据出境路径。这是法律结构，不是已经公布的罚单。
 
+售后 AI 上传客户设备数据时，同样要先剔除客户的工艺配方等商业秘密，见 <NoteLink slug="field-service-ai-customer-device-data">售后上门 AI 要传客户设备数据，行吗？</NoteLink>。
+
 ## 怎么用：先脱敏，再让模型找疑点
 
 不要把「能不能读合同」理解成「能不能收原件」。可复制的工序只有一条：
@@ -68,6 +70,8 @@ OpenAI 政策页写：个人向 ChatGPT（以及 Sora、Operator）提交的内�
 输出默认待确认。不能直发邮件，不能直贴合同系统。Enterprise / API 默认不训练，也不等于对方同意把真件交给 OpenAI，更不等于满足出境和商业秘密条款。不明中转站、来路不清的「中文版 ChatGPT」更不要传原件。脱敏之后，组织调用仍应走自己的入口和审计，而不是每人一个个人账号。
 
 广告素材交给 AIGC 批量生成后，法务台账要记什么，见 <NoteLink slug="aigc-ad-assets-vs-legal-ledger">AIGC 投放素材出得再快，广告法务台账缺什么</NoteLink>。
+
+客户个人信息交给 Agent 处理时，哪些字段能读、哪些要先遮掩，见 <NoteLink slug="personal-data-agent-minimization">个人信息 Agent：客户数据能用到哪一步？</NoteLink>。
 
 ## 合同丢进 ChatGPT：常见问题
 
