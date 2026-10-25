@@ -12,6 +12,7 @@ import type { FaqItem } from '../lib/faq';
 interface Props {
   title: string;
   seoTitle?: string;
+  seoDescription?: string;
   description: string;
   lang?: 'zh-CN' | 'en';
   alternates: { hreflang: string; path: string }[];
@@ -34,6 +35,7 @@ interface Props {
 const {
   title,
   seoTitle,
+  seoDescription,
   description,
   lang = 'zh-CN',
   alternates,
@@ -185,7 +187,7 @@ const cta = isApiArticle
 ---
 <BaseLayout
   title={seoTitle ?? title}
-  description={description}
+  description={seoDescription ?? description}
   path={path}
   jsonLd={jsonLd}
   ogImage={ogImage}

@@ -20,9 +20,9 @@ export type ServicesCopy = {
 };
 
 export const zh: ServicesCopy = {
-  title: '服务｜AI 转型咨询、企业 AI 培训、FDE 驻场开发与工具开发',
+  title: '企业 AI 转型服务：咨询、培训、FDE 驻场开发｜白泽明理 Baize AI',
   description:
-    '白泽明理四项服务：AI 转型咨询排出改造优先级，企业 AI 培训按岗位授课，FDE 工程师驻场把 Agent 接进业务系统，工具开发覆盖中转站、LLM 网关与内部工具。',
+    '杭州白泽明理做企业 AI Native 转型：咨询排出先改哪条流程，按岗位培训，FDE 驻场把 Agent 接进 CRM、ERP、HR，按需开发内部工具。',
   badge: '四项服务 · 咨询 · 培训 · FDE · 工具',
   h1: ['从想清楚，', BR, '到 ', { em: '跑起来' }, '。'],
   sub: '先找出最该改的流程，再教团队用 AI 干活，最后派工程师把 Agent 和工具接进你的系统。四项服务可以单独买，也可以按顺序接。',

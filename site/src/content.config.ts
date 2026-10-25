@@ -11,6 +11,8 @@ const notes = defineCollection({
       // <title> 与 og:title 用;h1 仍是 title。只在 title 太长、搜索结果会被截断时填。
       seoTitle: z.string().optional(),
       description: z.string(),
+      // meta description / og:description 用;页面导语仍显示 description。只在搜索摘要要单独改写时填。
+      seoDescription: z.string().optional(),
       lang: z.enum(['zh-CN', 'en']).default('zh-CN'),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),

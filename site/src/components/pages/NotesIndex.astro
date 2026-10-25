@@ -21,8 +21,9 @@ interface Props {
 const COPY = {
   'zh-CN': {
     title: '明理笔记',
+    seoTitle: '明理笔记：企业 AI 落地方法、案例与工具教程',
     blogName: '明理笔记',
-    description: '白泽明理关于企业 AI 转型的笔记：企业落地案例、AI 编程、Loop Engineering、安全合规与模型接入，每篇给出可核对的步骤和来源。',
+    description: '白泽明理的企业 AI 落地笔记：Agent 治理、AI 编程、Grok Bot 与本地模型部署教程。每篇有步骤和来源，可直接照做。',
     eyebrow: '方法全公开',
     h1: '明理笔记',
     lead: (n: number) => `关于 AI 接入、工程与落地的笔记，按话题筛选。共 ${n} 篇。`,
@@ -33,6 +34,7 @@ const COPY = {
   },
   en: {
     title: 'Notes',
+    seoTitle: 'Notes',
     blogName: 'Baize Tech Notes',
     description: 'Baize Tech notes on putting AI to work in real teams: engineering practice, security, governance, and rollout.',
     eyebrow: 'Baize Tech Notes',
@@ -86,7 +88,7 @@ const breadcrumbLd = {
 };
 ---
 <BaseLayout
-  title={t.title}
+  title={t.seoTitle}
   description={t.description}
   path={path}
   jsonLd={[blogLd, breadcrumbLd]}
