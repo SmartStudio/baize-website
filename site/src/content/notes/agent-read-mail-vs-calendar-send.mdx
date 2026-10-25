@@ -1,6 +1,6 @@
 ---
-title: Agent 读邮件可以，改日历发信要先批什么
-description: Agent 读邮件多半只是检索与摘要。Claude 的 Gmail 连接器已能发送、回复、转发，默认每次先问你；日历连接器还能创建、更新、删除日程。读可以宽，写要收口：发信与改日历属于对外动作，先批什么，写进工具权限表再开 Always allow。
+title: AI Agent 权限：读邮件行，发信要先批吗
+description: AI Agent 权限按读写分开：读邮件多是检索和摘要，可以放宽；发信、改日历是对外写动作，默认先批，写进权限表后再开 Always allow。
 pubDate: 2026-09-15
 category: 安全可信
 relatedService: consulting
@@ -20,7 +20,7 @@ howto:
       text: 抽 10 次写动作，每次都要有批准记录或组织策略说明；没记录就别开 Always allow。
 ---
 
-Gmail 接上连接器之后，很多人第一句话是「帮我翻邮件」。Anthropic 帮助中心写明：Claude 的 Google Workspace 连接器能搜读邮件，也能起草；发送、回复、转发默认每次都要你点头。日历这边能看事件，也能创建、更新、删除。读邮件是一档权限；改日历、发信是另一档。
+配置 AI Agent 权限时，很多人接上 Gmail 连接器后的第一句话是「帮我翻邮件」。Anthropic 帮助中心写明：Claude 的 Google Workspace 连接器能搜读邮件，也能起草；发送、回复、转发默认每次都要你点头。日历这边能看事件，也能创建、更新、删除。读邮件是一档权限；改日历、发信是另一档。
 
 import noteFig from './media/agent-read-mail-vs-calendar-send-fig.png'
 
@@ -32,7 +32,7 @@ import noteFig from './media/agent-read-mail-vs-calendar-send-fig.png'
 
 读档可以开 Always allow，或者审批放宽一点——这时通常还没改外面的世界。仍要当心：别把整箱邮件粘进消费级聊天，还开着训练开关。见 <NoteLink slug="chatgpt-contract-paste-vs-redact">合同丢进 ChatGPT：直接丢进聊天框 vs 脱敏后再用</NoteLink>。账号散落在个人号上时，审计更难，见 <NoteLink slug="why-not-just-buy-ai-accounts">企业为什么不能只买 AI 账号？</NoteLink>。
 
-## 发信：默认先批
+## 发信：默认走 Agent 审批
 
 帮助中心 FAQ：Claude 能从 Gmail 发送、回复、转发；这些动作默认每次先问你。Team / Enterprise 里，Owner 决定成员能不能改成「不用次次问」。OAuth 屏上会出现发送相关权限说明，这不等于产品默认自动连发。
 
@@ -57,7 +57,7 @@ import noteFig from './media/agent-read-mail-vs-calendar-send-fig.png'
 不要做：把「帮我回复」理解成已授权自动连发；不要在未批时改共享日历；不要关闭发送类 Needs approval 却无审计抽样。
 ```
 
-## Agent 读邮件：常见问题
+## AI Agent 权限：常见问题
 
 ### Agent 读邮件会不会自动发出去？
 
@@ -67,9 +67,9 @@ import noteFig from './media/agent-read-mail-vs-calendar-send-fig.png'
 
 Team / Enterprise 由 Owner 决定成员能不能让写动作不次次问。组织没放行前，个人想 Always allow 也可能被挡住。放行后仍建议保留抽样审计。
 
-### 日历自动发送要先批什么？
+### Agent 审批：改日历和自动发信要先批什么？
 
-至少批：事件标题与时间、参会者列表、是否发更新通知、是否写入共享日历。跟邮件联用时，邮件正文和收件人一起进审批单。日历写权限和 Gmail 发送权限分开配，别捆成一个「全开」。
+Agent 审批至少批：事件标题与时间、参会者列表、是否发更新通知、是否写入共享日历。跟邮件联用时，邮件正文和收件人一起进审批单。日历写权限和 Gmail 发送权限分开配，别捆成一个「全开」。
 
 ## 来源
 

@@ -1,6 +1,6 @@
 ---
-title: Agent 接 CRM 之前，上线测试先跑模拟企业数据？
-description: Agent 上线测试先在模拟企业环境里跑，再接真实 CRM。Eon 的 Era 能生成一家完整的虚拟公司，带 Salesforce、Zendesk、Slack 等系统的仿真接口和 MCP 端点，数据全部合成。它也写明：上线前还要在自己的预发环境用真实数据再验一次。
+title: Agent 测试环境：接 CRM 前先用模拟数据？
+description: Agent 测试先在模拟企业环境里跑，再接真实 CRM。Era 这类工具能生成带仿真接口和 MCP 端点的虚拟公司，上线前仍要用真实数据在预发环境再验一次。
 pubDate: 2026-10-14
 category: 安全可信
 relatedService: consulting
@@ -11,13 +11,13 @@ cover: ./media/agent-sandbox-test-vs-prod-data-cover.png
 coverAlt: 玻璃沙盒里的模型公司和正在测试的 Agent，旁边是通往真实 CRM 档案柜的关闭闸门
 ---
 
-Agent 上线测试，先在模拟企业数据上跑，再接真实 CRM。顺序是三步：模拟环境里测对错和权限，预发环境里用真实数据复核，最后才进生产。直接拿生产 CRM 试，测错一次就可能改坏客户记录。
+Agent 测试，先在模拟企业数据上跑，再接真实 CRM。顺序是三步：模拟环境里测对错和权限，预发环境里用真实数据复核，最后才进生产。直接拿生产 CRM 试，测错一次就可能改坏客户记录。
 
 import noteFig from './media/agent-sandbox-test-vs-prod-data-fig.png'
 
 <Figure src={noteFig} alt="左边是模拟、预发、生产三步上线测试；右边是数据一致的模拟公司和真实系统里的脏数据对比" caption="图：「Agent 上线 测试」｜「模拟 企业数据」" width="wide" border />
 
-## 模拟企业环境能测什么
+## 模拟企业环境能做哪些 Agent 测试
 
 Eon 在 2026 年 10 月 8 日公开了免费工具 Era。选行业、公司规模和要用的系统，它会生成一家虚拟公司：客户、商机、工单、通话记录、聊天和文档在各系统之间互相对得上。（来源：[Eon 博客](https://www.eon.io/blog/era-build-and-test-ai-agents)）
 
@@ -51,7 +51,7 @@ Era 自己的说明写得很直白：环境 100% 合成，不能替代带真实�
 
 规模化之前要先定哪些事，见 <NoteLink slug="agent-governance-before-scale">Agent 治理要赶在扩规模之前</NoteLink>。工程上怎么设护栏，见 <NoteLink slug="engineering-guardrails-for-ai">AI 原生时代的软件工程：从「写代码」到「约束代码」</NoteLink>。
 
-## Agent 上线测试：常见问题
+## Agent 测试：常见问题
 
 ### Agent 上线测试能直接用生产 CRM 吗？
 不建议。测试中 Agent 可能写错、删错记录。先在模拟环境里跑通，再到预发环境复核。
@@ -59,5 +59,5 @@ Era 自己的说明写得很直白：环境 100% 合成，不能替代带真实�
 ### 模拟环境的分数能代表上线效果吗？
 只能代表流程和权限这一层。真实数据的脏乱程度，要在预发环境里看。
 
-### 模拟企业数据从哪里来，要自己造吗？
-可以自己造，也可以用现成工具。Eon 的 Era 能按行业和规模生成整家公司的模拟企业数据，各系统之间数据一致，Eon 说对开发者免费。自己造的话，至少要让客户、商机和工单在几个系统里对得上，否则测不出跨系统的问题。
+### Agent 测试数据从哪里来，模拟企业数据要自己造吗？
+Agent 测试数据可以自己造，也可以用现成工具。Eon 的 Era 能按行业和规模生成整家公司的模拟企业数据，各系统之间数据一致，Eon 说对开发者免费。自己造的话，至少要让客户、商机和工单在几个系统里对得上，否则测不出跨系统的问题。
