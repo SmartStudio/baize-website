@@ -8,8 +8,8 @@ export async function GET(context) {
   );
 
   return rss({
-    title: 'Baize Tech Notes',
-    description: 'Baize Tech notes on putting AI to work in real teams: engineering practice, security, governance, and rollout.',
+    title: 'Baize AI Notes',
+    description: 'Baize AI notes on putting AI to work in real teams: engineering practice, security, governance, and rollout.',
     site: context.site,
     customData: '<language>en</language>',
     items: notes.map((n) => ({

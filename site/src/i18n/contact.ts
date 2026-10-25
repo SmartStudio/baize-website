@@ -24,7 +24,7 @@ export const zh: ContactCopy = {
 export const en: ContactCopy = {
   title: 'Contact Us',
   description:
-    'Book a free 30-minute call, or ask Baize Tech about AI transformation consulting, team training, forward deployed engineering, or internal tools.',
+    'Book a free 30-minute call, or ask Baize AI about AI transformation consulting, team training, forward deployed engineering, or internal tools.',
   badge: 'Contact · Remote-first',
   h1: ['Talk to us for 30 minutes.', BR, 'Find the first ', { em: 'workflow to change' }, '.'],
   sub: 'Tell us how your team works today and the problem you most want solved. We will reply with where AI should start.',

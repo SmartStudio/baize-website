@@ -23,7 +23,7 @@ interface Props {
 const { title, description, path, lang, docTitle, altPath, effectiveDate } = Astro.props.frontmatter;
 
 const isZh = lang === 'zh-CN';
-const titleSuffix = isZh ? '· 白泽明理' : '· Baize Tech';
+const titleSuffix = isZh ? '· 白泽明理 Baize AI' : '· Baize AI';
 const altLabel = isZh ? 'EN' : '中文';
 const selfHreflang = isZh ? 'zh-Hans' : 'en';
 const altHreflang = isZh ? 'en' : 'zh-Hans';
@@ -75,8 +75,8 @@ const org = organizationJsonLd(lang);
   <body>
     <header class="bz-legal-topbar">
       <a class="bz-legal-topbar__brand" href={base}>
-        <Image class="bz-legal-topbar__logo" src={mark} alt={isZh ? '白泽明理' : 'Baize Tech'} width={56} loading="eager" />
-        <span class="bz-legal-topbar__wm bz-logotype">{isZh ? '白泽明理' : 'Baize Tech'}</span>
+        <Image class="bz-legal-topbar__logo" src={mark} alt={isZh ? '白泽明理' : 'Baize AI'} width={56} loading="eager" />
+        <span class="bz-legal-topbar__wm bz-logotype">{isZh ? '白泽明理' : 'Baize AI'}</span>
       </a>
       <a class="bz-legal-topbar__switch" href={altHref}>{altLabel}</a>
     </header>
@@ -90,7 +90,7 @@ const org = organizationJsonLd(lang);
       </div>
     </main>
     <footer class="bz-legal-footer">
-      <p>© {new Date().getFullYear()} 白泽明理 Baize Tech</p>
+      <p>© {new Date().getFullYear()} 白泽明理 Baize AI</p>
     </footer>
   </body>
 </html>

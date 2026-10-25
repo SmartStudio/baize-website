@@ -2,7 +2,7 @@ const site = import.meta.env.SITE as string;
 
 /** 对外主名。副名只进 alternateName，不当标题。 */
 export const ORGANIZATION_NAME = '白泽明理';
-export const ORGANIZATION_NAME_EN = 'Baize Tech';
+export const ORGANIZATION_NAME_EN = 'Baize AI';
 
 /**
  * 全站唯一的 Organization 节点 id。其他 JSON-LD(publisher、provider)用 orgRef 引用它,
@@ -20,16 +20,16 @@ export const orgRef = (lang: 'zh-CN' | 'en' = 'zh-CN') => ({
 const COPY = {
   'zh-CN': {
     name: ORGANIZATION_NAME,
-    alternateName: ['Baize Tech', 'Formal eXplainable AI', '白泽明理 Baize Tech'],
+    alternateName: ['Baize AI', '白泽明理 Baize AI', 'Baize Tech', 'Formal eXplainable AI'],
     description:
-      '白泽明理（Baize Tech）帮企业做 AI 转型，提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持四项服务。',
+      '白泽明理（Baize AI）帮企业做 AI 转型，提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持四项服务。',
     knowsAbout: ['AI 转型咨询', '企业 AI 培训', 'FDE 驻场开发', 'AI Agent 集成', 'LLM API 网关', 'Loop Engineering'],
   },
   en: {
     name: ORGANIZATION_NAME_EN,
-    alternateName: [ORGANIZATION_NAME, 'Formal eXplainable AI', '白泽明理 Baize Tech'],
+    alternateName: [ORGANIZATION_NAME, '白泽明理 Baize AI', 'Baize Tech', 'Formal eXplainable AI'],
     description:
-      'Baize Tech is an AI transformation consultancy. It offers AI transformation consulting, team AI training, forward deployed engineering, and internal tools. Delivery is remote-first.',
+      'Baize AI is an AI transformation consultancy. It offers AI transformation consulting, team AI training, forward deployed engineering, and internal tools. Delivery is remote-first.',
     knowsAbout: [
       'AI transformation consulting',
       'AI training for teams',

@@ -50,9 +50,9 @@ export const zh: AboutCopy = {
 export const en: AboutCopy = {
   title: 'About Us',
   description:
-    'Baize Tech helps companies put AI into their business processes and turn it into team efficiency they can verify and keep.',
-  badge: 'About Baize Tech · Formal eXplainable AI',
-  h1: 'Baize Tech',
+    'Baize AI helps companies put AI into their business processes and turn it into team efficiency they can verify and keep.',
+  badge: 'About Baize AI · Formal eXplainable AI',
+  h1: 'Baize AI',
   sub: 'Baize is a creature from Chinese mythology that could recognize every living thing. Our Chinese name adds two characters: ming, for transparent and explainable, and li, for logic and verifiable method. We use all three as working requirements.',
   name: {
     eyebrow: 'The name',
@@ -71,7 +71,7 @@ export const en: AboutCopy = {
     eyebrow: 'Who we are',
     h2: 'Advisors for AI-native transformation',
     paragraphs: [
-      'Baize Tech works with companies that are moving their operations onto AI. With leadership, business, and engineering teams, we decide which workflows AI should enter, where it saves real time, and which capabilities your team should own as its own methods and systems.',
+      'Baize AI works with companies that are moving their operations onto AI. With leadership, business, and engineering teams, we decide which workflows AI should enter, where it saves real time, and which capabilities your team should own as its own methods and systems.',
       'Deliverables include a diagnostic report, a workflow change plan, an AI access path, engineering and operations SOPs, acceptance criteria, and a timeline. We work in four ways: consulting, training, forward deployed engineering, and internal tools with product support. Delivery is remote-first.',
       'Formal eXplainable AI is our technical standard. Formal means formal, verifiable methods. eXplainable means people without a technical background can follow the process and the conclusions.',
     ],

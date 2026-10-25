@@ -17,7 +17,7 @@ import { notePath, noteSlug, pairNotes } from '../lib/i18n';
 // 抓取方少吃一次重定向。
 
 const SUMMARY =
-  '白泽明理（Baize Tech）帮企业做 AI 转型：找出最该先改的流程，按岗位培训团队，再派工程师把 Agent 接进 CRM、ERP、HR 系统。';
+  '白泽明理（Baize AI）帮企业做 AI 转型：找出最该先改的流程，按岗位培训团队，再派工程师把 Agent 接进 CRM、ERP、HR 系统。';
 
 const INTRO = `白泽明理提供四项服务：
 
@@ -54,7 +54,7 @@ export const GET: APIRoute = async ({ site }) => {
   );
 
   const body = [
-    '# 白泽明理 Baize Tech',
+    '# 白泽明理 Baize AI',
     '',
     `> ${SUMMARY}`,
     '',

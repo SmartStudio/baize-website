@@ -27,7 +27,7 @@ const switchHref = withBase(base, switchPath ?? localePath('/', otherLang));
   <div class="hd__inner">
     <a class="hd__brand" href={href('/')}>
       {/* eager:它在每页首屏,Astro 默认的 lazy 反而会拖慢它。 */}
-      <Image class="hd__logo" src={mark} alt={isEnglish ? 'Baize Tech' : '白泽明理'} width={96} height={126} loading="eager" />
+      <Image class="hd__logo" src={mark} alt={isEnglish ? 'Baize AI' : '白泽明理'} width={96} height={126} loading="eager" />
       <span class="hd__wm">baize</span>
       {!isEnglish && <span class="hd__cn">白泽明理</span>}
     </a>

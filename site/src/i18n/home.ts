@@ -32,7 +32,7 @@ export type HomeCopy = {
 };
 
 export const zh: HomeCopy = {
-  title: '白泽明理｜企业 AI 转型咨询、培训与 FDE 驻场开发',
+  title: '白泽明理 Baize AI｜企业 AI 转型咨询、培训与 FDE 驻场开发',
   description:
     'baize 帮企业找出最该先改的流程，按岗位培训团队用 AI 干活，再派工程师驻场把 Agent 接进 CRM、ERP、HR 系统。明理笔记公开全部方法。',
   promo: {
@@ -92,7 +92,7 @@ export const zh: HomeCopy = {
 };
 
 export const en: HomeCopy = {
-  title: 'AI Transformation Consulting & Team AI Training | Baize Tech',
+  title: 'AI Transformation Consulting & Team AI Training | Baize AI',
   description:
     'AI transformation consulting, role-based AI training for teams, and remote forward deployed engineers who connect AI agents to your CRM, ERP, and HR systems.',
   promo: {
@@ -102,7 +102,7 @@ export const en: HomeCopy = {
     video: {
       name: 'A 1-minute tour of baize',
       description:
-        'Baize Tech helps companies run the AI-native way with four services: AI transformation consulting, team AI training, forward deployed engineering, and internal tools and product support.',
+        'Baize AI helps companies run the AI-native way with four services: AI transformation consulting, team AI training, forward deployed engineering, and internal tools and product support.',
       transcript: [
         'Sound familiar?',
         'Runaway AI bills: 5 models, 5 accounts, 5 invoices.',

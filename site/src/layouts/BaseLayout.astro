@@ -42,8 +42,8 @@ const {
 const org = organizationJsonLd(lang);
 const base = import.meta.env.BASE_URL;
 const feed = lang === 'en'
-  ? { title: 'Baize Tech Notes', href: `${base}en/rss.xml` }
-  : { title: '明理笔记 · 白泽明理', href: `${base}rss.xml` };
+  ? { title: 'Baize AI Notes', href: `${base}en/rss.xml` }
+  : { title: '明理笔记 · 白泽明理 Baize AI', href: `${base}rss.xml` };
 const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : org;
 ---
 <!doctype html>

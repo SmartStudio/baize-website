@@ -6,9 +6,9 @@ import { notePath, noteSlug, pairNotes } from '../../lib/i18n';
 // 每个 H2 都是 `- [名称](URL): 说明` 链接列表。只收英文笔记。
 
 const SUMMARY =
-  'Baize Tech is an AI transformation consultancy. It helps companies put AI into operations, engineering, and delivery workflows. Work is remote-first.';
+  'Baize AI is an AI transformation consultancy. It helps companies put AI into operations, engineering, and delivery workflows. Work is remote-first.';
 
-const INTRO = `Baize Tech offers four services:
+const INTRO = `Baize AI offers four services:
 
 01 · AI transformation consulting: interview each team, rank the workflows to change first, and agree how results will be measured.
 02 · Team AI training: role-based sessions; each team leaves with reusable skills for its own tasks.
@@ -18,7 +18,7 @@ const INTRO = `Baize Tech offers four services:
 Contact: contacts@fxai.ai`;
 
 const PAGES: Array<[string, string, string]> = [
-  ['/en/', 'Home', 'Who Baize Tech is, the four services, and how to book a first call'],
+  ['/en/', 'Home', 'Who Baize AI is, the four services, and how to book a first call'],
   ['/en/services/', 'Services', 'Consulting, training, forward deployed engineering, and tools: scope and deliverables'],
   ['/en/method/', 'Method', 'How an engagement runs, from diagnosis to rollout'],
   ['/en/about/', 'About', 'The team and the Formal eXplainable AI working standard'],
@@ -41,7 +41,7 @@ export const GET: APIRoute = async ({ site }) => {
   );
 
   const body = [
-    '# Baize Tech',
+    '# Baize AI',
     '',
     `> ${SUMMARY}`,
     '',

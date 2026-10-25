@@ -35,7 +35,8 @@ const {
   article,
   noindex: forceNoindex = false,
   lang = 'zh-CN',
-  titleSuffix = lang === 'en' ? '· Baize Tech' : '· 白泽明理',
+  // 英文页不露中文(check:i18n 会拦),所以英文只用品牌的英文半边。
+  titleSuffix = lang === 'en' ? '· Baize AI' : '· 白泽明理 Baize AI',
   alternates = [],
 } = Astro.props;
 const site = import.meta.env.SITE;
@@ -72,7 +73,7 @@ const altLocale = lang === 'en' ? 'zh_CN' : 'en_US';
   </>
 )}
 {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
-<meta property="og:site_name" content={lang === 'en' ? 'Baize Tech' : '白泽明理 Baize Tech'} />
+<meta property="og:site_name" content={lang === 'en' ? 'Baize AI' : '白泽明理 Baize AI'} />
 <meta property="og:locale" content={locale} />
 {hasTwin && <meta property="og:locale:alternate" content={altLocale} />}
 {article && (

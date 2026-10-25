@@ -9,7 +9,7 @@ export async function GET(context) {
   );
 
   return rss({
-    title: '明理笔记 · 白泽明理',
+    title: '明理笔记 · 白泽明理 Baize AI',
     description: '白泽明理关于企业 AI 转型的笔记。',
     site: context.site,
     customData: '<language>zh-cn</language>',
