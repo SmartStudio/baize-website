@@ -25,6 +25,8 @@ AI 最大的价值不只是节省时间，而是解除研发的线性产能限�
 
 所以有效的做法不是让 AI 自由发挥，而是先建立 guardrails。
 
+机器人也一样：视频模仿学会动作后，换航点、避障还要人写约束，见 <NoteLink slug="robot-video-imitation-vs-motion-script">机器人视频模仿能学会动作时，动作脚本还要人写吗</NoteLink>。
+
 ## 开发工作流正在被重新排列
 
 传统开发的第一入口是 Editor。AI 协作开发的工作流更接近另一条链路：**CLI → Editor → GitHub**。
@@ -40,6 +42,8 @@ import loopFig from './media/from-coder-to-orchestrator-fig-1.png'
 <Figure src={loopFig} alt="定义意图、并发委派、Agent 执行、人类裁决四阶段工作流示意" caption="图：新的核心循环——人类在入口定义意图、并发委派，多个 Agent 高吞吐执行，所有产出必须过人类裁决这道关卡才能合入。" width="wide" border />
 
 一句话概括这条链路的分工：**AI 负责高吞吐，人类负责高判断。**
+
+同时委派多个 Agent、多条回路要排先后时，见 <NoteLink slug="graph-engineering-is-not-loop-engineering">Graph Engineering 不是替代 Loop，是上面一层</NoteLink>。
 
 ## 约束 AI，需要三层防线
 

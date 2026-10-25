@@ -41,6 +41,8 @@ import noteFig from './media/agent-pilot-to-production-checklist-fig.png'
 
 企业需要按自主执行特性重塑流程：明确哪些节点由算法自主流转，哪些动作保留人工终审，哪些异常纳入预设规则。流程不重做，Agent 只是给旧流程多套了一层，多层串行审批还会让它卡在等待节点上。
 
+老 ERP 没有接口、只能让 Agent 操作界面时，哪些动作能放手、哪些要人确认，见 <NoteLink slug="agent-legacy-desktop-automation">电脑操作 Agent 替人点老 ERP，靠得住吗？</NoteLink>。
+
 **2. 运行时护栏**
 
 纸面安全制度之外，系统里要有代码级的运行时护栏。护栏放在模型给出动作意图和底层系统真正写入之间，先检查，再放行。
@@ -58,6 +60,8 @@ import noteFig from './media/agent-pilot-to-production-checklist-fig.png'
 出了错能撤回、能追查，Agent 才适合接写操作。
 
 针对写操作，工程团队必须提供原子化回滚能力。若 Agent 在执行批量修改或提交订单过程中断，系统应自动恢复至初始事务状态。同时，提示词输入、推理链路、外部 API 参数与返回值，以结构化形式写入防篡改日志，支持事后现场还原与合规审计。
+
+Agent 已经执行出错后，回滚顺序和责任划分，见 <NoteLink slug="agent-rollback-and-accountability">Agent 已经执行出错了，怎么回滚、责任算谁的</NoteLink>。
 
 **5. 综合结果度量体系**
 

@@ -97,3 +97,5 @@ codex exec -m gpt-6.1-sol -c model_reasoning_effort=high "review this diff for c
 ## 配还是不配，差的是钱和时间
 
 所有角色都用最贵的档位，多花钱也多等时间；全用最省的档位，判断质量会下降，主线程做范围拆解和结果整合时最明显。文档还写明，每个 subagent 各自做模型和工具调用，subagent 工作流比同等的单 agent 运行消耗更多 token，所以子任务的档位直接决定这笔额外开销有多大。分层配置把贵的判断力放在主线程，把便宜的执行力放在子任务。Codex 从「个人顺手用一用」到「团队研发流程的一部分」还要跨过边界、验证、协作这几道坎，见 <NoteLink slug="codex-into-real-workflow">Codex 真正进入研发流程，需要解决哪些问题？</NoteLink>。
+
+执行档想换成本地开源模型时，Mac 上跑 Qwen3.8-27B 要多大内存，见 <NoteLink slug="qwen38-mac-unsloth">在 Mac 上用 Unsloth 本地跑 Qwen3.8-27B</NoteLink>。
