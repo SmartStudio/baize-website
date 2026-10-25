@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { readFileSync, readdirSync, renameSync, rmdirSync } from 'node:fs';
+import { readFileSync, readdirSync, renameSync, rmdirSync, writeFileSync } from 'node:fs';
 
 const target = process.env.PUBLIC_DEPLOY_TARGET ?? 'cloudflare';
 // canonical 主域恒为 CF；两处构建都用它做 site，从而 sitemap/canonical 去重指向主站
@@ -50,6 +50,19 @@ const en404 = {
   },
 };
 
+// 构建产物里写一份 /build.txt(本次构建的 commit sha)。scripts/indexnow.mjs 轮询它,
+// 确认 CF Pages 已经把这次 push 部署上线,再把改动的 URL 推给 IndexNow。
+// CF Pages 构建注入 CF_PAGES_COMMIT_SHA,GH Actions 注入 GITHUB_SHA;本地构建两者都没有就不写。
+const buildId = {
+  name: 'build-id',
+  hooks: {
+    'astro:build:done': ({ dir }) => {
+      const sha = process.env.CF_PAGES_COMMIT_SHA ?? process.env.GITHUB_SHA;
+      if (sha) writeFileSync(new URL('build.txt', dir), `${sha}\n`);
+    },
+  },
+};
+
 export default defineConfig({
   site: SITE,
   base: BASE,
@@ -68,6 +81,7 @@ export default defineConfig({
     mdx(),
     sitemap({ i18n: { defaultLocale: 'zh', locales: { zh: 'zh-Hans', en: 'en' } }, serialize: serializeSitemapItem }),
     en404,
+    buildId,
   ],
   vite: {
     define: {

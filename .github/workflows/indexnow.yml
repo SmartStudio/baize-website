@@ -1,0 +1,47 @@
+name: IndexNow (push changed URLs to Bing)
+
+# push 到 master 后:等 CF Pages 把这次提交部署上线(轮询 https://fxai.ai/build.txt),
+# 再把本次改动的页面 URL 推给 api.indexnow.org。key 是公开文件 site/public/<key>.txt,不需要 secret。
+# 手动补推:Actions 页面 Run workflow,填 urls(空格分隔的站内路径,如 /notes/foo/)。
+on:
+  push:
+    branches: [master]
+    paths: ['site/**']
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Space-separated site paths to submit, e.g. /notes/foo/ /services/'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Submit changed URLs
+        if: github.event_name == 'push'
+        env:
+          FROM_SHA: ${{ github.event.before }}
+          TO_SHA: ${{ github.sha }}
+        run: node scripts/indexnow.mjs --from "$FROM_SHA" --to "$TO_SHA"
+      - name: Submit given URLs
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          URLS: ${{ inputs.urls }}
+        run: node scripts/indexnow.mjs --urls "$URLS"

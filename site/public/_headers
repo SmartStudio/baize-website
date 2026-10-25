@@ -18,3 +18,7 @@
 
 /og-default-en.png
   Cache-Control: public, max-age=2592000
+
+# scripts/indexnow.mjs 轮询它判断部署是否到位,不能被缓存。
+/build.txt
+  Cache-Control: no-store
