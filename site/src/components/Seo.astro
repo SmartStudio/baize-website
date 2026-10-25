@@ -23,6 +23,9 @@ interface Props {
   ogImageHeight?: number;
   /** Default large image; notes pass "summary" for a small left-side card. */
   twitterCard?: 'summary' | 'summary_large_image';
+  /** Optional separate twitter:image path (no base). Notes use a shared square mark. */
+  twitterImage?: string;
+  twitterImageAlt?: string;
   ogType?: 'website' | 'article';
   article?: { published: string; modified?: string; section?: string; author?: string };
   noindex?: boolean;
@@ -39,6 +42,8 @@ const {
   ogImageWidth,
   ogImageHeight,
   twitterCard = 'summary_large_image',
+  twitterImage,
+  twitterImageAlt,
   ogType = 'website',
   article,
   noindex: forceNoindex = false,
@@ -51,6 +56,9 @@ const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
 const DEFAULT_OG = { src: lang === 'en' ? '/og-default-en.png' : '/og-default.png', width: 1200, height: 630 };
 const ogUrl = new URL(ogImage ?? DEFAULT_OG.src, site).href;
+// Notes may pass a shared square mark for twitter:image while og:image stays the landscape cover.
+const twitterUrl = new URL(twitterImage ?? ogImage ?? DEFAULT_OG.src, site).href;
+const twitterAlt = twitterImageAlt ?? ogImageAlt;
 // Default OG keeps 1200×630. Note covers keep real getImage size (typically 1200×675 for 16:9).
 const resolvedOgWidth = ogImage ? ogImageWidth : DEFAULT_OG.width;
 const resolvedOgHeight = ogImage ? ogImageHeight : DEFAULT_OG.height;
@@ -98,5 +106,5 @@ const altLocale = lang === 'en' ? 'zh_CN' : 'en_US';
 <meta name="twitter:card" content={twitterCard} />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogUrl} />
-{ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
+<meta name="twitter:image" content={twitterUrl} />
+{twitterAlt && <meta name="twitter:image:alt" content={twitterAlt} />}

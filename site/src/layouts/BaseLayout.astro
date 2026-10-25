@@ -17,6 +17,8 @@ interface Props {
   ogImageWidth?: number;
   ogImageHeight?: number;
   twitterCard?: 'summary' | 'summary_large_image';
+  twitterImage?: string;
+  twitterImageAlt?: string;
   ogType?: 'website' | 'article';
   article?: { published: string; modified?: string; section?: string; author?: string };
   jsonLd?: object | object[];
@@ -36,6 +38,8 @@ const {
   ogImageWidth,
   ogImageHeight,
   twitterCard,
+  twitterImage,
+  twitterImageAlt,
   ogType,
   article,
   jsonLd,
@@ -80,6 +84,8 @@ const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : 
       ogImageWidth={ogImageWidth}
       ogImageHeight={ogImageHeight}
       twitterCard={twitterCard}
+      twitterImage={twitterImage}
+      twitterImageAlt={twitterImageAlt}
       ogType={ogType}
       article={article}
       noindex={noindex}
