@@ -1,0 +1,56 @@
+---
+title: LM Studio、Ollama，Mac 怎么选
+description: 在 Mac 上使用大模型，LM Studio 和 Ollama 适合不同场景。人在屏幕前测试模型与量化档位，先装 LM Studio 获取可视化界面；为终端脚本和编码助手提供常驻本地接口，先装 Ollama。两款工具端口不同，可以在同一台电脑上配合运行。
+pubDate: 2026-10-26
+category: AI编程
+relatedService: dev-workflow
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/mac-lm-studio-or-ollama-cover.png
+coverAlt: 深墨绿底上，一台笔记本左边连着一个窗框，右边连着一台小服务器，两路绿色光点各走各的线
+---
+
+在 Mac 上跑本地模型，选 LM Studio 还是选 Ollama，取决于电脑的主要用途。主要是人坐在屏幕前测试提示词、换模型聊天、比较不同量化档位，先装 LM Studio；主要是给脚本、编辑器插件或者编码 Agent 提供常驻后台服务，先装 Ollama。两款工具默认端口不同，可以装在同一台电脑上配合使用。速度和内存占用会随版本、模型格式和量化档变化，本文不比跑分。
+
+import noteFig from './media/mac-lm-studio-or-ollama-fig.png'
+
+<Figure src={noteFig} alt="左边屏幕窗口负责界面聊天和量化筛选，右边后台服务用两个本地端口供调用，下方一块内存托盘分成两份" caption="图：「LM Studio」｜「Ollama 后台 API」" width="wide" border />
+
+## 在屏幕前聊天试模型
+
+根据 [mlx.app 运行指南](https://mlx.app/zh/learn/run-llm-on-mac)，LM Studio 是 Mac 桌面 App，自带聊天窗口和模型浏览器。在 Apple 芯片设备上，LM Studio 既能运行针对苹果芯片优化的 MLX 格式，也能运行基于 llama.cpp 的 GGUF 格式，还能开本地服务器给别的 App 调用。
+
+使用者在窗口里直接和模型对话、测试提示词，不用记终端命令。业务同事想自己看看本地模型答得怎么样，装这一个就够。
+
+## 给脚本和 Agent 当后台 API
+
+Ollama 可以在终端里通过一条 `ollama run <模型名>` 命令下载并启动模型，同时把模型提供给 Mac 上的其他 App。根据 [Ollama 官方接口文档](https://docs.ollama.com/api/introduction)，Ollama 本地服务器地址是 `http://localhost:11434`，服务端同时兼容 OpenAI 与 Anthropic 格式的接口地址，本地请求不需要 API key。把 Ollama 后台 API 开着，自动化脚本直接请求这个本地端口就行。
+
+在官方预览版示例里，可以用 `ollama launch claude` 给 Claude Code 这类编码 Agent 接本地模型。在探索研发工具链与模型整合的阶段，可以结合 <NoteLink slug="codex-into-real-workflow">Codex 真正进入研发流程，需要解决哪些问题？</NoteLink> 中的流程控制思路，先用本地接口跑通基础代码补全，再决定是否接入更复杂的自动化逻辑。
+
+## 两个一起装怎么分工
+
+根据 [LM Studio 开发者端点文档](https://lmstudio.ai/docs/developer/openai-compat)，LM Studio 本地服务器提供 OpenAI 兼容端点（`/v1/chat/completions`、`/v1/models` 等），官方示例端口是 `1234`。这个端口与 Ollama 使用的 `11434` 端口互不冲突，两款工具可以安装在同一台电脑上共同使用。
+
+分工的做法是把交互测试交给桌面窗口，把后台服务交给 Ollama。根据 [LM Studio 无界面运行文档](https://lmstudio.ai/docs/developer/core/headless)，LM Studio 也可以不开界面运行：官方推荐 llmster 守护进程，执行 `lms daemon up` 启动，再执行 `lms server start` 开启监听；桌面版也能在设置里勾选登录时运行服务。两套服务在同台机器上运行，先确认物理内存余量，再规划加载的模型规模。
+
+## 选之前先看内存和模型格式
+
+Mac 的统一内存容量决定了本机能装下多大参数的模型，不同量化档位的显存要求见 <NoteLink slug="qwen38-27b-vram-requirements">Qwen3.8 显存要求：27B 用哪个量化档</NoteLink>。根据 [Ollama 官方博客](https://ollama.com/blog/mlx) 二〇二六年三月三十日发布的信息，Apple 芯片上的 Ollama 改由 MLX 驱动进入预览版，官方要求用统一内存超过三十二 GB 的 Mac。
+
+在模型格式方面，LM Studio 在 Apple 芯片上能跑 MLX 格式，也能跑 llama.cpp 用的 GGUF 格式。使用者在选型前，先对照当前机器的统一内存规格与计划使用的模型文件格式，确认硬件配置满足工具的最低门槛。
+
+## LM Studio：常见问题
+
+### 只在屏幕前聊天要不要装 Ollama？
+
+人在屏幕前测试模型问答，只装 LM Studio 就足够使用。LM Studio 提供了可视化窗口与模型库检索，不需要输入命令，下载与切换模型都在界面内完成。Ollama 长于命令行调用与提供常驻接口，单纯人工交互对话不需要配置终端环境。
+
+### 本地 API 能不能给同事局域网用？
+
+本地模型服务可以开放给局域网同事调用，但需配置安全选项。根据 [LM Studio 服务端命令行文档](https://lmstudio.ai/docs/cli/serve/server-start)，`lms server start` 默认只绑定 `127.0.0.1`。绑到其它地址会暴露到本机外，官方建议开启认证。共享前先在本机验证参数与认证设置，再向同事开放端口。
+
+### Ollama 后台 API 和 LM Studio 能装在同一台 Mac 上吗？
+
+Ollama 和 LM Studio 可以安装在同一台 Mac 上共同使用。LM Studio 官方示例端口是 `1234`，Ollama 本地服务器地址是 `http://localhost:11434`，通信端口互不冲突。使用者可以用 LM Studio 打开界面测试不同量化档，同时用 Ollama 在后台为编辑器提供代码接口；日常使用注意留出内存余量，避免同时加载大模型导致系统卡顿。
