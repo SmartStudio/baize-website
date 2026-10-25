@@ -51,3 +51,9 @@ token 以 `site/src/styles/tokens/` 为准。改完运行 `pnpm run tokens:push`
 
 - 字体自托管:当前零外链字体(性能/隐私目标已达成),品牌字体走系统回退;如需完全还原 Poppins / JetBrains Mono,可用 Fontsource 自托管(可选增强)。
 - 服务页 FAQ:已决定暂不补——代开发/代运维的边界由 How 证据条与「支撑层」段落表达。
+
+## 延伸阅读
+
+- [如何把网站免费部署到 Cloudflare Pages？手把手四步上线](https://fxai.ai/notes/deploy-website-to-cloudflare/)：本站主站就部署在 Cloudflare Pages，这篇讲基本步骤。
+- [本地跑通、线上报错：部署的最后一公里难在哪？](https://fxai.ai/notes/deploy-last-mile/)：一次真实上线的复盘，补充上面的上线手册。
+- [llms.txt 怎么写才有用](https://fxai.ai/notes/llms-txt-how-to-write-useful/)：本站 `public/` 里有 llms.txt，这篇讲它该写什么。
