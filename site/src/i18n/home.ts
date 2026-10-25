@@ -34,7 +34,7 @@ export type HomeCopy = {
 export const zh: HomeCopy = {
   title: '白泽明理 Baize AI｜企业 AI 转型咨询、培训与 FDE 驻场开发',
   description:
-    'baize 帮企业找出最该先改的流程，按岗位培训团队用 AI 干活，再派工程师驻场把 Agent 接进 CRM、ERP、HR 系统。明理笔记公开全部方法。',
+    '白泽明理帮企业做 AI Native 转型，提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持。先找出最该先改的流程，按岗位培训团队用 AI 干活，再派工程师驻场把 Agent 接进 CRM、ERP、HR 系统。',
   promo: {
     playLabel: '播放 baize 介绍视频（1 分钟）',
     coverAlt: 'baize 白泽明理 1 分钟介绍视频封面',
@@ -94,7 +94,7 @@ export const zh: HomeCopy = {
 export const en: HomeCopy = {
   title: 'AI Transformation Consulting & Team AI Training | Baize AI',
   description:
-    'AI transformation consulting, role-based AI training for teams, and remote forward deployed engineers who connect AI agents to your CRM, ERP, and HR systems.',
+    'AI-native transformation for companies: AI consulting, role-based team AI training, and engineers who connect AI agents to CRM, ERP, and HR systems.',
   promo: {
     playLabel: 'Play the baize intro video (1 minute)',
     coverAlt: 'Cover of the 1-minute baize intro video',

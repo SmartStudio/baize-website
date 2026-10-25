@@ -1,7 +1,7 @@
 ---
 title: How to Run a Private Codex Gateway for Your Company on Official API Keys
 seoTitle: "Run a Private Codex Gateway on Official API Keys"
-description: Deploy the open-source LiteLLM proxy with Docker Compose. Issue one key per employee, set budgets and rate limits, and keep usage logs for Codex CLI in-house.
+description: "Run a private Codex gateway on official API keys: deploy LiteLLM with Docker Compose behind HTTPS, issue one key per employee with budgets, and log usage."
 lang: en
 pubDate: 2026-10-24
 category: 安全可信
@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/ai-coding-compute-sourcing-cover.png
 coverAlt: "Requests from three employee laptops pass through one gateway box marked with a key and a shield, then go out to employee credentials and a cloud model"
 draft: false
-sourceHash: '8967fc4f5b0c'
+sourceHash: a049251671b7
 ---
 
 A self-hosted gateway keeps employee keys, quotas, and access logs on infrastructure the company controls. Prompts and code context no longer pass through a commercial relay provider, meaning a third-party service that resells model access. Requests still go to OpenAI. A self-hosted gateway removes a party from the middle of the path. It does not change how the upstream provider handles data.

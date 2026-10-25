@@ -12,7 +12,7 @@ export type AboutCopy = {
 
 export const zh: AboutCopy = {
   title: '关于白泽',
-  description: '白泽明理帮助企业借助 AI 大力提效，重塑业务经营流程，把 AI 能力转化为可验证、可持续的组织效率。',
+  description: '白泽明理是企业 AI Native 转型顾问，和管理层、业务与技术团队一起判断 AI 该进入哪些流程、哪些环节能提效。交付诊断报告、流程改造方案、AI 接入路径、SOP 和验收标准，工作方式包括咨询、培训、FDE 驻场开发和工具开发。',
   badge: '关于白泽明理 · Formal eXplainable AI',
   h1: '白泽明理',
   sub: '白泽是古代传说里能辨识万物的神兽。明，指透明可解释；理，指数理逻辑与可验证方法。这三个字是我们给自己定的工作要求。',
@@ -50,7 +50,7 @@ export const zh: AboutCopy = {
 export const en: AboutCopy = {
   title: 'About Us',
   description:
-    'Baize AI helps companies put AI into their business processes and turn it into team efficiency they can verify and keep.',
+    'Baize AI advises companies on AI-native transformation: which workflows AI should enter, where it saves time, and how results get verified.',
   badge: 'About Baize AI · Formal eXplainable AI',
   h1: 'Baize AI',
   sub: 'Baize is a creature from Chinese mythology that could recognize every living thing. Our Chinese name adds two characters: ming, for transparent and explainable, and li, for logic and verifiable method. We use all three as working requirements.',

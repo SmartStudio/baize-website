@@ -18,7 +18,7 @@ export type MethodCopy = {
 
 export const zh: MethodCopy = {
   title: '企业 AI 落地方法论：诊断、接入、工程、交付、沉淀',
-  description: '企业 AI 落地五步：先诊断该改哪条流程，再接入系统、做工程约束、按结果交付，最后沉淀成团队能复用的方法。每步写清边界和验收。',
+  description: '白泽方法论是一条 AI 落地路径，分诊断、接入、工程、交付、沉淀五步，每一步都有产出物和验收口径，没过验收不进下一步。先写清 AI 能做什么、不能做什么、谁来审查，再谈自动化。有效做法写成 Skills 和 SOP，留给团队。',
   badge: '方法论 · 五步',
   h1: ['先明理，再落地。', BR, { em: '先边界' }, '，再自动化。'],
   sub: '从诊断到沉淀，一共五步。每一步都有明确的产出物，管理层能判断，业务团队能执行，技术团队能复核。',
@@ -54,7 +54,7 @@ export const zh: MethodCopy = {
 export const en: MethodCopy = {
   title: 'Method: Five Steps to Put AI to Work',
   description:
-    'Diagnose, access, engineer, deliver, capture. Five steps that turn scattered AI experiments into capability your organization can verify and reuse.',
+    'A five-step method to put AI to work: diagnose, access, engineer, deliver, capture. Each step has outputs and acceptance criteria. Boundaries come first.',
   badge: 'Method · Five steps',
   h1: ['Understand first, then build.', BR, { em: 'Boundaries' }, ' before automation.'],
   sub: 'Five steps from diagnosis to capture. Each step has a defined output that leadership can judge, business teams can run, and engineers can check.',

@@ -1,7 +1,7 @@
 ---
 title: "Graph Engineering vs Loop Engineering: Graphs Sit on Top of Loops"
 seoTitle: "Graph Engineering vs. Loop Engineering"
-description: A loop decides when one agent checks its work and stops. A graph decides which loop runs first, who waits, and how state moves. Weak loops make graphs fail.
+description: "Graph Engineering sits one layer above Loop Engineering: a loop decides when one agent checks its work and stops; a graph decides which loop runs first."
 lang: en
 pubDate: 2026-10-23
 category: Loop与方法论
@@ -11,7 +11,7 @@ author: Baize AI
 cover: ../media/graph-engineering-is-not-loop-engineering-cover.png
 coverAlt: A self-loop on the lower layer, with several nodes joined by edges into a graph stacked on top of the loop instead of replacing it
 draft: false
-sourceHash: '3916ffa87b68'
+sourceHash: 35350be73d18
 ---
 
 Start with one concrete case. A coding agent writes code, runs the tests, fixes what fails, and hands off only when the tests pass. That is one loop. Now a second case. The coding agent hands off, and only then does a test agent start. If the tests fail, the work goes back to the coding agent. If they pass, a person still has to approve the merge. That is three loops, with waits, send-backs, and a human checkpoint between them. The second case adds a layer above loops that already run: who goes first, who waits, and which edge carries the state.
