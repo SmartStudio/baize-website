@@ -1,9 +1,10 @@
 // Generates public/og-default.png and public/og-default-en.png (1200x630), the
 // default OG/share images Seo.astro picks by page language.
 //
-// Composites the brand mark (src/assets/baize-mark.png) onto a white 1200x630
+// Composites the brand mark (src/assets/baize-mark-v2.png) onto a white 1200x630
 // canvas alongside the wordmark and tagline, using the same brand tokens as
-// src/styles/tokens/colors.css and typography.css.
+// src/styles/tokens/colors.css and typography.css. Also writes
+// public/twitter-card.png (1000x1000 mark on white, shared twitter:image for notes).
 //
 // Usage: node scripts/gen-og-default.mjs
 //
@@ -62,7 +63,7 @@ const VARIANTS = [
 ];
 
 async function render(v) {
-  const markPath = path.join(root, 'src', 'assets', 'baize-mark.png');
+  const markPath = path.join(root, 'src', 'assets', 'baize-mark-v2.png');
   const outPath = path.join(root, 'public', v.file);
 
   const markHeight = 360;
@@ -108,7 +109,23 @@ async function render(v) {
   console.log('wrote', outPath);
 }
 
-Promise.all(VARIANTS.map(render)).catch((err) => {
+async function renderTwitterCard() {
+  const markPath = path.join(root, 'src', 'assets', 'baize-mark-v2.png');
+  const outPath = path.join(root, 'public', 'twitter-card.png');
+  const SIZE = 1000;
+  const markHeight = 640;
+  const markBuffer = await sharp(markPath).resize({ height: markHeight }).toBuffer();
+  const { width: markWidth } = await sharp(markBuffer).metadata();
+  await sharp({ create: { width: SIZE, height: SIZE, channels: 4, background: '#FFFFFF' } })
+    .composite([
+      { input: markBuffer, left: Math.round((SIZE - markWidth) / 2), top: Math.round((SIZE - markHeight) / 2) },
+    ])
+    .png()
+    .toFile(outPath);
+  console.log('wrote', outPath);
+}
+
+Promise.all([...VARIANTS.map(render), renderTwitterCard()]).catch((err) => {
   console.error(err);
   process.exit(1);
 });

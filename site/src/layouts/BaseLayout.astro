@@ -72,8 +72,13 @@ const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : 
         </script>
       </>
     )}
-    <link rel="icon" href={`${base}favicon.ico`} sizes="32x32" />
-    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    {/* ?v= 换图时递增:public/ 下的图标按 _headers 缓存 30 天,改名参数才能立即换掉。 */}
+    <link rel="icon" href={`${base}favicon.ico?v=20261026`} sizes="48x48" />
+    <link rel="icon" type="image/png" href={`${base}favicon-32x32.png?v=20261026`} sizes="32x32" />
+    <link rel="icon" type="image/png" href={`${base}favicon-16x16.png?v=20261026`} sizes="16x16" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png?v=20261026`} />
+    <link rel="manifest" href={`${base}site.webmanifest?v=20261026`} />
+    <meta name="theme-color" content="#024B3B" />
     <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
     <Seo
       title={title}

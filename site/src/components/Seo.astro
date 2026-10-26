@@ -54,7 +54,8 @@ const {
 } = Astro.props;
 const site = import.meta.env.SITE;
 const canonical = new URL(path, site).href;
-const DEFAULT_OG = { src: lang === 'en' ? '/og-default-en.png' : '/og-default.png', width: 1200, height: 630 };
+// ?v= 换图时递增,让社交平台和 CDN 按新 URL 重新抓图。
+const DEFAULT_OG = { src: lang === 'en' ? '/og-default-en.png?v=20261026' : '/og-default.png?v=20261026', width: 1200, height: 630 };
 const ogUrl = new URL(ogImage ?? DEFAULT_OG.src, site).href;
 // Notes may pass a shared square mark for twitter:image while og:image stays the landscape cover.
 const twitterUrl = new URL(twitterImage ?? ogImage ?? DEFAULT_OG.src, site).href;

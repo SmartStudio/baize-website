@@ -19,6 +19,25 @@
 /og-default-en.png
   Cache-Control: public, max-age=2592000
 
+/favicon-16x16.png
+  Cache-Control: public, max-age=2592000
+
+/favicon-32x32.png
+  Cache-Control: public, max-age=2592000
+
+/icon-192.png
+  Cache-Control: public, max-age=2592000
+
+/icon-512.png
+  Cache-Control: public, max-age=2592000
+
+/site.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=86400
+
+/brand/*
+  Cache-Control: public, max-age=2592000
+
 # scripts/indexnow.mjs 轮询它判断部署是否到位,不能被缓存。
 /build.txt
   Cache-Control: no-store

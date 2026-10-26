@@ -56,7 +56,8 @@ export function organizationJsonLd(lang: 'zh-CN' | 'en' = 'zh-CN') {
     slogan: '白泽明理 Baize AI',
     url: new URL('/', site).href,
     // Google 要求 logo 是方图且不小于 112px;og-default 是 1200×630 的横幅,不合格。
-    logo: new URL('/apple-touch-icon.png', site).href,
+    // 1024×1024 白底绿兽首,由 scripts/gen-favicon.mjs 生成。
+    logo: new URL('/brand/baize-logo.png', site).href,
     email: 'contacts@fxai.ai',
     contactPoint: {
       '@type': 'ContactPoint',
