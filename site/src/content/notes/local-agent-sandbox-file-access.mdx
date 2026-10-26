@@ -27,13 +27,13 @@ import noteFig from './media/local-agent-sandbox-file-access-fig.png'
 
 沙箱进程默认可以读取本机大部分常规目录，包括家目录下的 `~/.ssh` 和 `~/.aws/credentials` 等凭据。如果程序执行第三方脚本，本地凭据面临被读取的风险。
 
-要把敏感目录管住，需在配置里启用 `denyRead` 规则或 `credentials` 项，把密钥路径加入拒读列表。企业开放大模型编码能力时分阶段推进，具体路径见 <NoteLink slug="agent-tool-permission-ladder">企业给 Agent 开工具权限，先开哪类、后开哪类</NoteLink>。先保障只读与受限写入受控，再逐步开放系统级执行能力。
+要把敏感目录管住，需在配置里启用 `denyRead` 规则或 `credentials` 项，把密钥路径加入拒读列表。企业开放大模型编码能力时分阶段推进，具体路径见 <NoteLink slug="agent-tool-permission-ladder">Agent 权限管理怎么分级：工具权限先开哪类</NoteLink>。先保障只读与受限写入受控，再逐步开放系统级执行能力。
 
 ## 网络限制和沙箱外的执行盲区
 
 沙箱环境内部没有直连公网出口，外发请求经本机转发并按允许的域名列表放行，允许列表起始为空。不在名单里的域名，按当前权限模式弹出确认或直接拒绝。
 
-沙箱只包 shell 命令，Claude 自带的文件工具、MCP 服务器和 hooks 在沙箱外。官方文档写明沙箱能降低风险，但不是完整的隔离边界。机制基于开源的 [sandbox-runtime 仓库](https://github.com/anthropics/sandbox-runtime)，该仓库标为 Beta Research Preview（研究预览版）。对于挂载的 MCP 服务器，核查要点见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。若 MCP 服务器拥有未受控读写权限，单靠命令行沙箱无法堵住数据泄露。
+沙箱只包 shell 命令，Claude 自带的文件工具、MCP 服务器和 hooks 在沙箱外。官方文档写明沙箱能降低风险，但不是完整的隔离边界。机制基于开源的 [sandbox-runtime 仓库](https://github.com/anthropics/sandbox-runtime)，该仓库标为 Beta Research Preview（研究预览版）。对于挂载的 MCP 服务器，核查要点见 <NoteLink slug="mcp-server-security-review">MCP 安全风险怎么查：接入前先审哪 4 项</NoteLink>。若 MCP 服务器拥有未受控读写权限，单靠命令行沙箱无法堵住数据泄露。
 
 ## 正式用之前先执行拒绝命令
 
