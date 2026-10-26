@@ -25,7 +25,7 @@ OpenSandbox 另有一个 Fast Sandbox 后端，每个沙箱是一台 KVM 虚拟�
 
 根据 [sandbox-runtime 仓库](https://github.com/anthropics/sandbox-runtime) 说明，Anthropic 开发的 sandbox-runtime 不用容器，直接在操作系统层限制整棵进程树。根据 [工作原理说明](https://github.com/anthropics/sandbox-runtime#how-it-works)，该工具在 macOS 调用系统自带 `sandbox-exec` 配合动态生成的 Seatbelt 规则，在 Linux 调用 bubblewrap 配合独立网络命名空间，Windows 处于 alpha 阶段。进程依然直接在宿主机系统运行。
 
-部署上，OpenSandbox 是一个服务，包含 Lifecycle Server、沙箱内执行进程与 sidecar，提供 Python、Java/Kotlin、TypeScript、C# 和 Go 五种 SDK、`osb` 命令行与 MCP 服务端，支持资源池与批量拉起，覆盖数据分析、浏览器自动化与多租户隔离；多人共用一台机器时的文件隔离见 <NoteLink slug="grok-bot-shared-computer-isolation">多个 Bot 共用云电脑，文件怎么隔离</NoteLink>。批量拉起沙箱跑 Agent 评测时，测试数据怎么准备见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 接 CRM 之前，上线测试先跑模拟企业数据？</NoteLink>。根据 [sandbox-runtime README](https://github.com/anthropics/sandbox-runtime#readme)，sandbox-runtime 属于单机命令行工具与 TypeScript 库，通过 `srt <命令>` 启动，未提供集群调度和多租户管理平面。
+部署上，OpenSandbox 是一个服务，包含 Lifecycle Server、沙箱内执行进程与 sidecar，提供 Python、Java/Kotlin、TypeScript、C# 和 Go 五种 SDK、`osb` 命令行与 MCP 服务端，支持资源池与批量拉起，覆盖数据分析、浏览器自动化与多租户隔离；多人共用一台机器时的文件隔离见 <NoteLink slug="grok-bot-shared-computer-isolation">多个 Bot 共用云电脑，文件怎么隔离</NoteLink>。批量拉起沙箱跑 Agent 评测时，测试数据怎么准备见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 测试环境：接 CRM 前先用模拟数据？</NoteLink>。根据 [sandbox-runtime README](https://github.com/anthropics/sandbox-runtime#readme)，sandbox-runtime 属于单机命令行工具与 TypeScript 库，通过 `srt <命令>` 启动，未提供集群调度和多租户管理平面。
 
 ## 在 Mac 电脑上怎么跑起来
 
@@ -51,7 +51,7 @@ OpenSandbox 与 sandbox-runtime 对接 MCP 协议与 Claude Code 时方向不同
 
 根据 [Claude Code 示例](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/examples/claude-code.md)，团队也可直接将 Claude Code 部署到沙箱容器中以无头模式 `claude -p` 运行，官方示例目录里还有 Codex CLI 和 Gemini CLI 的示例。
 
-sandbox-runtime 用于把本地 MCP 服务包起来。根据 [沙箱化 MCP 示例](https://github.com/anthropics/sandbox-runtime#example-use-case-sandboxing-mcp-servers)，在 `.mcp.json` 中把 `"command": "npx"` 改为 `"command": "srt"` 并将命令参数移入 args，即可利用 `~/.srt-settings.json` 限制其读写权限与联网域名。接入前核查重点见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。根据 [Claude Code 沙箱文档](https://code.claude.com/docs/en/sandboxing)，Claude Code 内置 Bash 沙箱构建在 sandbox-runtime 之上；若要约束整体进程，官方建议使用容器、虚拟机或 srt 包装。
+sandbox-runtime 用于把本地 MCP 服务包起来。根据 [沙箱化 MCP 示例](https://github.com/anthropics/sandbox-runtime#example-use-case-sandboxing-mcp-servers)，在 `.mcp.json` 中把 `"command": "npx"` 改为 `"command": "srt"` 并将命令参数移入 args，即可利用 `~/.srt-settings.json` 限制其读写权限与联网域名。接入前核查重点见 <NoteLink slug="mcp-server-security-review">MCP 安全风险怎么查：接入前先审哪 4 项</NoteLink>。根据 [Claude Code 沙箱文档](https://code.claude.com/docs/en/sandboxing)，Claude Code 内置 Bash 沙箱构建在 sandbox-runtime 之上；若要约束整体进程，官方建议使用容器、虚拟机或 srt 包装。
 
 技术负责人可参考以下规则取舍：
 
