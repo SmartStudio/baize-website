@@ -1,0 +1,68 @@
+---
+title: Agent 控制台：企业接入前要查哪几件事？
+description: Agent 控制台是编码 Agent 上面的调度与观察层，自身不带模型。企业接入前查四件事：支持哪些 Agent、会话与审计留痕在哪、server 怎么部署和开哪些远程通道、用 stable 还是 nightly 版本。以 T3 Code 为例逐项说明怎么查。
+pubDate: 2026-10-27
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/agent-console-layer-enterprise-checks-cover.png
+coverAlt: 深墨绿底上，中间一台浅灰小控制台亮着绿色旋钮，四周四个不同的机械臂和终端模块用细线连到它，线上有绿色光点
+---
+
+Agent 控制台是坐在 Codex、Claude Code 等编码 Agent 上面的调度和观察层，自身不带模型。代码执行与项目文件留在运行 server 的那台机器上，手机 App、网页端与桌面端只作为远程遥控。开发者越来越多是派活和验收，不再自己写每一行，所以有了这一层，研发角色的演进见 <NoteLink slug="from-coder-to-orchestrator">AI 时代，开发者的核心工作已经不是写代码</NoteLink>。
+
+import noteFig from './media/agent-console-layer-enterprise-checks-fig.png'
+
+<Figure src={noteFig} alt="中间一台小控制台，四周四组物件用绿色箭头指向它：插在同一排插座上的三个机器人模块、一叠记录卡和夹着绿色书签的本子、一台台式主机连着一台机架服务器、一条实线轨道和一条断开的轨道" caption="图：「Agent 控制台」｜「多 Agent 管理」" width="wide" border />
+
+企业接入 Agent 控制台前，需要核对四项内容：支持哪些 Agent、会话与审计留痕、部署方式以及版本稳定性。本文以开源工具 T3 Code 为例梳理核对动作，该项目仅作为分析样本，不构成选型推荐。
+
+T3 Code 的 README 把自己定位为 agent harness control surface，采用 MIT 许可证，仓库为 [pingdotgg/t3code](https://github.com/pingdotgg/t3code)。截至 2026 年 10 月 26 日，仓库有 30,116 个 Star、1,083 个开放 Issue。README 写着：“We are very very early in this project. Expect bugs.”
+
+## 支持哪些 Agent 后端
+
+1. **对照官方支持表核对后端 Agent**。怎么查：查阅项目官方 [README](https://github.com/pingdotgg/t3code/blob/main/README.md) 与[安装文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/install.md)。README 明确列出 6 家原生支持的 Agent，包括 Codex（通过 `codex login` 登录）、Claude Code（通过 `claude auth login` 登录）、Cursor CLI（通过 `agent login` 登录）、Grok Build CLI（通过 `grok login` 登录）、OpenCode（通过 `opencode auth login` 登录）与 Antigravity（在设置里安装并使用 Google 账号登录）。安装文档另列出了 Pi 与 Muse Code。未在官方列表中的 Agent，需核对能否通过 ACP Registry 接入（见 [ACP 接入文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/providers-acp.md)），该机制优先支持 ACP v2 preview 并兼容 v1。企业在规划多 Agent 管理方案时，需先逐项确认内部使用的工具是否在支持范围内。
+2. **确认账号认证与订阅额度的归属机器**。怎么查：查阅[安装文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/install.md)关于运行环境的规定。文档写明，安装、登录与配置均归属于运行 server 的环境机器，即使从手机或外部电脑连接也是如此。控制台自身不附带模型，也不替换底层 Agent 的订阅账号。根据[服务条款](https://github.com/pingdotgg/t3code/blob/main/apps/marketing/src/pages/terms-of-service.astro)第 07 条，目前不收取 T3 Tools 订阅费，底层 Agent 的模型调用与第三方费用由企业自行承担。
+3. **核对 Provider 版本的兼容状态**。怎么查：在[安装文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/install.md)与系统设置中核对推荐版本。T3 Code 会对已知不兼容的 Provider 版本发出提示，文档明确规定未列入推荐列表的版本均按未验证（unverified）处理。
+
+## 会话与审计留痕
+
+1. **查清会话数据存在哪两处**。怎么查：查阅[后台服务文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/background-service.md)与[线程迁移文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/thread-migration.md)。留痕分布在两个位置：控制台自身的数据存放在 server 机器的 `~/.t3/userdata` 目录（若启动时指定 `--home-dir <path>` 则位于 `<path>/userdata`），数据库文件为 `statev2.sqlite`；各家 Agent 原生的会话历史仍保留在各自的目录中（例如 `CODEX_HOME`、`CLAUDE_CONFIG_DIR`、`GROK_HOME`、`~/.pi/agent/sessions`），控制台[用量页面](https://github.com/pingdotgg/t3code/blob/main/docs/user/usage.md)通过直接读取这些目录汇总用量。两处留痕均位于 server 机器本地，需统一纳入企业备份与保留策略。
+2. **检查活动日志记录的内容颗粒度**。怎么查：查阅[活动日志文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/activity-log.md)。活动日志支持展开查看执行的终端命令、工具输入参数、状态、退出码与标准输出，文件修改支持查看 diff。审计人员需注意文档原话“等待不等于完成、中断请求不等于已停止”（Waiting on a thread does not mean it finished, and an interrupt or cancellation request does not mean the thread stopped）。编排设计文档写明，被打断的执行尝试保留在执行图中，用于审计与排错。
+3. **核实删除线程与卸载程序后的残留数据**。怎么查：查阅[后台服务文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/background-service.md)与[线程侧栏文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/thread-sidebar.md)。执行 `t3 uninstall` 会清理后台服务、启动器与下载的程序包，但保留 `~/.t3/userdata` 中的项目、线程与配置数据；无项目线程存放在 `~/.t3/scratch` 下的独立目录中，文档注明删除无项目线程依然会保留其对应的文件夹（Deleting a thread keeps its folder）。
+4. **审查外部数据上报清单与子线程留痕**。怎么查：查阅[遥测说明文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/telemetry.md)与[编排 MCP 文档](https://github.com/pingdotgg/t3code/blob/main/docs/orchestration-v2/orchestrator-mcp-server.md)。server 会向 `ingest.t3.codes` 上报使用事件并转发至 PostHog，附带账号与设备随机标识的哈希值；T3 Connect 中继连接的链路追踪数据发送至 Axiom。上报字段包含 Provider、模型、推理强度、执行时长、发布渠道与主 Agent 的 Token 总数；明确不上报提示词、回复文本、代码文件内容、认证令牌与会话 ID。在 server 环境中配置 `T3CODE_TELEMETRY_ENABLED=false` 可关闭事件上报并停发中继追踪，系统也支持将诊断数据导出至企业自建的 OpenTelemetry 接收端。在多 Agent 管理场景下，子 Agent 会单独生成子线程，子线程只接收指定的任务提示词，不复制父对话的历史记录。
+
+## 部署方式与连接边界
+
+1. **先定 Server 跑在哪台机器**。怎么查：查阅[架构内部文档](https://github.com/pingdotgg/t3code/blob/main/docs/internals/overview.md)。系统架构明确规定，执行必须留在拥有代码的那台机器上，远程客户端不能用自己的文件系统或机器状态替代运行环境。桌面端内置运行 server，网页端与手机端通过鉴权 RPC 接入。
+2. **列出所有远程通道逐个决定开关**。怎么查：查阅[远程访问文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/remote-access.md)与 [T3 Connect 内部说明](https://github.com/pingdotgg/t3code/blob/main/docs/internals/t3-connect.md)。远程访问包含三种路径：T3 Connect、局域网或 Tailscale 私网配对，以及 SSH。T3 Connect 依赖 Clerk 账号认证与托管隧道，中继服务只管理环境路由与隧道，不转发 HTTP 与 WebSocket 会话流量（自动化 Webhook 除外）。Nightly 文档写明，后台服务默认监听局域网和 Tailscale 地址；只想本机访问，在 `service.env` 设 `T3CODE_HOST=127.0.0.1`。用 Stable 时，以实际监听地址为准。
+3. **查 Agent 控制台接外部 Agent 的 MCP 接法**。怎么查：查阅[外部 Agent 文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/outside-agents.md)。每个运行环境通过环境地址追加 `/mcp` 提供端点，终端中运行的 Claude Code、Codex 或 ChatGPT 等外部 Agent 可通过此端点读取项目、创建线程并发送消息。本机 Agent 使用 localhost 或 https 地址，云端 Agent 需要端点具备公网可达性；首次连接需在环境机器完成授权。外部 Agent 接入涉及的安全审查要点见 <NoteLink slug="mcp-server-security-review">MCP 安全风险怎么查：接入前先审哪 4 项</NoteLink>。
+4. **核查企业管理与集中策略功能**。怎么查：在 README、`docs/user` 与 `docs/internals` 里检索 enterprise、SSO、admin、organization 等词。截至 2026 年 10 月 26 日，官方文档未见企业管理控制台、组织账号、SSO、集中策略与集中审计功能。这类功能文档未见时，企业要自己在网络和主机层面补齐。
+
+## 版本稳定性与发布渠道
+
+1. **分清 Stable 和 Nightly，记下版本号**。怎么查：查阅[版本发布文档](https://github.com/pingdotgg/t3code/blob/main/docs/operations/release.md)与 [GitHub Releases](https://github.com/pingdotgg/t3code/releases)。Stable 版本由已发布的最新 Nightly 验证后提升而来，不直接打包 main 分支；Nightly 定时每 30 分钟检查一次构建。截至 2026 年 10 月 26 日，最新 Stable 为 v0.1.2（2026-10-23 发布），最新 Nightly 为 v0.1.3-nightly.20261025.3692（2026-10-26 发布）。企业评估 Agent 控制台和上线时只用 Stable，记录里写明版本号与日期。
+
+| 渠道 | 版本 | 发布日期 | 渠道说明 |
+|---|---|---|---|
+| Stable | v0.1.2 | 2026-10-23 | 标记为 latest 正式发布版本，由已发布的 Nightly 验证提升 |
+| Nightly | v0.1.3-nightly.20261025.3692 | 2026-10-26 | 预发布版本，定时每 30 分钟检查构建 |
+
+2. **逐条核对功能所在的渠道并锁定版本**。怎么查：对照各版本官方文档与[更新文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/updating.md)。部分功能仅出现在 Nightly 文档中，例如访客链接（[Guest links](https://github.com/pingdotgg/t3code/blob/main/docs/user/guest-links.md)）与后台服务默认监听局域网地址在 v0.1.2 文档中均未收录。安装时用 `T3CODE_VERSION` 锁定版本，已装的用 `t3 update <版本号>` 锁定，回退加 `--allow-downgrade`。后台服务保持原有发布渠道。
+3. **评估升级过程对执行任务的中断影响**。怎么查：查阅[更新文档](https://github.com/pingdotgg/t3code/blob/main/docs/user/updating.md)与[服务条款](https://github.com/pingdotgg/t3code/blob/main/apps/marketing/src/pages/terms-of-service.astro)。服务端升级会重启网络连接，导致正在运行的 Agent 任务与终端命令中断；当客户端与服务端的协议版本不一致时，连接会被直接拒绝。服务条款写明，Beta 功能可能出错或丢失数据，不要把它当作重要工作的唯一副本。
+
+## Agent 控制台：常见问题
+
+### 控制台会把代码和提示词传到外面吗？
+
+根据官方遥测文档，产品遥测向 `ingest.t3.codes` 发送事件并转交 PostHog，附带账号与设备标识的哈希，上报字段包括 Provider 名称、模型名、执行时长与 Token 总数。上报内容明确不包含提示词、模型回复、代码文件内容与认证令牌；链路追踪数据发往 Axiom。T3 Code 不提供模型，模型调用由各家 Agent 自己发起。
+
+### 没有企业管理后台，能先小范围用吗？
+
+截至 2026 年 10 月 26 日，T3 Code 官方文档未见企业管理控制台与集中策略。在小范围测试时，可将服务固定在指定的受控主机上运行，限定使用 Stable 版本，在配置文件中关闭不需要的远程访问通道，并将 `~/.t3/userdata` 等存储目录纳入团队现有的备份流程中。
+
+### 多 Agent 管理一定要单独上控制台吗？
+
+多 Agent 管理不一定需要单独部署控制台。如果开发人员仅在单机终端运行独立任务，使用各家 Agent 的原生命令行即可满足需求；团队需要在一处看多台机器上的线程，或要求子 Agent 的任务单独成子线程留痕时，再考虑 Agent 控制台。同一台机器上多个 Bot 共用工作区引发的文件与账号隔离问题，见 <NoteLink slug="grok-bot-shared-computer-isolation">多个 Bot 共用云电脑，文件怎么隔离</NoteLink>。
