@@ -1,0 +1,76 @@
+---
+title: Stripe 香港个人账户：谁能开，没有公司怎么收款？
+description: 开设 Stripe 香港个人账户，没有公司也能开的规则只对持有 HKID 的香港居民成立。没有香港身份证但有商业登记证的商户需要注册独资账户，两样都没有的内地卖家无法通过个人通道开户收款，可以考虑公司主体开户或换别的收款方式。
+pubDate: 2026-10-27
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/stripe-hk-individual-account-global-payments-cover.png
+coverAlt: 深墨绿底上，一排空白硬币沿绿色光带穿过一道闸机，落进右侧一座带立柱的银行建筑模型
+---
+
+Stripe 香港个人账户「没有公司也能开」，只对持有 HKID、住在香港的居民成立。没有 HKID、只有香港商业登记号（BRN）的，开独资（Sole Proprietorship）账户。两样都没有的内地居民开不了，可以考虑用公司主体开户，或者换别的收款方式。
+
+import noteFig from './media/stripe-hk-individual-account-global-payments-fig.png'
+
+<Figure src={noteFig} alt="从左到右四步，绿色箭头相连：放大镜照着一块空白卡片、屋顶插着绿色定位针的小房子、插着一枚绿色定位针并挂着锁的地球仪、一张空白卡片把硬币投进银行建筑" caption="图：「Stripe 香港个人账户」｜「港卡提现」" width="wide" border />
+
+这篇从 [nemo 的帖子](https://x.com/i/status/2015804404004438366)出发。帖子里有几处和 Stripe 现行规则对不上，以官方页面为准。
+
+## 先对号入座：你属于哪一种
+
+开户前先核对证件。不同主体入口不同，提交材料也不同。
+
+第一种是持 HKID、住在香港的居民。开个人户不需要公司，身份证件交香港身份证正反面扫描，地址证明可以用 HKID 或 6 个月内的银行月结单。（来源：[香港商户要求](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses)、[香港地址证明页](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address)，2026-10-26 查）
+
+第二种是没有 HKID、但有香港商业登记号（BRN）的人。Stripe 个人账户不收非香港身份证号；没有 HKID 但有商业登记号，激活时选独资（Sole Proprietorship）。独资账户同样要求本人住在香港。香港本地法规规定，在香港经营业务不论独资、合伙或有限公司，开业 1 个月内要向税务局办商业登记。（来源：[香港商户要求](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses)、[香港社区法网](https://www.clic.org.hk/en/topics/businessAndCommerce/setting_up_business_in_Hong_Kong/types_of_business_organisation/q2)，2026-10-26 查）
+
+第三种是两样都没有的内地居民。按官方页面，个人户和独资户都开不了。公司账户的规则不同：代表香港企业、没有 HKID 的人可以用其他政府签发的证件，公司的负责人或代表也可以在海外。（来源：[香港商户要求](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses)、[香港地址证明页](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address)，2026-10-26 查）
+
+## 开户前先看三个风险
+
+下面三条在一些开户教程里没写，或者写错了。三条都来自 Stripe 现行页面，开户前对一遍。
+
+1. **只能住在开户国家**：个人和独资账户不适用跨境情形，用户只能住在开户国家。填海外地址只适用于注册企业或公司，这类负责人可以在海外。香港地址证明接受 6 个月内的银行月结单、水电单、电话单、租约、政府文件或本人 HKID。（来源：[香港地址证明页](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address)，2026-10-26 查）
+
+2. **港澳通行证不在接受的证件清单里**：官方认可证件包括豁免證明書、登記事項證明書、香港身份證正反面扫描件、護照、越南難民證。清单没有港澳通行证。证件姓名要与账户一致，不收截图，不能过期。账户关联人住在别的国家时，只收有效护照。（来源：[香港可接受的身份证件](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=identity)，2026-10-26 查）
+
+3. **账户上线后国家改不了**：正式账户激活后，不能更改业务国家；想换国家只能新建。对个人来说，账户国家指开展业务的国家或地区。（来源：[账户设置文档](https://docs.stripe.com/get-started/account/set-up)、[Stripe 服务协议](https://stripe.com/en-hk/legal/ssa)，2026-10-26 查）
+
+## 费用和港卡提现怎么算
+
+收款成本分两块：刷卡时扣的交易费，出款时扣的费用。费率按卡种、币种分别算。
+
+买家刷香港本地卡，每笔收 3.4% + HK$2.35；以美元结算刷卡每笔收 3.4% + US$0.30。境外卡加收 0.5%；需要换汇再加收 2%。支付宝和微信支付收 2.2% + HK$2.00。账户没有开户费、月费和关户费。退款时原交易手续费和换汇费不退。收到一笔争议收 HK$85；人工应诉再收 HK$85，赢了退回，输了不退。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)，2026-10-26 查）
+
+资金回流主要通过港卡提现。香港账户的港币只能出到香港的银行；美元也只能出到香港的银行，收出款金额 1%，最低 US$5。手动出款最低 US$20，自动出款最低 US$100。每配置一种结算币种，要单独绑一个同币种的香港银行账户。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)、[多币种结算文档](https://docs.stripe.com/payouts/multi-currency-settlement)，2026-10-26 查）
+
+首笔真实付款后，首次出款通常 7 到 14 天完成，视行业、国家和风险等级而定。手动出款通常 1 到 4 个工作日到账。新用户不能马上用即时出款。港卡提现时，客户付美元且绑了香港美元账户，避开 2% 换汇费；付未配置币种会自动换成默认币种并收 2% 换汇费；小额美元出款扣最低 US$5。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)、[多币种结算文档](https://docs.stripe.com/payouts/multi-currency-settlement)、[Stripe 出款文档](https://docs.stripe.com/payouts)，2026-10-26 查）
+
+## 外贸卖家：哪些货和收法会被卡
+
+外贸卖家开户前，先拿自己的品类对一遍 Stripe 的禁限清单。有些货直接禁止，有些要额外审核。
+
+禁止销售假冒商品、违法进出口商品、未经授权销售的品牌货、有毒易燃或放射性物品、美国邮政禁邮物品、与俄罗斯进出口管制相关的货品，以及古巴、伊朗、朝鲜、叙利亚、克里米亚、顿涅茨克、卢甘斯克等受制裁地区的业务。（来源：[Stripe 禁止和受限业务清单](https://stripe.com/en-hk/legal/restricted-businesses)，2026-10-26 查）
+
+受限业务需额外审核，包括处方药、医疗器械、烟草、电子烟、高价值商品、贵金属宝石、预付卡、礼品卡、旅游预订。受限类目还包括支付便利和聚合，即替第三方收取不是自己提供的商品货款。外贸 SOHO 替工厂或朋友收款属于此类。账户收款要是自己的商品，账单描述要让客户认得出，避免争议。（来源：[Stripe 禁止和受限业务清单](https://stripe.com/en-hk/legal/restricted-businesses)、[账户设置文档](https://docs.stripe.com/get-started/account/set-up)，2026-10-26 查）
+
+Stripe 合理认为违法或违约可立即暂停服务，也可设保证金扣留资金。官方禁止替已被暂停或终止的用户另开账户。业界把超过 0.75% 争议率视为过高，争议突然增多会更早被监控。（来源：[Stripe 服务协议](https://stripe.com/en-hk/legal/ssa)、[争议率文档](https://docs.stripe.com/disputes/measuring)，2026-10-26 查）
+
+独立站收款跑通以后，订单要能对回询盘来源，分析方法见 <NoteLink slug="export-site-geo-lead-attribution">外贸独立站做 GEO，询盘从哪归因</NoteLink>。聊天工具沉淀的客户线索也要记录，处理细节见 <NoteLink slug="export-inquiry-whatsapp-email-attribution">询盘来源怎么记：AI 分拣 WhatsApp 询盘后</NoteLink>。收款记录和询盘记录对上，才知道哪个渠道带来了付款订单。
+
+## Stripe 香港个人账户：常见问题
+
+### 客户用欧元付款，加了美元账户还会换汇吗？
+
+会换汇。Stripe 每配置一种结算币种，要单独绑一个同币种的香港银行账户。只绑港币和美元账户时，客户用欧元付款，会自动换成默认币种入账，并收 2% 换汇费。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)、[多币种结算文档](https://docs.stripe.com/payouts/multi-currency-settlement)，2026-10-26 查）
+
+### 被客户拒付一次要花多少钱？
+
+收到一笔争议收 HK$85 处理费。人工应诉再收 HK$85，赢了退回，输了不退。退款时，原交易的手续费和换汇费也不退。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)，2026-10-26 查）
+
+### Stripe 香港个人账户只能提现到港卡吗？
+
+美元出款收 1%，最低 US$5，只能出到香港的银行账户；港币也只能出到香港。无论港币还是美元，资金都只能汇入香港本地银行账户，不能直接出款到内地银行卡。（来源：[Stripe 香港定价页](https://stripe.com/en-hk/pricing)、[多币种结算文档](https://docs.stripe.com/payouts/multi-currency-settlement)、[Stripe 出款文档](https://docs.stripe.com/payouts)，2026-10-26 查）
