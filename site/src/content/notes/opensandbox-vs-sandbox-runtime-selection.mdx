@@ -1,0 +1,74 @@
+---
+title: Agent 沙箱选型：OpenSandbox 和 sandbox-runtime 各适合什么场景？
+description: Agent 沙箱选型先看隔离什么：在本机限制编码 Agent 读写和联网，用 sandbox-runtime 这类进程级方案；跑不可信代码、批量评测或服务多个用户，用 OpenSandbox 这类带独立容器或虚拟机的完整运行环境。
+pubDate: 2026-10-27
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/opensandbox-vs-sandbox-runtime-selection-cover.png
+coverAlt: 深墨绿底上，左边一个磨砂透明的封闭方箱，里面有一只小机械臂在搬方块；右边一台笔记本被一圈矮栅栏围住，一条绿色光路只从栅栏的小门进出
+---
+
+Agent 沙箱选型先看你要隔离什么。开发者在自己电脑上让编码 Agent 改本地仓库，只想限制它读哪、写哪、连哪，先用 sandbox-runtime。要给 Agent 一台用完即扔的独立环境，跑不可信代码、开浏览器或桌面、批量跑评测、服务多个用户，用 OpenSandbox。两个开源项目的许可证都是 Apache-2.0，可以在不同环节组合使用。
+
+import noteFig from './media/opensandbox-vs-sandbox-runtime-selection-fig.png'
+
+<Figure src={noteFig} alt="左边一个封闭的透明方箱，里面有机械臂，下方一排三个带绿点的小方箱；右边一台笔记本被一圈栅栏围住，栅栏小门伸出绿色箭头指向地球仪，一只文件夹托盘用绿线接进栅栏" caption="图：「Agent 沙箱选型」｜「sandbox-runtime」" width="wide" border />
+
+## 隔离方式：独立环境还是进程限制
+
+根据 [OpenSandbox 仓库](https://github.com/opensandbox-group/OpenSandbox) 描述，OpenSandbox 针对 AI Agent 提供沙箱运行时。默认配置下每个沙箱是 Docker 容器或 Kubernetes Pod，默认运行时为 runc。服务端可统一改配 gVisor、Kata（基于 QEMU）或 Kata 搭配 Firecracker 等安全容器运行时，根据 [安全容器配置指南](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/guides/secure-container.md)，这是服务端全局配置，所有沙箱统一生效，SDK 无需修改代码。
+
+OpenSandbox 另有一个 Fast Sandbox 后端，每个沙箱是一台 KVM 虚拟机。根据 [Firecracker 架构文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/architecture/fast-sandbox/firecracker.md)，该方案在 Kubernetes 预热 Pod 中运行 Firecracker microVM 并从快照恢复，要求宿主机为支持 KVM 的 Linux 裸金属或开启嵌套虚拟化并暴露 `/dev/kvm` 的虚拟机。OpenSandbox 还能起 Windows 客户机。选安全运行时要留意一点：官方文档写明出网控制支持 Kata，不支持 gVisor。
+
+根据 [sandbox-runtime 仓库](https://github.com/anthropics/sandbox-runtime) 说明，Anthropic 开发的 sandbox-runtime 不用容器，直接在操作系统层限制整棵进程树。根据 [工作原理说明](https://github.com/anthropics/sandbox-runtime#how-it-works)，该工具在 macOS 调用系统自带 `sandbox-exec` 配合动态生成的 Seatbelt 规则，在 Linux 调用 bubblewrap 配合独立网络命名空间，Windows 处于 alpha 阶段。进程依然直接在宿主机系统运行。
+
+部署上，OpenSandbox 是一个服务，包含 Lifecycle Server、沙箱内执行进程与 sidecar，提供 Python、Java/Kotlin、TypeScript、C# 和 Go 五种 SDK、`osb` 命令行与 MCP 服务端，支持资源池与批量拉起，覆盖数据分析、浏览器自动化与多租户隔离；多人共用一台机器时的文件隔离见 <NoteLink slug="grok-bot-shared-computer-isolation">多个 Bot 共用云电脑，文件怎么隔离</NoteLink>。批量拉起沙箱跑 Agent 评测时，测试数据怎么准备见 <NoteLink slug="agent-sandbox-test-vs-prod-data">Agent 接 CRM 之前，上线测试先跑模拟企业数据？</NoteLink>。根据 [sandbox-runtime README](https://github.com/anthropics/sandbox-runtime#readme)，sandbox-runtime 属于单机命令行工具与 TypeScript 库，通过 `srt <命令>` 启动，未提供集群调度和多租户管理平面。
+
+## 在 Mac 电脑上怎么跑起来
+
+在 macOS 上，sandbox-runtime 用的是系统自带的 `sandbox-exec`。官方文档说明系统环境只需安装 `ripgrep`，执行 `npm install -g @anthropic-ai/sandbox-runtime` 安装后，即可使用 `srt "<命令>"` 限制本地进程。
+
+根据 [安全局限说明](https://github.com/anthropics/sandbox-runtime#security-limitations)，sandbox-runtime 在 Mac 上有两项明确的运行边界。macOS 上 git 走 SSH 远端会失败，官方建议改用 HTTPS 协议；若开启 `allowAppleEvents` 配置，会失去代码执行隔离能力。
+
+OpenSandbox 在 Mac 上要先有 Docker。根据 [安装文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/getting-started/installation.md)，其服务端支持 Linux、macOS 与 WSL2，要求本地安装 Python 3.10+ 以及 Docker Engine 20.10+。本地初始化运行 `uvx opensandbox-server init-config ~/.sandbox.toml --example docker` 生成配置，执行 `uvx opensandbox-server` 启动服务，再用 SDK 建沙箱。在 Mac 本机运行时服务端调用 Docker 引擎，沙箱实例均为 Docker 容器；Fast Sandbox 架构要求运行在带 KVM 的 Linux 主机上。
+
+## 本地文件和网络边界怎么管
+
+sandbox-runtime 管的是本机路径能不能读写。策略配置默认保存在 `~/.srt-settings.json`，用于指定本地文件系统中哪些目录允许读取、哪些目录允许写入，具体路径配置规则见 <NoteLink slug="local-agent-sandbox-file-access">Agent 本地沙箱：哪些目录能读、哪些能写？</NoteLink>。
+
+OpenSandbox 沙箱自带独立文件系统，调用端通过 SDK 的 files API 读写沙箱文件。根据 [挂载文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/examples/host-volume-mount.md)，宿主机与沙箱共享数据需调用 Volume API 挂载，支持读写、只读与子路径映射。服务端通过 `allowed_host_paths` 白名单限制宿主路径，官方提示该白名单留空等于允许挂载所有宿主路径，生产环境要显式设置。
+
+联网这块，sandbox-runtime 默认拒绝所有外网连接，通过 `allowedDomains` 白名单放行，`deniedDomains` 优先阻断，流量经宿主机 HTTP 与 `SOCKS5` 转发服务引流。根据 [局限说明](https://github.com/anthropics/sandbox-runtime#known-limitations-and-future-work)，Linux 下靠 `HTTP_PROXY` 等环境变量引流，忽略该变量的程序无法联网；默认不解密 TLS，配置宽泛域名可能被 domain fronting 绕过。
+
+OpenSandbox 每个沙箱独立配置网络策略。根据 [出网架构文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/architecture/network/egress.md)，沙箱在创建时声明 `networkPolicy`，运行中支持动态更新，由共享网络命名空间的 egress sidecar 执行 DNS 级过滤或选配 nftables 包级默认拒绝。规则支持域名、通配符、独立 IP 与 CIDR 网段，平台侧可配兜底规则；sidecar 规则注入异常时主动退出，不会以无过滤状态运行。
+
+## 怎么接入 MCP 和开发工具
+
+OpenSandbox 与 sandbox-runtime 对接 MCP 协议与 Claude Code 时方向不同。根据 [MCP 文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/sdks/mcp.md)，OpenSandbox 提供 MCP 服务端，执行 `pip install opensandbox-mcp` 安装后，在 Claude Code 中通过 `claude mcp add opensandbox-sandbox --transport stdio -- opensandbox-mcp --api-key "$OPEN_SANDBOX_API_KEY" --domain "$OPEN_SANDBOX_DOMAIN"` 接入，支持建沙箱、跑命令与读写沙箱文本文件。
+
+根据 [Claude Code 示例](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/examples/claude-code.md)，团队也可直接将 Claude Code 部署到沙箱容器中以无头模式 `claude -p` 运行，官方示例目录里还有 Codex CLI 和 Gemini CLI 的示例。
+
+sandbox-runtime 用于把本地 MCP 服务包起来。根据 [沙箱化 MCP 示例](https://github.com/anthropics/sandbox-runtime#example-use-case-sandboxing-mcp-servers)，在 `.mcp.json` 中把 `"command": "npx"` 改为 `"command": "srt"` 并将命令参数移入 args，即可利用 `~/.srt-settings.json` 限制其读写权限与联网域名。接入前核查重点见 <NoteLink slug="mcp-server-security-review">企业接入第三方 MCP 服务器之前，安全要先查哪几项</NoteLink>。根据 [Claude Code 沙箱文档](https://code.claude.com/docs/en/sandboxing)，Claude Code 内置 Bash 沙箱构建在 sandbox-runtime 之上；若要约束整体进程，官方建议使用容器、虚拟机或 srt 包装。
+
+技术负责人可参考以下规则取舍：
+
+- **单机编码选进程防护**：个人电脑上改本地 Git 仓库，用 sandbox-runtime 限制读写路径和出网域名，不用装 Docker。
+- **未知代码与评测选独立沙箱**：跑来源不明的脚本、做浏览器自动化或批量跑 Agent 评测，用 OpenSandbox，让代码跑在容器或虚拟机里。
+- **云端和本机分开用**：云端集中调度选用 OpenSandbox 管理隔离容器，本地终端和本地 MCP server 用 sandbox-runtime 限制权限。
+
+## Agent 沙箱选型：常见问题
+
+### OpenSandbox 启动有多快？
+
+根据 [性能测试文档](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/architecture/fast-sandbox/performance.md)，在阿里云 ACK 两节点 Kubernetes 集群中，针对模板已缓存且容量已预热的 Firecracker microVM 热启动场景，集群内串行创建 `P50` 延迟为 64 毫秒；相同条件串行复测 `P50` 为 77.9 毫秒。官方文档写明这是工程测量，不是生产延迟保证。这个数不是在 Mac 上测的，也不是本地 Docker 模式；本地 Docker 模式官方没给启动数字，sandbox-runtime 官方也没给启动时间。
+
+### 两个项目的成熟度如何，可以一起用吗？
+
+两者均采用 Apache-2.0 开源许可证，可以在不同环节组合使用。sandbox-runtime 在官方 README 中标为 Beta Research Preview，声明 API 与配置格式可能调整，最新发布版本为 2026 年 10 月 20 日发布的 v0.0.81，npm 包名为 `@anthropic-ai/sandbox-runtime`。OpenSandbox 拥有 2026 年 10 月 9 日发布的稳定版 release-1.1.1 和 2026 年 10 月 21 日发布的预发布版 release-1.2.0-rc.2。云端调度集群可用 OpenSandbox 提供标准容器，个人工作站可用 sandbox-runtime 限制本地脚本与工具。
+
+### sandbox-runtime 能在 Mac 本机跑吗？
+
+sandbox-runtime 可以在 macOS 本机运行。它利用系统原生 `sandbox-exec` 配合 Seatbelt 策略限制进程，本地环境只需确认装有 `ripgrep` 工具。通过 `npm install -g @anthropic-ai/sandbox-runtime` 全局安装后，执行 `srt "<命令>"` 即可启动隔离环境。需留意官方说明的两项局限：在 macOS 上 git 走 SSH 远端会失败，建议改用 HTTPS 协议；若开启 `allowAppleEvents` 配置，会失去代码执行隔离能力。
