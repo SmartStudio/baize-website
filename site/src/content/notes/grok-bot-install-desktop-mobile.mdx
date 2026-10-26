@@ -1,0 +1,58 @@
+---
+title: Grok Bot 安装：电脑和手机各怎么装
+description: 进行 Grok Bot 安装前，需先确认账号套餐包含权限且账号没用 Legacy Privacy Mode。电脑端依系统与芯片架构下载对应安装包并用 Cursor 账号登录；手机端通过官方应用商店安装，两端同步使用同一批 Bot 和云电脑。
+pubDate: 2026-10-27
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-install-desktop-mobile-cover.png
+coverAlt: 深墨绿底上，一台笔记本电脑和一部手机被一道翡翠绿弧线连到上方同一朵云形电脑
+---
+
+Grok Bot 安装分电脑和手机两头。电脑端根据系统与芯片架构选对安装包，通过浏览器完成 Cursor 账号登录；手机端从 App Store 或 Google Play 获取，用同一个 Cursor 账号登录，看到的是同一批 Bot 和同一台云电脑。安装前确认套餐包含 Bot 权限，且账号没用 Legacy Privacy Mode。
+
+import noteFig from './media/grok-bot-install-desktop-mobile-fig.png'
+
+<Figure src={noteFig} alt="左边两块芯片和对应插头，中间钥匙、工牌和齿轮，上方云端同步图标，右边笔记本和手机共用同一朵云，各配中文标注板" caption="图：「Grok Bot 安装」｜「Grok Bot 下载」" width="wide" border />
+
+## 装之前先确认两件事
+
+根据 [Grok Bot 上手指南](https://docs.x.ai/grok-bot/get-started)，需要包含 Grok Bot 的计划，电脑端 App 支持 macOS、Windows、Linux。还不清楚 Grok Bot 用途的读者，先看 <NoteLink slug="grok-bot-persistent-ai-teammates">Grok Bot 是什么？AI Agent 云端同事的实战指南</NoteLink>。
+
+Grok Bot 需要云端数据存储。账号处于 Legacy Privacy Mode 的，要先换到支持的 Cursor 数据设置，否则启动不了。
+
+## 电脑端按芯片架构安装
+
+根据 [Grok Bot 上手指南](https://docs.x.ai/grok-bot/get-started)，macOS 选 Apple silicon 或 Intel 下载并拖进 Applications，确认选 Open。查芯片：Apple 菜单 → About This Mac，Chip 是 Apple 芯片，Processor 是 Intel。
+
+Windows 选 x64 或 Arm64 运行安装程序。查架构：Settings → System → About → System type。
+
+Linux 稳定版在 `x.ai/bot` 的 More downloads 下，Debian、Ubuntu 用 `.deb`，Fedora、RHEL 用 `.rpm`，其它用 AppImage；终端跑 `uname -m`，`x86_64` 选 x64，`aarch64` 选 Arm64。Grok Bot 自动检查更新，也可在「Settings → Updates」手动「Check for Updates」。
+
+## 手机端安装与查看云端任务
+
+根据 [Grok Bot 手机端文档](https://docs.x.ai/grok-bot/mobile)，iPhone 要 iOS 18 或以上，iPad 要 iPadOS 18 或以上，安卓要 Android 9 或以上，从 App Store 或 Google Play 下载。打开选 Log In 或 Sign Up，在浏览器完成 Cursor 认证再回 App；SuperGrok 权限在访问页选 Link Grok Account，浏览器关联后选 Finished Linking? Refresh My Status。
+
+手机 App 连的是桌面同一批 Bot、对话、routine、连接应用和共用云电脑，App 关了云上照跑。手机能看 routine、暂停和删除，改计划、改指令、测试目前用桌面端。
+
+## 首次启动与准备后台云电脑
+
+根据 [Grok Bot 上手指南](https://docs.x.ai/grok-bot/get-started)，欢迎页选 Sign in，在浏览器完成认证回 App；用 Cursor 账号，公司要求 SSO 走公司流程；SuperGrok 权限在「Settings → Usage & Billing」选 Get Access with Grok 关联。第一次用有简短引导，云电脑在后台准备，Grok Bot 会建好第一只叫 Grok Bot 的 Bot 并打开对话。账号下所有 Bot 共用这台云电脑，隔离机制看 <NoteLink slug="grok-bot-shared-computer-isolation">多个 Bot 共用云电脑，文件怎么隔离</NoteLink>。
+
+准备云电脑或更新镜像可能要几分钟，等「Starting your computer」或「Updating your computer」走完前别关 App。登录卡住时等浏览器认证完毕再切回 App。
+
+## Grok Bot 安装：常见问题
+
+### 手机端安装后是否需要重新付费？
+
+手机端安装后不需要再次付费。根据 [Cursor 手机指南](https://cursor.com/help/grok-bot/mobile)，账号包含 Grok Bot 的用同个 Cursor 账号登录手机就能用，不要在手机商店买第二份订阅；更新、恢复、重置云电脑用桌面端。
+
+### 装完一直显示在准备电脑怎么办？
+
+根据 [Grok Bot 故障排除文档](https://docs.x.ai/grok-bot/troubleshooting)，第一次准备云电脑或更新镜像可能要几分钟，进度还在变就继续等；失败或不动了，按顺序：在报错处 Retry，重启 Grok Bot，检查 App 更新，还连不上就在 Settings → Computer 里选 Update Bot's Computer。
+
+### Grok Bot 下载去哪个页面，Linux 版在哪？
+
+Grok Bot 下载可前往 [Cursor 官方下载页](https://cursor.com/download/bot)。Mac 分 Apple Silicon 和 Intel，Windows 分 x64 和 ARM64；Linux 的 `.deb`、RPM 和 AppImage 在 `x.ai/bot` 的 More downloads 下，各有 x64 和 ARM64 文件。
