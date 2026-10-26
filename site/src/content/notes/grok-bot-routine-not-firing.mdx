@@ -1,0 +1,58 @@
+---
+title: Routine 不触发：Grok Bot 怎么排查
+description: 遇到 Routine 不触发时，需按固定顺序排查。先查开关是否处于暂停状态，再核对时区与下次运行时间，确认外部事件匹配规则与 webhook 返回的状态码。若仍未运行，继续检查插件授权状态与调用频率限制。
+pubDate: 2026-10-27
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-routine-not-firing-cover.png
+coverAlt: 深墨绿底上，一台带暂停拨杆的发条计时器，一只放大镜正对着它的齿轮
+---
+
+遇到 Routine 不触发，按这个顺序查：开关有没有开、时区和下次运行时间对不对、触发条件有没有满足、运行记录里有没有失败原因。查完还没跑，再看插件认证、用量和账号是否被暂停。
+
+import noteFig from './media/grok-bot-routine-not-firing-fig.png'
+
+<Figure src={noteFig} alt="从左到右一排检查项：拨动开关、带表盘的地球仪、带天线的铃、带红色标记的日志卷轴、限速表盘，各配中文标注板" caption="图：「Routine 不触发」｜「Grok Bot 定时任务」" width="wide" border />
+
+## 先查开关状态是否处于暂停
+
+根据 [Cursor 帮助中心 Routines](https://cursor.com/help/grok-bot/routines)，routine 可以按时间表跑，也可在收到 Slack 消息、GitHub、Linear、Sentry、PagerDuty 事件、邮件或 webhook 调用时跑。所有流程在云上跑，合上笔记本也照跑。
+
+比如每天早上跑的舆情摘要没出来，按顺序核对，参考 <NoteLink slug="grok-bot-x-brand-monitoring-digest">品牌舆情监控交给 Bot，每天摘要写什么、什么时候该叫人</NoteLink>。桌面端点开 Bot 名字，在 Details 找到 Routines，暂停的显示 Paused，用开关恢复。手机在 Bot 资料页找到 Routines，关掉 Active 就是暂停。
+
+## 核对时区与下次运行时间
+
+根据 [Cursor 帮助中心 Routines](https://cursor.com/help/grok-bot/routines)，时间表用 Settings 里 Bot 的 Timezone。Auto-detect 默认跟随电脑，按别处时间跑需手动选时区。
+
+打开 routine 看 When to run 文字时间表，不对选 Edit 改。新 routine 不会在创建时马上跑，等下一个时间；比如八点零五分建了「每天早上八点」，第一次运行是第二天八点。想马上试用 Test。Test 会做真实工作，会改文件、用连接应用，用安全输入；没有 Test 按钮的照样按计划跑。
+
+## 检查事件触发条件与接口调用
+
+根据 [Cursor 帮助中心 Routines](https://cursor.com/help/grok-bot/routines)，Slack 触发要求消息是新的、在监听频道、匹配设定词。触发器建立之前的旧消息不算。
+
+webhook 要返回二百并用当前 key。返回二百只说明接收调用开始运行，不代表做完，去 Bot 对话看；返回其它状态码说明没开始运行，确认没暂停、用当前 key。手机 Run history 显示 Running、Succeeded 或 Failed，失败显示原因；没记录说明没东西启动过它。
+
+## 翻看运行记录与频率限制报错
+
+根据 [Cursor 帮助中心 Routines](https://cursor.com/help/grok-bot/routines)，routine 有每小时上限。全部合计每小时最多三百次，单个每小时最多两百次，超出会报「Automation run rate limit exceeded」。还有一个所有 Grok Bot routine 共享的上限，官方说这是已知问题、正在修；这类失败不自动重试，自己用 Test 重跑，webhook 重发一次。
+
+根据 [Grok Bot 故障排除](https://docs.x.ai/grok-bot/troubleshooting)，核对：已启用；时间表和时区正确；所属 Bot 还在；插件处在认证状态；云电脑能连到源系统；用量或账号未暂停。翻运行记录找失败原因，确认源频道、仓库和匹配规则有效。
+
+根据 [Cursor 常见问题](https://cursor.com/help/grok-bot/faqs)，routine 这类不是你在场时发起的工作，产生的审批大约三十分钟后过期；你在场的对话里，审批会等你。卡在审批上要定好放行规则，参考 <NoteLink slug="agent-stop-conditions-decision-log">Agent 安全护栏：无人值守跑到什么程度该停</NoteLink>；平时可开通知或选 Always allow。
+
+## Routine 不触发：常见问题
+
+### webhook 返回二百但没看到结果怎么办？
+
+返回二百只说明 Grok Bot 接收了调用开始运行，不代表做完。具体执行过程和最终结果，去该 Bot 对话流中查看。
+
+### 报「Automation run rate limit exceeded」怎么办？
+
+系统报错表示超出每小时上限。全部 routine 合计每小时最多三百次，单个最多两百次；这类失败不自动重试，routine 用 Test 重跑，webhook 需源系统重发。
+
+### Grok Bot 定时任务跑太勤，用量很快见底怎么办？
+
+Grok Bot 定时任务每次运行都扣用量，频繁运行用量快。每小时跑、短间隔、在忙碌 Slack 频道触发可能一天用掉一周量；先暂停不需要的，再放宽时间表或收窄触发条件；没跑过的任务不扣用量，Test 会扣。
