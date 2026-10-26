@@ -13,7 +13,7 @@ export type AboutCopy = {
 export const zh: AboutCopy = {
   title: '关于白泽',
   description: '白泽明理是企业 AI Native 转型顾问，和管理层、业务与技术团队一起判断 AI 该进入哪些流程、哪些环节能提效。交付诊断报告、流程改造方案、AI 接入路径、SOP 和验收标准，工作方式包括咨询、培训、FDE 驻场开发和工具开发。',
-  badge: '关于白泽明理 · Formal eXplainable AI',
+  badge: '关于白泽明理 · Baize AI',
   h1: '白泽明理',
   sub: '白泽是古代传说里能辨识万物的神兽。明，指透明可解释；理，指数理逻辑与可验证方法。这三个字是我们给自己定的工作要求。',
   name: {
@@ -31,7 +31,7 @@ export const zh: AboutCopy = {
     paragraphs: [
       '白泽明理服务正在推进 AI 转型的企业。我们和管理层、业务与技术团队一起判断：AI 该进入哪些流程，哪些环节能明显提效，哪些能力要沉淀成团队自己的方法和系统。',
       '交付物包括诊断报告、流程改造方案、AI 接入路径、研发与运营 SOP、验收标准和推进节奏。工作方式有四种：咨询、培训、FDE 驻场开发、工具开发与产品支持。',
-      'Formal eXplainable AI 是我们的技术口径。Formal 指形式化、可验证的方法；eXplainable 指过程和结论非技术人员也能看懂。',
+      '我们的技术口径有两条：方法要形式化、可验证；过程和结论要让非技术人员也能看懂。',
     ],
   },
   values: {
@@ -51,7 +51,7 @@ export const en: AboutCopy = {
   title: 'About Us',
   description:
     'Baize AI advises companies on AI-native transformation: which workflows AI should enter, where it saves time, and how results get verified.',
-  badge: 'About Baize AI · Formal eXplainable AI',
+  badge: 'About Baize AI',
   h1: 'Baize AI',
   sub: 'Baize is a creature from Chinese mythology that could recognize every living thing. Our Chinese name adds two characters: ming, for transparent and explainable, and li, for logic and verifiable method. We use all three as working requirements.',
   name: {
@@ -73,7 +73,7 @@ export const en: AboutCopy = {
     paragraphs: [
       'Baize AI works with companies that are moving their operations onto AI. With leadership, business, and engineering teams, we decide which workflows AI should enter, where it saves real time, and which capabilities your team should own as its own methods and systems.',
       'Deliverables include a diagnostic report, a workflow change plan, an AI access path, engineering and operations SOPs, acceptance criteria, and a timeline. We work in four ways: consulting, training, forward deployed engineering, and internal tools with product support. Delivery is remote-first.',
-      'Formal eXplainable AI is our technical standard. Formal means formal, verifiable methods. eXplainable means people without a technical background can follow the process and the conclusions.',
+      'Our technical standard has two parts. Methods are formal and verifiable. People without a technical background can follow the process and the conclusions.',
     ],
   },
   values: {
