@@ -1,0 +1,152 @@
+---
+title: Mac 跑安卓 App：企业装前查这 6 项
+description: Mac 跑安卓 App 可用 Mac.apk，需 macOS 26.4 及以上和 Apple Silicon，但它没有沙箱。企业做软件准入前先查 6 项：签名公证、权限声明、共享文件夹、源码复现、出网上报、卸载回滚，附不装的理由和试用条件。
+pubDate: 2026-10-27
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/mac-android-app-enterprise-install-check-cover.png
+coverAlt: 深墨绿底上，一只浅灰包裹沿传送带穿过一座检查门，门柱上一列六颗翡翠绿指示灯亮着，门后是一台屏幕空白的笔记本电脑
+---
+
+Mac 跑安卓 App 现在能做到，可以用 [kksimp/Mac.apk](https://github.com/kksimp/Mac.apk) 这类工具，要求 macOS 26.4 及以上和 Apple Silicon 芯片，Intel 不支持。员工想在办公电脑上装这类无沙箱的新工具，企业 IT 装前要查 6 项。我们在 2026 年 10 月 26 日对 Mac.apk 做了只读核对，没有安装，也没有运行它。
+
+import noteFig from './media/mac-android-app-enterprise-install-check-fig.png'
+
+<Figure src={noteFig} alt="中间一台屏幕空白的笔记本电脑，用翡翠绿细线连着六个小模型：盖火漆印的包裹、钥匙压在空白清单上、两只相连的文件夹、两座并排的积木塔、飞向地球仪的箭头、带回转箭头的垃圾桶，各配一块中文标注板" caption="图：「Mac 跑安卓 App」｜「软件准入」" width="wide" border />
+
+基本情况：作者是个人开发者 Kaleb Simpson / Voltare，许可证是 AGPL-3.0，另有付费商业许可。README 自称 Alpha，原话是 “Alpha. Mac.apk is early software under active development.” 首个公开版 v1.0.1666 在 2026 年 10 月 2 日发布，我们核对的是 2026 年 10 月 22 日发布的 v1.0.2303。
+
+它是类似 Wine 的兼容层，不是虚拟机。Android 的 DEX 代码转成 Java 字节码，跑在内置的 OpenJDK 上；Android 框架按 AOSP 的行为重写；arm64 原生库直接在 CPU 上跑，32 位 ARM 先重编译成 arm64。源码里没有调用 Hypervisor.framework 或 Virtualization.framework。它依赖 macOS 26.4 新增的 custom-x18-abi-toggle 权限，不用关 SIP，不要 root 或管理员密码，也不装内核扩展或系统扩展。每个 APK 会生成一个独立的 Mac App，放进 /Applications，没有权限时放 ~/Applications。
+
+兼容性只有作者自己的手测数据。作者在 [COMPATIBILITY.md](https://github.com/kksimp/Mac.apk/blob/main/COMPATIBILITY.md) 里写的是 “tested by hand on a Mac. Updated 2026-10-20.”，结果原话是 “71 apps tested: ✅ 58 work · ⚠️ 10 partly work · ❌ 3 don't work yet”。
+
+## 1. 签名和公证
+
+签名和公证回答的是「谁发的包、Apple 有没有扫过」。软件准入表的第 1 行先填这个。
+
+**查什么：** DMG 和主程序的签名证书、Apple 公证状态、官方给的哈希值，以及它为每个 APK 生成 App 时怎么签名。
+
+**怎么查：** `codesign -dv` 看签名信息，`spctl -a -t open` 和 `xcrun stapler validate` 核公证票据，`codesign --verify --deep --strict` 检查 `.app`，`shasum -a 256` 核对官方发布的 DMG 哈希。
+
+**Mac.apk 查到了什么：**
+- 官方 DMG 用 Developer ID Application: Kaleb Simpson (2G75R49XQL) 签名，经过 Apple 公证，公证票据已装订。主程序 `.app` 开了 hardened runtime，只有 arm64。
+- 发布说明给了 DMG 的 SHA-256，我们用 `shasum -a 256` 核对一致。
+- 签名和公证只能说明包来自这个开发者账号、Apple 扫过，不能说明它和公开源码一致。
+- 它为每个 APK 生成的 App 是 ad-hoc 签名。源码 `launcher/BundleGenerator.swift` 和 `launcher/InstallCore.swift` 显示，生成时会去掉 `com.apple.quarantine` 属性，所以这些 App 不再过 Gatekeeper 的下载检查。
+
+## 2. 权限声明
+
+这一项看工具向系统要了哪些特权，放宽了哪些系统保护。
+
+**查什么：** 主程序声明的 entitlements、Info.plist 里的隐私权限用途说明，以及有没有内核扩展、系统扩展或常驻进程。
+
+**怎么查：** `codesign -d --entitlements -` 读出 entitlements，和仓库源码里的文件比对；`plutil -p` 看 Info.plist；在源码和二进制里检索扩展、launchd 和 sudo 相关调用。
+
+**Mac.apk 查到了什么：**
+- 主程序声明 7 项 entitlements，和仓库 `runtime/scripts/jit-entitlements.plist` 一致：`cs.allow-jit`、`cs.allow-unsigned-executable-memory`、`cs.disable-library-validation`、`custom-x18-abi-toggle`、`device.audio-input`、`device.camera`、`personal-information.location`。
+- 前 3 项放宽了 hardened runtime 对 JIT 和库校验的保护，用来加载 ANGLE、MoltenVK、JVM 和 App 自带的 JIT。
+- Info.plist 声明了相机、麦克风、定位、照片和蓝牙的用途说明。读文稿、下载和照片之前，macOS 会逐个弹窗。
+- 官方 README 写明：Android App 的原生代码以当前 macOS 用户的权限运行，没有手机那样的 App 沙箱，能像普通 Mac 程序一样读写你的文件。README 要求只装可信来源的 APK。Android 权限只管 Java 代码。
+- 包里没找到 `.kext`、`.systemextension`、`.dext` 或 launchd 配置。源码和二进制里检索扩展、launchd 和 sudo 相关调用，没有命中。检索没命中不等于逐行审计，我们没做完整的代码审计。
+
+## 3. 默认共享的文件夹
+
+这一项看安卓 App 能不能直接碰到员工本机的工作文件。
+
+**查什么：** 安卓 App 和 Mac 之间共享哪些目录、默认开还是关，以及工具自己往哪里写数据。
+
+**怎么查：** 读官方 Wiki 的文件和隐私说明，对照源码里的路径。
+
+**Mac.apk 查到了什么：**
+- 官方 Wiki [Files and Privacy](https://github.com/kksimp/Mac.apk/wiki/Files-and-Privacy) 写明，App 里的 Pictures、Movies、Music、Download、Documents 默认直接映射到 Mac 上真实的 `~/Pictures`、`~/Movies`、`~/Music`、`~/Downloads` 和 `~/Documents`。
+- 可以在设置里关掉「Use my Mac's Downloads, Documents, Pictures, Movies and Music」。
+- 带原生代码的 App 可以不经 Android 权限询问，直接读这些共享文件夹。
+- Mac.apk 自己写入的路径：`~/Library/Application Support/Mac.apk`、`~/Library/Application Support/MacApk`、`~/Library/Caches` 下的 `MacApk` / `macapk` / `Mac.apk`，以及 `~/Library/Logs/macapk`。
+
+编码 Agent 的文件读写边界见 <NoteLink slug="local-agent-sandbox-file-access">Agent 本地沙箱：哪些目录能读、哪些能写？</NoteLink>。
+
+## 4. 包能不能用源码复现
+
+这一项看发出来的安装包是不是由公开源码构建。
+
+**查什么：** 官方 DMG 能不能从公开仓库构建出来，有没有 CI 自动构建，有没有仓库外的文件和预编译依赖。
+
+**怎么查：** 看仓库 `.github/workflows/` 里的配置，比对发布包和仓库的文件，读仓库的 `BUILDING.md`。
+
+**Mac.apk 查到了什么：**
+- 仓库没有构建发布的 CI，`.github/workflows/` 里只有收集贡献者协议的 `cla.yml`。官方 DMG 由 `scripts/release.sh` 在作者本机构建、签名和公证。
+- 发布包里有仓库没有的 `Contents/lib/pairip-refs/`，共 29 个文件。`BUILDING.md` 写明这些数据文件不公开。它们具体做什么，我们没查到公开说明。
+- 仓库里提交了预编译的 ANGLE、MoltenVK 和 Skia 库。
+- 源码构建要另装 `openjdk@21`、`capstone` 和 `apktool` 3 个 Homebrew 包，我们没做源码构建。结论：官方二进制目前不能从公开源码完全复现。
+
+## 5. 出网和数据上报
+
+这一项看工具会连哪些服务器、发出去什么。我们只读了源码，对二进制做了字符串检索，没有运行，也没有抓包。这一项没有实测数据。
+
+**查什么：** 版本检查、设备参数上报、遥测和崩溃上报，以及各个 App 自己的联网。
+
+**怎么查：** 在源码和二进制里检索网络地址和接口，看遥测组件怎么处理；有测试机时，运行后抓一次出网连接。
+
+**Mac.apk 查到了什么：**
+- 每次打开控制面板，向 `api.github.com` 匿名查一次最新版本，不自动更新。
+- 用到 Google 登录、Play 许可证校验或推送注册时，连 Google 的 checkin、auth、推送和许可证接口。checkin 上报的品牌和型号是「Mac.apk」，带 SDK、ABI 和屏幕参数；MAC 地址用随机的固定值，不发真实硬件地址。
+- 没发现 Mac.apk 自己的使用统计或崩溃上报。App 内置的 Firebase Crashlytics 和微软 1DS 遥测被换成了空操作。
+- 各个 App 自己照常联网，Mac.apk 不拦截。
+- 上面都来自代码。实际出网要在测试机上跑起来抓一次连接，确认和代码一致。这一步我们没做。
+
+## 6. 怎么卸载回滚
+
+这一项看试完能不能把电脑恢复干净。我们没装，所以这一项来自官方文档和源码路径，没有实测卸载。
+
+**查什么：** 卸载入口、本机残留路径、隐私授权怎么撤销、文件默认打开方式怎么改回。
+
+**怎么查：** 读官方 Wiki 的应用管理说明和 README，对照第 3 项列出的写入路径。
+
+**Mac.apk 查到了什么：**
+- 官方 Wiki [Managing Apps](https://github.com/kksimp/Mac.apk/wiki/Managing-Apps)：在 Mac.apk 窗口右键 App，选 Uninstall。Mac.apk 先把存档另存，再把 App 和其余数据文件夹移进废纸篓；想连存档一起删，在确认框里勾选。
+- 官方 README 写明：直接把 App 拖进废纸篓，数据会留在 `~/Library/Application Support/MacApk`。
+- 要清的路径：`Mac.apk.app` 本体，第 3 项列出的 Application Support、Caches、Logs 目录，以及每个生成的 `<App 名>.app`。
+- 授权过的相机、麦克风、定位等隐私权限，要到「系统设置 → 隐私与安全性」手动撤销。
+- 如果点过「Make Default」，`.apk` 等文件的默认打开方式会改成 Mac.apk，要在 Finder 的「显示简介 → 打开方式」里改回。
+
+## 结论：我们为什么选了不装，什么条件下可以试
+
+2026 年 10 月 26 日核对完，我们决定不装。原因有 6 条：
+
+1. 没有沙箱，原生代码按员工账户的权限跑。
+2. 默认把 Mac 上真实的个人文件夹共享进去。
+3. 官方二进制不能从公开源码复现，还带了 29 个不公开的数据文件。
+4. 放宽了 JIT 和库校验保护。
+5. 项目是 Alpha，个人维护，首个公开版发布到现在不到 1 个月。
+6. 出网行为没有实测。
+
+要试，满足下面这些条件再试：
+
+1. 用一台专门的测试 Mac，或者一个单独的 macOS 用户账户，里面没有真实工作数据和登录凭据。
+2. 先核对发布说明里的 SHA-256 和签名公证。
+3. 先关掉共享 Mac 个人文件夹的设置。
+4. 不登录 Google 账户。
+5. 只装兼容列表里标为能用的开源 App，例如 F-Droid 上的。
+6. 不点 Make Default。
+7. 相机、麦克风、定位、照片授权一律拒绝。
+8. 装之前把第 6 项要清的路径记下来，试完按清单回滚。
+9. 试的时候抓一次出网连接，补上第 5 项的实测。
+
+软件准入可以把这 6 项做成一张表，员工申请装新工具时逐项填写。
+
+## Mac 跑安卓 App：常见问题
+
+### Mac.apk 是虚拟机吗？
+
+不是。它是类似 Wine 的兼容层：DEX 代码转成 Java 字节码跑在内置的 OpenJDK 上，arm64 原生库直接在 CPU 上跑。源码里没有调用 macOS 的 Hypervisor.framework 或 Virtualization.framework。
+
+### 有签名和公证，是不是就能放心装？
+
+不能只看这一项。签名和公证只证明包来自这个开发者账号、经过了 Apple 的扫描，不证明它和公开源码一致。Mac.apk 为每个 APK 生成的 App 是 ad-hoc 签名，还去掉了 quarantine 属性，不再过 Gatekeeper 的下载检查。
+
+### 软件准入要先看哪些权限？
+
+先看 entitlements 里放宽保护的 3 项：允许 JIT、允许未签名的可执行内存、关闭库校验。再看相机、麦克风、定位这些隐私声明，以及是否默认把 Mac 个人文件夹共享给安卓 App。最后看它有没有沙箱：原生代码按当前用户权限跑，就按能读写员工全部文件的程序来评估。
