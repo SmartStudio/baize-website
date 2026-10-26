@@ -21,7 +21,7 @@ const PAGES: Array<[string, string, string]> = [
   ['/en/', 'Home', 'Who Baize AI is, the four services, and how to book a first call'],
   ['/en/services/', 'Services', 'Consulting, training, forward deployed engineering, and tools: scope and deliverables'],
   ['/en/method/', 'Method', 'How an engagement runs, from diagnosis to rollout'],
-  ['/en/about/', 'About', 'The team and the Formal eXplainable AI working standard'],
+  ['/en/about/', 'About', 'The team and our working standard'],
   ['/en/notes/', 'Notes', 'Notes on putting AI to work in real teams, filterable by topic'],
   ['/en/contact/', 'Contact', 'Book a call by email or the contact form'],
 ];

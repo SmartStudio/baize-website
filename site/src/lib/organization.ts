@@ -20,14 +20,14 @@ export const orgRef = (lang: 'zh-CN' | 'en' = 'zh-CN') => ({
 const COPY = {
   'zh-CN': {
     name: ORGANIZATION_NAME,
-    alternateName: ['Baize AI', '白泽明理 Baize AI', 'Baize Tech', 'Formal eXplainable AI'],
+    alternateName: ['Baize AI', '白泽明理 Baize AI', 'Baize Tech'],
     description:
       '白泽明理（Baize AI）帮企业做 AI 转型，提供 AI 转型咨询、企业 AI 培训、FDE 驻场开发、工具开发与产品支持四项服务。',
     knowsAbout: ['AI 转型咨询', '企业 AI 培训', 'FDE 驻场开发', 'AI Agent 集成', 'LLM API 网关', 'Loop Engineering'],
   },
   en: {
     name: ORGANIZATION_NAME_EN,
-    alternateName: [ORGANIZATION_NAME, '白泽明理 Baize AI', 'Baize Tech', 'Formal eXplainable AI'],
+    alternateName: [ORGANIZATION_NAME, '白泽明理 Baize AI', 'Baize Tech'],
     description:
       'Baize AI is an AI transformation consultancy. It offers AI transformation consulting, team AI training, forward deployed engineering, and internal tools. Delivery is remote-first.',
     knowsAbout: [
@@ -53,7 +53,7 @@ export function organizationJsonLd(lang: 'zh-CN' | 'en' = 'zh-CN') {
     '@id': ORG_ID,
     name: t.name,
     alternateName: t.alternateName,
-    slogan: 'Formal eXplainable AI',
+    slogan: '白泽明理 Baize AI',
     url: new URL('/', site).href,
     // Google 要求 logo 是方图且不小于 112px;og-default 是 1200×630 的横幅,不合格。
     logo: new URL('/apple-touch-icon.png', site).href,
