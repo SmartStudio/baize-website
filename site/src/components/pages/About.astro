@@ -69,6 +69,15 @@ const jsonLd = {
     </div>
   </section>
 
+  <section class="wrap sec split origin">
+    <div>
+      <h2>{t.origin.h2}</h2>
+    </div>
+    <div class="prose">
+      <p>{t.origin.p}</p>
+    </div>
+  </section>
+
   <section class="dark">
     <div class="wrap sec">
       <p class="eyebrow eyebrow--on-dark">{t.values.eyebrow}</p>
@@ -119,6 +128,7 @@ const jsonLd = {
   .card p { margin: 0; font-size: 15px; color: var(--bz-text-secondary); }
 
   .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; }
+  .origin { padding-top: 0; }
   .prose p { margin: 0 0 20px; font-size: 17px; line-height: 1.9; color: var(--bz-ink-700); }
 
   .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }

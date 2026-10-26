@@ -6,6 +6,7 @@ export type AboutCopy = {
   sub: string;
   name: { eyebrow: string; h2: string; items: { k: string; t: string; d: string }[] };
   who: { eyebrow: string; h2: string; paragraphs: string[] };
+  origin: { h2: string; p: string };
   values: { eyebrow: string; h2: string; items: { n: string; t: string; d: string }[] };
   book: { h2: string; p: string; cta: string };
 };
@@ -33,6 +34,10 @@ export const zh: AboutCopy = {
       '交付物包括诊断报告、流程改造方案、AI 接入路径、研发与运营 SOP、验收标准和推进节奏。工作方式有四种：咨询、培训、FDE 驻场开发、工具开发与产品支持。',
       '我们的技术口径有两条：方法要形式化、可验证；过程和结论要让非技术人员也能看懂。',
     ],
+  },
+  origin: {
+    h2: '白泽是什么',
+    p: '白泽是中国古代传说中的神兽，能说人话，通晓万物之情。据《云笈七签》引《轩辕本纪》，黄帝巡游到东海边遇见白泽，白泽把天下的鬼神精怪一一讲给他听，黄帝让人画成《白泽图》，告示天下。我们用这个名字，是因为我们做事也是这个顺序：先把企业里 AI 的真实用法和卡点看清、讲明白，再动手改流程。',
   },
   values: {
     eyebrow: '核心价值观',
@@ -75,6 +80,10 @@ export const en: AboutCopy = {
       'Deliverables include a diagnostic report, a workflow change plan, an AI access path, engineering and operations SOPs, acceptance criteria, and a timeline. We work in four ways: consulting, training, forward deployed engineering, and internal tools with product support. Delivery is remote-first.',
       'Our technical standard has two parts. Methods are formal and verifiable. People without a technical background can follow the process and the conclusions.',
     ],
+  },
+  origin: {
+    h2: 'What is Baize?',
+    p: 'Baize is a creature from ancient Chinese legend that could speak and knew the nature of all things; the Yellow Emperor had its accounts of every spirit drawn into a guide for the people. We work in the same order: first see and explain how a company really uses AI and where it gets stuck, then change the workflow.',
   },
   values: {
     eyebrow: 'Values',
