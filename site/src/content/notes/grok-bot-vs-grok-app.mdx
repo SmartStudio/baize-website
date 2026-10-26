@@ -1,0 +1,56 @@
+---
+title: Grok Bot 和 Grok 的区别：重复活给谁
+description: 辨析 Grok Bot 和 Grok 的区别，关键看任务是否需要在真实环境持续执行。Grok 属于聊天应用，擅长即时问答与生成内容；Grok Bot 拥有常驻云电脑，负责多步骤自动化与定时重复任务。两者登录与额度计量各自独立。
+pubDate: 2026-10-27
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/grok-bot-vs-grok-app-cover.png
+coverAlt: 深墨绿底上，左边一只立着的浅灰对话气泡模型，右边一台云形常驻电脑，旁边的机械臂正把一叠文件夹逐个送进去
+---
+
+Grok Bot 和 Grok 的区别，先看活是一次性的，还是要在真实工具里做完、每周反复做。Grok 作为 xAI 的聊天应用，适合一次性的问答、写稿和出图；Grok Bot 是另一个 App，每只 Bot 拥有一台常驻云电脑，适合在真实工具里做完、每周反复做的多步活。两者的登录方式和用量显示不一样。
+
+import noteFig from './media/grok-bot-vs-grok-app-fig.png'
+
+<Figure src={noteFig} alt="左边一台平板回答一次性问题，右边一台常驻云电脑带着多步传送带，下方一只共享的账号计量表，各配中文标注板" caption="图：「Grok Bot 和 Grok 的区别」｜「Grok 聊天」" width="wide" border />
+
+## 两个产品是分开的 App
+
+根据 [Cursor 常见问题](https://cursor.com/help/grok-bot/faqs)，Grok 聊天应用和 Grok Bot 是两个不同的 App。Grok 应用里的付费墙或 Weekly SuperGrok Limit 跟 Grok Bot 无关。
+
+Grok Bot 用 Cursor 账号登录，没有单独的 Grok Bot 登录。想对比 ChatGPT 的看 <NoteLink slug="grok-bot-vs-chatgpt-cloud-teammate">云端同事 vs 再开一个聊天框：Grok Bot 和 ChatGPT 的区别</NoteLink>。
+
+## 一次性的问答写稿和出图
+
+根据 [x.ai 价格页](https://x.ai/pricing)，Plus 档包含 Grok Chat、Voice、Imagine 和 Build。问一个问题、写一段稿、出一张图，这类做完就结束的活用 Grok 聊天就够，Grok Bot 从 Premium 档才有。
+
+## 在真实工具里做完并反复跑的活
+
+根据 [Grok Bot 官方总览](https://docs.x.ai/grok-bot/overview)，每只 Bot 在一台常驻云电脑上工作，配备浏览器、文件系统和终端。任务在真实工具里做完，不停在聊天草稿；笔记本合上工作也继续。
+
+设置靠发一条消息，不用搭流程。一只有名字的 Bot 会跨会话保留记忆、文件、浏览器登录和偏好。Bot 带你走一遍多步流程后，可以存成 skill，按计划重跑；网站要登录或要验证码时，Bot 把这一步交给你。实战参考 <NoteLink slug="grok-bot-persistent-ai-teammates">Grok Bot 是什么？AI Agent 云端同事的实战指南</NoteLink>。
+
+根据 [Cursor 帮助中心 Routines](https://cursor.com/help/grok-bot/routines)，routine 告诉一只 Bot 什么时候跑一个流程。它可以按时间表跑，也可以在收到 Slack 消息、GitHub 事件、邮件或 webhook 调用时跑；routine 在云上跑，笔记本合上也照跑。
+
+## 账号登录与用量如何分开看
+
+老账号关联 SuperGrok 时，SuperGrok 的额度和 Grok Bot 的用量是两套计量，Grok Bot 用量记在 Cursor 账号上，在 Grok Bot 的 `Settings > Usage & Billing` 里看，不在 Grok 应用里看，见 [Cursor 常见问题](https://cursor.com/help/grok-bot/faqs)。在 The X Subscription 上，Grok Bot 用量和 Cursor、Grok 应用从同一个每周池里扣，见 [Cursor 套餐与计费文档](https://cursor.com/help/grok-bot/plans)。
+
+根据 [Cursor 常见问题](https://cursor.com/help/grok-bot/faqs)，Grok Bot 不能选模型，它为每个任务自己选，没有模型选择器。
+
+## Grok Bot 和 Grok 的区别：常见问题
+
+### Grok 应用里提示额度用完，Grok Bot 还能用吗？
+
+老账号关联 SuperGrok 的，Grok 应用里的付费墙或 Weekly SuperGrok Limit 跟 Grok Bot 无关，Grok Bot 的用量在 Grok Bot 的 Settings > Usage & Billing 里看；在 The X Subscription 上两者用同一个每周池，余量在 `grok.com/dashboard` 的 Usage 里看。
+
+### Grok Bot 能不能手动切换底层模型？
+
+Grok Bot 不能选模型。根据 Cursor 帮助中心的说明，Grok Bot 没有提供模型选择器，它会为每个具体任务自己选模型。
+
+### 只用过 Grok 聊天，换到 Grok Bot 要重新注册吗？
+
+只用过 Grok 聊天的，要知道 Grok Bot 没有单独的 Grok Bot 登录，用的是 Cursor 账号，见 [Cursor 登录说明](https://cursor.com/help/grok-bot/sign-in)。在 The X Subscription 上，Premium 及以上档位包含 Grok Bot，用订阅的同一个账号登录 Grok Bot，见 [Cursor 套餐与计费文档](https://cursor.com/help/grok-bot/plans)。
