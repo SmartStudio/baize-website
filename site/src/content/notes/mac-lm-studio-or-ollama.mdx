@@ -39,7 +39,7 @@ Ollama 可以在终端里通过一条 `ollama run <模型名>` 命令下载并�
 
 Mac 的统一内存容量决定了本机能装下多大参数的模型，不同量化档位的显存要求见 <NoteLink slug="qwen38-27b-vram-requirements">Qwen3.8 显存要求：27B 用哪个量化档</NoteLink>。根据 [Ollama 官方博客](https://ollama.com/blog/mlx) 二〇二六年三月三十日发布的信息，Apple 芯片上的 Ollama 改由 MLX 驱动进入预览版，官方要求用统一内存超过三十二 GB 的 Mac。
 
-在模型格式方面，LM Studio 在 Apple 芯片上能跑 MLX 格式，也能跑 llama.cpp 用的 GGUF 格式。使用者在选型前，先对照当前机器的统一内存规格与计划使用的模型文件格式，确认硬件配置满足工具的最低门槛。
+在模型格式方面，LM Studio 在 Apple 芯片上能跑 MLX 格式，也能跑 llama.cpp 用的 GGUF 格式。使用者在选型前，先对照当前机器的统一内存规格与计划使用的模型文件格式，确认硬件配置满足工具的最低门槛。想看在 Mac 上按统一内存选哪个 GGUF 量化、再用 llama.cpp 跑起来的完整步骤，见 <NoteLink slug="qwen38-mac-unsloth">在 Mac 上用 Unsloth 本地跑 Qwen3.8-27B</NoteLink>。
 
 ## LM Studio：常见问题
 
