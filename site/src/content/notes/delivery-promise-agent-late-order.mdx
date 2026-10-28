@@ -6,10 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/delivery-promise-agent-late-order-cover.png
+coverAlt: 深墨绿底座上，货架和一小段产线把货送到一块翡翠绿日历板，手指形确认按钮再把它送向一辆货车
 ---
 
 交期承诺 Agent 负责按实时库存、在途物料和车间可用产能算出可承诺量，给出建议交期；最终向客户发出的正式交期承诺，由点击确认的销售或计划员负责。常规标准单在可承诺量范围内由销售核对后发给客户；遇到紧急插单、需求超出可承诺量或定制大单，必须转生产计划员复核签字；一旦订单晚交，调取发出承诺时保存的系统快照，查清是底层数据失真、后续排产被插单挤占，还是业务员自己改短了交期。
+
+import noteFig from './media/delivery-promise-agent-late-order-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：带翡翠绿仪表的货架、带确认勾的日历板、看排产板的计划员工位、罩在玻璃罩里的快照文件和放大镜，各配中文标注板" caption="图：「交期承诺 Agent」｜「可承诺量」" width="wide" border />
 
 ## 建议交期怎么算与对外承诺谁来拍板
 
