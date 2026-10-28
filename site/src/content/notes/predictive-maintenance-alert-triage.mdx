@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/predictive-maintenance-alert-triage-cover.png
+coverAlt: 深墨绿底上，一台泵电机模型周围飘着许多小报警铃，经漏斗汇成一盏翡翠绿信号灯
 ---
 
-{/* POST
-H1: 预测性维护报警太多，哪些真要停机？
-slug: predictive-maintenance-alert-triage
-主: 预测性维护
-辅: 设备告警
-FAQ#3: 设备告警分几级好管，谁来定？
-Figure 要点: 「报警合并」「多方分级」「证据推送」「停机拍板」
-NoteLink 列表: vertical-model-finetune-vs-enterprise-kb / agent-stop-conditions-decision-log
-等点头后再出图。
-*/}
-
 预测性维护的报警先合并去重，再按不处理会不会停机、会不会伤人、多久内要处理来分级。分级规则由设备、生产、维修、安全一起定；AI 给每条报警附上依据和建议级别，拿不准的转人；要不要停机由设备工程师和生产负责人定，AI 不下停机指令，团队定期拿误报和漏报回头改规则。
+
+import noteFig from './media/predictive-maintenance-alert-triage-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：汇入漏斗的报警铃、摆着分层托盘的圆桌、夹着趋势曲线的报警卡、旁边放着印章的停机拉杆，各配中文标注板" caption="图：「预测性维护」｜「设备告警」" width="wide" border />
 
 ## 报警为什么多与先怎么合并
 
