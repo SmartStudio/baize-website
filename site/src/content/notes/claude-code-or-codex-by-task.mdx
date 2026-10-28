@@ -6,21 +6,16 @@ category: AI编程
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/claude-code-or-codex-by-task-cover.png
+coverAlt: 深墨绿底上，左边一台带放大镜的终端控制台，右边一块云朵平台托着封好的任务箱，一道翡翠绿箭头从任务箱回到控制台
 ---
 
-{/* POST
-H1: Claude Code 和 Codex：什么活给谁
-slug: claude-code-or-codex-by-task
-主: Claude Code 和 Codex
-辅: Codex 区别
-FAQ#3: Claude Code 和 Codex 区别大吗，团队只装一个行不行？
-Figure 要点: 「终端审查」「云端任务」「代码评审」「规则文件」
-NoteLink 列表: codex-into-real-workflow / from-coder-to-orchestrator
-等点头后再出图。
-*/}
-
 把编码任务分给工具，先看人需不需要留在当前窗口。Claude Code 和 Codex 分工很明确：要人边看边改的本地任务给 Claude Code，边界清楚、能用测试或检查结果验收、可以交出去等结果或审 PR 的活给 Codex。
+
+import noteFig from './media/claude-code-or-codex-by-task-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：放大镜下的终端控制台、托着任务箱的云朵平台、盖着翡翠绿勾章的 PR 文档、用细线连着前三者的规则文件夹，各配中文标注板" caption="图：「Claude Code 和 Codex」｜「Codex 区别」" width="wide" border />
 
 ## 边看边改的本地活怎么交
 
