@@ -6,10 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/purchase-order-agent-approval-tiers-cover.png
+coverAlt: 深墨绿底座上三级逐步升高的平台，各放一只越来越大的采购单信封，最低一级的翡翠绿闸门敞开，高处两级闸门关着并压着印章
 ---
 
 采购下单 Agent 能不能直接向供应商发单，按企业自己定的金额档和审批权限分级放行。低于自动放行线、且属于有效框架协议内的常规补货，由 Agent 自动生成采购订单并发送；达到自动放行线、低于高档线的中间档订单挂起，转采购主管审批；达到或超过高档线的订单，流转给业务部门负责人或财务签批。系统同时核查同供应商、同品类在短期内的累计下单金额，拦截拆单规避审批的行为，所有审批节点与下单动作全程留记录。
+
+import noteFig from './media/purchase-order-agent-approval-tiers-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：穿过敞开翡翠绿闸门的小信封、停在单印章闸门前的中号信封、停在双印章闸门前的大信封、被栏杆挡住的一叠夹在一起的小信封，各配中文标注板" caption="图：「采购下单 Agent」｜「审批权限」" width="wide" border />
 
 ## 下单金额怎么分档与哪些单能自动放行
 
