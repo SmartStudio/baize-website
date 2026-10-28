@@ -1,0 +1,61 @@
+---
+title: Claude Code 和 Codex：什么活给谁
+description: 团队用 AI 写代码，要先看清 Claude Code 和 Codex 各自适合接什么活。要人边看边改的本地任务交给终端工具；能写清验收检查的任务交给 Codex Cloud；PR 可用 Codex 审查。两边配合使用，规则集中写在一处。
+pubDate: 2026-10-28
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: true
+---
+
+{/* POST
+H1: Claude Code 和 Codex：什么活给谁
+slug: claude-code-or-codex-by-task
+主: Claude Code 和 Codex
+辅: Codex 区别
+FAQ#3: Claude Code 和 Codex 区别大吗，团队只装一个行不行？
+Figure 要点: 「终端审查」「云端任务」「代码评审」「规则文件」
+NoteLink 列表: codex-into-real-workflow / from-coder-to-orchestrator
+等点头后再出图。
+*/}
+
+把编码任务分给工具，先看人需不需要留在当前窗口。Claude Code 和 Codex 分工很明确：要人边看边改的本地任务给 Claude Code，边界清楚、能用测试或检查结果验收、可以交出去等结果或审 PR 的活给 Codex。
+
+## 边看边改的本地活怎么交
+
+遇到多文件改动，先选 Manual 或 `acceptEdits` 模式。Claude Code 在终端、IDE 扩展和桌面端里跑，读仓库、改文件、跑命令；Manual 模式下，工具在大多数编辑文件、运行 shell 命令或访问网络前停下问人；常规修改切到 `acceptEdits` 模式，自动批准工作目录里的文件编辑和常见文件命令。
+
+不熟悉的代码先切到 `plan` 模式。用 `claude --permission-mode plan` 启动或按 Shift+Tab 切换，只读并提出计划，批准前阻止改源码，批准时可选手动逐处审修改。指令写在 `CLAUDE.md` 且控制在两百行内，比如提交前运行 `npm test`。它是上下文，强行拦截用 `PreToolUse` hook，技术强制用 `permissions.deny`。需要非交互运行时可用 `claude -p`；`auto` 模式由分类器模型审查；`bypassPermissions` 只在隔离容器或虚拟机用。
+
+## 能交出去等结果的活怎么给 Codex
+
+把边界清楚、能用测试或检查结果验收的任务交给 Codex Cloud 在云端跑。选 GitHub 仓库建好云端环境并装好依赖，开任务后各有独立工作区，电脑睡眠也能跑；日常派活时 Claude Code 和 Codex 区别正在这里：前者由人守在本地边看边改，后者放到云端工作区独立跑完再回来验收。
+
+任务做完后人看改动和检查结果，可追加修改，准备好再提交或开 PR。脚本和 CI 用 `codex exec` 把结果打到标准输出接给其他工具。`codex exec` 默认在只读沙箱跑；要让它修改文件，可使用 `--sandbox workspace-write`；`danger-full-access` 只在受控容器或 runner 用。`codex exec` 要求在 Git 仓库里运行，以防破坏性修改。Codex 进研发流程还要解决哪些事，见 <NoteLink slug="codex-into-real-workflow">Codex 真正进入研发流程，需要解决哪些问题？</NoteLink>。
+
+## 一个写完代码另一个怎么审
+
+用 Claude Code 改完代码并推到分支，开 PR 后在评论里写 `@codex review`。Codex 按 PR 的 diff 和仓库指引发起 GitHub 代码审查，也能开自动审查。
+
+审查只标 P0 和 P1 问题，格式和 lint 留在 CI。人在 PR 里看到问题，可评论 `@codex fix the P1 issue` 让它修。审查规则写在 `AGENTS.md` 的 `## Code Review Rules`，子目录写各自规则。审查规则用来引导 Codex，不替代测试、分支保护和必需的人工批准。
+
+## 团队规则怎么写成同一份
+
+把共用的编码规范和审查指引写进 `AGENTS.md`。两个工具在本地交互和云端执行上的 Claude Code 和 Codex 区别明显，但都能读仓库里的 `AGENTS.md`，团队只维护这一份文件就行。
+
+工作目录及上级目录没有 `CLAUDE.md` 时，Claude Code 默认读取 `AGENTS.md`；已有 `CLAUDE.md` 的项目，可在该文件中写一行 `@AGENTS.md` 导入。开发者把活分给工具、自己定规则和验收，见 <NoteLink slug="from-coder-to-orchestrator">AI 时代，开发者的核心工作已经不是写代码</NoteLink>。
+
+## Claude Code 和 Codex：常见问题
+
+### 两个工具能不能在同一个仓库里一起用？
+
+可以在同一个仓库里搭配使用。让工具各自在独立分支、worktree 或云端工作区里改，不同时改同一批文件。本地边看边改用 Claude Code，开 PR 调 Codex 审查，或者把边界清楚、能用测试或检查结果验收的任务交给 Codex Cloud 在云端跑。
+
+### CLAUDE.md 里写了不准做的事，Claude Code 为什么还做了？
+
+`CLAUDE.md` 在会话开始时作为上下文加载，缺乏技术强制。要无论如何都拦住某个操作，配置 `PreToolUse` hook；要从技术上强制阻断，在设置里用 `permissions.deny`。
+
+### Claude Code 和 Codex 区别大吗，团队只装一个行不行？
+
+按团队手上的活来选。手头以本地交互、人盯在终端边看边改为主，先用 Claude Code；要把边界清楚、能用测试或检查结果验收的任务放到云端跑、进 CI 流水线调用或在 GitHub 审 PR，先用 Codex。看清任务分工上的 Codex 区别来挑工具，先把规则写进 `AGENTS.md`，后续加另一个工具不用重写规则。
