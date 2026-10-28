@@ -6,21 +6,16 @@ category: 安全可信
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/legal-research-ai-case-check-cover.png
+coverAlt: 深墨绿底上，一摞案卷上方悬着放大镜，一道翡翠绿光把最上面的案卷连到右边一本厚档案原本
 ---
 
-{/* POST
-H1: 法律检索 AI 给的判例，引用前怎么核？
-slug: legal-research-ai-case-check
-主: 法律检索 AI
-辅: 判例核验
-FAQ#3: 判例核验能不能交给另一个 AI 来做？
-Figure 要点: 「常见差错」「原文比对」「留痕抽查」「材料脱敏」
-NoteLink 列表: ai-verifiable-work-first / chatgpt-contract-paste-vs-redact
-等点头后再出图。
-*/}
-
 法律检索 AI 给出的每一条判例，引用前都要回到法院公开的裁判文书平台或单位采购的法律数据库找到原文。经办人逐条核对案号、法院、裁判日期、当事人、裁判要旨，再查有没有被上级法院改判或发回重审；AI 生成的摘要不能直接写进正式文书；引用准确性由经办律师或法务负责，核过的每一条都留好记录。
+
+import noteFig from './media/legal-research-ai-case-check-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：拼不上的两块文书拼图、放大镜下并排比对的两份文书、打勾的核验清单和档案夹、部分内容被灰条遮住的文书，各配中文标注板" caption="图：「法律检索 AI」｜「判例核验」" width="wide" border />
 
 ## 检索出的判例常在哪几处出错
 
