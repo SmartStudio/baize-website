@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/production-scheduling-agent-rush-order-cover.png
+coverAlt: 深墨绿底座上三台灰色机台和一条传送带，白色小箱排队前进，一只发光翡翠绿急单箱停在侧台，上方半透明的排程副本里绿箱已插进队列
 ---
 
-{/* POST
-H1: 排产 Agent 要插急单，车间主任怎么批？
-slug: production-scheduling-agent-rush-order
-主: 排产 Agent
-辅: 急单插单
-FAQ#3: 急单插单要动已经下发的任务，谁说了算？
-Figure 要点: 「冻结基线重算」「多套方案比选」「四方会签确认」「异常停下留痕」
-NoteLink 列表: agent-stop-conditions-decision-log / ai-verifiable-work-first
-等点头后再出图。
-*/}
-
 排产 Agent 接到急单插单请求后，先冻结当前排程基线，在排程副本里把急单放进当前订单池一起重算，正式生产计划保持不动。重算后按保交期、紧凑产出、最小扰动、少换型几种取向生成多套备选方案，标清受影响订单清单、换型次数和延期天数。车间主任会同计划员、销售、采购共同确认选哪套方案，评审通过前车间按原计划执行。
+
+import noteFig from './media/production-scheduling-agent-rush-order-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：上锁的传送带旁的透明副本、三张不同排布的方案卡、围着一张卡的四枚印章、停止牌和打开的记录本，各配中文标注板" caption="图：「排产 Agent」｜「急单插单」" width="wide" border />
 
 ## 急单进来先算什么
 
