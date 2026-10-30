@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/cold-chain-temperature-alert-rejection-cover.png
+coverAlt: 深墨绿底座上一辆开着后门的灰色冷藏车，车厢里的结霜货箱上放着温度记录仪，上方飘着发光绿色温度曲线，一只手拿探针测温，旁边是灰色记事板和铜色印章
 ---
 
-{/* POST
-H1: 冷链温控报警了，这批货要不要拒收？
-slug: cold-chain-temperature-alert-rejection
-主: 冷链温控
-辅: 温度异常
-FAQ#3: 温度异常只持续了一小段，货还能收吗？
-Figure 要点: 「报警先查证据」「异常不予接收」「拿不准转质量」「交接留档备查」
-NoteLink 列表: ai-verifiable-work-first / agent-stop-conditions-decision-log
-等点头后再出图。
-*/}
-
 冷链温控在途或到货报警，只是提示出现过温度异常信号，这批货收不收看企业收货规则和现场核查证据。软件或 AI 读取温度记录仪的全程数据，标出超温时段、超出的范围与持续时间，对照货物标签和合同规定的温湿度要求整理成交接异常单。全程记录缺失或超出规定范围、实测温度不符、食品状态异常的，按规则不予接收；属于冷藏、冷冻药品且不符合温度要求的，到货直接拒收；拿不准的边缘情况转交质量负责人判定并留存理由，AI 不自行下拒收结论，也不改动原始温度记录。
+
+import noteFig from './media/cold-chain-temperature-alert-rejection-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：温度记录仪、探针和放大镜、挡在半透明货箱前的红色手掌、拿记事板的白大褂质量人员、放进绿色文件夹的灰色档案柜，各配中文标注板" caption="图：「冷链温控」｜「温度异常」" width="wide" border />
 
 ## 报警后先查哪几样证据
 
