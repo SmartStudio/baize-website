@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/refund-agent-amount-threshold-cover.png
+coverAlt: 深墨绿底座上三摞由低到高的灰色硬币台阶，小额硬币沿发光绿色传送带送回包裹箱，最高一摞停在灰色闸机前，一只手举着印章
 ---
 
-{/* POST
-H1: 客服退款 Agent 退多少钱要人批？
-slug: refund-agent-amount-threshold
-主: 客服退款 Agent
-辅: 退款额度
-FAQ#3: 退款额度由谁定，多久调一次？
-Figure 要点: 「四层权限拆解」「异常升级人工」「绑定精确参数」「执行前重校验」
-NoteLink 列表: ai-cs-can-reply-vs-who-owns-liability / ap-invoice-agent-payment-control
-等点头后再出图。
-*/}
-
 客服退款 Agent 退多少钱要人批，按企业自己定的金额档和售后规则定：落在企业自己定的小额档内、订单状态和退款原因都符合规则的，Agent 可以按规则直接发起；超过档位的、同一客户短期内多次申请的、原因不在规则里的、涉及赔偿或补偿的，转客服主管或财务批。档位和规则由客服主管和财务维护，Agent 只读不改；真正执行退款时业务系统还要重新校验，并做幂等控制。
+
+import noteFig from './media/refund-agent-amount-threshold-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：带绿锁的四层叠块、警示牌和举起的手旁的金币、绑绿丝带的审批卡和包裹、带放大镜和绿勾的闸门，各配中文标注板" caption="图：「客服退款 Agent」｜「退款额度」" width="wide" border />
 
 ## 退款额度按什么分档
 
