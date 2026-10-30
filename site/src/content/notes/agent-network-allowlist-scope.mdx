@@ -6,21 +6,16 @@ category: 安全可信
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/agent-network-allowlist-scope-cover.png
+coverAlt: 深墨绿底座上一只玻璃沙箱罩住灰色机器人，四周灰色围墙只开一个窄门，几条发光翡翠绿线路穿门连到外面的灰色服务器
 ---
 
-{/* POST
-H1: Agent 出网管控：白名单开多宽才跑得动？
-slug: agent-network-allowlist-scope
-主: Agent 出网管控
-辅: 域名白名单
-FAQ#3: 域名白名单只放了几个域名，Agent 为什么还是装不上依赖？
-Figure 要点: 「梳理任务外联」「空单起步补齐」「严控宽域写操作」「按任务批与收」
-NoteLink 列表: mcp-server-security-review / agent-sandbox-test-vs-prod-data
-等点头后再出图。
-*/}
-
 Agent 出网管控的常见基线，是沙箱默认拒绝所有出网，再按域名白名单放行。白名单开多宽按任务定，不按整个 Agent 笼统放开：先列这个任务要访问的模型接口、内部接口、依赖源和存储地址，从空清单起步跑一遍，看拦截记录补齐；能用具体子域名就不用通配；代码托管、网盘这类能写能传的宽域名默认不放或只放只读方法；内网私网网段单独写进拒绝清单；白名单变更走安全负责人审批留痕，并定期按日志回收不用的域名。
+
+import noteFig from './media/agent-network-allowlist-scope-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：装着清单的绿色玻璃沙箱、逐项加绿块的白色清单板、拦住上传箭头只放行眼睛的灰色门洞、印章和剪刀修剪清单，各配中文标注板" caption="图：「Agent 出网管控」｜「域名白名单」" width="wide" border />
 
 ## 先列任务到底要连哪些地址
 
