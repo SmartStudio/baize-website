@@ -6,21 +6,16 @@ category: 安全可信
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/agent-model-upgrade-behavior-change-cover.png
+coverAlt: 深墨绿底座上两个灰色机器人头像并排，旧的挂着灰色挂锁，两条发光翡翠绿流线穿过一排灰色测试块，经过玻璃比对板和一道只放出细流的灰色闸门，右侧是铜色印章
 ---
 
-{/* POST
-H1: Agent 模型升级后，流程结果变了怎么办？
-slug: agent-model-upgrade-behavior-change
-主: Agent 模型升级
-辅: 回归测试
-FAQ#3: 厂商说新模型更强，回归测试还要跑全套吗？
-Figure 要点: 「锁版本查日志」「结构化跑回归」「差异分级签批」「影子灰度上线」
-NoteLink 列表: agent-eval-suite-pass-rate-variance / agent-pilot-to-production-checklist
-等点头后再出图。
-*/}
-
 Agent 模型升级后如果线上流程结果变了，先去运行日志里确认实际服务的模型版本、提示词版本和工具定义版本，再用锁定用例集跑回归测试，对比新旧版本的工具调用结构与结果。红线用例被破直接不上线；调用结构变化交业务流程负责人逐条判断可不可以接受；上线决定由业务负责人和质量或风控签字，不由工程团队单方面拍板。线上已经执行出错后的回滚与追责归属事故处置，本篇只讲升级前后的行为差异怎么发现、怎么判以及谁拍板上线。
+
+import noteFig from './media/agent-model-upgrade-behavior-change-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：挂锁和卷轴旁的机器人、两棵并排的流程结构树、红灰绿三个分拣托盘和印章、半透明影子机器人和流出细细绿液的阀门，各配中文标注板" caption="图：「Agent 模型升级」｜「回归测试」" width="wide" border />
 
 ## 先确认是不是模型变了
 
