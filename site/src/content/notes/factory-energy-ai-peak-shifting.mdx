@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/factory-energy-ai-peak-shifting-cover.png
+coverAlt: 深墨绿底座上一排灰色空压机、水箱和带电表的机组，上方橙色太阳和灰色月亮之间连着发光绿色能量线，一台机组上的翡翠绿方块已挪到夜间
 ---
 
-{/* POST
-H1: 工厂能耗优化要错峰开机，生产让不让？
-slug: factory-energy-ai-peak-shifting
-主: 工厂能耗优化
-辅: 峰谷电价
-FAQ#3: 峰谷电价调整了，AI 的错峰方案要不要重算？
-Figure 要点: 「盘点可调负荷」「输出错峰方案」「生产工艺会签」「核对账单复盘」
-NoteLink 列表: ai-verifiable-work-first / agent-value-work-finished-metrics
-等点头后再出图。
-*/}
-
 工厂能耗优化要靠错峰开机省电费，先得由生产计划、车间主任和工艺工程师确认放行。AI 能结合实时生产负荷和峰谷电价算出把设备挪到哪个时段省多少钱，但交期、良率、设备和人员排班不归能源部门管。所以 AI 给的是建议方案，由能源主管提方案，生产计划和车间主任确认能不能挪，工艺确认不碰质量，冲突时由厂长按企业定的优先级（默认交期和良率优先）拍板。
+
+import noteFig from './media/factory-energy-ai-peak-shifting-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：挂着绿色标签的机台和清单、昼夜分区的表盘、围着方案卡的三枚印章、电表和带放大镜的账单，各配中文标注板" caption="图：「工厂能耗优化」｜「峰谷电价」" width="wide" border />
 
 ## AI 先摸清哪些负荷能挪
 
