@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/meeting-minutes-ai-action-items-cover.png
+coverAlt: 深墨绿底座上一张灰色会议桌配着椅子和麦克风，一张空白纪要纸飘起来拆成几张发着翡翠绿光的待办卡片飞向灰色信封，一只手拿铜色钢笔勾选卡片
 ---
 
-{/* POST
-H1: AI 会议纪要自动发，待办写错谁负责？
-slug: meeting-minutes-ai-action-items
-主: AI 会议纪要
-辅: 会议待办
-FAQ#3: 会议待办没人认领，AI 能直接指派给发言人吗？
-Figure 要点: 「四类内容分开」「导入预览确认」「去重写入发信」「更正撤回追责」
-NoteLink 列表: agent-read-mail-vs-calendar-send / agent-rollback-and-accountability
-等点头后再出图。
-*/}
-
 AI 会议纪要可以把生成草稿和对外分发拆开管，草稿由工具自动整理，会议待办在发出和写入任务系统前由会议主持人确认。待办一旦写错，责任跟着确认人走：经主持人确认后发出的，由主持人发更正通知并调整指派；未经确认就直接自动发出去的，属于流程设置问题，由设置这条流程的人修改规则。
+
+import noteFig from './media/meeting-minutes-ai-action-items-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：分成四种色签卡片的托盘、手指点着带绿勾的预览卡、两张重复卡片合并后放进信封、带铜色印章的卡片上方一条回撤箭头，各配中文标注板" caption="图：「AI 会议纪要」｜「会议待办」" width="wide" border />
 
 ## 纪要里哪些话能转成会议待办
 
