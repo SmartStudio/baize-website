@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/air-compressor-ai-energy-saving-cover.png
+coverAlt: 深墨绿底座上一台灰色空压机连着立式储气罐，管道通到一块带翡翠绿安全区的圆形压力表，一只手转动铜色阀门手轮
 ---
 
-{/* POST
-H1: 空压机节能交给 AI 调压，压力不够谁背？
-slug: air-compressor-ai-energy-saving
-主: 空压机节能
-辅: 管网压力
-FAQ#3: 管网压力降到多少算安全，谁来定？
-Figure 要点: 「压缩保压余量」「会签压力清单」「低压回升转人」「按记录定责任」
-NoteLink 列表: predictive-maintenance-alert-triage / agent-stop-conditions-decision-log
-等点头后再出图。
-*/}
-
 空压机节能交给 AI 做整站调压时，AI 只管在安全线以上调节供气侧负载，供气压力下限由车间工艺、设备与能源主管共同签字划定，不能交给算法自己猜。末端关键用气点要装压力测点，一旦触发低压报警先拉回供气压力并通知值班人员；事后调出运行记录，按需求报错、控制越界还是管道漏气来划分工艺、能源与设备维修的责任。
+
+import noteFig from './media/air-compressor-ai-energy-saving-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：带绿色色带压力表的空压机、盖着两枚铜色印章的清单和笔、带红色低压区和绿色上升箭头的压力表和小铃、放大镜和管段旁的灰色档案夹，各配中文标注板" caption="图：「空压机节能」｜「管网压力」" width="wide" border />
 
 ## 整站调压省的是哪部分电
 
