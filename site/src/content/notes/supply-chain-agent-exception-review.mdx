@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/supply-chain-agent-exception-review-cover.png
+coverAlt: 深墨绿底座上左边是摆满纸箱的灰色货架，右边是货架空着的灰色门店，一辆推车沿翡翠绿虚线在两者之间运货，前面一只手拿铜色印章盖向审批卡
 ---
 
-{/* POST
-H1: 供应链 Agent 出缺货调拨，计划员怎么批？
-slug: supply-chain-agent-exception-review
-主: 供应链 Agent
-辅: 缺货调拨
-FAQ#3: 缺货调拨要从别的门店调货，对方店长不同意怎么办？
-Figure 要点: 「先查库存与编码」「多套方案待批」「超额跨店转人签」「收货回读算办完」
-NoteLink 列表: agent-stop-conditions-decision-log / ai-verifiable-work-first
-等点头后再出图。
-*/}
-
 供应链 Agent 处理缺货调拨，只做库存查询、方案测算和送审提醒，创建调拨单这类改系统数据的动作停在审批界面等人工拍板。主管事先写定额度的小量调拨，可以配置成在额度内执行；超额度、跨责任单位或数据异常的单子一律转人签，直到调出点出库、调入点收货且下一轮回读确认缺货解除才算办完。现网已有采购 Agent 挑供应商、采购下单金额分级两篇，同批还有一篇讲排产插急单；本篇只讲库存已经在仓里和店里，缺货时怎么调拨。
+
+import noteFig from './media/supply-chain-agent-exception-review-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：贴绿色条码吊牌的纸箱和放大镜、木桌上摊开的三张路线卡、拿笔的手和铜色印章旁的小门店、推车到货的门店货架和绿色勾，各配中文标注板" caption="图：「供应链 Agent」｜「缺货调拨」" width="wide" border />
 
 ## 缺货预警后 Agent 先查什么
 
