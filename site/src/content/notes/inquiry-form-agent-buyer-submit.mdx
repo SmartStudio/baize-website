@@ -30,7 +30,7 @@ NoteLink 列表: agent-buyer-b2b-landing-page / export-inquiry-whatsapp-email-at
 
 ## 询价表单字段与标签怎么改
 
-想让代填工具填得准、同时方便卖方筛查，市场或网站负责人要把网页标签和业务字段一并改规范。改前端结构时，表单采用规范的 HTML 标签编写，给每个输入框标注清楚的 label 和 name 属性，并在表单旁边留出技术联系邮箱。自动填写属性直接采用 HTML 标准里的 autocomplete 字段名：公司名填 organization，邮箱填 email，电话填 tel；区分工作联系方式时可以在前面加 work，例如把企业工作邮箱写成 work email。
+想让代填工具填得准、同时方便卖方筛查，市场或网站负责人要把网页标签和业务字段一并改规范。改前端结构时，表单采用规范的 HTML 标签编写，给每个输入框配上清楚的 label 标签，并写好 name 属性，并在表单旁边留出技术联系邮箱。自动填写属性直接采用 HTML 标准里的 autocomplete 字段名：公司名填 organization，邮箱填 email，电话填 tel；区分工作联系方式时可以在前面加 work，例如把企业工作邮箱写成 work email。
 
 设计业务字段时，不要把所有采购条件全塞进一个大备注框，要把采购要素与委托人信息拆成单独字段。
 
@@ -57,7 +57,7 @@ NoteLink 列表: agent-buyer-b2b-landing-page / export-inquiry-whatsapp-email-at
 
 ### 表单里的 autocomplete 属性按什么名字写？
 
-直接照 HTML 标准里的自动填写字段名写。公司名称用 organization，电子邮箱用 email，联系电话用 tel；如果要求对方填写工作联系方式，可以在字段名前面加 work，比如把企业邮箱标成 work email，配合清晰的 label 与 name 属性使用。
+直接照 HTML 标准里的自动填写字段名写。公司名称用 organization，电子邮箱用 email，联系电话用 tel；如果要求对方填写工作联系方式，可以在字段名前面加 work，比如把企业邮箱标成 work email，配合清晰的 label 标签和 name 属性使用。
 
 ### Agent 询价要不要直接拦掉？
 
