@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/equipment-oee-ai-loss-attribution-cover.png
+coverAlt: 深墨绿底座上一台灰色加工设备亮着琥珀色信号灯，上方飘着一组由高到低的翡翠绿柱子，旁边是灰色触屏终端，一只手拿着铜色扳手
 ---
 
-{/* POST
-H1: 设备 OEE 分析交给 AI，停机原因谁来定？
-slug: equipment-oee-ai-loss-attribution
-主: 设备 OEE 分析
-辅: 停机原因
-FAQ#3: 停机原因代码又多又乱，AI 能帮忙归并吗？
-Figure 要点: 「控制器信号归类」「机台操作员确认」「帕累托分层假设」「缺数停算与验证」
-NoteLink 列表: agent-value-work-finished-metrics / enterprise-context-engineering
-等点头后再出图。
-*/}
-
 设备 OEE 分析引入 AI 后，AI 只负责给出建议，不自己拍板停机原因，也不直接改原因代码表。单次停机原因由现场操作员确认，原因代码表由区域主管维护，归因假设和改进动作由生产工程师或持续改善负责人敲定。现网已有一篇讲预测性维护报警太多怎么分，另一篇讲故障诊断经验怎么进工单；本篇只讲 OEE 掉下来以后，损失时间算到哪个停机原因上。
+
+import noteFig from './media/equipment-oee-ai-loss-attribution-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：带信号灯的控制箱把线缆分进三个绿色托盘、手指点触机台终端、带绿色趋势线和放大镜的下降柱状图、暂停键和打勾的记事板，各配中文标注板" caption="图：「设备 OEE 分析」｜「停机原因」" width="wide" border />
 
 ## 停机数据从哪来、怎么归类
 
