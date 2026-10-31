@@ -6,21 +6,16 @@ category: 企业落地
 relatedService: consulting
 ctaVariant: consulting
 author: 白泽明理
-draft: true
+draft: false
+cover: ./media/cs-knowledge-base-stale-answers-cover.png
+coverAlt: 深墨绿底座上一个灰色文件柜拉开抽屉，一只灰手抽出一张旧卡片，抽屉里一张卡片发着翡翠绿光，左边是铜色台历，右边是灰色耳麦和对话气泡
 ---
 
-{/* POST
-H1: AI 客服知识库过时了，旧答案怎么下架？
-slug: cs-knowledge-base-stale-answers
-主: AI 客服知识库
-辅: 知识过期
-FAQ#3: 知识过期了还没人确认，AI 还能拿来答吗？
-Figure 要点: 「每条知识记项」「旧答案信号」「下架撤掉几处」「拍板与兜底」
-NoteLink 列表: ai-cs-auto-close-vs-human-ticket-review / enterprise-context-engineering
-等点头后再出图。
-*/}
-
 AI 客服知识库清理旧答案，靠元数据里的日期和状态拦住到期条目，再从日常接待信号里抓漏网的过时内容。AI 不自己定哪条知识过期，也不自己改写知识。系统可以配置成按信号列出可疑条目，到期按企业定的规则降级或停用；改、下线、挂起由条目责任人拍板，版本冲突交业务责任人裁决。现网已有一篇讲客服自动结案后工单为什么还要人工复核，另一篇讲行业模型微调前先接企业知识库；本篇只讲知识过期以后，旧答案怎么发现、怎么下架。
+
+import noteFig from './media/cs-knowledge-base-stale-answers-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：夹着绿色夹子的卡片和台历、带橙色警示三角和对话气泡的耳麦、从抽屉抽出旧卡片的手和拔下的插头、铜色印章和绿白救生圈，各配中文标注板" caption="图：「AI 客服知识库」｜「知识过期」" width="wide" border />
 
 ## 每条知识先记哪几项
 
