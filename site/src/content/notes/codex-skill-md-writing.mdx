@@ -1,0 +1,65 @@
+---
+title: Codex 技能编写：描述怎么写才会触发？
+description: 研发团队开展 Codex 技能编写时，目录内 SKILL.md 的名称和描述字段直接决定开发任务能否准确命中隐式触发。把实际能力、适用时机与任务关键词放在描述开头，配合测试提示词验证触发边界或按需关闭隐式调用，可减少漏触发与误触发。
+pubDate: 2026-11-02
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/codex-skill-md-writing-cover.png
+coverAlt: 深墨绿底座上一个打开的灰色文件夹，最上面一张空白文档卡片顶部亮起翡翠绿色条，灰色终端模块射出细绿光指向这条，旁边架上其他文件夹暗着，一只手把铜色书签插在最上面一行
+---
+
+做 Codex 技能编写时，技能会不会在对话里自动触发，取决于 SKILL.md 顶部的 name 和 description，正文要等选中后才读。写 description 先交代技能做什么、什么时候用，把关键触发词顶在最前面，容易误触发时补一句排除条件，写完拿正反两组测试提示词试跑；只打算手动点名的技能，在 agents/openai.yaml 里关掉隐式调用。现网已有一篇讲技能怎么装、怎么调用；本篇只讲 description 怎么写、怎么测。
+
+import noteFig from './media/codex-skill-md-writing-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：只有顶部卡片亮绿的文件夹架、顶行一道粗绿条和指示箭头的空白卡片、一支打绿勾一支打红叉的两根试管、旁边文件夹的拨到关闭的开关，各配中文标注板" caption="图：「Codex 技能编写」｜「SKILL.md」" width="wide" border />
+
+## Codex 只看哪几样决定触发
+
+一个技能是一个目录，里面的 SKILL.md 开头的 frontmatter 要有 name 和 description。Codex 启动时只读每个技能的 name、description 和文件路径，决定用某个技能时才去读 SKILL.md 全文；安装路径和停用配置见 <NoteLink slug="codex-skills-install-and-use">Codex 技能怎么装？装好后怎么调用</NoteLink>。
+
+触发分两种：用户显式点名，在 CLI 或 IDE 扩展里用 /skills 或输入 $ 提及；还有隐式触发，任务和技能的 description 匹配时 Codex 自己选用。Codex 选技能时还没读正文，适用范围如果只写在正文里、description 写得空泛，隐式触发就很难选中。
+
+这份初始技能列表默认最多占模型上下文窗口的百分之二，窗口未知时按八千个字符算。装的技能多了，Codex 先缩短描述，再多就会省略一部分技能并给出警告。可以用 skills.max_context_tokens 调这个上限，最高一万个 token。调上限之前，先把每条描述写简洁。
+
+## name 与 description 怎么写
+
+官方最佳实践建议每个技能只做一件事。下面几条来自开放的 agent skills 规范和 Codex 自带技能创建器的写法说明。
+
+- **name 规则**：最多六十四个字符，只能用小写字母、数字和连字符，不能以连字符开头或结尾，不能有连续连字符，并且要和所在目录名一致。
+- **description 结构**：最多一千零二十四个字符，先写清这个技能做什么、什么时候用，带上能帮助识别任务的具体关键词。把主要用途和触发词放在最前面，描述被缩短时也还能匹配上。
+- **别写成清单**：规范举的反例是只写「帮忙处理 PDF」这种一句话。也不要把 description 写成把能力全列一遍的清单，不要写成什么请求都能接的大口袋；详细流程放进正文或 references，不要都塞进 description。
+- **排除条件**：只有在能防止常见误触发时，才在描述里加一句不用于什么场景的边界说明。
+
+## 怎么测该触发和不该触发
+
+写完不能只靠肉眼检查，官方的最佳实践是拿测试提示词对着 description 试，确认该触发的会触发。写技能的工程师可以准备两组提示词：一组是该触发的不同说法，另一组是字面相近但不该触发的说法，各试几条，看 Codex 有没有选对。
+
+该触发的没选上，就把任务关键词往前挪，补进 description 首句；不该触发的被误选了，就收窄能力范围，或补上一句排除条件，改完再用两组提示词复测。
+
+技能多了描述会被缩短，团队共用仓库里的技能还要定期通读排查，看不同 SKILL.md 之间有没有描述重叠；团队技能进仓库后的评审和门禁做法见 <NoteLink slug="codex-into-real-workflow">Codex 真正进入研发流程，需要解决哪些问题？</NoteLink>。
+
+## 只想手动叫的技能怎么办
+
+团队里有些技能本来就只打算手动点名执行，不希望日常任务跟描述沾边时被 Codex 自动选上。
+
+遇到这类技能，别靠故意写一个很冷门的描述来躲开自动触发。直接在技能目录的 agents/openai.yaml 里，把 policy.allow_implicit_invocation 设成 false。
+
+设好之后，Codex 就不再按描述自动选用这个技能，只能显式点名调用，同时还能保留清楚好懂的 description。
+
+## Codex 技能编写：常见问题
+
+### 装了很多技能后提示部分技能被省略，先改配置还是先改描述？
+
+先清理不用或描述重叠的技能，把各技能 description 收紧到只写做什么、什么时候用和前置关键词，详细流程挪回正文或 references。确实要保留很多技能时，再用 skills.max_context_tokens 调高上限，最高一万个 token。
+
+### 改了技能目录名，name 要跟着改吗？
+
+要改。开放的 agent skills 规范要求 SKILL.md 开头的 name 和目录名一致，且最多六十四个字符，只能用小写字母、数字和连字符，首尾不能是连字符，也不能有连续连字符。改完再用测试提示词试一遍触发。
+
+### SKILL.md 正文写多长合适？
+
+description 管触发，SKILL.md 正文是技能被选中后才读的说明。规范建议 SKILL.md 正文控制在五百行以内，长的参考资料拆到单独的 references 文件里按需读；正文只写这个任务才需要的约束和步骤，通用常识不写。
