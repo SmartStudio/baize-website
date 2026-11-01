@@ -1,0 +1,69 @@
+---
+title: "A Sales Forecast Agent Changed the Quarter. Does the Director Sign Off?"
+seoTitle: "Sales Forecast Agents: Does the Director Sign Off?"
+description: When a company uses a sales forecast agent in pipeline forecasting, the agent's change to the quarterly forecast is a suggested adjustment. It does not overwrite the number sales submitted or edit the underlying opportunities. It carries the opportunity stages and the reasons a deal may slip, and a sales manager or sales director confirms and signs off.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/sales-forecast-agent-director-signoff-cover.png
+coverAlt: A grey funnel dropping coins onto stacked grey slabs on a dark green base, one slab glowing green, a translucent green cube floating beside them, and a hand on the right signing a clipboard with a copper pen
+sourceHash: 'ae879df28855'
+---
+
+When a sales forecast agent changes the quarterly number, what it hands over is a suggested adjustment. It does not overwrite the number sales already submitted, and it does not enter a changed number on behalf of the sales manager or sales director. The director stands behind only the adjustments they confirmed personally. Each adjustment records who made it, by how much, and why. Another note on this site covers what to do when asking an AI about data returns two different sales figures, and which metric definition to trust. This note covers only who signs off after an agent produces a new quarterly forecast.
+
+import noteFig from '../media/sales-forecast-agent-director-signoff-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, joined by green arrows: grey slabs topped by a green block, a clipboard holding an evidence card under a magnifier, a hand holding a pen next to a copper stamp, and stacked papers with a desk calendar" caption="Figure: Sales Forecast Agent | Pipeline Forecast" width="wide" border />
+
+## Which number the agent actually changes
+
+In pipeline forecasting, a company first maps each opportunity's stage to a forecast category. Common categories are Pipeline, Best Case, Commit, and Closed, plus Omitted for deals left out. The company can change how stages map to categories and the win probability set for each category. Once the underlying opportunities are categorized, forecast totals roll up level by level through the forecast hierarchy. Each level has a named forecast manager who reviews and adjusts the forecast of the level below.
+
+An adjustment in the forecast changes only the hierarchy total. It does not touch individual opportunity data underneath. The adjustment stays in place until someone updates it again. Some salespeople habitually value deals optimistically and others conservatively. Sales managers and directors use adjustments to account for that bias. Frontline salespeople can also use adjustments to estimate the effect of new opportunities that appear during the period.
+
+The quarterly change a sales forecast agent calculates stays at the level of a suggested adjustment. It hands over only a suggested adjustment figure. It does not overwrite the submitted number, does not change opportunity details, and does not enter the adjustment for the forecast manager.
+
+## What evidence the suggested number must carry
+
+A changed quarterly total on its own gives the sales manager and sales director nothing to verify. When the sales forecast agent submits a suggested number, it attaches the opportunity details and reasoning behind the adjustment:
+
+- **Name the opportunities**: list which deals the suggested adjustment covers, so the manager and director can open the original records and check.
+- **Show stage or category changes**: state how these opportunities' stages or forecast categories changed recently, and whether they moved between Pipeline, Best Case, and Commit.
+- **Give the reason for slipping to next period**: if the agent judges that a deal will not close this period and will slip to the next, attach the specific evidence for that judgment.
+
+When the forecast manager reviews the total from the level below, they check the suggested number against these three items. They can also give a judgment on a single opportunity and mark whether they believe it will close this period.
+
+## How the director signs off, and who may change what
+
+The opportunity owner changes an opportunity's stage, amount, and forecast category. The sales forecast agent does not touch them. Sales managers and sales directors enter formal adjustments on hierarchy totals. The agent does not do that for them either. For why to separate an agent's read and write boundaries before scaling, see <NoteLink slug="agent-governance-before-scale">AI Agent Security Governance Must Come Before Scaling</NoteLink>.
+
+The business system can require sales to submit a formal pipeline forecast once a week. The submission records show how the numbers changed step by step during the forecast period. After sales submits the base figures and the totals roll up to the director, the director compares the agent's suggested number and its evidence, and sets the adjustment by their own judgment. The director stands behind the adjustment they confirmed personally. At confirmation, the system records who adjusted, by how much, and why. For a large deal the director is unsure about, the director first marks on the deal whether they believe it will close this period, then decides how to adjust the total.
+
+## Keeping each version, and reconciling at quarter end
+
+Over the forecast period, the record keeps three sets of numbers side by side: the sales submission, the agent suggestion, and the director-confirmed version. Each keeps its own basis, and none overwrites another:
+
+- **Sales submission**: the raw pipeline forecast that frontline sales submit formally each week, rolled up level by level by opportunity stage and forecast category.
+- **Agent suggestion**: the suggested number the sales forecast agent calculates from stage changes and signs of slipping, stored with its opportunity evidence.
+- **Director-confirmed version**: the adjustment and reason the sales director formally confirms and signs off after reviewing the totals and evidence from the level below.
+
+These three versions, with the person, amount, and reason for each adjustment, are kept in full for the whole forecast period. At quarter end, finance and the sales team compare the sales submission, agent suggestion, and director-confirmed version against actual closed deals, and see which came closest. For how to evaluate a tool against actual business results after rollout, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>. After the totals, they go back to the deals that were expected to slip and check whether they closed. This shows how optimistic or conservative salespeople's valuations were.
+
+## Sales forecast agents: FAQ
+
+### If the agent thinks a deal will not close this period, can it change the opportunity stage directly?
+
+No. Only the opportunity owner changes an opportunity's stage, amount, and forecast category. The agent does not change opportunity data. When the agent judges a deal will slip to next period, it gives a suggested adjustment and lists in the evidence which deals are involved and why it expects a deal to slip. The forecast manager marks whether they believe the deal will close this period, or the opportunity owner verifies and changes the stage.
+
+### The quarterly number changed several times during the forecast period. How do you trace the changes?
+
+Check the weekly submission records and the adjustment records at each level. The system can require sales to submit a formal forecast every week, and the submission records show how the number changed. When a forecast manager or director changes a total, the adjustment stays until the next update, and every change records who made it, by how much, and why. With the sales submission, agent suggestion, and director-confirmed versions stored side by side, the changes can be checked at any time.
+
+### The pipeline forecast and the director's reported number differ. Which one counts?
+
+External reporting uses the adjustment the sales director confirmed. The underlying pipeline forecast totals stay as they are. Nobody goes back and edits opportunity data to make the numbers match. The adjustment reason states which deals account for the difference, and whether it comes from correcting optimistic or conservative valuations or from expecting a deal to slip. The difference is then checked against actual closed deals at quarter end.

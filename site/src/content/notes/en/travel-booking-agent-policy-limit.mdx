@@ -1,0 +1,58 @@
+---
+title: "Travel Booking Agents: Who Stops Over-Policy Hotel Bookings?"
+description: When a travel booking agent books hotels for employees, it first matches the travel policy by subsidiary, department, job grade, and destination city. Over-policy bookings are blocked or sent to the direct manager for approval by preset rules. The employee confirms the reason for the overage and any personally paid amount.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/travel-booking-agent-policy-limit-cover.png
+coverAlt: Three small hotels of rising height on a dark green base. The green gate in front of the lowest hotel stands open, the gates of the two taller hotels are closed, and a white suitcase moves along a glowing path
+sourceHash: 'df2deb920d48'
+---
+
+When a travel booking agent books a hotel for an employee, it first looks up the travel policy that applies to that employee's subsidiary, department, job grade, and destination city. By default it only filters room types within that policy. When a room is over the limit, the agent does not approve it on its own. It blocks the booking or sends it into the over-policy approval flow, following the in-process control rules the company has configured. The employee writes the reason for the overage. No order is placed until the direct manager or a designated approver approves. The employee also confirms any amount they pay personally.
+
+import noteFig from '../media/travel-booking-agent-policy-limit-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, joined by green arrows: a measuring post with a green marker beside a hotel, a tall building behind a barrier arm with a stamp, a hand pressing a green confirm button next to a wallet, and a rule book under a glass dome" caption="Figure: Travel Booking Agent | Travel Policy" width="wide" border />
+
+## Which travel policy to check before booking a hotel
+
+Companies usually build the travel policy into the corporate travel booking flow. When an employee requests a room, the system matches the applicable allowance. Once a travel booking agent takes over room search and price comparison, its first step is to read the traveler's organization and identity data. It lines up the subsidiary, department, job grade, destination city tier, and trip type. From these it calculates the nightly rate cap and the maximum number of room nights for this booking.
+
+Business trips often involve several colleagues traveling together, or tight room supply at certain times. A company's travel policy can include detailed rules for these cases: combined allowances for shared rooms, using the higher allowance when traveling with a senior colleague, and temporary increases during trade fairs or peak seasons. When one booking matches several rules at once, the system applies them in a preset priority order. When the agent pulls the room list, it filters candidate hotels by the allowance in effect. It ranks room types that fit the travel policy first for the employee to choose from.
+
+## Block over-policy bookings outright, or send them for approval
+
+If an employee asks for a hotel above the nightly rate cap, or books more nights than one trip allows, the travel booking agent cannot create a confirmed order for them. The travel platform and the company's in-process control interface support two configurations. In the first, over-policy bookings are blocked: the page says the booking exceeds the travel policy and sends the employee back to choose again. In the second, the employee can still submit the booking request, but must give a reason for the overage, which triggers over-policy approval. For how to decide which tool calls go through and which wait for approval, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+Some companies split over-policy settlement into a company-paid part and a personally paid part. The company account pays the room rate up to the travel policy. The difference above the policy can be set to come from the employee. Under this mixed payment rule, the agent calculates the company amount and the personal difference, then stops before placing the order and waits for confirmation. It cannot bypass the control rules and pay the full amount from the company account.
+
+## Who approves, and what the employee must confirm
+
+After a booking triggers over-policy approval, it can be pushed to the company's own approval system. The employee's direct manager or a designated approver reviews it, and the result flows back to the booking side. The approver sees the city, hotel name, amount over the limit, and the reason in their workspace, then approves or rejects. Until the result comes back, the agent waits. It sends no instruction to the hotel or travel platform to hold the room or pay.
+
+Two things in this process must be done by the employee personally. First, the employee writes the reason for the overage truthfully. Examples: the client asked everyone to stay at the conference hotel, or all contracted hotels of the same class nearby are full. The agent does not invent or write the reason for the employee. Second, if the employee pays the difference personally, the employee must tick the consent box on the payment confirmation page and authorize the personal payment. The agent cannot tick the personal payment agreement for them.
+
+## Who maintains the rules, and how to audit afterward
+
+The company's travel administrator and the finance department maintain the travel policy, its priority order, and the temporary increase rules in the back office. The travel booking agent has read-only access to the policy database and no write access. Even if an employee or manager asks in the chat to raise the allowance temporarily, the agent does not change the back-office configuration. Travel spending comes from the company's business travel budget. Model usage by the agent itself is billed separately. For how to manage that budget, see <NoteLink slug="ai-usage-pricing-budget">Can an Annual IT Budget Handle Usage-Based AI Pricing?</NoteLink>.
+
+After a hotel is booked, any later change, extension, or cancellation by the employee is also subject to the travel policy and the change and cancellation rules. If a change pushes the nightly rate or total room nights over the policy, the block or approval is triggered again. Every step is recorded online: the policy lookup, the booking request, the overage reason, the manager's approval, the company and personal payment split, and any changes. Each revision of the travel policy also keeps its previous versions, so finance and internal audit can spot-check and trace any booking.
+
+## Travel booking agents: FAQ
+
+### How is the allowance calculated when two employees share a room, or travel with a more senior colleague?
+
+The system applies the shared-room combination rule or the higher-allowance rule the company has configured. Administration and finance set these in the travel policy database in advance: how allowances combine for shared rooms, whether colleagues traveling together may use the senior person's allowance, and which rule wins when several conflict. The travel booking agent reads the list of travelers and matches the cap under the rule in effect.
+
+### If an employee changes dates or checks out early after booking, are the rules checked again?
+
+Yes. Changes and cancellations are subject to the same travel rules. When an employee asks the travel booking agent to change dates, extend a stay, or cancel, the system rechecks the nightly rate and total room nights after the change. If the new rate exceeds the travel policy, the booking is blocked or sent for over-policy approval again, and the change is recorded.
+
+### When the travel policy changes, when does the agent start booking under the new one?
+
+After administration and finance publish a new version of the travel policy in the back office and its effective time arrives, new booking searches by the agent use the new allowances. Each policy revision can keep a version record and an effective time. For orders approved and placed before the revision, auditors check them against the version that was in effect when the order was placed.

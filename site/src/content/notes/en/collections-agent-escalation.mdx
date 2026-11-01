@@ -1,0 +1,63 @@
+---
+title: "Collections Agents: After How Many Reminders Should Sales Take Over?"
+seoTitle: "Collections Agents: When Should Sales Take Over?"
+description: When finance teams use a collections agent to follow up on overdue receivables, it first removes invoices with incomplete internal paperwork or delivery disputes, then sends reminders by the company's aging tiers and contact limits. Key accounts, broken payment promises, requests for discounts, or a move into a higher aging tier send the account to sales and legal.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/collections-agent-escalation-cover.png
+coverAlt: Three platforms of rising height on a dark green base, each holding a larger envelope and a small bell, and at the end a glowing green hand passing a tied case file to a salesperson figure carrying a briefcase
+sourceHash: 'c1cdd077462b'
+---
+
+When a collections agent hands an account to sales depends on the aging tiers and contact limits the company sets. Before collection starts, the agent filters out receivables where the company's own paperwork is incomplete or where there is a delivery dispute. When an invoice first becomes overdue, the agent drafts the statement of account and the payment reminder, and an accounts receivable accountant confirms them before they go out. The account goes to sales at once when any of these happen: it reaches the company's set aging tier; the set number of reminders gets no response; the customer raises a dispute or asks for a reduction or extension; a payment promise is broken; or the customer is a key account. The agent packages the aging data, correspondence, and promise ledger for the handover.
+
+import noteFig from '../media/collections-agent-escalation-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, each in front of a small gate and joined by green arrows: a mesh sieve filtering out a flagged document, an envelope with a green pencil, a stack of envelopes with a bell and a briefcase, and a tied bundle behind a barrier arm with a gavel" caption="Figure: Collections Agent | Collections Handover" width="wide" border />
+
+## Which invoices to filter out before collection starts
+
+Grouping receivables by aging works for financial reporting. It is not enough for assigning collection tasks. Amounts sitting on the same overdue aging report have different causes. Some are slow because of the customer's internal payment approval. Some are deliberate delays. Some are unpaid because the company never finished delivery, and the customer has a valid reason to refuse. Before a bill goes into the collection queue, the first question is whether it should be chased at all.
+
+The collections agent first checks internal blockers. Has the customer signed the acceptance form for the project? Has the invoice been issued? Has the customer received it? If the acceptance form or invoice is still stuck on the company's side, the receivable does not enter the external collection queue. It goes to an internal to-do list that prompts the responsible staff to finish the paperwork.
+
+The second check is for delivery disputes. If the customer has filed a quality complaint, reported a short shipment, or has not confirmed the amount on the statement of account, the receivable goes to the dispute process. Sales and after-sales verify the facts. The standard collection script is not used to push the customer to pay.
+
+## What the first reminder rounds can and cannot do
+
+After internal blockers and disputes are filtered out, routine receivables move through tiers. Before the due date, the collections agent sends a due-date reminder that asks the customer to confirm the paperwork is complete and to start internal payment. When the invoice enters the first overdue tier, the agent drafts a statement of account and a payment reminder from the contract and invoice details. An accounts receivable accountant checks and confirms them before they go to the customer. For which steps before outbound messages need human approval, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>. To avoid contacting customers too often, the system can set a daily send limit per customer.
+
+After each contact, the collections agent logs these items in the ledger: the payment date and amount the customer promised, the invoice number, the name of the person who made the promise, how it was confirmed, and whether the previous promise was kept on time. With the customer's payment history and promise record, finance can tell a slow process from habitual late payment.
+
+The agent's action limits and wording limits are fixed in the system. It cannot decide on fee reductions, payment extensions, or suspending supply. It sends no written document to the customer without human confirmation. It does not change accounting vouchers or post entries. In any text it drafts, it does not promise a reduction, does not agree to an extension without approval, and does not admit in writing that the company has a quality problem.
+
+## Which signals send an account to sales at once
+
+If the customer gives no response after the company's set number of reminders, or the overdue days move into the next aging tier the company defines, the collections agent stops routine reminders and transfers the ticket to the salesperson who owns the customer. If the customer is a key account where the relationship is sensitive, the system can be set to transfer it to sales as soon as it becomes overdue.
+
+If the customer raises a quality or quantity dispute during contact, asks to reduce the final payment, or requests longer payment terms, automated collection also stops at once and the account goes to sales. For which signals in calls or messages should hand off to a person, see <NoteLink slug="voice-sales-agent-human-handoff">When Should a Voice Sales AI Agent Hand a Call to a Human?</NoteLink>. Also, if the customer gave a specific payment date and amount and did not pay, or has broken several promises in a row, routine reminders no longer work. The next step is for sales to talk to the customer directly about concrete payment guarantees.
+
+## What the handover contains, and who takes over next
+
+When the account goes to sales, the collections agent packages a handover card: the aging breakdown, the contract and invoice numbers, the earlier collection correspondence, and the customer's promised dates with the record of broken promises. When the account moves into a deeper overdue tier, the sales lead and the finance lead follow up together. They ask the customer for a written payment commitment, and management decides whether to suspend further shipments if needed. At this stage people handle all external contact. The agent only prepares material and updates the ledger in the background.
+
+If the customer still refuses to pay after sales and finance step in, the account moves to legal collection or litigation. The collections agent assembles the full evidence package in time order: the original contract, the signed acceptance form, the invoice and proof of delivery, the confirmed statement of account, and every collection contact and promise record. The full set goes to the legal team.
+
+## Collections agents: FAQ
+
+### If the invoice has not reached the customer, will the agent send a reminder automatically when payment is due?
+
+No. Internal blockers are ruled out before collection starts. If the acceptance form has not been signed and returned, or the customer has not received the invoice, the receivable does not enter the external collection queue. It goes to the internal to-do list, which reminds the company's own staff to complete the paperwork. When the fault is on the company's side, the customer is not chased.
+
+### The customer replies that the goods have quality problems and asks to pay less. How does the agent respond?
+
+The agent does not reply directly. It does not admit a quality problem in writing or agree to a reduction. Once it detects a quality complaint, a short shipment report, or a request for a reduction or extension, the system removes the receivable from the routine collection queue, moves it to the dispute process, and notifies sales and after-sales to verify.
+
+### At which aging tier does the agent stop sending reminders on its own?
+
+The company sets the number of days in each aging tier based on its industry's payment cycle. In the first overdue tier, the collections agent drafts reminders and statements of account, and a person confirms them before sending. Once the account moves into the escalation tier the company sets, the sales lead and finance take over contact. They ask for a written payment commitment or assess suspending shipments. The agent stops sending routine reminders and only organizes history and updates the ledger.
