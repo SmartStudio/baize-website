@@ -1,0 +1,79 @@
+---
+title: "Stripe Hong Kong Individual Account: Who Can Open One Without a Company?"
+seoTitle: "Stripe Hong Kong Individual Account: Who Qualifies?"
+description: The rule that you can open a Stripe Hong Kong individual account without a company holds only for Hong Kong residents with an HKID. A merchant with no HKID but a Business Registration Certificate registers a sole proprietorship account. A mainland China seller with neither cannot open one through the individual route, and can consider a company account or another payment method.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/stripe-hk-individual-account-global-payments-cover.png
+coverAlt: A row of blank coins travels along a green band of light through a turnstile and drops into a pillared bank building model on the right, on a dark green background
+sourceHash: '8a49a5e76fe6'
+---
+
+"You can open a Stripe Hong Kong individual account without a company" holds only for residents who hold an HKID and live in Hong Kong. People with no HKID but a Hong Kong Business Registration Number (BRN) open a Sole Proprietorship account. Mainland China residents with neither cannot open one. They can consider opening an account under a company, or use another payment method.
+
+import noteFig from '../media/stripe-hk-individual-account-global-payments-fig-en.png'
+
+<Figure src={noteFig} alt="Four steps left to right, joined by green arrows: a magnifier over a blank card, a small house with a green pin in its roof, a globe with a green pin and a padlock, and a blank card dropping a coin into a bank building, each with an English label plate" caption="Figure: Stripe Hong Kong Individual Account | Hong Kong Bank Payouts" width="wide" border />
+
+This note starts from [a post by nemo](https://x.com/i/status/2015804404004438366). Several points in the post do not match Stripe's current rules. The official pages take precedence.
+
+## First, find which case you are
+
+Check your documents before you sign up. Each type of entity has its own entry point and its own document requirements.
+
+Case one is a resident who holds an HKID and lives in Hong Kong. An individual account does not need a company. For identity, submit front and back scans of the Hong Kong Identity Card. For proof of address, use the HKID or a bank statement from the last 6 months. (Sources: [Requirements for Hong Kong businesses](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses), [Hong Kong proof of address page](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address), checked 2026-10-26)
+
+Case two is a person with no HKID but a Hong Kong Business Registration Number (BRN). Stripe individual accounts do not accept non-Hong Kong identity numbers. With no HKID but a business registration number, choose Sole Proprietorship at activation. A sole proprietorship account also requires the person to live in Hong Kong. Hong Kong law requires any business operating in Hong Kong, whether a sole proprietorship, partnership, or limited company, to apply for business registration with the Inland Revenue Department within 1 month of starting. (Sources: [Requirements for Hong Kong businesses](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses), [CLIC, Hong Kong's Community Legal Information Centre](https://www.clic.org.hk/en/topics/businessAndCommerce/setting_up_business_in_Hong_Kong/types_of_business_organisation/q2), checked 2026-10-26)
+
+Case three is a mainland China resident with neither. Per the official pages, they can open neither an individual nor a sole proprietorship account. Company accounts follow different rules. A person representing a Hong Kong company who has no HKID can use another government-issued document, and the company's owners or representatives can be overseas. (Sources: [Requirements for Hong Kong businesses](https://support.stripe.com/questions/requirements-for-hong-kong-based-businesses), [Hong Kong proof of address page](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address), checked 2026-10-26)
+
+## Three risks to check before you sign up
+
+Some sign-up tutorials leave out the three points below or get them wrong. All three come from Stripe's current pages. Check them before you sign up.
+
+1. **You must live in the account country**: individual and sole proprietorship accounts do not cover cross-border cases. The user must live in the country where the account is opened. An overseas address applies only to registered businesses or companies, whose owners can be overseas. For Hong Kong proof of address, Stripe accepts a bank statement, utility bill, phone bill, lease, or government document from the last 6 months, or your own HKID. (Source: [Hong Kong proof of address page](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=address), checked 2026-10-26)
+
+2. **The Exit-Entry Permit for Travelling to and from Hong Kong and Macao is not on the accepted document list**: the accepted documents include the Certificate of Exemption, the Certificate of Registered Particulars, front and back scans of the Hong Kong Identity Card, a passport, and the Vietnamese Refugee Card. The list does not include the Exit-Entry Permit. The name on the document must match the account. Screenshots are not accepted, and the document must not be expired. When a person linked to the account lives in another country, only a valid passport is accepted. (Source: [Acceptable identity documents for Hong Kong](https://docs.stripe.com/acceptable-verification-documents?country=HK&document-type=identity), checked 2026-10-26)
+
+3. **The country cannot be changed after the account goes live**: once a live account is activated, its business country cannot be changed. To switch countries, create a new account. For an individual, the account country is the country or region where the business operates. (Sources: [Account setup docs](https://docs.stripe.com/get-started/account/set-up), [Stripe Services Agreement](https://stripe.com/en-hk/legal/ssa), checked 2026-10-26)
+
+## Fees and Hong Kong bank payouts
+
+Payment costs come in two parts: transaction fees taken when a card is charged, and fees taken at payout. Rates are calculated by card type and currency.
+
+A buyer paying with a Hong Kong card is charged 3.4% + HK$2.35 per transaction. A card charge settled in US dollars is 3.4% + US$0.30 per transaction. International cards add 0.5%. Currency conversion adds another 2%. Alipay and WeChat Pay are 2.2% + HK$2.00. The account has no setup fee, monthly fee, or closing fee. On a refund, the original transaction fee and conversion fee are not returned. Each dispute received costs HK$85. Contesting it by hand costs another HK$85, which is returned if you win and kept if you lose. (Source: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), checked 2026-10-26)
+
+Money comes back mainly through payouts to a Hong Kong bank. Hong Kong dollars in a Hong Kong account can only be paid out to a bank in Hong Kong. US dollars can also only be paid out to a bank in Hong Kong, at 1% of the payout amount, minimum US$5. The minimum manual payout is US$20, and the minimum automatic payout is US$100. For each settlement currency you configure, you link a separate Hong Kong bank account in that currency. (Sources: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), [Multi-currency settlement docs](https://docs.stripe.com/payouts/multi-currency-settlement), checked 2026-10-26)
+
+After the first real payment, the first payout usually takes 7 to 14 days, depending on industry, country, and risk level. Manual payouts usually arrive in 1 to 4 business days. New users cannot use instant payouts right away. For Hong Kong bank payouts: when the customer pays in US dollars and you have linked a Hong Kong US dollar account, you avoid the 2% conversion fee. A payment in a currency you have not configured is converted to the default currency automatically, with the 2% conversion fee. A small US dollar payout is charged the US$5 minimum. (Sources: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), [Multi-currency settlement docs](https://docs.stripe.com/payouts/multi-currency-settlement), [Stripe payouts docs](https://docs.stripe.com/payouts), checked 2026-10-26)
+
+## Export sellers: which goods and payment setups get blocked
+
+Before signing up, export sellers check their product categories against Stripe's prohibited and restricted list. Some goods are banned outright. Some need extra review.
+
+Prohibited: counterfeit goods, illegally imported or exported goods, branded goods sold without authorization, toxic, flammable, or radioactive materials, items the US Postal Service will not mail, goods tied to Russian import and export controls, and business with sanctioned regions such as Cuba, Iran, North Korea, Syria, Crimea, Donetsk, and Luhansk. (Source: [Stripe prohibited and restricted businesses list](https://stripe.com/en-hk/legal/restricted-businesses), checked 2026-10-26)
+
+Restricted businesses need extra review. These include prescription drugs, medical devices, tobacco, e-cigarettes, high-value goods, precious metals and gems, prepaid cards, gift cards, and travel bookings. Restricted categories also include payment facilitation and aggregation, which means collecting payment for goods you do not provide yourself on behalf of a third party. An export SOHO seller collecting payment for a factory or a friend falls into this category. The account should collect payment only for your own goods, and the statement descriptor should be one customers recognize, to avoid disputes. (Sources: [Stripe prohibited and restricted businesses list](https://stripe.com/en-hk/legal/restricted-businesses), [Account setup docs](https://docs.stripe.com/get-started/account/set-up), checked 2026-10-26)
+
+Stripe can suspend service immediately if it reasonably believes there is a legal violation or a breach of contract. It can also set a reserve and hold funds. Stripe prohibits opening another account for a user who has been suspended or terminated. The industry treats a dispute rate above 0.75% as too high, and a sudden rise in disputes is monitored earlier. (Sources: [Stripe Services Agreement](https://stripe.com/en-hk/legal/ssa), [Dispute rate docs](https://docs.stripe.com/disputes/measuring), checked 2026-10-26)
+
+Once payments on your own export site work, orders need to trace back to the source of the inquiry. For the method, see <NoteLink slug="export-site-geo-lead-attribution">GEO for B2B Export Websites: How to Attribute AI-Sourced Inquiries</NoteLink>. Customer leads collected in chat tools also need records. For details, see <NoteLink slug="export-inquiry-whatsapp-email-attribution">How to Record Lead Source When AI Sorts WhatsApp and Email Inquiries</NoteLink>. Only when payment records and inquiry records match do you know which channel brought the paid orders.
+
+## Stripe Hong Kong individual account: FAQ
+
+### A customer pays in euros. With a US dollar account added, is the payment still converted?
+
+Yes. For each settlement currency Stripe needs a separate Hong Kong bank account in that currency. With only Hong Kong dollar and US dollar accounts linked, a euro payment is converted to the default currency automatically, with a 2% conversion fee. (Sources: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), [Multi-currency settlement docs](https://docs.stripe.com/payouts/multi-currency-settlement), checked 2026-10-26)
+
+### How much does one customer chargeback cost?
+
+Each dispute received has an HK$85 handling fee. Contesting it by hand costs another HK$85, which is returned if you win and kept if you lose. On a refund, the original transaction fee and conversion fee are not returned either. (Source: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), checked 2026-10-26)
+
+### Can a Stripe Hong Kong individual account only pay out to a Hong Kong bank card?
+
+US dollar payouts cost 1%, minimum US$5, and can only go to a bank account in Hong Kong. Hong Kong dollars can also only be paid out in Hong Kong. Whether Hong Kong dollars or US dollars, funds can only go to a local Hong Kong bank account. They cannot be paid out directly to a mainland China bank card. (Sources: [Stripe Hong Kong pricing page](https://stripe.com/en-hk/pricing), [Multi-currency settlement docs](https://docs.stripe.com/payouts/multi-currency-settlement), [Stripe payouts docs](https://docs.stripe.com/payouts), checked 2026-10-26)
