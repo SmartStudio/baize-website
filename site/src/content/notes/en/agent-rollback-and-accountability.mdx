@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/agent-rollback-and-accountability-cover.png
 coverAlt: An emergency lever has been pulled, and a green curved arrow pulls a row of falling dominoes back upright
-sourceHash: 'ca13b3f1ed53'
+sourceHash: '143375646db3'
 ---
 
 When an AI agent executes a wrong action, stop the damage first, roll back second, and discuss accountability last. Agent rollback has three steps. First, stop the actions: hit the kill switch, narrow the credentials, pause the triggers. Second, undo by action type: reversible actions use the soft-delete window, recoverable ones are restored from backup, and irreversible ones get a correction and compensation. Third, use the action log to reconstruct what ran and who authorized it. Accountability follows roles agreed before launch. Nobody is made a scapegoat after the fact.
@@ -27,6 +27,8 @@ When you find that an agent has executed something wrong, spend the first hour c
 Railway's official blog, on April 29, 2026, noted that a person who makes a mistake stops and asks for help, while an agent that makes a mistake often keeps going, and sometimes makes things worse while trying to fix the first error. Our recommendation for the scene: hit the kill switch, pause triggers, freeze the remaining actions in the same batch, then narrow or revoke the credentials the agent uses, and preserve the logs.
 
 Harness published *State of Agent DLC 2026* on September 10, 2026. It surveyed 700 technical staff at large enterprises in July 2026, across the US, UK, France, Germany, and India. 76% believed they could disable or roll back a misbehaving agent within 15 minutes. Only 33% had a kill switch in production, and only 39% had automated rollback. The report says most teams have some way to undo, but it is often manual, such as redeploying code, and does not fit in 15 minutes. We recommend making a kill switch standard before launch.
+
+If the agent has gone beyond its authorized scope but has not caused a loss yet, see <NoteLink slug="agent-scope-drift-runtime-response">An Agent Exceeds Its Authorized Scope: Downgrade It or Stop It?</NoteLink> for whether to reduce its permissions or stop it.
 
 ## Roll back by action type: undo, restore, and compensate
 

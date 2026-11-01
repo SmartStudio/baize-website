@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/ai-resume-screening-human-review-cover.png
 coverAlt: On a deep green background, a stack of blank pages slides across a tilted sieve; most fall into a gray bin, and a magnifying glass pulls one page back to a tray on the right with a green arc of light
-sourceHash: '8dd5d939d1e0'
+sourceHash: '1b2820eebfcc'
 ---
 
 import noteFig from '../media/ai-resume-screening-human-review-fig-en.png'
@@ -61,6 +61,8 @@ The recruiting operations team spot-checks rejected profiles on a schedule and h
 People run this step. Recruiting quality staff sample a fixed share of rejected resumes on a schedule, with a focus on profiles near the rejection line. If a spot check shows the model missed project experience written in an unusual layout, or a candidate submits an appeal through the company's official email address, quality staff pull the original resume and reassess it. If the miss is confirmed as a parsing error, a person restores the candidate to the hiring process.
 
 At this stage the system collects every case where a human overturned the model and tallies the causes. If the data shows the model has trouble recognizing terms in a specific field, the team updates the parsing rules and scoring prompts. Review results feed the next model iteration, so screening quality is more stable in the next hiring round.
+
+Store scheduling follows the same pattern: the agent produces a result and a person edits it. For how much a store manager can change and which edits need approval, see <NoteLink slug="store-scheduling-agent-manager-edits">A Scheduling Agent Drafts the Rota: How Much Can Managers Change?</NoteLink>.
 
 ## Recruiting agents: FAQ
 

@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/enterprise-context-engineering-cover.png
 coverAlt: "A pile of loose white fragments goes into an orange processing machine and comes out as a neat stack fed into a terminal"
 draft: false
-sourceHash: '2e39bda1564c'
+sourceHash: '66e4511b2b9f'
 ---
 
 In 2026, the gap between companies comes from one question: has the company turned its own knowledge into context that an agent can rely on, act on, and be audited against? The choice of model and the number of agents deployed matter less.
@@ -66,6 +66,8 @@ These three questions map to the three pillars below.
 "Turning company knowledge into agent context" sounds like a transfer job: load the documents into a vector database and stop there. Three engineering properties decide the outcome, and each answers one of the questions above. Missing any one of them sends the agent back to surface-level Q&A.
 
 **Reliable** means each piece of knowledge has a single source of truth, an expiry date, and a rule for resolving conflicts. If the CRM, the finance system, and a slide deck each show a different contract value for the same customer, any figure the agent cites is a gamble. Being able to find a document is not enough. The document found has to be good enough to base a decision on.
+
+For which definition to trust when an AI data query returns two different sales figures, see <NoteLink slug="ai-data-query-metric-definitions">AI Data Queries Return Two Sales Figures: Which Metric Definition Do You Trust?</NoteLink>.
 
 **Executable** means the context includes the structure an agent needs to take action, beyond text it can retrieve: which API to call, how to fill in the parameters, where the permission boundary sits, and when it must stop and hand off to a person. A paragraph describing the refund policy can only answer questions. A refund rule with the API, parameters, and approval thresholds attached lets the agent complete the refund.
 

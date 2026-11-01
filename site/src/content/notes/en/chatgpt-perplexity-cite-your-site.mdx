@@ -19,7 +19,7 @@ howto:
       text: Add a 40- to 60-word answer under the H1, put specs in tables, and confirm curl returns the full HTML without logging in.
     - name: Measure citation rate with real questions
       text: Wait at least 24 hours after the changes, test 10 to 20 real questions in ChatGPT and Perplexity, then retest two weeks later and compare.
-sourceHash: '580befee1492'
+sourceHash: '4bb9d19cbeab'
 ---
 
 import noteFig from '../media/chatgpt-perplexity-cite-your-site-fig-en.png'
@@ -37,6 +37,8 @@ According to OpenAI's developer documentation, GPTBot crawls public web pages to
 Perplexity's documentation splits the work the same way. PerplexityBot indexes pages and surfaces results and links in answers; it is not used to train foundation models. Perplexity-User fetches page content live when a user asks a question directly. Both companies say rule changes take about 24 hours to apply. If the site sits behind a CDN or WAF, the firewall may block these crawlers by mistake. Allowlist them using the IP JSON files each company publishes.
 
 Google Search Central gives different guidance for AI Overviews and similar features. Google has no separate AI crawler and no dedicated schema. If regular Googlebot can crawl and index the page and the text follows standard SEO practice, nothing else is required. ChatGPT and Perplexity each require their own search crawler to be allowed at the server and firewall level. Setting up llms.txt at the site root will be covered in a separate note.
+
+For how to write llms.txt, see the dedicated note <NoteLink slug="llms-txt-how-to-write-useful">How to Write a Useful llms.txt File</NoteLink>.
 
 ## Give pages text that can be extracted directly
 

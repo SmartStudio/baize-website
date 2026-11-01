@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/spc-anomaly-ai-line-stop-cover.png
 coverAlt: A conveyor carrying metal parts under a green scanning light, a monitor with a trend chart, a magnifier, and a stop lever with a glowing green knob, on a dark green background
-sourceHash: '8028b69388e9'
+sourceHash: '68a99bb4fdf3'
 ---
 
 When a plant hands process parameters to an algorithm for SPC (statistical process control) anomaly detection, managers often struggle with one question: when the process drifts, should they stop the line on the spot? If the line stops on every alarm, sensor drift or brief power fluctuations trip it again and again, and the lost output adds up. If alarms go unanswered, dimensional drift from tool wear or mold heating lets whole batches of scrap through. When a company uses AI to monitor process data, it has to define tiers of stop authority, and assign who handles reading the data, investigating, tightened sampling, and the final call.
@@ -43,6 +43,8 @@ The second tier sends a work order to the process engineer on duty, with the ano
 Line stops fall into two types: automatic stops on preset conditions, and stops a person decides. For hard limits such as equipment overpressure, bearing overheating, or a dimension fully out of spec, the system triggers the stop interlock as soon as the preset condition is met and cuts power or material feed automatically. These stops do not wait for human confirmation, to prevent batch scrap or equipment damage. For how to design stop conditions for systems that run unattended, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
 
 For ordinary abnormal trends, the shift lead or quality engineer on duty decides whether to stop. The system shows a stop prompt on the workstation screen with the size of the deviation and the scrap risk of continuing. The shift lead checks the parts on site, weighs the production schedule, and manually confirms the stop or defers it. People on site are accountable for the decisions they sign. The system records the operator account and the stop time.
+
+Beyond line stops, for which tasks a resident line agent can handle on its own and which need a person's countersignature, see <NoteLink slug="factory-resident-agent-what-to-handle">A Resident Agent Watches the Line: What Can It Do on Its Own?</NoteLink>.
 
 ## Restart and review: confirm parameters are back and keep a record
 

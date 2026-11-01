@@ -20,7 +20,7 @@ howto:
       text: Turn on Enforce Auto-review and add team Ask first rules for outbound email, payments, production deploys, and accepting legal terms. Configure Network Controls. Set Execution on Local Computer to Never allow.
     - name: Define the audit scope
       text: The Audit Log covers control-plane changes and can be filtered by grok_bot and streamed to a SIEM. Tool actions need Action Recording, exported over OpenTelemetry.
-sourceHash: '0aff1a240c9d'
+sourceHash: '8af6c5f96ef4'
 ---
 
 import noteFig from '../media/grok-bot-enterprise-access-audit-fig-en.png'
@@ -62,6 +62,8 @@ The official security docs state that a Bot has no identity or credentials of it
 Sign-ins, two-factor verification, and payment confirmations are handed back to the member. To revoke access, remove the member from the team or turn off Grok Bot for their group, then revoke their sessions in your identity provider. Terminating the computer alone does not revoke access.
 
 Read access can be broad while write actions need approval first. The same approach is covered in <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent Permissions: Reading Email Is OK. Does Sending Need Approval?</NoteLink>.
+
+If you find at runtime that an agent took an action outside its authorized scope, see <NoteLink slug="agent-scope-drift-runtime-response">An Agent Exceeds Its Authorized Scope: Downgrade It or Stop It?</NoteLink> for the order of response.
 
 ## Approvals and network: the official baseline
 

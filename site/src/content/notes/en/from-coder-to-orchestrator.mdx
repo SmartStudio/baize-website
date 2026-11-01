@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/from-coder-to-orchestrator-cover.png
 coverAlt: "An orange control desk with four cables running to four robotic-arm workstations"
 draft: false
-sourceHash: '457121c94119'
+sourceHash: '8f4f783ea61e'
 ---
 
 import loopFig from '../media/from-coder-to-orchestrator-fig-1-en.png'
@@ -32,6 +32,8 @@ AI does not follow architectural discipline by default. Without constraints, it 
 
 So set up guardrails before you let AI work on its own.
 
+Robots work the same way. After video imitation teaches a motion, people still write the constraints for new waypoints and obstacle avoidance. See <NoteLink slug="robot-video-imitation-vs-motion-script">Robot Imitation Learning: Who Still Writes the Motion Script?</NoteLink>.
+
 ## The development workflow gets a new order
 
 In traditional development, the editor is where work starts. AI-assisted development runs closer to this chain: **CLI → Editor → GitHub**.
@@ -45,6 +47,8 @@ The core loop changes as well. Humans and AI no longer write code side by side. 
 <Figure src={loopFig} alt="Four-stage workflow: define intent, delegate tasks in parallel, agents execute, human verdict at a gate" caption="Figure: Define Intent | Delegate Tasks | Agents Execute | Human Verdict. A human defines intent and delegates in parallel, several agents execute at high throughput, and every output passes a human review gate before it merges." width="wide" border />
 
 The division of labor in one line: **AI handles throughput. Humans handle judgment.**
+
+For how to order the work when you delegate to several agents and run several loops at once, see <NoteLink slug="graph-engineering-is-not-loop-engineering">Graph Engineering vs Loop Engineering: Graphs Sit on Top of Loops</NoteLink>.
 
 ## Constraining AI takes three layers
 

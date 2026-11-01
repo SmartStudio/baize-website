@@ -21,7 +21,7 @@ howto:
       text: Click Save and Deploy. Cloudflare pulls the code, installs dependencies, and runs the build. Within tens of seconds the site is live on a free pages.dev subdomain.
     - name: Add a custom domain
       text: Add your domain under Custom domains. Cloudflare configures DNS and issues a free HTTPS certificate. Every later push triggers a new deployment.
-sourceHash: '1467d8be08d9'
+sourceHash: 'e34ba76b234d'
 ---
 
 import cfFig from '../media/deploy-website-to-cloudflare-fig-en.png'
@@ -54,5 +54,7 @@ export const onRequestGet: PagesFunction = async (context) => {
 ```
 
 Second, continuous deployment is on by default. You write content and code and push. The platform handles the build and the release.
+
+For how to debug layer by layer when a site works locally but fails in production, see <NoteLink slug="deploy-last-mile">Works Locally, Fails in Production? The Last Mile of Deployment</NoteLink>.
 
 With deployment reduced to a push, the team spends its time on content, product, and user experience. At Baize AI, we set up infrastructure so that it needs no attention after the first deployment.

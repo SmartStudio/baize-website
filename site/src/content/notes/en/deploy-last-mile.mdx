@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/deploy-last-mile-cover.png
 coverAlt: "A winding path crosses a small bridge and ends at a platform with an orange flag"
 draft: false
-sourceHash: '44c317537683'
+sourceHash: '3fd62cddca9d'
 ---
 
 A site passes every local check, the build succeeds, and the production deploy throws errors. Most teams hit this at launch. AI has made writing features much faster. Between "it builds" and "it works in production" there is still a layer of configuration. That layer is not in the code, and tests do not cover it.
@@ -30,5 +30,7 @@ The debugging method matters more than the individual problems. The form returne
 3. Use a known-good credential locally to call the same external service directly, as a control.
 
 These three steps separate "the configuration did not reach the code" from "the credential or the resource itself is wrong." Each change in the error message narrows the search.
+
+For the four steps to deploy a static site to Cloudflare Pages, see <NoteLink slug="deploy-website-to-cloudflare">How to Deploy a Website to Cloudflare Pages for Free in Four Steps</NoteLink>.
 
 The takeaway: a model can write the feature, but keeping it running in a real environment depends on treating configuration, deployment, and debugging as engineering work. In AI adoption this is the last mile, and the one teams skip most often. Build it into the delivery plan. A product counts as delivered once it runs stably in production.
