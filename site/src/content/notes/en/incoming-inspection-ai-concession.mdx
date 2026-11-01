@@ -1,0 +1,60 @@
+---
+title: "AI Grades Incoming Material Batches. Who Signs a Concession?"
+description: Plants bring in AI incoming inspection to detect dimensional and visual defects in materials, and the algorithm quickly sorts batches into accepted and rejected. When an urgent production need calls for a concession release of a rejected batch, the algorithm supplies only measured evidence. Quality, production, purchasing, and the customer sign, which settles accountability and the trace record.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/incoming-inspection-ai-concession-cover.png
+coverAlt: The camera arm of an optical measuring table aimed at a tray of stamped parts, with a crate of parts locked behind a padlocked rail with green lights, on a dark green background
+sourceHash: 'aeaed6dc07a5'
+---
+
+A plant's quality department deploys an AI incoming inspection system. The algorithm pulls drawings and tolerance standards and grades material batches fast. It sends accepted material to the ready-to-use store, tags rejected material as abnormal, and tells the warehouse to quarantine it. When the line urgently needs material and the plant considers a conditional release of a rejected batch, the algorithm cannot take on the risk in place of managers. A concession release is confirmed by joint signatures from quality, production, purchasing, and a customer representative. The algorithm prepares the measurement records, the deviation distribution, and suggestions for sorting and rework.
+
+import noteFig from '../media/incoming-inspection-ai-concession-fig-en.png'
+
+<Figure src={noteFig} alt="Left to right, joined by arrows: a measuring table scanning parts, a crate locked in a quarantine cage, a round meeting table with chairs, pens, and one document to sign, a tagged crate passing through a gate, and a batch file going into a filing cabinet" caption="Figure: AI Incoming Inspection | Concession Release" width="wide" border />
+
+## The algorithm sorts dimensional and visual data into three results
+
+An IQC inspector places precision stamped metal parts from a supplier on an optical measuring table. After the camera takes images, the algorithm compares the key dimensions with the part drawing. The inspection screen then tags the batch, separating batches within dimension, batches out of tolerance, and a small number of pending batches in the borderline tolerance band.
+
+For which kinds of work to hand to AI first, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. The inspector spot-checks samples on the table, measures thickness with a micrometer, and confirms the tolerance values the algorithm gave match the parts. For batches that fully meet specification, the software generates a release record, and the material goes into stock and is handed to the assembly shop. When an inspection image shows a small scratch, the algorithm puts it in the pending queue. The inspector zooms in on screen to check the detail and releases it manually.
+
+## Material flagged red goes straight into quarantine
+
+A red alarm appears on the inspection station screen. The conveyor diverter pushes the whole box of out-of-tolerance parts into a closed side chute, and the warehouse system locks the electronic tag for that batch. The storekeeper receives the quarantine instruction on a handheld terminal, walks to the inspection area, pushes the red-tagged crate into the nonconforming material zone, and adds a physical yellow quarantine lock.
+
+In the back end the algorithm produces a nonconforming material report. It lists the mean of the out-of-tolerance dimension and the upper tolerance limit on the drawing, sends the report to the quality engineer and the purchasing specialist, and notifies material control. For how to roll back after an execution error, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>. The quality engineer pulls the original inspection images and the standard template in the quarantine area and arranges a re-inspection. If the material meets the standard, the engineer releases the lock and the material moves on.
+
+## Conditional release takes joint signatures from several departments
+
+A production planner sees a line-down alarm for missing material on the assembly line and files a concession request for the nonconforming material in the manufacturing execution system. The purchasing specialist contacts the supplier about the delivery date of the next conforming batch and confirms that the replenishment lead time cannot meet the customer's order date.
+
+Among the ways [ISO 9001](https://www.iso.org/standard/62085.html) lists for handling nonconforming outputs is "obtaining authorization for acceptance under concession." It requires retained documented information that describes the nonconformity, the actions taken, any concessions obtained, and the authority that decided the action.
+
+The quality lead, the production shop director, and the purchasing supervisor hold a material review meeting in the system. The quality engineer explains that the out-of-tolerance dimensions are mostly on non-locating surfaces. The shop confirms that one added manual grinding step removes the interference. The cost split follows the purchase contract. If the part is a controlled critical part, the account manager obtains the customer's written consent. The approval form states the release quantity and use restrictions. After the quality director signs electronically, the storekeeper issues material against the form. The algorithm only counts the defect distribution and takes no part in the release decision.
+
+## Decision basis and signature records are archived with the batch
+
+The quality team lead scans the code label on the parts crate and links the batch barcode, the algorithm's original inspection report number, and the concession form signed by each department in the quality database. The system packages the out-of-tolerance dimension chart, the sorting and grinding procedure, and the customer's written confirmation letter into an archive and creates a traceable record.
+
+Later, when assembly workers scan the material barcode, the terminal shows a prompt telling them to check the fit clearance at the ground areas. Finished product test data links back to the raw material inspection file. If outgoing inspection finds a performance deviation, quality staff can pull the algorithm's original measurements and the list of people who signed the concession. Incoming inspection moves to tightened inspection for this supplier, and the conditions for returning to normal follow the company's inspection procedure.
+
+## AI incoming inspection: FAQ
+
+### Does the inspector still need to remeasure batches the algorithm accepted?
+
+Yes, the inspector still remeasures on a schedule. The material may have hidden cracks or internal stress that the optical probe's blind spots miss. For each batch the inspector takes a fixed number of samples and remeasures them under the inspection procedure. The manual remeasurement report and the algorithm's result go into the same file, which checks the algorithm's stability.
+
+### How do you handle a supplier dispute over a batch the algorithm rejected?
+
+When a supplier disputes a result, both sides open the algorithm's original images and measurement data in the inspection room and recheck them against the tolerance baseline. If the dispute remains, quality engineers from both sides compare retained samples offline on third-party measuring equipment. If the measurements agree with the algorithm, the decision stands. If they show the algorithm was wrong, the threshold parameters are adjusted.
+
+### What can AI help organize in a concession record?
+
+For this process, the AI incoming inspection system can pull the extreme values of out-of-tolerance dimensions, the outlier distribution, a list of past batches with similar defects, and earlier dispositions. The algorithm puts the measured data into a technical assessment form in a standard format, with the original defect heat map and comparison curves across delivered batches. Approvers read this summary to judge the risk and sign the release decision.

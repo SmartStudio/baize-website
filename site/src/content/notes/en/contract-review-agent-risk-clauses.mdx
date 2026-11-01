@@ -1,0 +1,61 @@
+---
+title: "A Contract Review Agent Flagged the Risks. Does Legal Still Read Every Clause?"
+seoTitle: "Contract Review Agents: Does Legal Still Read Every Clause?"
+description: When a company brings in a contract review agent, legal reviews in tiers by contract type and amount. For standard templates, legal checks the risk points and suggested edits the agent flagged. Legal reads non-standard or high-value contracts in full. Regular back-testing guards against missed flags.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/contract-review-agent-risk-clauses-cover.png
+coverAlt: A robotic arm attaching green tabs to the edges of pages next to a stack of contract papers, with a magnifying glass nearby, on a dark green background
+sourceHash: '4d26edc4ad45'
+---
+
+A company has a contract review agent read each contract first. The agent flags questionable points against company rules and suggests edits. Legal still needs to review in a targeted way. Each point the algorithm flags gets checked, and text it did not flag gets spot-checked. The company sets review tiers by contract type and amount. For standard templates, legal focuses on the clauses marked in red and the suggested edits. Legal reads the full text of non-standard contracts, large purchases, contracts with new counterparties, and core terms covering liability caps and dispute jurisdiction.
+
+import noteFig from '../media/contract-review-agent-risk-clauses-fig-en.png'
+
+<Figure src={noteFig} alt="Five steps left to right, joined by arrows: a checklist board, a document with flags, a tray with circular arrows, a document with a clipped note, and a hand pressing a stamp" caption="Figure: Contract Review Agent | Risk Clauses" width="wide" border />
+
+## Write down the company's own review checklist first
+
+A contract review agent checks contracts against the rule library the company has built up. If a business boundary is not in the checklist, the model cannot spot problems with it. Before automating review, senior legal staff turn scattered verbal understandings into an itemized checklist.
+
+For ordinary sales contracts, for example, the checklist needs to state the maximum payment term, the liquidated damages rate for late delivery, and the arbitration body for disputes. The more specific the rule items, the better the algorithm matches the information it extracts. If the company's rules are vague, the algorithm's reasoning drifts, and it may even flag customary wording as abnormal. The legal team gets the checklist into order first, then hands matching to the program.
+
+When contracts go into the system for rule matching, sensitive commercial data needs careful handling. For specific safeguards, see <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>. Before a contract enters the review flow, redact customer names, deal amounts, and account details locally to lower the risk of commercial information leaking.
+
+## Each flagged risk carries its location in the text and its basis
+
+When the algorithm flags a point in a document, it should also give the location in the original text and the rule it relies on. Legal staff then focus on whether the basis holds. If the program flags a compliance gap but cannot say which rule is broken, legal staff have to reread the surrounding text, which costs more time.
+
+For a unilateral termination clause, for example, the program points to clause 12 on page 3 of the contract and lists the company template rule requiring 30 days' written notice. Legal staff glance at the surrounding text and can decide quickly whether the other side's wording is acceptable. That is faster than reading every line. Where a flagged clause is in dispute, the program's suggested edit should come from the company template library. Legal staff adjust the draft and confirm that the edit fits the commercial negotiation.
+
+## Missed flags are harder to catch than wrong flags
+
+Legal staff remove wrong flags directly during checking. Missed points tend to pass with the rest of the document. Many contract gaps are missing protections, such as a limitation of liability, intellectual property ownership, or a confidentiality period that the other side deleted. If the model cannot compare against what should be there, it tends to overlook the missing item.
+
+The effective way to deal with missed flags is regular back-testing. On a schedule, the legal team takes a batch of closed contracts that have been tested in disputes and runs them through the system again. By looking at how the program performs on real historical text, the team counts which types of risk it missed, and works out whether the miss came from keywords that were not covered or from a break in understanding the context. Based on the back-test data, the team revises the review checklist and prompts. For example, if back-testing shows the system repeatedly misses a hidden way of calculating interest, the legal specialist adds that check to the rule checklist, which shrinks the algorithm's blind spots.
+
+## A person confirms edits before they go to the other side
+
+Comments and redlines the program generates from the review rules are only a reference draft for internal discussion. Before the revised contract goes to the counterparty, the legal staff member handling it confirms it and then sends it, and the system keeps a record.
+
+For governance that sets tool boundaries and approval responsibility in business processes, see <NoteLink slug="agent-governance-before-scale">AI Agent Security Governance Must Come Before Scaling</NoteLink>. The agent has no permission to send anything externally. When legal archives a contract, it stores the original text, the list of flagged points, the record of manual edits, and the final confirmation letter sent out together in the compliance ledger, keeping a review trail.
+
+## Contract review agents: FAQ
+
+### Does legal still need to look at a standard template contract after the first review?
+
+Yes, legal still spot-checks it. Even when the contract body uses the company template, the counterparty may adjust wording in payment milestones, liquidated damages rates, or acceptance terms. Legal staff do not need to reread the full text line by line. They check the edits and deviation suggestions the program marked, and confirm them in the system.
+
+### How do you keep legal staff from relying too much on machine flags?
+
+Set a clear split of responsibility and run regular quality spot checks. The system states that automated comments are for reference only, and final legal responsibility for the review lies with the legal staff member who signs. Department management spot-checks a set share of approved contracts on a schedule. They focus on whether paragraphs the program did not mark contain hidden gaps, and the results count toward quality reviews.
+
+### How often is the risk clause checklist updated, and who changes it?
+
+The head of legal leads revisions together with key staff from each business line, and updates the checklist as the business changes and as back-test results come in. When the company enters a new business area, changes its deal model, or past disputes reveal new situations, the legal team adds new review criteria to the checklist. It also adjusts rule items based on missed flags found in back-testing, so the review requirements match how the business actually works.
