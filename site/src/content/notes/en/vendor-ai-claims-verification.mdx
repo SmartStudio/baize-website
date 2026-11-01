@@ -1,0 +1,74 @@
+---
+title: "AI Vendor Numbers Are Self-Reported. How Do You Check Them?"
+description: When companies evaluate AI vendors for procurement, they should not take throughput multiples or delivery timelines in marketing material at face value. Self-reported metrics often lack a common baseline and hardware spec. Procurement and technical teams should ask for the test load and the hardware and software setup, run a small test with the company's real use cases, and write the metric definitions into the contract.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/vendor-ai-claims-verification-cover.png
+coverAlt: A balance scale, a magnifying glass with a green rim, and bar chart blocks, on a dark green background
+sourceHash: 'f71a0ab8097d'
+---
+
+When a company sees impressive AI vendor numbers during selection, it should first separate what the vendor reports about itself from evidence that can be checked externally. The doubled throughput or delivery timeline in the material mostly comes from the vendor's own measurements in a specific environment. Procurement and technical teams need to pin down the baseline definition, the hardware model, and the test load, run tests on the company's own local tasks, and put the acceptance conditions into the contract.
+
+import noteFig from '../media/vendor-ai-claims-verification-fig-en.png'
+
+<Figure src={noteFig} alt="Five steps to verify self-reported AI vendor numbers: flag self-reports, ask for baseline, cross-check sources, test own cases, and contract terms" caption="Figure: Flag Self-reports | Contract Terms" width="wide" border />
+
+## Separate self-reported claims from external evidence: the Zhipu report as an example
+
+Zhipu published a practice report in September 2026 that serves as a sample. The report says its agent, working with engineers, built a model's production inference service from scratch on a cluster of more than 100,000 domestic Chinese AI accelerator cards. It went from initial adaptation to production-ready in under two weeks, and end-to-end throughput reached about three times the initial baseline. These metrics are self-reported. The report gives no actual throughput or baseline figures and does not name the hardware model. Its claim that cost and efficiency match mainstream chips also comes without specific numbers.
+
+Peers need to check the external support behind self-reported numbers. One item in the report can be verified externally: an operator precision fix has been merged into an open-source upstream project, and the code is public. The report admits that local gains on micro-benchmarks do not always turn into end-to-end gains, and that after local validation, final acceptance still has to happen on the target deployment cluster.
+
+When the evaluation team gets the material, it first sorts claims in a table. Technical staff put self-measured speedups in the self-reported column and open-source code commits in the verifiable column, and mark which points can be checked online and which need follow-up questions.
+
+## Ask for the comparison baseline and run environment: know the starting point
+
+After sorting out the self-reported claims, technical staff ask the vendor for the baseline conditions behind the measurement. A multiple depends on how low the starting baseline was. If the initial code was unoptimized, a threefold gain may only make up for missing basic configuration. The technical team asks the vendor to list the code version of the baseline test, the optimization parameters, and the initial throughput figure at the time.
+
+Hardware configuration and run load also need to be reconstructed item by item. The vendor should provide a clear list of the chip architecture, interconnect bandwidth, and memory spec used to produce the result. Which vendor to back, and how deeply, starts from the company's own strategy. For that analysis, see <NoteLink slug="ai-strategy-first-customer">How to Set an Enterprise AI Strategy: Amazon, Apple, and Microsoft's Three Bets</NoteLink>. When a vendor claims comparable cost, ask which cost items the calculation covered.
+
+The procurement specialist collects and files written answers. The specialist asks the vendor's pre-sales team to fill in the hardware model and test method in the questionnaire, so big numbers are not left to verbal presentations.
+
+## Cross-check claims across channels: look for gaps in wording
+
+The technical lead should watch for differences in how the vendor states figures on different channels. Back to the Zhipu case: the blog post says end-to-end throughput was about three times the initial baseline, and Tang Jie's post on social media says 3.2 times. Neither explains how the two figures were measured differently. In that case, ask the vendor directly which figure is the public commitment and where the difference comes from.
+
+Retold publicity tends to stretch the boundary conditions. Zhipu's English report says engineers and the agent did the work together, with the agent doing most of it. The Chinese repost words it more strongly and reads as if the agent did the whole job alone. Some media called it the first case of recursive self-improvement running in production, while the original report states plainly that it has not reached recursive self-improvement.
+
+The company's technical evaluation team compares the original report against the publicity. Engineers check directly against the original English document and the open-source code and mark the claims that retelling inflated.
+
+## Run real company use cases in your own environment: test locally
+
+After external claims are checked, move the validation into the company's own environment. A task that ran well on a vendor's cluster of 100,000 accelerator cards will not necessarily deliver the same gains locally. The technical team should take real production data, build a test environment, and test with the company's own models and business request streams.
+
+Testing needs a defined evaluation set and a set number of repeat runs. For how to pick evaluation tasks and handle variance in results, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>. Record real throughput, latency, and error rate in your own environment, and use the measured values as the basis for evaluation.
+
+The test engineer keeps a full test log and writes the analysis. The engineer puts the vendor's baseline figures next to the local measurements, calculates the speedup under the company's own workload, and works out the local hardware running cost.
+
+## Write acceptance criteria and conditions into the contract: define the delivery boundary
+
+In commercial negotiation, the procurement department writes the metrics that passed testing directly into an annex of the purchase agreement. The contract must not rely on vague wording such as "industry-leading" or "major performance gains". It must state the minimum throughput under a specified hardware environment, batch size, and concurrency level.
+
+Delivery terms also need to define liability for breach. The contract should state that if actual end-to-end performance after deployment falls short of the specified minimum, the vendor must keep tuning or accept a corresponding payment deduction. Both sides confirm the test method at signing, and the technical team seals the use case library.
+
+Legal and the procurement director jointly check that the delivery terms are binding. The procurement team accepts delivery phase by phase against the quantified metrics and signs off one item at a time as each passes, so the company is not locked in by early marketing expectations.
+
+## AI vendor numbers: FAQ
+
+### Why does a single technical gain a vendor reports not always bring an overall gain in a company's own environment?
+
+Some single-item gains in vendor reports come from micro-benchmarks of specific operators. In real business workloads, system overhead comes from data reads and writes, model inference, network communication, and orchestration together. Even if one operator gets several times faster, overall end-to-end time will not drop in proportion when the bottleneck is network transfer or data reads. A company should run end-to-end tests in its own target deployment environment.
+
+### Faced with a vendor's claim of a multiple-fold gain, what should a technical evaluation team ask first?
+
+The technical team should first ask for the real initial baseline figure and the hardware test environment. Multiples mislead easily. A threefold gain from very low initial performance can still trail normal industry efficiency. Ask the vendor for the baseline code version, test hardware model, concurrency load parameters, and base throughput. Only with the comparison baseline in hand can the team judge whether the gain is a breakthrough or a fix for a basic shortfall.
+
+### Before signing the purchase agreement, how should a company set the test set and acceptance process for vendor validation?
+
+The validation test set should come from de-identified cases drawn from real business traffic, not from the vendor's preset question bank. The company's technical team should build a fixed use case library covering varied scenarios such as long text, short high-concurrency requests, and extreme anomalies, and set the metric acceptance rules. Technical staff from both sides run the tests together in a controlled environment and lock the logs. Passing the tests is a precondition for contract payment and phase delivery.
