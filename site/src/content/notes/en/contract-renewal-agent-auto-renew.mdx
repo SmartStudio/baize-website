@@ -1,0 +1,59 @@
+---
+title: "A Contract Renewal Agent Flags an Expiry: Should Auto-Renewals Be Held?"
+seoTitle: "Contract Renewal Agents: Should Auto-Renewals Be Held?"
+description: "A contract renewal agent identifies the expiry date, the auto-renewal clause, and the notice period, then works back from the last day to give notice and sends alerts. Contracts with auto-renewal clauses must not roll over by default. Before the window closes, the using department and the contract owner confirm whether to renew or renegotiate the price. A written non-renewal notice is reviewed by a person before it is sent."
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/contract-renewal-agent-auto-renew-cover.png
+coverAlt: A contract scroll circles on a round track with green arrows, a green barrier arm drops in front of it, and a desk calendar and an hourglass stand nearby, on a dark green base
+sourceHash: 'a838cf3d70cd'
+---
+
+When a contract renewal agent finds a contract with an auto-renewal clause, the contract must not be left to roll over by default at expiry. It must be held before the latest notice window in the contract, and the using department and the contract owner decide. The agent extracts the expiry date, the auto-renewal clause, and the notice period, and works back from the notice deadline to send several rounds of reminders. After the company decides internally whether to renew on the same terms, renegotiate, or let the contract end, every non-renewal notice or supplementary agreement sent to the other party must be reviewed and confirmed by a person before it goes out.
+
+import noteFig from '../media/contract-renewal-agent-auto-renew-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a contract under a magnifier showing a green date grid, an hourglass with green sand beside a desk calendar, a round meeting table with three option markers, and a hand stamping an envelope, each with an English label board" caption="Figure: Contract Renewal Agent | Auto-Renewal Clause" width="wide" border />
+
+## How to read the expiry date and notice period and work back the reminders
+
+Software subscriptions, equipment maintenance, site leases, and ongoing service contracts often include auto-renewal clauses. If reminders are set only on the contract's expiry date, a pop-up a few days before often arrives after the contract's last window for giving written notice of non-renewal before expiry. The company is then locked into another term.
+
+When a contract is filed in the system, the contract renewal agent first extracts four key fields from the body and any supplementary agreements: the contract end date, whether it has an auto-renewal clause, the latest notice period for non-renewal, and the length of the renewed term with its price adjustment rules. Next, the agent checks how the notice period is counted. If the contract says working days, it counts working days. If it says only "days" without specifying, it applies the period rules in Articles 200 to 203 of the PRC Civil Code: periods are counted in calendar days, the first day is not counted, and if the last day falls on a statutory holiday, the period ends on the day after the holiday. Unclear cases go to legal. A notice takes effect when it reaches the other party (Article 137 of the Civil Code), so the agent works back from the latest date by which the other party must receive it. It leaves time for courier or mail delivery by the method and to the address the contract specifies, plus a buffer for internal assessment and negotiation, and calculates an internal decision deadline. It sends to-do reminders in rounds to the contract administrator, the budget-owning department, and the department that uses the service. If no one responds by the deadline, the system escalates the reminder to the department head, so every contract with an auto-renewal clause is handled before the window closes.
+
+## Who confirms whether to renew and whether to renegotiate the price
+
+After the contract renewal agent's alert card arrives, the contract does not pass by default just because no one objects. The system adds a mandatory internal confirmation step in the workbench and holds the contract there. The using department and the purchasing or legal owner must explicitly select a decision. For which internal interface calls and approval flows can go through and which must wait for a person, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+The using department fills in its assessment first: for example, the gap between active software accounts and purchased seats, whether maintenance response met the standard, and whether next year's business volume will shrink. The purchasing or contract owner adds a market assessment. If the service is still needed and the original terms are reasonable, they select renewal on the original terms. If usage has dropped, similar services have become cheaper, or renewal triggers an automatic price increase, they select "Renegotiate" and start talks before the window closes. If the business has stopped using the service or is changing suppliers, they select "Do not renew at expiry," and the contract moves into the termination notice process.
+
+## How the non-renewal notice is drafted and who sends it
+
+Once the decision is not to renew at expiry, or to send a notice first to block the rollover and then negotiate a new contract, the action must be completed before the latest notice date. Based on the original contract's notice clause, the contract renewal agent checks the other party's receiving email, address, and the way notice takes effect. It cites the original contract number and the text of the auto-renewal clause, and drafts a Notice of Non-Renewal at Expiry.
+
+The draft stays in the internal approval workbench. The contract renewal agent does not send emails directly and does not apply seals automatically. Legal and the contract owner check the contract name, the grounds for ending the contract, and the handover items. Once they confirm, a person sends the email or mails the paper letter. For the permission boundary between an agent reading mail and sending mail, see <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent Permissions: Reading Email Is OK. Does Sending Need Approval?</NoteLink>. If the contract requires delivery by courier or with a signature and seal, the system creates an offline delivery task and prompts the handler to upload the courier receipt and proof of delivery.
+
+## How renewal decision records are kept and how to prevent misses
+
+For every contract, from the first reminder to closure, the contract renewal agent keeps a full record in the contract ledger. This includes screenshots of the extracted clause text, the time and recipients of each reminder, the using department's assessment, the purchasing and legal approval decisions, the final disposition, and copies of the non-renewal notice sent, with email receipts or courier delivery records.
+
+Blurry scans or unusual clause wording can cause misses. To prevent them, the handler confirms by hand, once, the expiry date and notice period the agent extracted when a new contract is filed. If a review finds that auto-renewal wording in a type of supplementary agreement or a foreign-language contract was misread, the team adds that wording pattern to the extraction rules right away and rescans existing contracts.
+
+## Contract renewal agents: FAQ
+
+### If a contract has no auto-renewal clause, does the agent still need to hold it for approval before expiry?
+
+A contract without an auto-renewal clause usually ends at expiry, with exceptions. Under Article 734 of the PRC Civil Code, if a lessee keeps using the leased property after the lease ends and the lessor does not object, the original lease stays in effect, but its term becomes indefinite. So plant and equipment leases, even without an auto-renewal clause, need a decision before expiry: renew, vacate, or object. Other core business contracts, such as production software licenses and framework agreements for key raw materials, also need early reminders from the contract renewal agent, so a forgotten renewal does not cause a system outage or a supply interruption. The agent reminds the using department early, based on the time needed for renewal negotiations, to assess whether to start signing a new contract.
+
+### If the latest notice date has already passed when we find out, what can we do?
+
+When the contract renewal agent detects that the current date is past the latest notice window but the contract has not yet entered the next term, it flags the contract red and escalates it to legal and the purchasing manager. The handler first checks whether the other party has given grounds for termination during the term, such as a breach, a missed service level, or a failure to give required advance notice. If the other party has performed without fault, the purchasing or business owner negotiates. Through a supplementary agreement, they try to shorten the renewal term, reduce seats, or pay a small penalty to end the contract early.
+
+### What is most often missed in auto-renewal clauses?
+
+Three details are most often missed when reviewing auto-renewal clauses. First, how the notice period is counted. If the contract says working days, count working days. If it says only "days" without specifying, apply the period rules in Articles 200 to 203 of the PRC Civil Code: count in calendar days, do not count the first day, and if the last day falls on a statutory holiday, the period ends on the day after the holiday. Send unclear cases to legal. Second, when notice takes effect and how it is delivered. A notice takes effect when it reaches the other party (Article 137 of the Civil Code), so the deadline must be worked back from the date the other party receives it, with time for courier or mail transit, and delivery must follow the method and address in the contract. A plain email alone may not be accepted. Third, price clauses after renewal. Some contracts bill renewed terms at list price or with an automatic percentage increase. If the contract is not held for renegotiation, costs go up.

@@ -1,0 +1,59 @@
+---
+title: "AI Screening for Export Sample Requests: Who Gets Free Samples?"
+seoTitle: "AI Sample Request Screening: Who Gets Free Samples?"
+description: "Exporters that use AI to pre-screen sample requests grade each one by company verification, how specific the inquiry is, past dealings, and target-market fit. AI suggests a free sample, a sample fee or freight collect, or a decline. The sales rep confirms the final plan, samples above a set value need manager approval, and follow-up results are logged."
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/b2b-sample-request-ai-qualify-cover.png
+coverAlt: A robotic arm sorts sample request cards from an inbox tray into three bins, and a green gift-wrapped sample parcel in the last bin is about to board a small airplane, on a dark green background
+sourceHash: '0c7f86bf1c5a'
+---
+
+Once AI pre-screens export sample requests, free samples go only to qualified prospects or existing customers whose company can be verified, whose purchasing need is specific, and who are in the company's target markets. Using scoring rules the company configures in advance, AI gives each request one of three suggestions: send free, charge a sample fee or ship freight collect, or decline. The account rep confirms the suggestion by hand. When the goods value of a single sample shipment or the international courier cost exceeds a set threshold, the request goes to the export sales manager for sign-off. After shipping, the rep follows up on test feedback at set milestones.
+
+import noteFig from '../media/b2b-sample-request-ai-qualify-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a business card with a magnifier and a globe, three file boxes of increasing size, a desk with a sample box and a green confirm button, and a large box locked in a frame under a stamp, each with an English label board" caption="Figure: Export Sample Requests | Sample Fee" width="wide" border />
+
+## What AI checks when it pre-screens an export sample request
+
+When a sample request comes in through the company website form, a trade-show business card, or email, AI first fills in and verifies four basic items. For how to identify the source channel of leads from the company website, see <NoteLink slug="export-site-geo-lead-attribution">GEO for B2B Export Websites: How to Attribute AI-Sourced Inquiries</NoteLink>. The first item is whether the company can be verified. Does the sender use a company-domain email or a free public mailbox? Do the company name, website, business address, and customs import and export records match? Does its main product category match the sample requested?
+
+The second item is whether the inquiry is specific. Did the customer leave only a generic line asking for samples, or state the product model, specifications, application, certification requirements, and expected purchase volume? The third item is past dealings in the CRM. Has this company asked for prices, bought goods, or received samples before? After past samples, did it give test feedback? The fourth item is the target market. Is the customer's country or region on the company's list of priority markets? Does it carry specific mandatory certification requirements or trade compliance restrictions?
+
+## How to split requests into free, sample fee, and decline
+
+After checking the four items, AI sorts each request into one of three tiers under the company's rules, and pushes it to the rep with the reasons. Tier one is a suggested free sample. It applies to existing customers with a clear purchase record who are developing a new project. It also applies to verified mid-size and large buyers, brand owners, and industry distributors in target markets whose inquiry parameters are clear and who will provide an international courier freight-collect account.
+
+Tier two is a suggested sample fee, or the customer pays international freight. It applies to small and mid-size buyers who are real and in the right line but are first-time contacts, and to high-price finished goods or custom parts. The company can write an optional clause into the plan: the sample fee is paid first and credited against the goods payment once a later bulk order meets the agreed level. This screens out casual sample requests. Tier three is a suggested decline of physical samples, with an electronic catalog and test reports sent instead. It applies to requests from free mailboxes that refuse to give a company name, from companies whose main business is in an unrelated industry, or from competitors trying to obtain samples.
+
+## How the rep confirms and who approves high-value samples
+
+AI's pre-screening tier is only an internal suggestion. It cannot trigger warehouse packing and shipping directly, and it cannot send a decline letter or a quote to the customer without review. The rep responsible for the region opens the pre-screening card in the CRM workbench and checks the customer background links and the history of past communication. If the rep just met this customer in person at a trade show, the rep can adjust the sample tier within their permissions and add a note. For setting approval gates on outbound reply emails, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+
+The company sets approval thresholds in the system by sample goods value and estimated international freight. For routine low-value standard parts within the rep's monthly free-sample allowance, the rep confirms and the system creates a sample shipping order that goes to the sample warehouse. Once a single request's total sample value, sampling cost, or international courier fee advanced by the company exceeds the set threshold, the system locks the shipping order and routes it to the export sales manager. The manager confirms the customer's potential and signs to release it. Only then does the warehouse pack and ship against the order.
+
+## How to follow up after shipping and review the screening rules
+
+After the sample ships, the system writes the international tracking number, expected delivery date, sample list, whether a sample fee was charged, and any agreed credit terms into the customer follow-up timeline. Once the parcel shows as delivered, AI reminds the rep to contact the customer on a preset schedule. On the delivery day, the rep emails to confirm the parcel arrived intact and attaches a test guide. After that, at intervals that match the test cycle, AI reminds the rep to ask about test results, trial order intent, or parameters that need changes.
+
+Each quarter, the export team joins the pre-screening records for sample requests with deal data and reviews them. It measures the trial-order conversion rate of free-sample customers, the repeat-order rate of customers who paid sample fees, and the results of requests where reps changed the tier by hand. It uses these to fine-tune the pre-screening score weights in the system.
+
+## Export sample requests: FAQ
+
+### If the customer will not give an international courier freight-collect account, can we still send a free sample?
+
+Decide by customer qualification and sample cost. Take a verified key target customer with a solid background and a matching need who cannot provide a freight-collect account because of internal finance limits. The rep can request that the company prepay freight, with export sales manager approval above the set threshold, or ask the customer to pay freight first. A first-time inquiry with an unclear background that will pay neither a sample fee nor freight gets no free sample.
+
+### How does AI pre-screen a request for custom samples?
+
+Custom sampling involves engineering assessment and special material purchases. During pre-screening, AI verifies the customer's qualifications and also checks whether the customer supplied complete drawings, tolerance requirements, material standards, or photos of a reference sample. If the information is complete, AI marks it as a custom-part request and passes it to an engineer to cost, with a default suggestion to charge a sampling fee and a sample fee. If information is missing, AI produces a list of parameters to supply. The rep sends it to the customer, and the request is assessed again once the information is complete.
+
+### How is the sample fee charged, and can it be credited against the goods payment?
+
+The sample fee is usually calculated from the product's standard unit price, extra sampling cost, and international courier fee. After the rep confirms the sample plan, a proforma invoice is generated for the customer, and the fee is collected through the company's corporate bank account or a cross-border payment platform. Whether the sample fee can be credited against later goods payments is an optional commercial policy the company sets itself. A common approach is to state on the proforma invoice that if the customer places a bulk order that meets the minimum order quantity within the agreed time, the sample fee is credited against the balance payment of the first bulk order.
