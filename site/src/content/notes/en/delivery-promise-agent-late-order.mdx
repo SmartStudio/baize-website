@@ -1,0 +1,59 @@
+---
+title: "A Delivery Promise Agent Gave the Date. Who Answers When the Order Is Late?"
+seoTitle: "Delivery Promise Agents: Who Answers for a Late Order?"
+description: "In manufacturing and trading companies, a delivery promise agent calculates available-to-promise quantity from live inventory, inbound purchases, and production capacity, and suggests a delivery date. A formal promise goes out only after sales or a planner confirms it. When an order is late, the system snapshot shows whether the cause was bad data, a later plan change, or a person who did not follow the suggestion, and the customer is told early about an adjusted plan."
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/delivery-promise-agent-late-order-cover.png
+coverAlt: A warehouse shelf and a short production line feed boxes toward a calendar board, and a pointing-finger confirm button passes them on to a delivery truck, along glowing green arrows on a dark green base
+sourceHash: '644d2f553d78'
+---
+
+A delivery promise agent calculates available-to-promise (ATP) quantity from live inventory, inbound materials, and available shop capacity, and suggests a delivery date. The salesperson or planner who clicks confirm owns the formal delivery promise sent to the customer. For a standard order within ATP, sales checks it and sends it to the customer. Rush orders, demand above ATP, and large custom orders must go to the production planner for review and signature. When an order is late, the company pulls the system snapshot saved when the promise was sent. It shows whether the underlying data was wrong, the schedule was later squeezed by an inserted order, or the salesperson shortened the date on their own.
+
+import noteFig from '../media/delivery-promise-agent-late-order-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right on white pedestals, joined by green arrows: a warehouse shelf with a green gauge, a desk calendar with a green check badge, a planner at a desk in front of a schedule screen, and a document under a glass dome with a magnifier, each with an English label" caption="Figure: Delivery Promise Agent | Available to Promise" width="wide" border />
+
+## How the suggested date is calculated and who makes the external promise
+
+When a customer asks about or places an order, the delivery promise agent pulls three inputs from the warehouse, purchasing, and production scheduling systems: current inventory, inbound materials with confirmed arrival dates, and remaining available hours on the relevant lines in each future time window. The agent takes current inventory plus inbound materials with confirmed arrival dates, subtracts safety stock, and subtracts quantity already promised to or locked by other orders. That gives the ATP quantity. It then adds days for material handling and inspection, packaging, and shipping transit, and generates a suggested delivery date card.
+
+The card goes only to the internal workbench. The system cannot send it to the customer. For routine orders whose quantity is within current ATP and whose process route is fixed, the salesperson who owns the customer checks the customer's receiving window and the contract terms, then clicks confirm to generate the formal delivery reply. For why outbound emails need a human review gate, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>. A suggested date that no person has confirmed is never a formal contractual promise.
+
+## Which special orders must go to a planner for confirmation
+
+Daily order intake often brings orders outside the normal calculation. For these, the delivery promise agent only lists the shortfall details, and the order must go to the production planner for approval. The first type is an order whose quantity exceeds current ATP and needs materials from several batches or expedited supply from vendors. The second type is a rush order that asks for less than the standard lead time. Fitting it into the current schedule takes capacity or shared materials from other promised orders. The third type is a new product or custom order in its first production run, where hours and yield figures are not yet stable.
+
+For these three types, the delivery promise agent lists in the workbench the material shortfall, the affected work-in-progress order numbers, and the line sections that need coordination. It pauses the external reply and hands the order to the planner. The planner assesses whether capacity can be freed through overtime, outsourcing, transferred substitute materials, or small date changes negotiated with other customers. Once the planner confirms it is feasible, they enter the approved date in the system and sign. Only then can sales give that date to the customer.
+
+## How to trace accountability from the records when an order is late
+
+When an order is late, the company pulls the decision snapshot the delivery promise agent saved. For every order, at the moment a person confirmed and sent the promise, the system sealed a full record: the inventory balance, the expected arrival dates of inbound purchase orders, the version of the line load table, the agent's suggested date, and the promised date the person confirmed and sent. For how to trace back and assign accountability when an agent's result goes wrong, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
+In the review, the team checks the snapshot along three lines. First, if the salesperson did not reply with the suggested date and promised an earlier date without the planner's special approval, the salesperson is accountable. Second, if the promise followed the suggestion but the warehouse later found a stock shortfall or overstated stock, or purchasing did not record a supplier delay, the underlying data was wrong and the data maintenance role is accountable. Third, if the data was accurate when the promise was sent but a later equipment failure, quality rework, or inserted rush order took capacity, the delay counts as production variation or a plan change.
+
+## How to warn early and notify the customer when an order will be late
+
+After an order is locked, the delivery promise agent tracks the receiving status of linked purchase orders and the labor reporting progress of shop work orders every day. If a key upstream material arrives late, an operation falls behind beyond the set threshold, or a batch quality defect leaves too few finished goods, the system sends a delay alert to the planner and the salesperson right away.
+
+After the alert, the planner first recalculates the earliest possible shipping time and assesses whether part of the order can ship early from stock. When full delivery on time is confirmed impossible, the agent drafts a customer message from the latest schedule. It states the affected items, the quantity that can ship first, and the adjusted estimated delivery date. Sales checks the draft and contacts the customer before the original delivery date to negotiate split shipments or a new date.
+
+## Delivery promise agents: FAQ
+
+### If two salespeople check ATP for the same stock at the same time, can they oversell?
+
+No, provided the system has reservation and stock-lock rules configured. When a salesperson only makes a preliminary inquiry, the ATP the agent gives carries a validity notice and does not lock physical stock. Once the customer states a clear intent to order and the salesperson clicks to request a lock, the system creates a temporary reservation with an expiry on a first-come, first-served basis, and deducts it automatically when other salespeople check. If the reservation does not become a formal order before it expires, it is released automatically.
+
+### If a supplier's inbound material is suddenly late, how do we change a date already given to the customer?
+
+After the buyer updates the expected arrival date on the inbound purchase order, the delivery promise agent scans all sales orders tied to that material and recalculates their shipping times. Orders now expected to ship after their promised date are flagged red and pushed to the planner. The planner first checks for substitute stock. If none can cover the gap, sales takes the new date to the customer early to agree on a change.
+
+### How does the agent report when ATP is not enough?
+
+When the customer's quantity exceeds current ATP, the delivery promise agent proposes a split delivery plan for internal confirmation. It does not reject the order, and it does not give one latest date for everything. The system first calculates the first-batch quantity that current inventory and near-term inbound materials can cover, and its earliest ship date. It then calculates the expected date for the remaining quantity as a second batch, based on standard purchase lead times and later schedule openings. It also pushes the shortfall details to the production planner for approval.

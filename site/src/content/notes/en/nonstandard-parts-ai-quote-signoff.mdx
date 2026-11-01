@@ -1,0 +1,70 @@
+---
+title: "AI Quoting for Custom Parts: Which Step Needs a Process Engineer's Sign-off?"
+seoTitle: "AI Quoting for Custom Parts: Process Engineer Sign-off"
+description: "Machining and equipment makers can use AI to quote non-standard parts. AI reads material, tolerances, and surface treatment from engineering drawings, matches a process route, and estimates hours and cost. Before the quote goes out, a process engineer must check and sign the route and process card, a lead co-signs large or new-process orders, and sales checks delivery and commercial terms."
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/nonstandard-parts-ai-quote-signoff-cover.png
+coverAlt: A machined metal bracket stands on an engineering drawing, a robotic arm places process cards beside it, a stamp glows green over a card, and a price tag sits at the end, on a dark green base
+sourceHash: '2ace088bb192'
+---
+
+AI quoting for non-standard parts can shorten the time spent reading drawings, breaking down operations, estimating machine hours, and totaling material costs. Before a quote goes to the customer, a process engineer must sign off on the process route and the process card. AI extracts material, dimensions, tolerances, and surface treatment requirements from the customer's drawings and 3D models, and produces a draft process card and an hours-and-cost estimate. A process engineer must check and sign off on whether the plant's current machines can make each operation, whether the tolerances need wire EDM or five-axis machining, and how the part is fixtured. Only then can sales set the external quote on that basis.
+
+import noteFig from '../media/nonstandard-parts-ai-quote-signoff-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: an engineering drawing under a green magnifier, a stack of route cards with a machined bracket, a green stamp pressing a seal onto a card, and a stack of quote sheets with a blank price tag, each with an English label board" caption="Figure: AI Quoting for Custom Parts | Process Card" width="wide" border />
+
+## What AI can calculate first from the drawings
+
+Machining and sheet metal shops receive many drawings for quotes every day. Many inquiries never become orders, and process engineers cannot keep up if they calculate hours by hand for each drawing. Once an AI quoting tool for non-standard parts is connected to the workbench, AI does four basic estimating steps first:
+
+1. Drawing feature extraction: it reads 2D drawings and 3D models and identifies the material grade, blank size, net weight, critical tolerances, surface roughness, and surface treatment requirements such as heat treatment, plating, and anodizing.
+2. Similar part matching: it searches the historical quote and work order database for old parts with similar structure and material, and pulls up the operations used and the actual hours as a reference. For why drawing breakdowns, whose results can be checked on the spot, are a good first use of AI, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+3. Draft process card and hours estimate: based on the holes, slots, and curved surfaces it identified, it lays out a draft process card with steps such as cutting, rough milling, finish milling, heat treatment, and grinding. It then calculates machining and setup costs from each machine type's hourly rate.
+4. Material and outsourcing totals: it calculates material cost from the blank size and material unit price, adds estimated outsourcing costs, and produces a first draft of the quote cost.
+
+## What the process engineer checks before signing
+
+AI's draft process cards often get machinability and fixturing details wrong. It may miss that a thin-walled part will distort during milling, leave out the cost of special tools for deep-hole drilling, or estimate a feature that needs five-axis machining at three-axis machine hours. An order taken at a wrong price loses money.
+
+The process engineer reviews and signs off in the workbench, focusing on four items:
+
+First, whether the tolerances match current equipment capability. Can the shop's current machines hold the high-precision coaxiality, position tolerance, or roughness on the drawing? Does the part need added lapping, wire EDM, or outsourcing?
+
+Second, whether the process route and operation order are right. Should stock be left after roughing for stress-relief annealing? How is the datum restored after heat-treatment distortion? If the AI's card misses steps or puts them in the wrong order, the process engineer adds or removes steps directly in the interface.
+
+Third, the number of setups and special fixtures. How many times is the part flipped and re-clamped? Does it need a custom fixture or special tools? This one-time tooling cost must be listed separately.
+
+Fourth, per-operation hours and material scrap rate. The engineer checks whether cutting time on key operations, first-article setup hours, and cutting scrap are reasonable. Only after the process engineer has corrected each item and clicked confirm is the cost figure locked.
+
+## When a process lead must co-sign, and what sales checks
+
+The system routes by risk and amount. A non-standard part with common material, common operations, and an estimated total within the set threshold needs only the sign-off of the process engineer on shift. If the part uses a new material the plant has not worked with, a special process being tried for the first time, or the order total exceeds an amount tier the company sets itself, the system sends it to the process lead for review and co-signature.
+
+After the process side signs the cost sheet, the document goes to sales. Sales does not change the process card. Sales checks three commercial conditions: whether the customer's required delivery date fits the shop's current production load, what margin to set based on the customer's deal history and volume, and the freight and payment terms. Only after all three are confirmed is the formal quote generated and sent to the customer. For how to roll back and assign accountability when an AI-assisted step goes wrong, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
+## How actual costs after the deal feed back into the model
+
+After a quote becomes a production order and the parts ship, the system pulls the actual hours per operation, actual material issued by weight, and rework costs recorded in the shop's labor reporting system. It compares them operation by operation with the budgeted hours signed off at the time of the AI quote.
+
+If actual machining hours for a type of part deviate from the quote estimate beyond the set threshold, the process team finds the cause in its review. Was deburring time left out? Does a material actually cut slower than the standard library says? The process engineer updates the corrected hour factors in the knowledge base, so AI uses the corrected parameters the next time it sees similar features.
+
+## AI quoting for custom parts: FAQ
+
+### If the customer only sent a blurry sketch or gave no tolerances, can we run an AI quote directly?
+
+A formal quote cannot be issued directly. When a drawing lacks critical tolerances or a material grade, or is hard to read, AI first lists the missing items as questions and returns them to sales. Sales asks the customer to supply them. Or, with the process engineer's confirmation, the company gives a budget price range for reference only based on general tolerances, and states on the quote that the final price depends on the formal engineering drawing both parties confirm.
+
+### With so many inquiries, is there time for the process engineer to review every process card in detail?
+
+Handle them in tiers by part complexity and customer intent. For simple inquiries that closely match old parts and fall within the set amount threshold, the process engineer still checks the process route and process card (operations, equipment, and whether the tolerances can be held). The engineer can check quickly against the old part's process card. The engineer must not sign by looking only at total hours.
+
+### Should AI produce the process card?
+
+AI can produce a draft process card, but the draft cannot go straight to quoting or the shop floor. A card that AI lays out from drawing features and historical work orders saves the process engineer from typing operation names, looking up material densities, and calculating basic cutting times. The operation order, datum and fixturing choices, machine assignments, and tooling requirements must be checked, corrected, and signed by the process engineer before the card is final.

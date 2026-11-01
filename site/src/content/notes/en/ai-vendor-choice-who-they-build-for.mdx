@@ -1,0 +1,67 @@
+---
+title: "Choosing an AI Model Vendor: Who Does It Build Products For?"
+description: "When choosing a model vendor, first ask who the vendor builds products for and whether enterprise business is its core business, then assess vendor stability. If a vendor sells to enterprises only as a backstop for its own compute, it may switch back to consumer business at any time or follow its leader's personal will, and a company should not tie its core operations to it."
+lang: en
+pubDate: 2026-11-01
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/ai-vendor-choice-who-they-build-for-cover.png
+coverAlt: On the left a seesaw rocks between a gift box and an enterprise server crate; on the right a solid platform bolts down another server crate, and a green chain links a contract plate to that platform, on a dark green base
+sourceHash: '650f8ab2b721'
+---
+
+This is note 08 in our podcast reading series. It can be read on its own.
+
+import noteFig from '../media/ai-vendor-choice-who-they-build-for-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a factory block under a magnifier, a balance scale tipped toward a server box over a gift box, a server cabinet bolted to a concrete base, and an open exit door with a server box ready beside it, each with an English label board" caption="Figure: Choosing a Model Vendor | Vendor Stability" width="wide" border />
+
+When a company chooses a model vendor, it should first look at who the vendor builds products for and whether enterprise business is its core business, then look at vendor stability. On the Sharp Tech podcast on October 5, 2026, Ben Thompson discussed Meta's enterprise AI business and pressed one question: why would enterprise customers buy from it? If a vendor's reasons for selling to enterprises are all about backstopping its own compute, it may switch back to consumer business at any time or be overruled by its founder's personal will. A company should not tie itself to that vendor. This note does not cover how to check vendors' self-reported performance data. For that, see <NoteLink slug="vendor-ai-claims-verification">AI Vendor Data Is Self-Reported: How to Check It During Selection</NoteLink>.
+
+## The one question Ben asked
+
+In that episode, a listener wrote in to argue that in the model business, a company can serve consumers and enterprises at the same time. Meta could shift priority between consumer and enterprise based on revenue per megawatt, and use enterprise business as a backstop for its compute.
+
+Ben did not dispute these reasons. He asked one question: why would an enterprise buy from Meta? If a vendor says publicly that it can shift priority between consumer and enterprise at any time, why would an enterprise customer tie itself to a consumer company? For Meta, this is option value it holds. For the enterprise customer that signs the contract, it means the vendor may pull compute and support whenever the consumer side pays better. For how a company should define its role in the technology chain and approach model purchasing, see <NoteLink slug="ai-strategy-first-customer">How to Set an Enterprise AI Strategy: Amazon, Apple, and Microsoft's Three Bets</NoteLink>.
+
+## What it means when every reason is the vendor's own need
+
+Every reason the listener listed for Meta was Meta's own need: Meta's monetization, Meta's competition for compute, Meta's need for a competitive model. Ben pointed out that a business needs a counterparty, the customer. In these discussions, nobody could say why an enterprise customer would buy.
+
+The tech industry has a long record of companies that did things for their own reasons and failed, because the motive was not about the customer. Ben said plainly that if a company signed with Meta, he would question that company's leadership. Enterprise service is not Meta's core business or its focus, and Meta is doing it for its own reasons. By contrast, OpenAI's turn to enterprise is real. It is building for enterprises so it can compete in that market. Anthropic has also truly turned to enterprise. Model quality matters too. If Meta's model is good enough that people use it anyway, Meta can sell the model directly and does not need a whole enterprise team. Ben himself supports Meta selling compute and allocating it internally at an internal transfer price.
+
+## What to look at for vendor stability
+
+To assess vendor stability, purchasing and technical leads need to see three things: where the core business sits, where the organization's focus is, and whether decisions follow one person's will.
+
+First, the core business. Whether the vendor's core revenue comes from consumers or enterprises decides who gives way when compute is tight. For a vendor that uses enterprise business as a compute backstop, enterprise customers' priority can be lowered any time the consumer side needs compute.
+
+Second, organizational focus. Enterprise service needs long-term work on permissions, compliance, and business workflow integration. This is also the premise of <NoteLink slug="why-not-just-buy-ai-accounts">Why Companies Shouldn't Just Buy Individual AI Accounts</NoteLink>. If the vendor's focus is not on enterprises, customer requests will not make it onto the schedule.
+
+Third, whether the boss's personal will can override decisions. Ben warned that signing with Meta carries instability risk because Zuckerberg will intervene. He used GCP as the comparison. GCP is the best case of a consumer giant building an enterprise cloud, yet it took ten years and depended on Kurian's leadership. Zuckerberg would not tolerate that approach. When the top leader can change their mind at any time, vendor stability cannot be guaranteed.
+
+## Questions to ask vendors during selection
+
+When choosing a model vendor, a company can ask the vendor four questions in person and check the answers against the contract:
+
+1. How is compute priority written into the contract? When the vendor's own consumer business is short of compute, does the enterprise customer's quota have a hard guarantee clause?
+2. How is the enterprise team measured? Does the team serving enterprises build around enterprise customer needs, or does it only sell surplus internal compute?
+3. Whose needs set the product roadmap? Which recently released features were built specifically for enterprise customers?
+4. How is switching cost controlled? If the vendor changes focus or shrinks its enterprise line, can current workflows move to a backup model within a set period?
+
+## Choosing a model vendor: FAQ
+
+### If the vendor's model works well, should we still avoid its enterprise service contract?
+
+If the model works well, the company can buy model API calls or compute directly, without signing a deeply binding enterprise service contract. As Ben said, if the model is good enough that people use it anyway, the vendor can sell the model directly and does not need a whole enterprise team.
+
+### How do you tell whether a model vendor has truly turned to enterprise, or treats enterprise business as an option?
+
+Check whether its motive and focus are on enterprise customers. OpenAI and Anthropic have truly turned to enterprise and build products for enterprise customers so they stay competitive in that market. A vendor that treats enterprise business as an option is calculating how to shift priority between consumer and enterprise by revenue per megawatt, and how to backstop its own compute.
+
+### How do you judge vendor stability?
+
+First, check whether enterprise business is the vendor's core business and focus. Next, check whether the enterprise team has long-term, independent operating authority. GCP took ten years and needed Kurian's leadership to succeed. Last, check whether the boss can step in and change direction at any time. If any one of these is in doubt, the company should keep its architecture able to switch models at any time.

@@ -1,0 +1,59 @@
+---
+title: "A Purchase Order Agent Places Orders on Its Own. How Should Amounts Be Tiered?"
+seoTitle: "Purchase Order Agent Approval Tiers by Order Amount"
+description: "When a company uses a purchase order agent for routine purchasing, it splits approval authority by amount tiers it sets itself. Low-value orders under a framework agreement go through automatically, mid-tier orders need purchasing manager approval, and high-value orders go to the department head or finance for sign-off. The system also blocks order splitting meant to avoid approval and keeps a full record."
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/purchase-order-agent-approval-tiers-cover.png
+coverAlt: Three platforms rise step by step, each holding a larger purchase order envelope; the lowest has an open green gate, and the two higher ones have closed gates with stamps beside them, on a dark green base
+sourceHash: '3f4b0fdc554c'
+---
+
+Whether a purchase order agent can send an order to a supplier directly depends on amount tiers and approval authority the company sets itself. Routine replenishment below the auto-release line and covered by a valid framework agreement is created and sent by the agent automatically. Mid-tier orders, at or above the auto-release line and below the high-tier line, are put on hold and routed to the purchasing manager for approval. Orders at or above the high-tier line go to the business department head or finance for sign-off. The system also checks cumulative order amounts to the same supplier and in the same category over a short period, and blocks orders split to avoid approval. Every approval step and ordering action is recorded.
+
+import noteFig from '../media/purchase-order-agent-approval-tiers-fig-en.png'
+
+<Figure src={noteFig} alt="Four small gate stations left to right, joined by green arrows: a small envelope passing through an open green turnstile, a medium envelope waiting at a closed gate with one stamp, a large envelope waiting at a closed gate with two stamps, and a clipped stack of small envelopes stopped by a striped barrier, each with an English label board" caption="Figure: Purchase Order Agent | Approval Authority" width="wide" border />
+
+## How to set amount tiers and which orders release automatically
+
+Before a company puts a purchase order agent live, purchasing and finance configure amount tiers in the purchasing system based on category traits, budget accounts, and risk tolerance. This note covers only amount-tier controls once an order reaches the ordering step. For how to screen suppliers before ordering, see <NoteLink slug="procurement-agent-supplier-shortlist">How Detailed Should a Procurement Agent's Supplier Shortlist Reasons Be?</NoteLink>.
+
+Amount tiers usually follow a "reach the line, move up" rule and split into three tiers. An amount exactly equal to a line goes to the higher tier, and the company must fix this rule in its authority matrix. Tier one is the low-value auto-release tier. The order amount is below the auto-release line, the item is in the annual framework agreement catalog, the unit price matches the agreement price, and the monthly budget is not exceeded. The purchase order agent calls the interface and sends the order directly. Tier two is the mid-value tier. The order amount is at or above the auto-release line and below the high-tier line, or the order triggers an added condition such as an expedited delivery date. The agent drafts the order, puts it on hold, and sends it to the purchasing manager to check the unit price and the rate of inventory consumption. Tier three is the high-value tier. The order amount is at or above the high-tier line. After the purchasing manager's first review, it also goes to the requesting department head or finance for sign-off. For which agent interface calls can go through directly and which must wait for approval, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+## How to detect order splitting and block it in the system
+
+If approval authority is checked only against the face amount of each order, a requester or a replenishment policy can easily split one high-tier purchase into several low-value orders sent in batches just under the auto-release line. To close this gap, the system adds a two-part block on time window and cumulative amount, on top of the per-order amount check.
+
+Before each order is submitted, the purchase order agent searches for orders already issued and drafts in progress from the same requester, the same requesting department, the same item code, or the same supplier within a set time window. Once the combined amount of several small orders crosses the set threshold, the system removes the current order's auto-release eligibility at once. It locks the current order and the related pending orders together, routes them to the mid-tier or high-tier approval flow by the combined total, and shows the purchasing manager a split-order alert. For high-frequency replenishment categories, companies also set a daily cap on the number of automatic orders and a monthly cap on total automatic purchasing. When either cap is reached, all later orders go to human approval.
+
+## How to write approval authority into the system and connect it to payment
+
+Once the tier rules are set, they must be written into the ERP or purchasing system's authority table as hard validation logic. For each approval role, the backend configures the amount range, the categories covered, the budget center, and the delegation rules. The purchase order agent has permission only to trigger the ordering interface within the tier-one limit. It cannot change the approval flow or skip levels.
+
+After a purchase order is approved and issued, the system writes the order number, the amount tier triggered, each approver's account, the sign-off timestamps, and the framework agreement version number into the order record. When the goods are received and the supplier invoices for settlement, the finance system first runs a three-way match. It matches the quantity, unit price, and amount on the purchase order, the goods receipt, and the supplier invoice. It then checks the approval record. Before payment, it pulls the approval authority record from the time of ordering and confirms the order has sign-off at the right level. For the later controls from reconciliation to payment, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>. The accounts payable module refuses payment on an over-limit purchase order that lacks sign-off from a manager or finance at the right level.
+
+## How exceptions are caught and how order records are reviewed
+
+If a framework agreement price change moves the unit price beyond the set threshold from the baseline, or a line stoppage leads someone to check a special expedite approval, the purchase order agent stops automatic ordering regardless of amount. It creates an approval card tagged as an exception, listing the deviating items and historical transaction prices, for a person to decide.
+
+Purchasing and internal control export the run logs each month and review them. First, they look at the order distribution across amount tiers and check whether many orders sit just under the auto-release line. Second, they look at blocked split-order alerts and determine whether each was a normal batched request or a deliberate attempt to avoid approval. Third, they look at the rejection reasons from managers and finance, and add frequently rejected items to the pre-checks.
+
+## Purchase order agents: FAQ
+
+### Does routine replenishment within budget still need human approval when it exceeds the automatic order tier?
+
+Yes. Approval of an annual or monthly budget only means the department has a total amount available. It does not mean the timing, batch size, and inventory holding of each purchase are reasonable. Whenever a single order or a short-period cumulative amount reaches or exceeds the auto-release line the company sets, the purchase order agent must hold the order and route it to the purchasing manager or department head for approval under the rules.
+
+### What if we find that an order the agent already sent was placed in the wrong tier?
+
+First, suspend the agent's automatic ordering permission in the purchasing system, and have a buyer contact the supplier to withdraw or freeze any order not yet shipped. Then pull the run logs and check whether the cause was a wrong item category, an exchange rate conversion error, or a gap in the cumulative-amount time window. After the rule is fixed and passes testing, restore automatic ordering.
+
+### How often is approval authority adjusted, and who adjusts it?
+
+Companies usually review approval authority every quarter or every six months, and also whenever the organization changes, category prices swing sharply, or a new large framework agreement is signed. The head of purchasing leads the review, together with finance and internal control, and assesses the release rate and risk record of each amount tier. Once the adjustment is confirmed, the system administrator updates the approval authority table in the backend and keeps a change record. The purchasing team cannot change limits in the backend on its own.
