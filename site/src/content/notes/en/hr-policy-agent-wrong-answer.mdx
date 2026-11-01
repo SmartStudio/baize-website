@@ -1,0 +1,61 @@
+---
+title: "An Employee Q&A Agent Got the Leave Policy Wrong. Who Is Responsible?"
+seoTitle: "HR Policy Agent Gave a Wrong Leave Answer: Who Is Liable?"
+description: Companies deploy employee Q&A agents to answer attendance and leave policy questions, and the algorithm explains general rules quickly with the clause cited. When a wrong answer leads an employee to take leave by mistake, the company needs a verification and remedy process, a clear line for handing personal balance questions to a person, and regular spot checks and policy updates to head off disputes.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/hr-policy-agent-wrong-answer-cover.png
+coverAlt: An open policy binder with a small speech bubble pointing at one page and a green bookmark marking the cited line, next to a calendar block, on a dark green background
+sourceHash: '75c296c4bdff'
+---
+
+An HR department launches an employee Q&A agent to answer leave and attendance policy questions. The algorithm gives guidance based on current policy documents and helps employees look up rules on sick leave, marriage leave, and time off in lieu on their own. When the tool's answer is wrong and an employee books travel or files a leave request based on it, the company cannot pass management responsibility to the software. The company needs to set in advance where the tool answers and where a person steps in, keep version tracing and a remedy channel, and have an HR specialist verify each case.
+
+import noteFig from '../media/hr-policy-agent-wrong-answer-fig-en.png'
+
+<Figure src={noteFig} alt="Left to right, joined by arrows: a speech bubble answering from a policy binder, a bookmark marking the cited clause, a staffed help desk taking over, an eraser correcting a line on a document, and a magnifier spot-checking logs" caption="Figure: Employee Q&A Agent | Employee Handbook" width="wide" border />
+
+## The algorithm answers only general clauses and hands personal balances to a person
+
+In the chat window of the company messaging app, an employee asks how many public holidays fall inside maternity leave. The employee Q&A agent pulls the relevant clauses of the attendance policy and gives an explanation. The tool answers general rule questions fast. It can list the statutory annual leave entitlement for each length of service, and the supporting documents a marriage leave request needs.
+
+For personal leave balances and special working-hour approvals, the system hands the conversation to a human agent. This keeps the algorithm from giving a wrong answer because it lacks service-length data. For who stands behind what a bot promises, see <NoteLink slug="ai-cs-can-reply-vs-who-owns-liability">AI Customer Service Compliance: Who Owns What the Bot Promises?</NoteLink>. When an employee asks how many days of paid annual leave they have left, or whether they can carry leave into next year, the chat shows a link to an HR service desk ticket. The HR specialist in charge of payroll and attendance checks the attendance system data and then confirms. The program handles general policy questions. Business staff handle specific matters that touch personal entitlements and approval discretion.
+
+## Every answer carries the document version and clause number
+
+An employee asks how long time off in lieu stays valid. Under the answer, the system shows the attendance policy clause it comes from and the year the policy was issued. When the algorithm quotes a policy passage, it also shows the policy number and effective date, so the employee can check the original text directly.
+
+For how to maintain policy versions, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>. After HR issues a new leave policy, the system administrator marks the old file as retired in the knowledge base back end and loads the new policy that went through the official issuing process. The algorithm searches only documents currently in effect, so employees do not get outdated leave entitlement information.
+
+## When a wrong answer surfaces, a person verifies and remedies it
+
+An employee files a request to use annual leave in place of home-visit leave, based on a screenshot of the chat. The approving manager sees that the clause was misread and passes the ticket to an HR specialist. The specialist checks the chat log and confirms the algorithm had pushed a benefit clause reserved for a specific role to an employee in an ordinary role.
+
+In February 2024, the Civil Resolution Tribunal of British Columbia, Canada, ruled in [Moffatt v. Air Canada](https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.pdf) that Air Canada was responsible for a bereavement fare policy its website chatbot got wrong. The tribunal rejected the argument that the chatbot was responsible for its own statements. This is a foreign civil ruling about an external customer, and it does not apply directly to employment disputes in China. It does show that a company will find it hard to make an official tool bear responsibility for what the tool said.
+
+The HR specialist contacts the employee, explains the situation, and checks which types of leave the employee is actually entitled to under existing policy. If the employee has already booked travel based on the tool's answer, HR and the department manager coordinate around the work schedule. They can process time off in lieu after the fact, or split the leave into parts. The HR specialist tags the wrong Q&A pair as corrected in the back end and passes it to the colleague who maintains the knowledge base to fix the content.
+
+## Review Q&A logs and add vague questions to formal policy
+
+The HR specialist exports Q&A records from the back end and filters for leave keywords employees ask about again and again. The analysis shows that several employees asked whether parental leave and caregiver leave can be extended when they overlap. The algorithm gave vague answers because the current documents lack detailed clauses.
+
+The HR team turns these frequent vague points into proposed clause additions and submits them to the policy review meeting. The revised implementation rules add specific explanations of pay calculation and gaps between leave periods. After the required notice period, the rules go back into the knowledge base.
+
+## Employee Q&A agents: FAQ
+
+### An employee uses a screenshot of a wrong answer as the basis for leave. Does HR accept it?
+
+HR first pulls the original Q&A record to check what the agent said at the time, then handles the case under policy and the employee's circumstances. If the employee has already made arrangements based on the wrong answer, HR and the department manager agree on a remedy. Disputed cases go to legal.
+
+### How do you stop the agent from making up leave policies that do not exist?
+
+The company turns on strict matching in the knowledge base search settings, so the algorithm draws content only from the uploaded policy text. When an employee asks something outside the loaded documents, the system gives a preset standard reply saying there is no matching policy on record, and offers a transfer to the human service desk. This keeps the algorithm from inferring and inventing an answer.
+
+### When the employee handbook is updated, how does the agent keep up?
+
+After the handbook completes the employee consultation process and is published to all staff, the administrator replaces the old chunked files in full. The algorithm rebuilds its index. The team asks the list of common questions again, checks answers where old and new clauses meet, and opens the tool to employees only after confirming the new rules are in effect.

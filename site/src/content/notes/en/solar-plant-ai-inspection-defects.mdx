@@ -1,0 +1,61 @@
+---
+title: "AI Inspection at Solar Plants: Who Confirms the Defect Report?"
+seoTitle: "AI Solar Plant Inspection: Who Confirms the Defect Report?"
+description: Large solar plants use drone infrared scans and vision algorithms to find anomalies, and the system quickly produces a list of suspected hot spots and damaged modules. O&M engineers verify the algorithm's screening report and route the work orders. For warranty claims, qualified specialists retest on site, so quality and contract performance can be traced.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/solar-plant-ai-inspection-defects-cover.png
+coverAlt: A small drone hovering over rows of model solar panels, casting a green scanning light onto one panel where a green hot spot glows, on a dark green background
+sourceHash: '84835008c5ba'
+---
+
+Large solar plants now inspect with airborne infrared scans and vision algorithms. A back-end program pulls the aerial images, compares them with historical temperature baselines, and screens every panel in the plant for hot spots, strings that have dropped out, and soiling from sand and dirt. The algorithm's results are leads on suspected defects. They cannot replace the sign-off on an engineering acceptance. An O&M engineer verifies each result before the plant issues a repair work order. When a claim on an equipment defect is involved, qualified specialists retest on site.
+
+import noteFig from '../media/solar-plant-ai-inspection-defects-fig-en.png'
+
+<Figure src={noteFig} alt="Left to right, joined by arrows: a drone scanning solar panels with infrared, a panel with anomalies circled, an O&M engineer reviewing at a desk, a technician retesting a panel with a meter, and a loop arrow back from a calibration dial" caption="Figure: Solar Plant Inspection | Drone Inspection" width="wide" border />
+
+## Aerial images are labeled automatically into a list of suspected defects
+
+When a drone inspection ends, the drone lands on the pad beside the solar array. The high-resolution images from its infrared and visible-light cameras are loaded into an edge computing workstation. In the image sequence, the algorithm finds cells whose temperature difference exceeds the set threshold, and labels each with its string number, rack position, and GPS coordinates.
+
+From the bright and dark patterns in the infrared image, the algorithm sorts each anomaly into a type: surface shading from bird droppings, a hot spot caused by an internal microcrack, or a whole string with no current because an inverter circuit is open. When processing finishes, the system produces a defect album for review. It lists a high-resolution photo and an infrared temperature map for each suspected anomaly. Aerial screening narrows the search across the whole array down to specific racks.
+
+## O&M engineers check against site conditions before dispatching work
+
+In the control room, an O&M engineer opens the defect list generated that morning and compares each hot spot image's temperature difference with the module's physical location. The engineer uses DC-side current data from the central monitoring system to confirm whether the string really shows a sudden drop in power.
+
+For which kinds of work to hand to AI first, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. If the engineer finds the temperature rise is temporary and caused by weed shadows, they tick it in the system and move it into a routine mowing and cleaning work order. If it is a point hot spot on a cell and the temperature rise exceeds the value set in the O&M procedures, the engineer sends it through the work order system to the on-site repair crew. The engineer's review filters out false alarms from reflected sunlight and fixes the targets for on-site work.
+
+## Warranty claims: an authorized expert retests on site
+
+One string shows an abnormal open-circuit voltage along with severe heating. The plant's asset manager pulls the equipment purchase warranty agreement and sends a qualified technician with a portable thermal camera to the site. When the plant asks a module manufacturer for batch replacement and compensation for lost generation, neither the drone inspection nor the algorithm's screening report can serve alone as legal evidence for a commercial claim.
+
+In solar O&M, the International Electrotechnical Commission technical specification [IEC TS 62446-3](https://webstore.iec.ch/en/publication/28628) defines tiers for outdoor infrared thermography. It splits inspection into two levels, simplified and detailed. The specification classes fast infrared surveys from vehicles or aircraft as simplified inspection. Simplified inspection suits quickly finding sub-arrays, strings, or modules with obvious anomalies across a whole array. It has lower personnel qualification requirements and cannot give an authoritative verdict on module quality. Detailed inspection must be done by an authorized PV plant expert and an infrared thermography expert. The common practice the specification gives is a simplified inspection of the whole array first, then detailed inspection by experts on the modules found to be abnormal. The exact escalation criteria can be agreed in the O&M contract.
+
+A certified infrared inspection expert measures wind speed, irradiance, and panel tilt on site, and collects temperature data as the specification requires. The expert also uses a portable electroluminescence tester to check the shape of microcracks in the cells. The expert issues an inspection report, which serves as the technical basis for warranty talks with the module manufacturer.
+
+## On-site results feed back to calibrate false and missed alarms
+
+Cleaning crews and repair staff mark work orders complete on tablets and upload photos of replaced bypass diodes along with measured temperatures. When a work order comes back, the plant's O&M system automatically links the on-site measurements with the defect type the algorithm first identified.
+
+For which numbers to watch after go-live, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>. The algorithm team pulls the on-site closure records on a schedule and counts which alarms were false alarms from reflections and which were real ground faults caused by aging insulation. Algorithm engineers retrain the detection model on real site data and adjust the temperature difference thresholds and the weights of image shape features, which cuts wrong dispatches on later flights.
+
+## Solar plant inspection: FAQ
+
+### Why does the algorithm often mistake normal module reflections for hot spots?
+
+At certain viewing angles, the glass surface of a solar panel reflects sunlight, which causes a sharp local jump in infrared energy. If the algorithm cannot compare multi-angle, multispectral images, it tends to read this mirror reflection as abnormal cell heating.
+
+### How many algorithm alarms does an O&M engineer review at a time?
+
+The workload depends on the plant's installed capacity and the weather. Usually, after the drone finishes the full-site flight, the engineer reviews the suspected defects the algorithm marked in one session, compares them with electrical performance curves, and routes them.
+
+### Can drone inspection replace sending people on site?
+
+Drone inspection covers large arrays efficiently and screens for anomalies. It cannot fully replace site visits. Bolt torque tests, cable insulation resistance measurements, checks for moisture in junction boxes, and the issuing of authoritative inspection reports are still done on site by qualified technicians.
