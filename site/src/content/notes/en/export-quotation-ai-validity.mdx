@@ -1,0 +1,63 @@
+---
+title: "AI-Generated Export Quotes: Which Date Sets the FX Rate and Freight?"
+seoTitle: "AI Export Quotes: Which Date Sets the FX Rate and Freight?"
+description: When an export company uses AI to generate quotations, the base exchange rate date and source, the validity of the base ocean or air freight rate, and the quote validity period are all written into the document by preset rules. The sales rep and finance check them before sending. Longer validity or discounts beyond authority go to a supervisor for approval.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/export-quotation-ai-validity-cover.png
+coverAlt: A quotation sheet, a desk calendar with a glowing green date cell, a small container ship with containers, an hourglass, and a balance scale holding coins on a dark green base
+sourceHash: 'ca0d5223e314'
+---
+
+When AI generates an export quotation, the exchange rate date, the rate source, and the date the freight rate is valid to are all written into the quote terms by value rules the company has configured in advance. The AI does not pick dates on its own. The sales rep or finance checks the base exchange rate, the freight breakdown, and the quote validity period before the quote goes out. If the validity period or discount goes beyond the company's limits, the quote goes to the sales supervisor for approval.
+
+import noteFig from '../media/export-quotation-ai-validity-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, joined by green arrows: a template sheet with check boxes, a desk calendar with coins, a container ship next to two separated boxes, and a padlock with an hourglass and a refresh arrow" caption="Figure: Export Quotation | Quote Validity" width="wide" border />
+
+## Which value rules to set before drafting a quote
+
+A common loss for export companies: costs are calculated at the day's exchange rate and freight rate, but the quote stays valid for a long time. By the time the customer comes back to order, the exchange rate and ocean freight have moved up. A quote validity period locks the price, limits exposure to swings in raw materials, exchange rates, and freight, and gives the buyer time for internal decisions. If the period is too long, the company absorbs the cost swings during it.
+
+Before using a tool to draft export quotes, finance and the sales supervisor fix the value rules in the template. The rules state the following. The quote date is the start of the validity period. Validity is counted in calendar days or working days, or the document states "valid until" a specific date. Trade terms are written as the term plus a named place. For example, FOB is followed by the named port of shipment. A draft that gives only the term abbreviation may not be sent.
+
+Each trade term needs its cost boundary spelled out. Under CIF, the document lists what freight and insurance cover. Under DDP, it states whether the price includes destination import duties, customs clearance fees, and final delivery. Buyers may now use tools to collect and compare supplier quotes. The more standard the terms, the more accurately the buyer's tools read them. For how to write pages and terms for these buyers, see <NoteLink slug="agent-buyer-b2b-landing-page">How to Write a B2B Landing Page for AI Agent Buyers</NoteLink>.
+
+## Which date sets the exchange rate, and how to state it on the quote
+
+When AI drafts an export quote, it reads the exchange rate from the source and on the date the template specifies, such as the rate table finance publishes. It does not find a number on a web page by itself. The template can be set to print the base exchange rate used, the rate date, and the rate source on the document, so the sales rep and finance can check them.
+
+To guard against large exchange rate swings during the quote period, a company can state the base exchange rate in the remarks field of the quote. It can also agree on a repricing trigger: if the exchange rate at price lock or settlement moves beyond a band the company sets, compared with the base rate, buyer and seller reconfirm the price. Finance sets the band and writes it into the standard template. Neither sales reps nor the generation tool change it.
+
+## Freight rate validity and charges billed separately
+
+The base freight rate from a forwarder or carrier has its own validity period. It is not always as long as the product quote's validity. When AI assembles a quote that includes freight, it writes the base freight rate and its expiry date into the freight clause. The sales rep checks whether the two dates line up.
+
+Beyond the base rate, charges that change often or arise only later are listed separately as extra charges. These include the bunker surcharge, peak season surcharge, destination port charges, and port change fees. The clause states that these charges follow the formal quote and invoice the carrier or forwarder issues at the time. The buyer receives the breakdown before the charge is incurred and confirms it in writing before settlement. When the documentation clerk reviews the draft quote, they check the port names, container type and quantity, base freight rate expiry, and the notes on extra charges.
+
+## Price lock conditions and requoting after expiry
+
+The terms must state when a quote's price is actually locked. The common practice is that the price locks only after the buyer confirms a proforma invoice or formal order in writing within the validity period and pays the agreed deposit. If the buyer changes the quantity, product specification, delivery place, shipment date, or payment terms during discussion, this counts as a new quote. Costs are recalculated and a new quote is issued.
+
+When the validity period has expired and the customer comes back some time later asking to order at the old price, the sales rep follows the rules. The rep tells the customer the old quote has expired, pulls the day's raw material cost, the day's exchange rate, and the latest freight rate, and generates a new quote. The old price is not carried over. If raw materials rise sharply while the quote is still valid, the terms on the document decide. If a repricing clause was included, the rep negotiates a price adjustment with the customer using the evidence that clause requires. If there is no repricing clause and the customer has already completed the lock steps, the company in principle performs at the original price.
+
+If a sales rep asks to extend the validity period beyond the company's limit, or offers a price beyond the company's discount tier, the workflow can be set to stop the request and send it to the sales supervisor or finance for approval. Every quote keeps a full record in the back office: the internal approval version, the version sent, the send time, the recipient, the date and source of the exchange rate, and each confirmed change. The quote record also notes which channel the inquiry came from. For how to attribute inquiries, see <NoteLink slug="export-site-geo-lead-attribution">GEO for B2B Export Websites: How to Attribute AI-Sourced Inquiries</NoteLink>.
+
+## Export quotations: FAQ
+
+### Is it enough to write only FOB or DDP?
+
+No. Trade terms are written as the term plus a named place. For example, FOB is followed by the named port of shipment. A quote with only the abbreviation is not sent. Under CIF, state the freight and insurance. Under DDP, state whether duties, customs clearance, and final delivery are included. This avoids disputes over port charges and clearance responsibility at delivery.
+
+### What if raw materials rise sharply while the quote is still valid?
+
+Check whether the quote sent to the customer has a repricing clause. If the clause says the price can be reconfirmed when raw material or exchange rate moves exceed a set band, the sales rep negotiates with the customer using that clause and the evidence of the cost change. If the quote has no repricing clause, and the customer has already confirmed a proforma invoice or order in writing within the validity period and paid the deposit, the company in principle performs at the original price.
+
+### How long should a quote be valid, and who decides?
+
+The company decides the validity period based on the product category, how fast raw material prices move, and exchange rate and freight trends. Finance and the sales supervisor write it into the standard quote template. The AI only fills in the start and end dates by the template's rules. It does not change the number of days the company set. When a customer asks after the validity period has ended, the quote is treated as expired, and a new price is calculated from the day's costs and exchange rate.

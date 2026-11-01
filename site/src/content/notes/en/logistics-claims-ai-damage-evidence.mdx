@@ -1,0 +1,65 @@
+---
+title: "Cargo Damage Claims AI Reviews the Photos. Who Decides the Payout?"
+seoTitle: "Cargo Damage Claims AI: Who Decides the Payout?"
+description: When logistics companies and shippers use cargo damage claims AI on damaged deliveries, the AI identifies damage and checks contract rules against five standard types of claim evidence. Claims specialists or claims supervisors decide the payout by company-set amount thresholds and exception cases. No amount is promised to the customer before a person confirms it.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/logistics-claims-ai-damage-evidence-cover.png
+coverAlt: A dented grey carton under a green scan frame from a tripod camera on a dark green base, a grey box truck parked behind, and a hand on the right bringing a copper stamp down onto a clipboard
+sourceHash: '23601e3a0002'
+---
+
+In a claim file, cargo damage claims AI reviews the materials, produces a preliminary damage assessment, and cites the clauses that apply. Whether to pay and how much is decided by a claims specialist or claims supervisor, according to the company's own amount tiers and case conditions. Before a person confirms, the AI does not promise any payout to the customer. If the customer rejects the preliminary result, the case goes to human review. Another note on this site covers whether a transport dispatch agent must tell the customer when it switches carriers in transit. This note covers only the case where the goods are already damaged: who decides whether to pay, and how much.
+
+import noteFig from '../media/logistics-claims-ai-damage-evidence-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, joined by green arrows: a kraft file holder with four document cards, a carton with a bent corner and a green scan frame under a magnifier, a calculator next to a copper stamp on steps, and a grey binder with green tabs and a copper clasp" caption="Figure: Cargo Damage Claims AI | Claim Evidence" width="wide" border />
+
+## Which claim evidence to collect when a report comes in
+
+When damage is reported around delivery and sign-off, customer service and the claims specialist first collect the assessment material to one standard. Scene images, handling events, and contract documents all go into the file. The claim evidence falls into five types:
+
+- **Images**: every side of the outer carton, the full contents, close-ups of the damage, the seal condition, and the unboxing video.
+- **Logistics events**: records of pickup, sorting, loading, and delivery sign-off, plus any exception registrations in transit.
+- **Business documents**: invoice, packing list, waybill label, declared-value insurance details, and the formal claim application.
+- **Contracts and rules**: the customer's contract terms, insurance rules, agreed deductible, and category restrictions.
+- **Outcome records**: the preliminary assessment, checks, and human handling at each step of the case.
+
+The upload entry point can be set up as a required task card. Shooting angles, piece count, waybill label, damage close-ups, and sign-off status are all required fields. If photo angles vary, the waybill label is missing, or there is no timestamp, the damage assessment that follows will be distorted. Branches and drivers also take status photos at every pickup and delivery handover and attach them to the waybill with timestamps. That is how the company later finds which leg the goods were damaged on.
+
+## How far the AI can judge from photos
+
+Once the claim evidence is complete, cargo damage claims AI gives four preliminary findings against the assessment requirements. First, whether there is damage: it identifies dents, cracks, water damage, contamination, seal anomalies, or deformed contents in the images. Second, how bad the damage is: cosmetic, affecting function, or a total loss. Third, using handover photos and exception records, which stage is most likely responsible: pickup, sorting, transport, around delivery sign-off, or warehouse handling. Fourth, applying the documents and rules, a suggested payout.
+
+Photo recognition can see damage to the carton and contents. A compliant payout suggestion also needs a check against contract and insurance rules. The suggested amount can be calculated by this rule: take the declared value from the documents and multiply it by the loss factor. Compare that figure with the insured amount cap and the contract clause cap, take the lowest of the three, and subtract the agreed deductible. The result is the compliant suggested payout.
+
+## How the payout is calculated, and who signs off
+
+After the suggested amount is calculated, the workflow can route cases in tiers by amount and material status. Small cases with low amounts, complete claim evidence, and clear rules can be handled automatically. For why to start automation with small cases that have complete evidence and clear rules, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. Another option is to send the preliminary assessment to the customer first. If the customer agrees, the case closes. If not, it goes to human review at once.
+
+A case always goes to human review, for a claims specialist or claims supervisor to decide, when any of these apply: the amount exceeds the company's threshold, the claim evidence conflicts, fraud is suspected, key images are missing, or the customer or branch has a history of frequent disputes. Until a person signs off, neither the customer service side nor the claims side lets the AI promise a payout to the customer. For why outbound replies must not carry unconfirmed commitments, see <NoteLink slug="ai-cs-can-reply-vs-who-owns-liability">AI Customer Service Compliance: Who Owns What the Bot Promises?</NoteLink>.
+
+## How to keep records of overrides
+
+Every model assessment, every rule match, and every override by a claims specialist or supervisor during settlement is recorded in the system with the model version, rule version, and specific basis at the time. Without versions and override reasons, the company has no evidence when it pursues the responsible branch or carrier driver, defends a customer dispute in arbitration, or runs an internal case review.
+
+When a company evaluates cargo damage claims AI, it should not look only at image recognition accuracy. It should also check handling time, share of cases sent to human review, overpayment rate, missed-payment rate, and whether each claim can be traced end to end. The claims team pulls and summarizes the settlement ledger regularly. If the same transport route or packaging type keeps producing damage, they compile an issue list for operations and packaging to change the packaging or adjust the route. That costs less than paying claim after claim.
+
+## Cargo damage claims AI: FAQ
+
+### The photos show the goods are damaged. Why not pay the declared value directly?
+
+Photo recognition only confirms whether there is damage and how severe it is. A compliant payout also has to pass the document and rule check. The calculation pulls the invoice, declared-value insurance details, contract terms, insurance rules, category restrictions, and deductible. It takes the lowest of three figures, declared value times loss factor, the insured amount cap, and the clause cap, then subtracts the deductible. Payment cannot be based on damage photos and the declared value alone. The suggested amount is then routed by the company's amount tiers. Cases above the threshold are settled only after a claims specialist or supervisor approves.
+
+### Damage is found only on arrival. How do you tell whether it happened in transit or in the warehouse?
+
+Use the status photos from each handover and the logistics event ledger. Every pickup and delivery handover requires a timestamped status photo attached to the waybill. Check these leg by leg against exception records for pickup, sorting, loading, and delivery sign-off. If the carton was intact before a handover and shows dents or seal anomalies after it, responsibility falls on that handling stage.
+
+### If the claim evidence is incomplete, can the AI give a payout figure first?
+
+No. If the uploaded evidence is missing images, has inconsistent angles, lacks the waybill label or timestamps, or is missing documents such as the invoice or declared-value insurance details, the assessment will be distorted. The system can be set to stop calculating and not quote any figure externally. It then checks the submission against the required task card, lists exactly which materials are missing, and returns the case to the reporter for more material or passes it to a claims specialist.

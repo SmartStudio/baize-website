@@ -1,0 +1,66 @@
+---
+title: "AI for Equipment OEE Analysis: Who Decides the Downtime Cause?"
+seoTitle: "AI OEE Analysis: Who Decides the Downtime Cause?"
+description: In equipment OEE analysis, manufacturers capture each downtime event from controller signals and tiered reason codes. AI suggests the most likely cause from fault codes and context. Operators on the floor confirm it, area supervisors maintain the reason code list, and production engineers verify the attribution hypotheses.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/equipment-oee-ai-loss-attribution-cover.png
+coverAlt: A grey machine with an amber signal light on a dark green base, a set of green bars descending from tall to short floating above it, a grey touchscreen terminal beside it, and a hand holding a copper wrench
+sourceHash: 'dc697d086e55'
+---
+
+When AI is brought into equipment OEE (overall equipment effectiveness) analysis, it only makes suggestions. It does not decide the downtime cause and does not edit the reason code list. The operator on the floor confirms the cause of each stop. The area supervisor maintains the reason code list. The production engineer or continuous improvement lead settles the attribution hypotheses and improvement actions. Other notes on this site cover how to triage too many predictive maintenance alarms and how to get fault diagnosis experience into work orders. This note covers only what happens after OEE drops: which downtime cause the lost time is assigned to.
+
+import noteFig from '../media/equipment-oee-ai-loss-attribution-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right, joined by green arrows: a control box with a signal light routing cables into three green trays, a finger touching a machine terminal, a falling bar chart with a green trend line and a magnifier, and a pause button next to a clipboard with a check mark" caption="Figure: Equipment OEE Analysis | Downtime Causes" width="wide" border />
+
+## Where downtime data comes from and how to classify it
+
+In equipment OEE analysis, plants usually sort lost time into the six big losses. Breakdowns and changeover adjustments count as availability loss. Idling, minor stops, and reduced speed count as performance loss. Production defects and startup scrap count as quality loss. Each minute of loss goes into one category only and is never counted twice. Machine state comes straight from controller signals: running, fault, blocked, starved, or changeover. It is not filled in from memory at shift handover. Each stop is recorded as a separate event with start and end times and the triggering signal, and the downtime cause is attached to that event. If the causes do not match the machine times, the calculated availability will not match the floor. For why production events need full context such as times, signals, and the product in production, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+Linked stops upstream and downstream are separated at capture. When a machine is blocked or starved because it waits for upstream material or for space downstream, that waiting time is not charged to the machine itself. It is assigned to the source machine that started the chain of stops.
+
+The area supervisor maintains the downtime reason code list. It can have three levels. The top level is the loss category. The middle level is the department that handles it: maintenance, material supply, changeover, or quality. The bottom level is the specific cause. Keep the list short, and do not create several synonym codes for one cause. Rare situations go into "Other, pending review" first, and the area supervisor reviews them regularly.
+
+## Who confirms the downtime cause the AI suggests
+
+After a machine stops, the system can handle the event in tiers by duration. This keeps records of important stops without making the operator fill in the terminal for every short pause:
+
+- **Very short stops**: can be logged as minor stops with no manual entry by the operator.
+- **Somewhat longer stops**: the machine terminal shows a pop-up, and the operator picks a cause from a short list.
+- **Longer stops**: after picking a code, the operator also writes a specific description.
+- **Longest stops**: escalated to maintenance or quality for follow-up, and the event record gets a review flag.
+
+At this step the AI can be set to suggest the most likely cause for the stop. It uses the fault code at the time, the controller signals before the stop, the product in production, the time since the last changeover, and history. The suggestion appears on the machine terminal, and the operator on shift confirms it on the spot or changes it by hand. Changed records are kept and become labeled samples later. Shift leads and area supervisors review, by machine and shift, the share of suggestions operators accept.
+
+## Finding causes after the losses are ranked
+
+Once each stop has a confirmed code, the production engineer and continuous improvement lead take over loss ranking and attribution. They first rank losses for a period by category and duration in a Pareto chart and pick out the top losses. Then they compare those losses by material batch, supplier, shift team, product, set point, and days since the last maintenance.
+
+Correlations from these comparisons are hypotheses to test. They are not conclusions. For example, if the data shows a material batch is linked to startup or production quality loss, that is only a lead to pass to incoming inspection. One table is not enough to find the supplier at fault. The production engineer or continuous improvement lead decides which attribution hypothesis to adopt and which direction to dig into.
+
+## Missing data, and verifying improvements
+
+Plants often have missing or late actual data, such as output counts, downtime codes, or quality dispositions. When data is missing or late, the system can be set to give no attribution result and to mark the report and dashboard "insufficient actual data". It does not backfill causes after the fact, and it does not reuse the previous day's result to fill the gap.
+
+Each hypothesis that holds up is turned into an improvement action with a named owner, such as a repair request, a quality investigation, or a change to the changeover standard. When the action is done, do not close it yet. Compare loss data before and after under comparable production conditions, and close the improvement task only after the matching loss category has actually dropped. For how to evaluate results after rollout using the suggestion acceptance rate and actual loss reduction, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+## Equipment OEE analysis: FAQ
+
+### A downstream machine stopped because an upstream machine stalled. Who is charged with that downtime?
+
+The source machine that started the chain of stops. Controller signals record that the downstream machine was blocked or starved, but waiting on an upstream or downstream machine is not itself a loss source. When availability loss is assigned, that waiting time goes to the machine that started the chain, so the downstream team does not carry the upstream team's downtime.
+
+### If output or quality data from the floor has not been uploaded yet, can the AI use the previous day's data to give an attribution?
+
+No. When actual data such as output, downtime codes, or quality dispositions is missing or late, the report is marked "insufficient actual data" and attribution output pauses. Causes are not backfilled, and the previous day's result is not reused. Pareto ranking and comparisons resume after the floor data is complete.
+
+### The downtime reason codes are many and messy. Can AI help merge them?
+
+AI can help sort out leads, but it cannot change the code list directly. The system can have the AI scan historical downtime records and list synonym codes, rarely used codes, and cause suggestions that operators often change. Together with common descriptions collected under "Other, pending review", these become a cleanup list for the area supervisor. The area supervisor edits the code list and decides which downtime reason codes to keep and how they map to loss categories and responsible departments.
