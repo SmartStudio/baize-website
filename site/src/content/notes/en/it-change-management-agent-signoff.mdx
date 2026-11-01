@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/it-change-management-agent-signoff-cover.png
 coverAlt: A robot inspects one server in a network topology with a magnifying glass while orange rings mark its impact; on the right, a reviewer holds a stamp over a change form
-sourceHash: '12d2996cd458'
+sourceHash: '47db8aee993a'
 ---
 
 import noteFig from '../media/it-change-management-agent-signoff-fig-en.png'
@@ -55,6 +55,8 @@ Change window tradeoffs. When technical risk conflicts with business urgency, th
 
 High-risk changes and rollback owners. For high-severity changes such as core database schema changes or backbone routing rule updates, the architecture board signs off as a group even when the agent raises no issues. The change request must also name a specific person to execute the rollback, and the change owner writes the rollback trigger conditions on the request.
 
+For how to roll back and who is accountable after an agent makes a mistake, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
 Before expanding scope, set up production-grade owners and rollback procedures for critical systems. See <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>
 
 For who signs off on the disqualification clauses in a tender response, see <NoteLink slug="bid-agent-tender-response">When an AI Agent Drafts Your Bid, Who Guards Against Disqualification?</NoteLink>.
@@ -74,6 +76,8 @@ Start with use cases whose results can be checked on the spot. See <NoteLink slu
 In practice, start with routine low-risk standard changes, such as scaling dev environment resources, tuning static parameters, or patching mature services. Have the agent run a parallel "shadow review" on these tickets, and compare its findings with the human review results over a period of time.
 
 During the trial, track the agent's false positive and false negative rates. Once each type of miss has been traced and covered by a rule, and the false positive rate is down to an acceptable level, extend the agent to complex changes that touch databases and the network layer.
+
+When service-desk requests such as password resets and account unlinking go to an agent, see <NoteLink slug="it-helpdesk-agent-password-reset">A Helpdesk Agent Resets Passwords: How Do You Verify Who Is Asking?</NoteLink> for how to verify the employee's identity.
 
 ## IT change review: FAQ
 

@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/maintenance-work-order-ai-diagnosis-cover.png
 coverAlt: On a dark green background, the bearing housing of a pump and gear unit glows with green dots, a green line runs to a blank clipboard on the right, and an old wrench lies beside it
-sourceHash: 'e0f1327fd6d1'
+sourceHash: '8fc853672322'
 ---
 
 import noteFig from '../media/maintenance-work-order-ai-diagnosis-fig-en.png'
@@ -28,6 +28,8 @@ After a machine tool alarms and stops, the gateway captures the metrics from a w
 
 This step belongs to the operator. The operator adds details by voice input on the terminal, including what workpiece material the machine was cutting when the fault occurred. The system binds the sensor data to the text description and generates a report batch number. The gateway sends the package to the inference engine as input for the next step.
 
+When a field service engineer needs to send a customer's equipment data to AI for diagnosis, see <NoteLink slug="field-service-ai-customer-device-data">Field Service AI Wants to Upload Customer Device Data. Is That OK?</NoteLink> for what can be collected and what must be filtered out.
+
 ## Inferring Causes and Check Order: Output Recommendations Ranked by Risk
 
 The model searches equipment technical specifications and similar past cases, then outputs a list of candidate causes and a troubleshooting path.
@@ -35,6 +37,8 @@ The model searches equipment technical specifications and similar past cases, th
 After reading the report data, the model pulls drawings and maintenance history and infers several possible fault sources. It orders the troubleshooting steps by how hard the part is to replace and how likely the failure is: external fuses and sensors first, internal modules in the cabinet after. For the engineering practice of pulling production drawings and context into the model on demand, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
 
 Safety control at this step belongs entirely to qualified engineers. The system tags each item on the list with a safety level. For any operation that involves cutting main power, lockout/tagout (LOTO), live measurement, or removing load-bearing piping, the model only lists the key points. Authority to permit the work stays with the shift supervisor. The inference engine pushes the recommendations to the maintenance technician's handheld terminal.
+
+For who holds signing authority when a hazard found during inspection goes onto a corrective-action order, see <NoteLink slug="ai-safety-inspection-hazard-fix">AI Safety Inspection Flags a Hazard: Who Signs Off on the Fix?</NoteLink>.
 
 ## On-Site Verification and Rejected Hypotheses: Record Where the Technician's Senses and Measurements Differ
 

@@ -11,7 +11,7 @@ author: Baize AI
 cover: ../media/ai-visual-inspection-spot-check-cover.png
 coverAlt: A camera on a dark green gantry casts a green beam onto metal discs on a conveyor; one disc is pushed into a side chute, next to a green-rimmed magnifying glass
 draft: false
-sourceHash: '2fcf0a4d18fe'
+sourceHash: '012449f7abd5'
 ---
 
 import noteFig from '../media/ai-visual-inspection-spot-check-fig-en.png'
@@ -39,6 +39,8 @@ For whether to stop the line when process data shows an anomaly, see <NoteLink s
 The inspector scans the part's barcode at the recheck station. The screen shows the raw capture and the marks. The inspector looks at the physical part, by eye or under a magnifier, and checks whether the scratch depth and area meet the defect standard. If the part is defective, the inspector picks a defect code and puts it in the reject bin. If the flag came from dust or glare, the inspector clears it as a false positive in the system and returns the part to the good-parts lane. For how other automated decision systems set up human review, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
 
 The quality reviewer makes the final call on whether a part passes. Inspectors submit part status under their own account by badge scan. The system locks the verdict to the inspector's employee ID and blocks anyone from clicking on another station's behalf. Recheck data flows to the quality system in real time so shift leads can see where defects cluster.
+
+For who signs the corrective-action order after AI inspection photographs a safety hazard, see <NoteLink slug="ai-safety-inspection-hazard-fix">AI Safety Inspection Flags a Hazard: Who Signs Off on the Fix?</NoteLink>.
 
 ## Trace by Image: pull the raw capture to find who is responsible
 

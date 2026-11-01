@@ -39,7 +39,7 @@ OpenSandbox on a Mac needs Docker first. According to the [installation docs](ht
 
 ## How local files and network boundaries are managed
 
-sandbox-runtime controls whether paths on the local machine can be read or written. The policy is saved by default in `~/.srt-settings.json`. It specifies which local directories may be read and which may be written. For path configuration rules, see <NoteLink slug="local-agent-sandbox-file-access">Local Agent Sandbox: Which Folders Can It Read and Write?</NoteLink>.
+sandbox-runtime controls whether paths on the local machine can be read or written. The policy is saved by default in `~/.srt-settings.json`. It specifies which local directories may be read and which may be written. For path configuration rules, see <NoteLink slug="local-agent-sandbox-file-access">Local Agent Sandboxes: Which Directories Can It Read and Write?</NoteLink>.
 
 An OpenSandbox sandbox has its own file system. The caller reads and writes sandbox files through the SDK's files API. According to the [mount docs](https://github.com/opensandbox-group/OpenSandbox/blob/main/docs/examples/host-volume-mount.md), sharing data between the host and a sandbox requires mounting through the Volume API, with read-write, read-only, and subpath mapping. The server limits host paths with an `allowed_host_paths` allowlist. The docs warn that an empty allowlist allows mounting every host path, so set it explicitly in production.
 

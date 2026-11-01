@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/agent-pilot-to-production-checklist-cover.png
 coverAlt: A robot walks from a small pilot under a glass dome into a production floor fitted with orange guardrails, a stop gate, and a rollback arrow
-sourceHash: '55e42d1e4bec'
+sourceHash: '69b72940d16c'
 ---
 
 A working agent pilot is still some distance from production. What is usually missing when you scale an agent pilot is runtime control, error recovery, and clear ownership. A stronger model does not supply any of these. This note covers how pilot and production environments differ, then gives a checklist to complete before scaling.
@@ -44,6 +44,8 @@ Traditional workflows are designed around manual work. They have many steps and 
 
 Redesign the workflow for autonomous execution. Specify which steps the agent advances on its own, which actions keep a final human sign-off, and which exceptions fall under predefined rules. If the workflow is not redesigned, the agent becomes one more layer on top of the old process, and a chain of serial approvals leaves it stuck at waiting steps.
 
+When a legacy ERP has no API and the agent has to operate the screen, see <NoteLink slug="agent-legacy-desktop-automation">Can a Computer-Use Agent Safely Operate Your Legacy ERP?</NoteLink> for which actions can run unattended and which need a person to confirm.
+
 **2. Runtime guardrails**
 
 Written security policies are not enough. The system needs code-level runtime guardrails. They sit between the model's proposed action and the actual write to the underlying system. Each action is checked first, then allowed through.
@@ -64,6 +66,8 @@ Before scaling, assign three types of owners at the organizational level. The bu
 An agent is ready for write operations only when its errors can be undone and investigated.
 
 For writes, the engineering team must provide atomic rollback. If the agent is interrupted during a batch update or an order submission, the system automatically restores the original transaction state. Prompt inputs, reasoning traces, external API parameters, and return values are written to a tamper-evident log in structured form. This supports post-incident reconstruction and compliance audits.
+
+For the rollback order and the split of accountability after an agent has already made a mistake, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
 
 **5. End-to-end outcome metrics**
 

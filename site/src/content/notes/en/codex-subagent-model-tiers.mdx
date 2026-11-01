@@ -10,7 +10,7 @@ author: Baize AI
 draft: false
 cover: ../media/codex-subagent-model-tiers-cover.png
 coverAlt: "One glowing orange sphere above a wide spread of small white capsules, like a main thread handing repeat work to many subagents"
-sourceHash: '1c02758a9bd7'
+sourceHash: '61385b393fc1'
 ---
 
 When this note was first written in August 2026, OpenAI's [GPT-5.6](https://openai.com/index/gpt-5-6/), released in July 2026, came in three tiers: Sol, Terra, and Luna. In late September 2026, Codex moved to the GPT-6 family. Codex CLI 0.157.0 added GPT-6 Sol and GPT-6 Luna on September 25, and GPT-6.1 Sol shipped on September 29. As of October 2026, the Codex docs recommend three models. GPT-6 Astra is the most capable. GPT-6.1 Sol performs close to Astra at a lower cost, and the docs name it the starting point for most tasks. GPT-6 Luna is the fastest and cheapest, for well-scoped, repeatable, high-volume work. The GPT-5.6 tiers remain selectable during the rollout. Codex lets you assign a different model and reasoning level to each subagent role, so the question becomes how much judgment each role needs. You answer it in config files.
@@ -100,3 +100,5 @@ Assign `xhigh`, `max`, and `ultra` by task. The docs state that most tasks do no
 ## Configured or not, the difference is money and time
 
 Putting every role on the most expensive tier costs more money and more waiting. Putting every role on the cheapest tier lowers judgment quality, most visibly when the main thread scopes work and merges results. The docs also state that each subagent does its own model and tool work, so subagent workflows use more tokens than a comparable single-agent run. The subagents' tier sets how large that extra cost is. Tiered config puts expensive judgment on the main thread and cheap execution on the subtasks. Moving Codex from personal use into a team's engineering workflow also requires working through boundaries, verification, and collaboration. See <NoteLink slug="codex-into-real-workflow">What Does It Take to Make Codex Part of Your Team's Dev Workflow?</NoteLink>.
+
+If you want to move the execution tier to a local open-source model, see <NoteLink slug="qwen38-mac-unsloth">Run Qwen3.8-27B Locally on Mac with Unsloth</NoteLink> for how much memory Qwen3.8-27B needs on a Mac.

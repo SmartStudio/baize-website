@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/what-is-loop-engineering-cover.png
 coverAlt: "Four arrows joined into a loop, one of them orange"
 draft: false
-sourceHash: 'fe66c961f5f9'
+sourceHash: 'c06bca39d4d6'
 ---
 
 One-shot AI generation gives uneven results. The same task can come back accurate one time and far off the next. The usual cause is the process: nothing in it gives the model a chance to check its own output. Loop Engineering addresses that. It designs loops in which the AI verifies its result before handing it over.
@@ -28,6 +28,8 @@ In practice there are usually three loops:
 - **A feedback loop in production.** Problems found in real use go back into the system, so the next round performs better.
 
 Once these loops run reliably, they leave behind reusable templates and evaluation sets. New tasks do not start from a blank design. For this reason Baize AI treats Skills and accumulated knowledge as direct outputs of Loop Engineering, with no separate workstream to produce them.
+
+For which loop runs first and which waits on another when there are several, see <NoteLink slug="graph-engineering-is-not-loop-engineering">Graph Engineering vs Loop Engineering: Graphs Sit on Top of Loops</NoteLink>.
 
 If your team already uses AI to generate code or content and quality swings from one run to the next, that is the point to design loops into the workflow.
 

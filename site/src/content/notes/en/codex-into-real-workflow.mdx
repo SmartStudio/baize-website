@@ -10,7 +10,7 @@ author: Baize AI
 cover: ../media/codex-into-real-workflow-cover.png
 coverAlt: "A small robot places a block on a conveyor belt that feeds into a set of meshing gears"
 draft: false
-sourceHash: '30504ee40a4a'
+sourceHash: '4b5d160f8c3c'
 ---
 
 import codexFig from '../media/codex-into-real-workflow-fig-en.png'
@@ -20,6 +20,8 @@ Codex and similar coding agents are quick to pick up. Ask for a function or a bu
 <Figure src={codexFig} alt="An English-labelled pipeline: one person trying an AI coding tool alone, passing through a scope gate and a quality inspection gate, and arriving at a shared team workbench" caption="Figure: Solo Trial | Set Scope | Verify Quality | Team Workflow" width="wide" border />
 
 The first obstacle is scope. Which tasks can Codex complete on its own, and which should it only draft for a person to finish? Most teams have no written answer. Each engineer decides by feel, and the boundary stays unclear. The second obstacle is verification. Someone has to own testing Codex-generated code and decide how much testing is required before a merge. Without an agreed rule, quality swings as usage grows.
+
+For which model tier the main thread and each subagent should use, and how to configure it, see <NoteLink slug="codex-subagent-model-tiers">Codex Subagent Models: Keep Judgment on the Main Thread, Send Repeat Work to Cheaper Tiers</NoteLink>.
 
 The third obstacle is collaboration. When several people use Codex on the same codebase, the team needs to know which modules include AI-written changes and who is accountable for each change. If that stays unresolved, code review and debugging slow down. The fourth obstacle is shared knowledge. Engineers learn which tasks Codex handles well and which ones tend to go wrong. If nobody writes that down, every person repeats the same trial and error.
 

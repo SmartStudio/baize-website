@@ -11,7 +11,7 @@ author: Baize AI
 draft: false
 cover: ../media/agent-value-work-finished-metrics-cover.png
 coverAlt: A white robot hands a stack of finished documents to an employee with both hands; a checklist beside them shows five orange check marks
-sourceHash: '1f4fb9fc7307'
+sourceHash: '2a290230d40c'
 ---
 
 After a company rolls out agents, the first evaluation question is whether the team's work got finished. Model call volume comes second. API call counts, provisioned seats, and request volume show that people opened the tool. They do not show that the work got easier. An agent evaluation should track four groups of metrics: end-to-end time from request to completion, plus total output; the share of outputs that people edit or redo; the cost of switching between agents and checking their output; and overlap between agents that do the same job. Set a pre-launch baseline for each metric and measure it per business team. Do not use a single company-wide average.
@@ -46,6 +46,8 @@ Third, tool-switching and verification overhead. Measure the extra coordination 
 
 Fourth, duplication and conflicting outputs. Check whether several agents in a team do the same kind of work. When departments each launch similar tools, data sources diverge, definitions conflict, and someone has to reconcile the numbers.
 
+On the warehouse floor, for the numbers a supervisor should watch after AI plans the picking waves, see <NoteLink slug="warehouse-picking-ai-wave-planning">AI Plans Picking Waves: Which Numbers Should Supervisors Watch?</NoteLink>.
+
 ## Set baselines per team, not company-wide
 
 Work differs by role. Legal contract review depends on precise clauses. Engineering depends on unit test pass rates. Sales lead handling depends on speed. A single company-wide efficiency figure that mixes every department's usage does not show where to make changes.
@@ -59,6 +61,8 @@ First, consolidate. Merge agents with overlapping functions, shut down configura
 Second, reset development priorities. Put development resources first into the tasks employees say they most need help with and that current agents still handle poorly.
 
 Third, fill in missing context. Agents often answer poorly because permissions and data sources were never connected. For steps with high rework rates, provide structured databases or business knowledge bases so the agent makes fewer errors from missing information.
+
+Once the data sources are connected, inconsistent metric definitions can still make an AI data query return two answers. For how to handle that, see <NoteLink slug="ai-data-query-metric-definitions">AI Data Queries Return Two Sales Figures: Which Metric Definition Do You Trust?</NoteLink>.
 
 ## Agent evaluation: FAQ
 
