@@ -1,0 +1,75 @@
+---
+title: "Field Service AI Wants to Upload Customer Device Data. Is That OK?"
+seoTitle: "Field Service AI and Customer Device Data: Is It OK?"
+description: When equipment makers use field service AI to collect run logs and fault photos, they need a clear boundary for data collection. Collection on site follows the service agreement and reads only the sensor and alarm data needed for diagnosis. It strips the customer's recipes and process parameters. Engineers work through compliant, authorized accounts, and backups are cleared on a schedule.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/field-service-ai-customer-device-data-cover.png
+coverAlt: A toolbox and an equipment cabinet, with a green data stream passing through a shield filter on its way to the cloud, on a dark green background
+sourceHash: 'f924353609ed'
+---
+
+Field service AI collects run data from customer equipment to diagnose faults. Whether that is acceptable depends on two conditions: the collection scope has been confirmed in writing, and the data has been de-identified. Equipment on site carries the health signals the manufacturer cares about, such as vibration, current, and error codes. It also carries the customer's trade secrets, such as process temperatures, recipe parameters, and production takt. The manufacturer needs clear handoff steps: agree on the boundary in advance, strip production parameters locally before upload, and destroy the data on a set deadline after use.
+
+import noteFig from '../media/field-service-ai-customer-device-data-fig-en.png'
+
+<Figure src={noteFig} alt="Five steps for field service AI device data: agreed upfront, pull on demand, filter recipes, verify tools, and delete on expiry" caption="Figure: Agreed Upfront | Delete on Expiry" width="wide" border />
+
+## Agree on a written collection list in advance: define the diagnostic data scope
+
+Before an engineer goes on site, the system generates a standard data collection list from the reported fault. The program pulls the service contract and maintenance terms and lists the data points this investigation needs, including motor temperature, hydraulic pressure sensor values, and the alarm history log. The list goes to the customer's equipment manager's phone as an electronic service work order.
+
+The customer's manager reviews the work order and signs a consent form. The customer can tick, item by item, the sensors they agree to open, and switch off channels that touch core secrets. The program receives the customer's confirmation and fixes the authorized parameters as the read-only policy for this job. Channels without authorization stay blocked at the communication layer.
+
+The manufacturer's service dispatcher follows up on the signature status. If the customer objects to some monitoring channels, the dispatcher works with back-office technical experts to adjust the diagnostic plan and use alternative physical tests, so no data is collected before signing.
+
+## Pull run metrics on site as needed: take only points linked to the fault
+
+On site, the engineer connects a dedicated handheld diagnostic unit to the machine's communication port. Following the policy list locked earlier, the program captures only the specific points directly linked to the reported fault. It does not make a full image backup of the controller. For mechanical faults such as abnormal noise or oil leaks, the handheld prompts the engineer to take close-up photos.
+
+The handheld constrains the camera's field of view before capture. The viewfinder guides the engineer to aim only at the damaged part, and the program detects and blurs background details at the edges: the workshop line layout, material bin labels, and neighboring machines. The screen lists in real time the variables read and their sampling periods, so the customer's staff on site can watch.
+
+The field engineer checks the quality of the sampled waveforms. The engineer confirms the sampling frequency meets analysis needs. If data departs from physical common sense, the engineer checks the wiring on the spot and samples again, so distorted data does not reach the back office.
+
+## Filter process recipes locally before upload: strip the customer's trade secrets
+
+Before data is packaged for transfer, the handheld runs a filter-and-clean program in a local sandbox. The program identifies and removes process parameters unrelated to the machine's mechanical health, such as feed rate ratios, heating curves for special materials, and batch output counts. These core secrets of the customer's production process are stripped on the handheld and never enter the upload queue.
+
+The program converts the cleaned health data into a standard engineering-unit format. The system replaces the machine's serial number with an anonymous job ID and keeps only the model generation and factory batch. After cleaning, the screen shows a stripping summary report. The field engineer and the customer's representative review it side by side, and the representative presses a second confirmation button.
+
+The customer's on-site equipment engineer oversees the data leaving the plant. The customer's engineer checks the stripping log and confirms all sensitive recipe parameters were erased before allowing network transfer.
+
+## Verify diagnostic tools and external services: prevent leaks through interfaces
+
+After the health data reaches headquarters, the back-office system runs it through an AI diagnostic model and an expert system. Before calling third-party analysis plugins or microservices, the program checks each external interface's communication protocol and security certificate. External services pass a security check before they are connected. For the checklist, see <NoteLink slug="mcp-server-security-review">MCP Security Risks: Which 4 Items Should You Review Before Connecting?</NoteLink>.
+
+The system strictly limits the diagnostic tools' permissions. External algorithm plugins get temporary read access to the current fault slice only. They may not cache input messages or use the data to train their general models. The program feeds each sensor waveform into the fault mechanism library and generates a diagnostic report with likely worn parts, replacement recommendations, and safety margins.
+
+The cloud operations security specialist monitors where the data flows. The specialist checks each analysis component's access logs and blocks any unreported cross-domain distribution of data.
+
+## Engineer authorization and destruction at expiry: set the period of access
+
+Throughout the service process, engineers must use traceable individual credentials when they access customer systems. Engineers may not use the customer's shared internal admin account. They log in through a controlled identity jointly authenticated by the manufacturer and the customer. For how permissions and responsibility work when someone acts on another's behalf, see <NoteLink slug="agent-acting-on-behalf-of-user">Agent Authentication: Whose Permissions Apply When Calling Systems for Employees?</NoteLink>.
+
+When the job is closed, the system starts lifecycle cleanup of access rights and temporary data. Raw sample caches on the handheld are shredded and wiped at once. Fault slice data on headquarters servers is archived or physically destroyed according to the agreed retention period. The system generates a data destruction report and sends a copy to the customer through the service platform.
+
+The after-sales service director and compliance experts spot-check data destruction records on a regular schedule. The team checks the archived records for each work order, so customer device data does not linger in internal storage past the service period.
+
+## Field service AI: FAQ
+
+### Why does field service AI need the customer's written confirmation before reading device data?
+
+Run records inside industrial equipment often mix machine health with the customer's production secrets. Exporting controller data without the customer's explicit authorization can carry away core process recipes, production schedules, and output takt by accident, which creates a risk of trade secret infringement. When a written work order locks the collection list in advance, the customer knows what was sent, and the service team has a record if a dispute comes up.
+
+### Customers worry that run data contains core production processes. How does field service AI address that?
+
+The system filters on the device and makes the check visible on site. The handheld de-identifies data offline and erases process fields such as temperature ratios, tool paths, and product piece counts. It keeps only low-level electromechanical metrics such as voltage, vibration, and error codes. Before upload, the engineer shows the customer's representative a before-and-after comparison table in real time. Data is sent only after both sides confirm on screen.
+
+### After a field service visit, who oversees the retention period and destruction of uploaded device data?
+
+The customer's asset management department and the manufacturer's compliance team jointly oversee the retention period and destruction of uploaded device data. The service contract sets the minimum diagnostic period and the final deletion deadline. After diagnosis, the manufacturer's cloud system runs an irreversible wipe on a timed policy and sends the encrypted destruction log to the customer's compliance contact.

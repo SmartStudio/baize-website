@@ -1,0 +1,74 @@
+---
+title: "AI Translates Your Product Catalog: Who Owns a Wrong Spec?"
+description: Exporters use AI translation to build multilingual product catalogs, and the main risk is mistranslated technical specs. Before translation, lock a do-not-translate list and spec formats. During translation, run automatic number comparison. A product engineer signs off on the spec tables, and every version stays traceable.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/multilingual-catalog-ai-translation-cover.png
+coverAlt: A product manual, machine parts, and a caliper, with green light lines connecting two blank booklets, on a dark green background
+sourceHash: '556840d1fca1'
+---
+
+AI translation speeds up multilingual output for export catalogs. Responsibility for a wrong technical spec still rests with the process owner who signs off the release. A large model translates marketing copy fluently, yet numbers can drift in voltage, tolerance, torque, or certification numbers. A company should separate spec checking from ordinary proofreading: lock a protected list before translation, compare numbers during translation, and publish only after a product engineer signs off.
+
+import noteFig from '../media/multilingual-catalog-ai-translation-fig-en.png'
+
+<Figure src={noteFig} alt="Five steps for AI translation of product documents: term lock, auto compare, engineer review, sign-off, and version trace" caption="Figure: Term Lock | Version Trace" width="wide" border />
+
+## Lock terms and a protected list before translation: mark what must not be translated
+
+Before processing a multilingual catalog, the program loads the termbase and the do-not-translate list. The system finds product models, material grades, industry certification codes, and dimension codes in the source file and tags them as protected. For abbreviations with industry-specific meanings, the program maps them to the established standard translation, so the model does not improvise.
+
+The system preprocesses the source text with a rules engine. It separates descriptive text, such as product introductions, from the table data that carries physical specs. Ideally the company keeps a single copy of its product data, and translation, the website, and quotes all draw from it. For how to build that, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>. The system locks fields that must not be translated and sends only narrative text into the model's translation flow.
+
+The technical documentation engineer approves the protected-term list. The engineer checks the code rules for new components, picks out model numbers that a large language model is likely to treat as ordinary foreign words, and writes them into the regex block list in the back end.
+
+## Machine translation with automatic number comparison: catch model hallucinations
+
+After the model produces a first draft in the target language, the program starts a number consistency check right away. The system extracts every Chinese numeral, Latin character, and unit of measure from the source and target spec tables and compares them side by side. If the rated power in the translation has gained or lost a digit, or a tolerance has lost its plus-or-minus sign, the system marks it red and raises an alert.
+
+The comparison also checks unit conversion. Imperial and metric units differ across overseas markets. If the company did not ask for conversion and the model rewrote millimeters as inches on its own, the program blocks that change. The program produces a list of differences and collects garbled formatting, misaligned row counts, and missing units into review notes.
+
+The software operations specialist monitors the comparison scripts. The specialist adjusts the number extraction rules for each new product category, so the script does not miss complex compound specs.
+
+## Engineers review the spec tables: people check the technical figures
+
+The system sends the flagged translation to the product engineer's review screen. On the left the engineer sees the engineering drawings and the source manual. On the right the engineer checks the generated multilingual spec table. The review focuses on limit values, operating temperature ranges, and interface dimensions, to catch subtle misreadings by the model.
+
+For example, overseas buyers use tools to filter suppliers by spec. One wrong digit can get the product filtered out. For how the buyer side has changed, see <NoteLink slug="agent-buyer-b2b-landing-page">How to Write a B2B Landing Page for AI Agent Buyers</NoteLink>. After the engineer confirms the translation matches the product's physical properties as shipped, the engineer ticks the confirmation box in the system. If a number is wrong, the engineer overwrites it by hand, and the system records the versions before and after the change.
+
+The overseas sales representative reviews the localized description style. The salesperson checks that local usage and industry jargon fit. The engineer still has the final say on specs.
+
+## Sign off before release: draw the line of publishing responsibility
+
+After review, the system creates a formal release approval flow. The program packages the term check log, the number comparison report, and the engineer review record, and sends the package to the export business director. The approval form lists the languages and product categories in this translation and every manual edit.
+
+The business director signs electronically in the admin console. The signature grants official release permission for the batch. The system then lifts the release freeze and pushes the multilingual pages to the company's own website, or sends the print files to overseas distributors. Release follows the rule that whoever signs is responsible.
+
+The overseas compliance manager spot-checks certification marks in the final files. The manager checks that the target market's certification seals and accompanying text are complete. After the manager approves the release, the system generates a tamper-proof checksum.
+
+## Trace errors and correct versions: keep the edit log
+
+After release, the system keeps the full underlying log of every translation, proofreading pass, and approval. The log records the raw parameters of each model call, the human edit history, the reviewer accounts, and the exact times. If a spec is disputed at an overseas trade show or at customer delivery, the team can use the tracking code to pull the full flow record for that version.
+
+Once the cause is found, the export team starts the correction process right away. If a human reviewer missed the error, the engineer fixes it online and starts a fast-track approval. The system generates a change note and pushes a version update notice to overseas customers who downloaded the document. The corrected terms and specs flow back into the company termbase, to prevent the same error next time.
+
+The quality assurance department reviews spec correction cases on a regular schedule. The team checks whether each error came from vague source wording or a gap in the filter rules, and improves the termbase and the check process to lower the risk in later translations.
+
+## AI translation of product documents: FAQ
+
+### Why can't an ordinary translation prompt prevent spec errors when AI translates product documents?
+
+A large language model generates text by probability. It does not copy numbers unchanged the way a database does. Even if the prompt stresses data accuracy again and again, the model can still misplace digits, shift decimal points, or confuse units when it restructures sentences or handles complex nested tables. A prompt alone cannot keep numbers exact. Rule scripts have to run a hard comparison after translation.
+
+### If an exporter finds a mistranslated spec after publishing multilingual documents, what should it do?
+
+The exporter should take the affected language files off digital channels at once and pause printing of paper documents. The system administrator uses the version tracking code to locate the scope of the error, and the product engineer issues a corrected data errata sheet. The business team should send a technical change notice to overseas buyers already in contact, post a correction notice in a prominent place on the company website, and have the team review where the approval flow missed the error.
+
+### After a company adopts automated multilingual tools, who sets the standard for translating technical specs?
+
+Product R&D engineers and the quality inspection manager jointly own the standard for translating technical specs. The translation tool provides the multilingual first draft. Interpretation of industry terms, tolerance ranges, and international certification standards belongs to the company's technical team. Export sales staff and translators cannot decide on their own whether engineering specs are accurate. The company should set up a cross-department review in which senior technical staff approve the spec tables and the compliance department verifies certifications.

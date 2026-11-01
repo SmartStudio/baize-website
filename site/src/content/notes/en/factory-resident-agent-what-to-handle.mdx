@@ -1,0 +1,75 @@
+---
+title: "A Resident Agent Watches the Line: What Can It Do on Its Own?"
+seoTitle: "Resident Agent on the Line: What Can It Do on Its Own?"
+description: A resident factory agent connects to manufacturing systems to help run the plant, and its autonomous actions need safety tiers. It can fill in missing data and dispatch inspection work orders on its own. Process parameter changes and schedule changes need human confirmation. Emergency stops and safety interlocks stay physically isolated from it, so production stays stable and under control.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/factory-resident-agent-what-to-handle-cover.png
+coverAlt: A top-down view of a production line with a green glowing orb patrolling above it and one corner fenced off, on a dark green background
+sourceHash: '4b7837b7b308'
+---
+
+A resident factory agent connects to the manufacturing execution system and the industrial IoT system. Which tasks it may do on its own and which it may only flag to people has to be set by risk tier, with firm rules. The system can aggregate large volumes of sensor data again and again, spot early signs of quality drift, and handle low-risk work orders. For key actions such as changing the production schedule, modifying process parameters, and safety stops, control stays with the engineers on the floor. The handoff points between what the agent does itself and what it passes on have to be written down in advance.
+
+import noteFig from '../media/factory-resident-agent-what-to-handle-fig-en.png'
+
+<Figure src={noteFig} alt="Five tiers of work for a resident factory agent: read-only summary, low-risk tasks, joint sign-off, safety no-go zone, and access review" caption="Figure: Read-only Summary | Access Review" width="wide" border />
+
+## Read-only aggregation that never acts: summarize alarms and shift handoffs
+
+The program listens continuously to sensor points and controller messages across the plant. The system aggregates temperature, vibration, speed, and energy data, and turns scattered data streams into structured line vital signs. At each shift change, the program pulls output against plan and downtime for each section, and generates a shift handoff summary card with the key metrics.
+
+The system compares several metrics in the background to find links between them. For example, when a mold's temperature climbs while stamping pressure fluctuates, the program identifies the wear trend early and pushes an alert to the screen. In this kind of aggregation, the program has read-only access and sends no action commands to field actuators.
+
+The workshop dispatcher reviews the handoff cards at the morning meeting and at shift change. The dispatcher confirms the output on the card matches the physical material count and checks the stations with suspicious fluctuations flagged in the alerts.
+
+## Low-risk tasks done on its own: dispatch inspections and fill in gaps
+
+For routine support tasks that do not affect the main line, the system is authorized to close them out directly. When a machine's run hours reach the routine lubrication threshold, or a sensor self-test reports signal drift, the program creates a routine inspection order in the work order system, assigns it to the on-duty maintenance technician for that section, and attaches the fault symptom code.
+
+The system can also check work order records and fill in missing data on its own. If a batch's production report is missing ambient temperature and humidity, the program pulls the average for that timestamp from the environmental monitoring database and writes it into the form. For how a company hands out tool permissions step by step, see <NoteLink slug="agent-tool-permission-ladder">Agent Permission Management: How to Set Tool Access Levels and What to Grant First</NoteLink>.
+
+The workshop equipment specialist monitors how often the agent dispatches work orders. The specialist checks the work order database for duplicate orders or orders that technicians sent back, so the algorithm does not get stuck in a loop issuing the same order.
+
+## People co-sign core changes: schedule changes and parameter approval
+
+At the level of the master production schedule and process changes, the system drops to a decision-support role. When upstream raw material arrives late or a machine goes offline unexpectedly, the program re-plans the schedule and calculates the option with the least delay. The draft schedule appears on the planner's screen, with the delivery dates of affected orders and the changeover hours lost.
+
+Process parameter changes also need engineer co-signature. If the system analyzes inspection data and concludes that raising injection holding pressure would reduce sink marks, it creates a parameter recommendation that lists the proposed change and the test evidence. Until an engineer reviews it and authorizes it with a badge swipe, the program must not send any write command to the machine's PLC.
+
+The production planning manager and the process director hold approval authority. The planning manager weighs order priority and the process director checks the process window. The parameter change takes effect only after both sign in the system.
+
+## A physically isolated safety no-go zone: people control emergency stops and interlocks
+
+On the factory floor, some controls are off limits to the program under all circumstances. They include machine emergency stops, safety light curtain interlocks, lockout/tagout for maintenance, and fire interlocks. These directly affect workers' lives. Their control circuits must be physically separated from the resident agent at both the electrical and the network level.
+
+When the agent detects a serious anomaly, it should use audible and visual alarms to prompt a person to press the emergency stop. For the run boundaries and stop policies of unattended automation, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>. The system may pause work order dispatch. The switch that cuts main power belongs to the operators on the floor.
+
+The workshop safety engineer tests the independence of the safety interlock circuits on a regular schedule. The engineer tests how quickly the physical emergency stop buttons respond on site and confirms there is no bypass control interface between the algorithm network and the safety control hardware.
+
+## Log every action and calibrate permissions: review the autonomy boundary on a schedule
+
+Every autonomous call and every recommendation the resident agent makes is kept in an audit log. The log records, in time order, the raw sensor frames read, the rules triggered, the analysis reports generated, and the operators' confirmations. The log data sits in a separate controlled database.
+
+The manufacturing management team holds permission reviews on a regular schedule. The team pulls recent run logs and checks whether the inspection orders the agent dispatched were accurate and whether engineers adopted its recommended process parameters. Based on how mature each task is, the team adjusts the approval threshold for tasks that have proven reliable.
+
+The plant manager and the head of digital jointly decide on permission changes. Both sign the new permission table, and later system settings follow that table.
+
+## Resident factory agent: FAQ
+
+### Why can't a resident factory agent have direct control over stopping the main line?
+
+An unplanned stop of the main line can set off a chain reaction: molten material setting in a hot furnace, material piling up and being scrapped on the line, and even mechanical shock from an unexpected stop that endangers nearby workers. A model or algorithm perceives the physical floor mainly through sensor input. If a sensor gives a false reading or communication jitters, a wrong stop decision by the algorithm causes major financial loss. Last-resort protective actions that involve personal and equipment safety must be confirmed and carried out on site by people who can see the whole situation.
+
+### When fine-tuning line parameters, how does a resident factory agent work with process engineers?
+
+The AI system acts as data scout and option calculator. It keeps capturing quality drift from inspection equipment and sensors, calculates a recommended adjustment range, and shows predicted curves before and after the change on screen. The process engineer stands at the machine, looks at the actual surface finish and fixture chatter, and judges whether the recommendation works based on experience. After the engineer clicks confirm, the control system writes the change.
+
+### As the resident factory agent's algorithm evolves, who reviews the automation tiers for line monitoring?
+
+The smart manufacturing committee, the production safety department, and the process technology department jointly review the automation tiers and the permission list for line monitoring. As the system gains run experience on the floor, some very low-risk support tasks that used to need a human click can move into the autonomous scope after a safety assessment. Every permission change has to pass a cross-department review and a trial run in a controlled environment, and the vice president of production signs the final approval.

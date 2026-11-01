@@ -1,0 +1,113 @@
+---
+title: "Multi-Agent Orchestration: A Main Agent Idle 73% of the Time Should Go"
+seoTitle: "Multi-Agent Orchestration: Main Agent Idles 73% of the Time"
+description: "In multi-agent orchestration, the main agent sits idle waiting for subagent handoff summaries: 73% of the time on one Terminal-Bench 4.0 task. This note compares Anthropic's single loop with Stanford DeLM's shared log plus task queue, and covers how to choose, how to change, and five common mistakes."
+lang: en
+pubDate: 2026-11-01
+category: Loop与方法论
+relatedService: loop-engineering
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/main-agent-idle-wait-subagents-cover.png
+coverAlt: On a deep ink-green background, on the left a large sphere joined to blocks by four thin rods, with green light dots stuck at its edge; on the right, blocks and light dots move steadily along a straight track
+sourceHash: '82bdae0cedfa'
+---
+
+A common multi-agent orchestration setup splits a task across a group of subagents and has a main agent relay messages between them. On the Terminal-Bench 4.0 task `retro-console-soc`, with four Claude Opus 5.5 instances running Claude Code native subagents, the main agent spent 73% of its time idle, and the four agents together spent 44% of their time waiting.
+
+On October 22, 2026, Anthropic [published an article](https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop) advising developers to fold non-essential subagents back into a single loop. One customer that moved from a multi-agent harness to a single loop got about 2 times faster. The dataset behind this enterprise comparison is not public. In the [DeLM paper](https://arxiv.org/abs/2606.10662), revised on October 4, Azalia Mirhoseini's team at Stanford removed the main agent entirely. On the same four-agent `retro-console-soc` task, the share of time spent waiting dropped to 2%, and the task finished 5.5 times faster.
+
+Our view: both sides want to remove the same thing, a main agent idling while it waits for subagents to return handoff summaries. The two sources do not compare directly on the same set of tasks, so neither refutes the other. Each gives its own data showing that handoff summaries get worse when the main agent restates them in the middle. How to choose: a single business process that talks with users should be merged back into a single loop. A long task that can be split into parallel work, and is slow because of waiting and duplicated work, should switch to a shared log with a task queue.
+
+import foldFig from '../media/main-agent-idle-wait-subagents-fig-en.png'
+
+<Figure src={foldFig} alt="A main agent waits in the middle for subagent handoff summaries, compared with two ways to remove it: merge into a single loop, or switch to a shared log plus a task queue" caption="Figure: On the left, the main agent waits in the middle for handoff summaries. On the right, two ways to remove it: a single loop, and a shared log plus a task queue." width="wide" border />
+
+## How to build a single loop: the Anthropic route
+
+A single loop keeps one model, one context window, and an open tool loop. It no longer copies the org chart into subagents by department or question type. Each turn, the model issues a batch of tool calls, the harness runs them in parallel and returns the raw results to the same model, and the plan changes in context as results come in. Sequences and domain processes go into `skills`. Claude Code cut the system prompt for stronger models by more than 80%, partly through progressive disclosure of `skills` and tools. For how a loop checks itself and when it stops, see <NoteLink slug="what-is-loop-engineering">What Is Loop Engineering? Make AI Check Its Work Before It Delivers</NoteLink>.
+
+The migration kit [`anthropics/single-agent-loop-kit`](https://github.com/anthropics/single-agent-loop-kit) is an unmaintained reference implementation. The defaults in `reference_loop/loop.py` are: `max_turns = 25`; `max_tokens = 400_000`, which totals input and output for a single run and counts subagent usage; `max_batch = 16`, which caps one turn at 16 calls and returns an error for any beyond that. Read operations run on up to 8 threads in parallel. Write operations marked `writes=True` queue after the reads and pass a write gate one at a time. An optional `verifier` can be set, and an answer rejected twice is not returned.
+
+## How to build a shared log plus task queue: the DeLM route
+
+The DeLM repository [`github.com/yuzhenmao/DeLM`](https://github.com/yuzhenmao/DeLM) removes the privileged planner and replaces it with an append-only shared log plus a task queue. It supports Claude Code and Codex and runs with `n=2` or `n=4`. The shared log records `fact` entries with observations, `fail` entries for disproven ideas, and `completion summary` entries for subtask results. `fact` and `fail` carry scope and evidence fields, and each agent reads only what is new since its last read. Attached files are snapshotted at publish time and stored by reference. Peers use `expand` to view the diff and `apply` to copy it locally, and the tool refuses to overwrite when it meets an unexplained local change.
+
+The task queue states the expected output and available inputs, and marks the interfaces and the earliest dependency results. The first `claim` wins, and each agent can hold at most one unfinished `claim`. Before submitting a full solution for independent scoring, an agent must deal with related open `fail` entries.
+
+## Read DeLM's numbers with their conditions
+
+DeLM's numbers come with conditions: each set has only 10 long tasks, and the figures are averages of three runs.
+
+At the end of a run, the shared log averages under 15K tokens. Reading it costs 1.7% to 3.7% on Claude Opus 5.5 and 7.7% to 17.7% on GPT-6-Astra. In the 720 public trajectories on Hugging Face, files were imported 5,237 times, and 80.3% of trajectories later imported a revised version.
+
+On these 10 long Terminal-Bench 4.0 tasks:
+- Claude Opus 5.5 running Claude Code alone: 81.67% accuracy, 130.75 minutes, $20.31 per task.
+- With native subagents turned on: 80.00%, 138.58 minutes, $30.88.
+- DeLM `n=2` with two agents: 93.33%, 64.77 minutes, $17.91.
+
+Anthropic leaves room for three main cases: a measured degradation as the single loop's context grows, parallel tasks that need fresh, throwaway context, or a single agent picking the wrong tools or facing conflicting instructions in the system prompt.
+
+## Five places where changes often go wrong
+
+### The 600-second background idle limit
+
+On 10 long DeepSWE v1.1 tasks, averaged over three runs, turning on Claude Code native subagents dropped accuracy from 71.67% to 50.00%, raised latency by 15.9%, and raised cost by 65.1%. Most failures were empty patches and timeouts. A common cause is that the main agent owns the final submission but sits idle waiting. A footnote in the paper states that Claude Code's default limit on continuous idle waiting for background subagents is 600 seconds. When it is reached, Claude Code terminates unfinished subagents and exits the process.
+
+### Intermittent regressions after folding
+
+Folding subagents into a single loop can also cause intermittent regressions. In Anthropic's example customer service agent, latency dropped after the merge, and one flow that used to pass regressed: the main agent had an order lookup tool, so it answered a shipping question itself instead of calling the shipping subagent to get the delivery date. The failure appeared in only one of two runs. If you test only once and do not read the traces of neighboring tasks that passed, it is easy to miss.
+
+### Hard limits moved into tools can pass falsely
+
+`skill/steps/03-fold.md` says: "Prove a moved rule with a direct call". After a rule moves into a tool, call the tool directly once to check that the refusal works. In an end-to-end eval, if the model never tried the forbidden action, a pass does not prove the tool would refuse.
+
+### The 30 to 50 tool definition limit
+
+A single loop is limited by the number of tools. If each API gets its own tool, tool selection gets worse once the system prompt holds more than 30 to 50 tool definitions.
+
+### DeLM n=4 lowers accuracy and raises cost
+
+In this test set, adding concurrent agents to DeLM lowered accuracy and raised cost. On the 10 long Terminal-Bench 4.0 tasks, averaged over three runs, Claude Opus 5.5 running DeLM `n=4` with four agents took 52.51 minutes, 2.49 times faster, yet accuracy fell from 93.33% at `n=2` to 89.17%, and cost rose to $29.98. GPT-6-Astra running Codex alone scored 71.67% at $9.01. Running DeLM `n=2` with two agents, it rose to 85.00% with a standard deviation of ±13.23, at $6.83 per submission but $13.65 per task. Each agent still has to submit a full solution, so `n=4` is faster than `n=2` but 3 to 4 points less accurate.
+
+## How to choose between a single loop and a shared log
+
+When the main agent only dispatches subtasks, waits idle for results, and restates the handoff summaries, it should be removed once the measured share of waiting time is high, even if the structure matches team roles and makes ownership easy to trace. Merge into a single loop, or switch to a shared log. For which of several loops goes first and which waits on which, see <NoteLink slug="graph-engineering-is-not-loop-engineering">Graph Engineering vs Loop Engineering: Graphs Sit on Top of Loops</NoteLink>.
+
+Between a single loop and a shared log:
+- For routine enterprise business processes that talk with users, prefer a single loop. The cost is that as the business grows, you need `tool search` to stay under the 30 to 50 tool definition limit, and a single loop is slower on long parallel tasks.
+- If a long task can be split into parallel work and is slow because of waiting and duplicated work, switch to a shared log with a task queue.
+
+## Change it in the order measure, combine, fold
+
+Make the change in the order `measure`, `combine`, and `fold`, and write it into scripts, unit tests, and configuration:
+
+1. Start with 10 golden examples to build an end-to-end eval, plus a small set per `skill`. Run each task several times and measure the share of waiting time, the number of tool definitions, and routing accuracy. Before merging, run `skill/scripts/chain_coverage.py`. If the agent chain is missing a task and the script returns exit code `1`, stop.
+2. Following `skill/steps/03-fold.md`, fold one subagent at a time and split the subagent prompt five ways: the process goes into the `skill` body; reference material goes into reference files or a lookup tool; persona tone and `think step by step` are deleted; preconditions and user permissions go into readable refusals returned by tools; and each hard limit gets a unit test that calls the tool directly. Group tools by intent with `tool search` lazy loading, and read the traces of neighboring tasks after each change.
+3. In the harness, follow `reference_loop/loop.py` to cap turns, total tokens including subagents, and calls per turn. Run reads in parallel, send `writes=True` tools through the write gate, and turn on `allow_all_writes` only in evals where no one is available to ask.
+4. For long parallel tasks, do not let the main agent block and wait. To try DeLM, first reproduce it on the public task with `python3.13 -B delm.py retro-console-soc --n 2 --harness claude-code` from the repository, then install `delm-agent-plugin` and start with two agents in Claude Code or Codex. If you build your own, record `fact` and `fail` in the shared log and pass files by reference.
+
+Two checks you can run today: open your multi-agent run logs and calculate the main agent's share of waiting time, then run `skill/scripts/chain_coverage.py` and see whether the exit code is `1`.
+
+## Multi-agent orchestration: FAQ
+
+### How do you calculate the main agent's share of waiting time, and how high is too high?
+
+Open your multi-agent run logs and calculate the main agent's share of waiting time. On the Terminal-Bench 4.0 task `retro-console-soc`, with four Claude Opus 5.5 instances running Claude Code native subagents, the main agent spent 73% of its time idle, and the four agents together spent 44% of their time waiting. After DeLM removed the main agent, the waiting share on the same four-agent task dropped to 2%. If the main agent only dispatches subtasks, waits idle for results, and restates handoff summaries, and its measured waiting share is high, the structure should be removed.
+
+### After folding subagents into a single loop, how do you guard against intermittent regressions?
+
+Run each task several times in the end-to-end eval. In Anthropic's example, the regression appeared in only one of two runs, so a single test can miss it. After folding each subagent, read the traces of neighboring tasks that passed. For each hard limit moved into a tool, write a unit test that calls the tool directly and confirms the refusal works.
+
+### When should a long parallel task switch to a shared log?
+
+Switch to a shared log with a task queue when a long task can be split into parallel work and is slow because of waiting and duplicated work. On the 10 long Terminal-Bench 4.0 tasks, averaged over three runs, Claude Opus 5.5 running Claude Code alone scored 81.67% in 130.75 minutes at $20.31 per task. Running DeLM `n=2` with two agents, it scored 93.33% in 64.77 minutes at $17.91. Going to `n=4` with four agents is faster, but accuracy drops to 89.17% and cost rises to $29.98, so start with two agents.
+
+## Sources
+
+- [Anthropic article](https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop)
+- [Migration kit](https://github.com/anthropics/single-agent-loop-kit)
+- [DeLM paper](https://arxiv.org/abs/2606.10662)
+- [DeLM repository](https://github.com/yuzhenmao/DeLM)
+- [Tak's post](https://x.com/cherry_mx_reds/status/2113969070118666670)
