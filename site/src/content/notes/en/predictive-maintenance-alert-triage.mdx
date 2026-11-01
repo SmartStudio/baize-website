@@ -1,0 +1,59 @@
+---
+title: "Too Many Predictive Maintenance Alerts: Which Ones Mean Stop the Machine?"
+seoTitle: "Predictive Maintenance Alerts: Which Ones Mean Stop?"
+description: After a plant deploys predictive maintenance, the monitoring system often floods the floor with alerts, from many sensors firing on the same fault or from thresholds set too tight. Floor staff cannot answer each one. First merge alerts from the same source, then have equipment, production, maintenance, and safety set grading rules together. People decide whether to stop based on conditions on the floor.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/predictive-maintenance-alert-triage-cover.png
+coverAlt: A pump and motor model with many small alarm bells floating above it, flowing into a funnel that feeds a single glowing green signal light, on a dark green background
+sourceHash: 'f3c01fdeab70'
+---
+
+Merge and deduplicate predictive maintenance alerts first. Then grade them by three questions: will the machine stop if nobody acts, can someone get hurt, and how soon must it be handled. Equipment, production, maintenance, and safety set the grading rules together. The AI attaches evidence and a suggested grade to each alert, and passes uncertain ones to a person. The equipment engineer and the production lead decide whether to stop. The AI does not issue stop commands. On a schedule, the team goes back over false alarms and missed alarms and updates the rules.
+
+import noteFig from '../media/predictive-maintenance-alert-triage-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: alarm bells pouring into a funnel, a round table with tiered trays, an alert card clipped with a trend curve, and a stop lever with a stamp beside it, each with an English label board" caption="Figure: Predictive Maintenance | Equipment Alerts" width="wide" border />
+
+## Why there are so many alerts and how to merge them first
+
+For example, several sensors on one machine each fire an alert about the same fault, and the monitoring screen shows several messages. Thresholds are often set conservatively at launch. Sensors on the floor may also come loose, get damp, or drop offline. The result is a flood of equipment alerts that maintenance and production crews cannot review one by one.
+
+The AI sits behind the equipment monitoring system. Its first step is to merge records from the same machine, in the same time window, pointing to the same type of fault, into one event. It records the original trigger order and the list of related sensors. For example, if temperature and vibration at one location cross their thresholds one after the other, the system groups them on one card and stops repeating pop-ups. It keeps each sensor's raw readings so the engineer can expand and check them. When a value jumps suddenly into an implausible range, or the signal cuts in and out, the AI flags it separately as a suspected sensor fault. It sends it straight to instrument maintenance staff, who check wiring and probes on site. After they fix it and confirm the signal is normal again, they close the ticket. These cases stay out of the production fault queue.
+
+## Who sets the grading rules and what they say
+
+Equipment, production, maintenance, and safety sit down together and work through the line's equipment list to set grading standards for equipment alerts. They grade by whether an unhandled alert would cause an unplanned stop, whether it could hurt people on the floor, and how soon it must be handled. The departments write the agreed grades and criteria into one rule table and load it into the system.
+
+For each grade, the rule table states who takes it, how they are notified, and how soon they must respond. For example, the departments can set alerts that could hurt people or stop the line as high grade, name the recipient and notification method, and require the shift production supervisor and the equipment engineer to go to the machine and check as soon as they are notified. Alerts that only show a slow upward trend with no short-term effect on operation can go in a low grade. They go on the routine inspection checklist. The inspector re-measures and records them during routine rounds, and the work waits for a planned maintenance window.
+
+## What evidence each alert brings to the floor
+
+The alert card the AI generates lists which sensor triggered, the recent data trend, past maintenance records from similar machines that showed a similar trend, and the suggested grade with its reasons. When the equipment engineer opens the card, they first check whether the fault is real against the trend curve and the history, then decide the next step.
+
+The AI can compare against past maintenance records only if those records are connected to the enterprise knowledge base. See <NoteLink slug="vertical-model-finetune-vs-enterprise-kb">Fine-Tuning vs. RAG: Connect the Enterprise Knowledge Base First</NoteLink>. When the AI sees a waveform it has not seen before, or data from several sensors that contradict each other, it marks the card as uncertain. It passes the card with the raw curves and related sensor data to the equipment engineer, and does not force a conclusion. The engineer reviews the machine's recent operating conditions, combines them with on-site inspection results, assigns a grade by hand, and enters the finding on the card.
+
+## Who makes the stop call and how to review afterward
+
+When a high-grade alert comes in, the equipment engineer judges whether the machine can keep running, based on listening to it, measuring temperature, and checking the oil level on site. The production lead sets the exact stop time based on the current order schedule and the buffers in upstream and downstream operations. The AI only provides triage suggestions and evidence. It does not send stop commands to the control system.
+
+After each case, the engineer records the basis for the decision in the system: why they chose to stop at once, or why they chose to keep running until the shift change. The record is archived with the on-site re-measurement data. For when an AI should stop and hand over to a person, and how to keep a decision log, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>. On a schedule, the equipment, maintenance, and production teams pull the recent false alarms and missed alarms and go through them. They check whether a sensor's threshold is too tight or whether a type of trend slipped into a low grade. After the departments agree, they change the thresholds and grading rules. Each change is logged in the system with a version record and the reason.
+
+## Predictive maintenance: FAQ
+
+### If the AI decides a machine should stop, can it stop the machine directly?
+
+No. A person confirms the stop command before it is issued. A sudden line stop affects scrap of work in progress, material backing up in upstream and downstream operations, and the safety of people working on the floor. The equipment engineer checks the machine, the production lead sets the stop window, and then the machine is stopped per the operating procedure.
+
+### After grading, do low-grade alerts still need attention?
+
+Yes. Low-grade alerts do not need an immediate production stop, but the team should review them in aggregate on a schedule to see the trend. When an alert meets the escalation conditions the departments agreed on, it is escalated per the rules and the engineer is notified.
+
+### How many grades make equipment alerts manageable, and who decides?
+
+Grade equipment alerts by stop impact, safety risk, and handling deadline. Equipment, production, maintenance, and safety decide the number of grades together. They write the assignee, notification channel, and response action for each grade into one table, and the floor follows the table.

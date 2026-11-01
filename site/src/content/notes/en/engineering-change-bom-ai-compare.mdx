@@ -1,0 +1,67 @@
+---
+title: "AI Compares BOM Changes: Who Approves the Engineering Change Notice?"
+seoTitle: "AI BOM Change Comparison: Who Approves the ECN?"
+description: Manufacturers hand BOM change comparison to AI, and engineers still check the comparison and the impact list. R&D, process engineering, quality, purchasing, and production co-sign the engineering change notice and set the material cutover point and the disposition plan. AI finds the differences. A person confirms the write to the released version.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/engineering-change-bom-ai-compare-cover.png
+coverAlt: Two parts-tree trays side by side under a green scanning beam that compares them row by row, with one part lit up, on a dark green background
+sourceHash: '6ea9124fdfd0'
+---
+
+When AI compares BOM changes, engineers check the comparison result and the impact list. R&D, process engineering, quality, purchasing, and production planning co-sign the change notice, and people decide when it takes effect. AI does not change the released BOM in the ERP. The change takes effect in the system only after all business departments confirm how to handle work in progress and inventory.
+
+import noteFig from '../media/engineering-change-bom-ai-compare-fig-en.png'
+
+<Figure src={noteFig} alt="Five small models left to right: two parts lists compared row by row, a warehouse shelf under a magnifier, a round table with stamps, a calendar flag on a timeline, and a green arrow writing back into a filing cabinet, each with an English label board" caption="Figure: BOM Change Comparison | ECN Approval" width="wide" border />
+
+## What the AI compares row by row and what it flags as uncertain
+
+The AI reads the old and new versions of the design BOM and compares material codes, reference designators, quantities per assembly, and assembly levels row by row. The system picks out added materials, deleted items, and replaced parts, and marks quantity increases and decreases in a difference table.
+
+For example, when reference designators are written inconsistently on engineering drawings, or units differ slightly, the AI flags these items as uncertain and passes them to an engineer to decide. The AI can only compare accurately if material codes and substitute-part relationships in the system are accurate. See <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+The difference list from the comparison includes the substitute-part mapping for every changed material. The system marks which items are direct replacements and which need adjusted assembly parameters. It organizes this into a structured document for the design engineer to review.
+
+## Engineers check the result and look for obsolete-stock impact
+
+After receiving the difference list, the design engineer checks each added and deleted item against the design intent. Once the comparison is confirmed, the system queries the ERP for material inventory, work in progress on the shop floor, open purchase orders still in transit, and sales orders already promised to customers.
+
+For example, a replaced component may still have a large quantity in the warehouse, while a purchase batch is in transit from the supplier. The system lists these obsolete-stock risks together in an impact analysis table, so business departments can see the cash and material pressure the change creates.
+
+The engineer's main check is whether the difference list missed a hidden change. For example, if only the spec of a fixing screw changed, the assembly relationship of its matching washer may change too. The engineer confirms the impact scope is complete before starting the formal engineering change process. The checked difference list and impact table are attached to the ECN approval form.
+
+## Multi-department sign-off and setting the effective point
+
+When the engineering change notice reaches sign-off, R&D, process engineering, quality, purchasing, and production planning must all sign. Each department assesses feasibility within its own responsibilities, for example whether fixtures need adjusting and whether supplier lead times can keep up. Until ECN approval is complete, the change does not enter the system.
+
+Department heads decide together when the change takes effect. Cutover strategies usually fall into a few types: switch naturally after existing stock is used up, switch from a specific production batch, or cut over at once and stop production when there is a serious safety hazard. People also decide what happens to old material. Based on residual value and process feasibility, they choose to keep using it, rework it, scrap it, or return it to the supplier.
+
+IT change review follows the same approach. See <NoteLink slug="it-change-management-agent-signoff">AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?</NoteLink>.
+
+## Formal write-back to the system and verifying the change record
+
+After every department has signed and the effective point is set, a dedicated data administrator enters the change into the released BOM in the ERP. The AI has no write permission on the production database.
+
+After the administrator finishes, the system runs the comparison module again. It compares the newly released version against the approved engineering change notice, and confirms every entry matches the notice exactly, with nothing deleted by mistake or left out.
+
+The system keeps a full record of each change: the approval form number, the sign-off records, the effective batch, and the name of the person who entered it. These records are kept per company policy and are used to trace production batches and in quality audits.
+
+## BOM change comparison: FAQ
+
+### What if the AI missed a row of material differences during the comparison?
+
+Two checks cover missed flags. First, the engineer reviews the difference table closely against the design drawings. Second, the team regularly pulls historical engineering change notices that went through mass production and replays them on the model. This finds weak spots in how the model reads certain layouts or level relationships, and the team adds validation rules.
+
+### Can the AI decide substitute parts directly in the system?
+
+The AI cannot assign substitute parts directly. A material substitution involves material compatibility, pressure rating, supply chain stability, and certification. The system can only list possible candidates from the historical library. The R&D engineer and the quality engineer sign off on the final choice together.
+
+### With AI comparison, how many departments still need to sign the ECN?
+
+With AI comparison, the relevant business departments still co-sign the ECN. The AI cuts the time spent finding differences row by row and pulling inventory. Responsibility for scrap cost, purchase lead times, and production scheduling stays with each business head. The signing departments depend on the scope of the change's impact.

@@ -1,0 +1,69 @@
+---
+title: "AI Scores Customer Service Calls: Who Sets the Deduction Rules?"
+seoTitle: "AI Call QA Scoring: Who Sets the Deduction Rules?"
+description: Customer service teams hand QA scoring of every call to AI. The QA lead and the business lead set the deduction rules together. The system tags each deduction with the transcript quote and timestamp under detailed rules, and agents have an appeal channel. The team runs regular human-and-AI calibration, and scores count toward performance reviews only after human review.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/call-qa-ai-scoring-rules-cover.png
+coverAlt: A headset resting on a scoring board, with a glowing green sound wave flowing from the headset to a small gavel, on a dark green background
+sourceHash: 'ba7256448c7b'
+---
+
+When AI handles quality checks on customer service calls, the QA lead and the customer service business lead set the deduction rules together. Legal or compliance confirms any rule that covers compliance scripts. The AI scores calls against written rules and marks the location of the quote in the call. Agents who disagree can appeal, and a person reviews the appeal. Before an AI score affects performance ratings or bonuses, a person reviews it.
+
+import noteFig from '../media/call-qa-ai-scoring-rules-fig-en.png'
+
+<Figure src={noteFig} alt="Five small models left to right: a scoring sheet cut into thin strips, a sound wave marked with a green pin, an appeal envelope sent to a review desk, parallel tracks for a person and a robot, and a stack of sealed version binders, each with an English label board" caption="Figure: Customer Service Call QA | QA Scoring" width="wide" border />
+
+## How to break down the scoring sheet so the AI scores accurately
+
+The QA lead and the business lead first turn vague subjective judgments into itemized deductions. Broad labels such as "curt attitude" or "impatient" must become specific speech behaviors, with the words and phrases that count as violations written out.
+
+For example, "poor attitude" splits into specific triggers: asking the customer hostile rhetorical questions, cutting the customer off while they are speaking, or failing to apologize with the standard wording. Each deduction item comes with positive and negative examples that state exactly when it applies. This keeps the model from scoring a filler word as an offense.
+
+Deduction items that cover compliance scripts, such as risk disclosures that must be read or promises that must not be made, go into the scoring sheet only after legal or compliance confirms them. Each item on the sheet records who set it and on what date, so there is a record when the business changes.
+
+For human review at the ticket-closing stage, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
+
+## Each deduction comes with the quote and the timestamp
+
+The AI's QA result ties each deduction to a specific segment of the call recording. The QA screen shows the transcript quote, the timestamp, and which rule on the scoring sheet it matched. Every QA score opens the matching recording.
+
+For example, if an agent skipped a required risk disclosure, the system marks the time range in the call where the step was skipped. The agent and the team lead click the record and play those few seconds of audio to check. They do not need to listen to the whole call from the start.
+
+When the model is unsure, for example with slang, dialect, or heavy background noise, it adds a doubt flag. Calls with a doubt flag get no deduction. They go to a QA reviewer's task queue, and a person listens and decides.
+
+## How agents appeal and how scores get reviewed and corrected
+
+If an agent disagrees with a result in the QA report, they can file an appeal in the QA system. The agent enters the reason and adds context, and the appeal goes straight to a dedicated QA reviewer.
+
+For example, a customer used casual phrasing, and the agent answered flexibly based on context. The system scored this as not following the standard script. The QA reviewer looks at the surrounding turns of the conversation. After confirming the agent's answer was correct, the reviewer removes the deduction in the back office and restores the score.
+
+A QA reviewer who did not take part in the original scoring handles the appeal, to avoid bias toward the first result. The agent is told the outcome directly. The system logs every step of a score change: the original score, the new score, the reviewer's name, and the reason for the change.
+
+## Regular human-and-AI calibration and versioned rules
+
+On a schedule, the QA team pulls a representative batch of call recordings for a two-track calibration test. A QA specialist and the AI score the same batch independently, and the team compares the two results item by item. Items where the two scores differ a lot are pulled out for review.
+
+For how to compare a person and the AI scoring the same sample, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>. For items with large gaps between the person and the system, the team checks whether the scoring sheet wording is loose or whether the model's context extraction is skewed.
+
+After the scoring sheet is revised, the team publishes it under a new version number. The system records when the new rules take effect. The new rules apply only to calls after that date. The team does not re-score past recordings under new rules.
+
+## Customer service call QA: FAQ
+
+### After the AI scores every call, do QA reviewers still need to spot-check recordings?
+
+QA reviewers still need to spot-check recordings on a regular basis. The system does the first check on every recording. QA reviewers handle agent appeals, review recordings the system flagged as uncertain, and run two-track comparisons on a schedule to calibrate the scoring rules.
+
+### What should an agent do if they think an AI deduction is unfair?
+
+The agent can file an appeal in the system. The appeal carries the timestamp and quote from the disputed recording and the agent's explanation. A dedicated QA reviewer looks at it again. If it turns out to be a scoring error, the reviewer corrects the score through the standard process and logs it.
+
+### Can AI QA scores go straight into performance reviews?
+
+AI QA scores cannot go into performance reviews without checks. System scores are a baseline reference. For scores that affect pay, bonuses, or performance grades, the business team first completes the appeal-period review and checks anomalies. The head of customer service and HR set the final rules for what counts.
