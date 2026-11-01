@@ -1,0 +1,67 @@
+---
+title: "Employees Build Their Own AI Tools. Should the Company Still Buy Software?"
+seoTitle: "Employee-Built AI Tools: Should You Still Buy Software?"
+description: After a team builds AI tools that solve specific workflow problems, the company still needs to decide what software to buy. Small tools used only for one internal step are fine to build. Systems that involve many parties, daily customer support, or security protection should still be bought. Management inventories what exists first, draws the line, and stops once a tool works.
+lang: en
+pubDate: 2026-11-01
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/employee-built-ai-tools-vs-buying-software-cover.png
+coverAlt: A balance scale with a toolbox of small glowing green tools on one side and a sealed light grey software box on the other, while a hand places a tool on the toolbox side, on a dark green background
+sourceHash: '3dba35a549d4'
+---
+
+This is note 07 in our podcast reading series. It can be read on its own.
+
+On one podcast episode, Ben Thompson said he uses tools like Codex, ChatGPT, and Claude more and more to build small apps for his own team, and he is less and less a customer for new software. Building AI tools in-house fits small tools that only your own team uses and that solve one specific problem. General software that many people use, and that needs someone to handle support and security, you still buy. Once a tool works, stop. Do not keep adding features.
+
+import noteFig from '../media/employee-built-ai-tools-vs-buying-software-fig-en.png'
+
+<Figure src={noteFig} alt="Left: a workbench with custom small tools and a short dedicated conveyor. Right: a general platform building with a support headset and a shield. Below, a table sorts tasks into two trays, each with an English label plate" caption="Figure: Building AI Tools In-House | Software Purchasing" width="wide" border />
+
+## Why Ben buys less new software
+
+The host asked Ben about his favorite app lately. Ben said the apps he builds are not technically impressive, but they are made to measure and solve his team's own specific problems, so by definition they are the best apps. He will never release them publicly, and the people he works with are building small things like this too.
+
+Ben used the note app nvALT for many years. It only has an Intel version, its last release was about ten years ago, and Apple's Rosetta is going away. He had Codex port it to ARM64. It now runs on his MacBook Air, and he fixed a few interface annoyances he disliked along the way.
+
+Ben drew two conclusions. First, more and more good software that solves problems will never be released to anyone. Building software used to take a lot of effort, so it had to reach many users to earn the money back. Second, he used to be a software developer's best customer, willing to buy expensive software and pay for subscriptions. Now he is less and less a customer for new software, because he builds it himself. For sellers, this means rethinking who pays. See <NoteLink slug="ai-monetization-dropbox-lesson">Is OpenAI Retracing Dropbox's Path? AI Monetization Starts With Who Pays</NoteLink>.
+
+## Which work suits building yourself
+
+The host said he is happy to build tools for very specific uses, but he would not use AI to write general things such as a to-do list app. Ben agreed. He said he never plans to open up the things he writes quickly with AI to many users. The test is whether the job is still worth a round of software purchasing.
+
+Ben said he optimized his own workflow as far as it could go ten years ago. AI opens new directions for optimization. Some things can now be solved, and they will make a real difference over time. The up-front investment is worth it then, on the condition that it saves time, reduces stress, and builds trust over the long run. Once it does, stop. Ben's rule is "optimize, then stop, and get to work."
+
+## The cost of general platforms versus building
+
+Ben said customer support is a nightmare, especially for a product whose architecture and security were not thought through. When you write code with AI, it keeps trying to cover edge cases, mostly around privacy or security, and you have to tell it again and again, "do your best, this runs on a private network." Ben has a server dedicated to the apps his team builds. It is reachable only from his Tailscale private network. Without stating this, one task can run for two hours. The software budget saved by building in-house has to cover the staff time for maintenance.
+
+Ben talked about his publishing platform, Passport. He said building a platform yourself "is a terrible idea," and that if you want to spend a lot of money, go build one. He built it because the membership service Memberful updated slowly and did not support paid podcasts, and syncing data between Memberful, Stripe, and MailChimp was painful. About six months after he built it, Memberful added paid podcasts too. Passport still hands subscriptions and payments to Stripe. Ben said it is a product he spends money on and does not make money from.
+
+Ben said Passport is somewhat like enterprise software for small publishers. A single writer should use Substack. It has everything done, its cut works out to a fair price, and doing email and support elsewhere costs about as much.
+
+## Three things for management and procurement to do first
+
+Management first inventories which small tools employees have built, who maintains them, and where they run. For the inventory method, see <NoteLink slug="agent-sprawl-inventory">Agent Management Starts With an Inventory: Who Runs Employee-Built Agents?</NoteLink>. With the inventory done, decide which renewals can lapse and which general software to keep buying. Helper tools that serve one specific step for one team can replace scattered software once built, and the matching subscriptions are not renewed. General software that involves many people collaborating or core processes is still bought as usual.
+
+Do not build anything with high security and support demands. Systems for external users, which need long-term maintenance and security work, stay with mature purchased software. Self-built small tools run only on the internal network.
+
+## Building AI tools in-house: FAQ
+
+### Should small tools employees build with AI be opened to outside users?
+
+No. Ben said customer support is a nightmare, especially for a product whose architecture and security were not thought through. His own practice is to put these apps on a server that is reachable only from his private network.
+
+### Should internal self-built tools keep getting new features?
+
+No. The up-front investment assumes the tool saves time, reduces stress, and builds trust over the long run. Stop once it meets that goal. As Ben puts it, "optimize, then stop, and get to work."
+
+### With self-built AI tools, should software subscriptions still be renewed?
+
+Many general software subscriptions still need renewal. Tools that solve one specific internal problem can be built in-house, and the matching small software subscription can lapse. General systems that need ongoing support and security still go through software purchasing as planned.
+
+Next in the series: when choosing a model vendor, start by asking who it builds products for.

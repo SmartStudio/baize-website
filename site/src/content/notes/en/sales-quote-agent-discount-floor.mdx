@@ -1,0 +1,67 @@
+---
+title: "A Sales Discount Agent Cuts Prices on Its Own. Who Sets the Floor?"
+seoTitle: "Sales Discount Agent: Who Sets the Price Floor?"
+description: A sales team brings in a discount agent to help with quotes. The sales head and finance set the price floor together. The agent calculates discounts only inside the preset range, and any quote below the floor becomes a special-price request for a person to approve. The team reviews over-limit discounts on a schedule and recalibrates the rules.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/sales-quote-agent-discount-floor-cover.png
+coverAlt: A robotic arm pushes a blank price tag along a rail toward a base with a glowing green lock at the end, on a dark green background
+sourceHash: 'be5fc431f064'
+---
+
+A company lets a sales discount agent cut prices in quotes automatically, based on the customer, the product, and the order quantity. The sales head and finance set the price floor and the discount authority at each level together, then write them as rules for the agent. The agent discounts automatically only inside the given range. Anything outside the range becomes a discount request for a person with the authority to approve. The agent cannot change the floor itself. A salesperson reads each quote before sending it to the customer, and the team reviews how the rules performed on a schedule.
+
+import noteFig from '../media/sales-quote-agent-discount-floor-fig-en.png'
+
+<Figure src={noteFig} alt="Five small models left to right: a rule book with gears, a slider rail with a green range, a request envelope, desks rising step by step, and a review chart under a magnifier, each with an English label plate" caption="Figure: Sales Discount Agent | Discount Approval" width="wide" border />
+
+## Who sets the price floor and the discount range
+
+Finance first calculates the direct cost and target gross margin for each product line and sets the floor price. The sales head groups customers into tiers by competitive pressure and account size, and sets a discount range for each tier. Once both sides approve, the rules go into the quoting system.
+
+For a large customer with long-term purchases, the rules let the agent fine-tune the price inside a set range. For a new ordinary customer, the range is narrower and leaves a thicker margin buffer. The agent calculates every inquiry from these two inputs. It cannot lower the floor on its own, and it cannot bypass the preset product cost baseline.
+
+After the rules are set, any change needs approval from both the sales head and finance. For which kinds of actions suit automatic approval, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+## What evidence an in-range discount must carry
+
+When the agent calculates a discount, it attaches the reason and the comparison basis next to the quote. The salesperson sees more than the discounted total. They also see which past contract the agent referenced, which volume tier the current quantity triggered, and the customer's past deal prices.
+
+For example, after the agent works out a discount, it pulls the customer's past deal records in the background and states that this discount supports a large-volume order. The salesperson confirms the basis is accurate before approving the quote. This check stops the agent from applying a low-spec product's price to a high-spec model.
+
+The quote does not go straight to the customer after it is generated. The salesperson reads through every term, confirms the delivery date, and then sends it by email or instant messaging. For human approval before a quote goes out by email, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+
+## How out-of-range quotes move up the approval chain
+
+When a competitor cuts prices or a customer pushes hard, the calculated discount may fall below the floor. The agent stops quoting automatically at once. It generates a special-price request instead. The request lists the exact discount requested, the risk of losing the deal as written by the salesperson, and the actual effect on the deal's gross margin. Every out-of-range deal goes through discount approval, tiered by amount.
+
+The request moves up level by level under company policy. A small discount goes to the regional manager. A price below cost goes to the sales head and the finance head together. A person with approval authority signs off.
+
+An approved special price applies only to the current deal. The agent issues this one quote under this approval and does not treat the approval as a new rule. When the same customer places another order, the standard range applies again.
+
+## Which special-price deals keep exceeding authority
+
+The sales operations team pulls discount logs from the quoting system on a schedule. They count which products or customers keep triggering over-limit requests. Frequent special-price requests over a long period mean the baseline set at the start of the year no longer matches the market, and people need to reassess it. The review also looks at the approval rate and the turnaround time of discount approvals.
+
+For example, supply chain costs for one type of material fall, and competitors lower their prices across the board. Frontline salespeople have to file special-price requests again and again. Management uses the review data, has finance recalculate costs, lowers the list price and floor for that product, and updates the rule base.
+
+Every change to the floor rules leaves a record. The quoting system logs who started each rule change, who approved it, and which batch it took effect in. A rule change does not go live until two people have reviewed it.
+
+## Sales discount agents: FAQ
+
+### A customer cites a competitor's lower price. Can the agent match it?
+
+The agent cannot match a price below the floor. Against outside low-price competition, the agent can only concede inside the preset range. If the customer's requested price is below the floor, the agent blocks it automatically and turns it into a special-price request. The business head then weighs the customer's strategic value and decides.
+
+### Can the floor rules be adjusted after they are set?
+
+Yes, but the change goes through a special approval process and is recorded. When raw material prices drop suddenly or an urgent strategic deal comes in, the sales head and the finance supervisor who set the floor sign a special approval form together. They update the parameters manually in the back end, and the change is written to the log.
+
+### Discount approval is too slow. Can the agent approve directly?
+
+No. The agent must not take over discount approval. Day-to-day speed comes from widening the range sensibly so the agent can discount automatically. Once a price breaks the floor, it touches the company's profit boundary, and a manager who carries operating responsibility must sign. The agent only prepares the data.
