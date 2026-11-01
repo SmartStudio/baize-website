@@ -1,0 +1,67 @@
+---
+title: "AI Checks Letter of Credit Documents: How Do You Catch Every Discrepancy?"
+seoTitle: "AI Letter of Credit Checks: Catching Every Discrepancy"
+description: Trading companies hand the first review of letter of credit documents to AI. The system breaks the credit into an itemized checklist, compares the invoice, bill of lading, and packing list against it and against each other, and marks every difference. Documentation clerks use these leads to decide whether to amend or present, and the team replays past rejections on a schedule to find what the system missed.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/letter-of-credit-ai-discrepancy-cover.png
+coverAlt: A stack of shipping documents with a small green flag pinned on top and a letter of credit tied with a ribbon and wax seal, under a desk lamp with a green glow, on a dark green background
+sourceHash: '251fc5f19470'
+---
+
+When AI does the first pass on letter of credit documents, it has two jobs. It checks each document against the credit terms line by line, and it cross-checks the documents against each other. Every issue the AI lists must point to a specific clause and a specific place in a document. The documentation clerk reviews each item and then decides whether to amend the documents, present them, or ask the customer to amend the credit. An AI result of "no issues" does not mean there are no issues. Full coverage comes from the checklist plus spot checks. The documentation clerk is responsible for the presentation.
+
+import noteFig from '../media/letter-of-credit-ai-discrepancy-fig-en.png'
+
+<Figure src={noteFig} alt="Five small models left to right: a scroll unrolling into checklist cards, two documents linked by green threads, a review tray with a stamp, a filing drawer with a curved arrow returning documents, and a ticked checklist clipboard, each with an English label board" caption="Figure: Letter of Credit Review | Discrepancies" width="wide" border />
+
+## Break the credit terms into a checklist
+
+When the documentation system receives the issued credit text, the AI first breaks the terms into an itemized checklist. The checklist lists each requirement: document types and number of copies, goods description, maximum amount, shipment date and presentation period, and every special additional condition.
+
+The documentation clerk and the AI both work from the same checklist. This prevents gaps from a clerk reviewing from memory. Each review result maps back to a clause. Work with a clear reference standard like this is a good first task for AI. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+For example, a credit may require a certificate of origin in a specific format, with a special note on the signature field. The system pulls this requirement out as its own rule for focused checking. During the first review, the system checks whether the document set contains this document. If it is missing, the system adds a to-do mark on the summary page.
+
+## How to cross-check documents against each other
+
+The AI pulls the commercial invoice, ocean bill of lading, packing list, certificate of origin, and insurance policy, and compares them for consistency. The system lines up the goods name, number of packages, shipping marks, gross and net weight, and the order of issue dates across all documents.
+
+For example, the total package count on the packing list may differ slightly from the count on the bill of lading. Or the goods description on the invoice may leave out a minor modifier. The system marks exactly which two documents disagree. The AI names the documents in conflict, with the page and line numbers, so the clerk can check them directly. Each mismatch goes on the list as a possible discrepancy.
+
+Date logic across documents is also a focus. The AI puts the invoice date, the bill of lading date, and the presentation deadline in order and marks any sequence that is wrong.
+
+## The documentation clerk reviews each item and decides on amendments
+
+The documentation clerk reviews each issue on the system's list. The clerk confirms whether it is a text extraction error or a real inconsistency between documents. For commercial invoices or packing lists the company produces itself, the clerk issues a corrected version in the system and replaces the flawed draft.
+
+For example, the clerk may find that a bill of lading issued by the freight forwarder has a spelling error in the goods name. Based on how much time is left before the presentation deadline, the clerk decides whether to ask the forwarder for a new bill or to contact the applicant and ask them to accept it. For large changes, or when the buyer must amend the credit, the clerk works it out with the head of the business unit, who makes the final call.
+
+After the review passes, the documentation clerk signs a presentation confirmation. The system packs the final full document set and the review log and archives them. A document set the clerk has not signed off is not presented.
+
+## Replay past bank rejections to add rules
+
+On a schedule, the documentation team collects past cases where the bank rejected documents. They feed each case into the system again with the full document set from that time. By watching how the model performs on these real cases that went wrong before, the team finds which kinds of issues the system misses. The replay checks one thing first: did the AI flag the discrepancies the bank raised?
+
+For what makes a replay test count, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>. Repeated testing finds the missing rules, and the team adds them to the system's checking logic.
+
+For example, one issuing bank has a special requirement for where the endorsement stamp sits on the bill of lading. The replay showed the model had not been checking the endorsement area. The documentation supervisor added this item to the checklist.
+
+## Letter of credit document checks: FAQ
+
+### If the AI finds no issues, does the documentation clerk still need to read everything?
+
+Yes. The clerk's review and spot checks cannot be skipped. The AI is good at catching keywords and checking numbers against a fixed checklist. It cannot fully replace a person's understanding of complex meaning and of whether the trade is genuine. A "no anomalies" result from the system only means no existing rule was triggered. The clerk still needs to read the core terms in full.
+
+### The credit terms are in a foreign language. Can the AI translate them first and then check?
+
+System checks must work from the original credit terms. A second translation of foreign-language commercial terms easily shifts word meanings or makes legal terms ambiguous, which throws off the document checks. The translation feature is only a reference to help the clerk understand the business. All line-by-line comparison happens on the original text.
+
+### When the bank raises discrepancies, how can the AI help?
+
+When the bank raises discrepancies, the AI locates the credit clause and the exact place in the documents that each bank comment refers to. It lists the options, such as amending the documents, negotiating, or asking the buyer to accept, and leaves the decision to the documentation clerk and the salesperson.

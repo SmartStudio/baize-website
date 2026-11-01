@@ -1,0 +1,59 @@
+---
+title: "A Dispatch Agent Switches Carriers: Do You Need to Tell the Customer?"
+seoTitle: "Dispatch Agent Carrier Switch: Tell the Customer First?"
+description: When the planned fleet rejects a load, runs short of trucks, or is expected to arrive late, a transport dispatch agent at a logistics company or shipper can match a backup fleet and build a replacement plan. Whether to notify the customer in advance or get written consent depends on the contract terms, the type of goods, and the freight cost difference rules.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/transport-dispatch-agent-carrier-switch-cover.png
+coverAlt: At a road junction, a grey truck has stopped while a container moves along a green arrow to a second truck with green trim, on a dark green background
+sourceHash: '4c796ac09ca0'
+---
+
+A transport dispatch agent can find a replacement carrier and draft a reassignment plan. Whether to notify the customer, and whether the customer must agree, depends on the contract and the customer's requirements. If the customer named the carrier, if the contract forbids subcontracting or reassignment, or if the goods are special, the customer must confirm in writing before the switch. The agent drafts the notice, and the dispatcher confirms it before it is sent. A freight cost difference above the set threshold needs human approval. The reason, time, and approver of each switch are recorded.
+
+import noteFig from '../media/transport-dispatch-agent-carrier-switch-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a truck on a curving road under a cracked map pin with an alert badge, a contract under a magnifier, an envelope sealed with a green check, and a scale holding coins next to a stamp, each with an English label board" caption="Figure: Transport Dispatch Agent | Carrier Reassignment" width="wide" border />
+
+## When to propose a switch and what the plan contains
+
+The agent proposes a carrier switch when the planned carrier has not accepted the load in the transport management system by the deadline, rejects it outright, reports a truck shortage just before pickup, or when in-transit tracking shows the truck off route and unlikely to make the delivery window. The agent screens the approved supplier pool for backup carriers that run the same lane and have the right vehicle type and availability. The dispatcher confirms the plan.
+
+After screening candidates, the agent creates a reassignment plan card and pushes it to the dispatcher on duty. The card lists the backup carrier's name, operating licenses and insurance status, estimated pickup and arrival times, the freight cost difference against the original rate, and the loading and handover risks of changing trucks.
+
+## Whether to tell the customer and whether the customer must agree
+
+For every carrier switch, the agent first checks the order and contract library for the relevant terms on notifying the customer or getting consent. If the customer named this carrier, if the contract says the fleet cannot be changed or the job subcontracted without permission, or if the load is cold chain with temperature control, precision instruments, hazardous chemicals, or other goods with special vehicle or escort requirements, the system marks the switch as needing the customer's written consent in advance. No new dispatch order can go out until the customer replies.
+
+If the contract lets the logistics provider arrange capacity on its own and the customer only looks at on-time delivery, and the new fleet is also on the approved list with an estimated arrival no later than the original commitment, the switch follows the internal process. Whether to share the update depends on how the team usually communicates with that customer. Write each customer's contract constraints and communication preferences into clear rules in the system. For special orders where the terms are vague or the case is unclear, the agent stops and hands the decision to the dispatcher and the account manager.
+
+## How to draft the customer notice and who sends it
+
+When the customer must be notified or asked to confirm, the agent drafts a notice from the order number, the reason for the exception, and the new plan. The draft states why the original carrier cannot run as planned, the new carrier's qualifications, the new estimated pickup and delivery times, and whether the original delivery commitment is affected.
+
+The draft waits in the workbench. The dispatcher on duty checks the wording and the times, and clicks send after confirming. For whether an agent's emails to customers need approval first, see <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent Permissions: Reading Email Is OK. Does Sending Need Approval?</NoteLink>. After the notice goes out, a person handles the customer's written confirmation or any objection to the new arrival time, and updates the order notes.
+
+## How to approve cost differences and review the records
+
+The dispatcher checks the freight cost difference between the old and new carriers, and the system routes it by preset thresholds. If the new carrier's rate is close to the original and the difference is within the threshold, the dispatcher can release the plan after confirming it. If a last-minute truck costs more than the threshold allows, the process stops and goes to the transport manager for approval, and the new waybill is created only after approval. For when an agent should stop and hand over to a person, and how to keep a decision log, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
+
+Every switch leaves a full record in the transport management system: the trigger time, the original carrier's exception reason, the new carrier's name, who confirmed the plan and when, who approved the cost difference, the customer notice record, and the written confirmation attachment. On a schedule, the operations team pulls the switch records and summarizes them. They look at which lanes and which carriers have frequent switches, and adjust carrier ratings and dispatch priority.
+
+## Transport dispatch agents: FAQ
+
+### The goods are already on the road. Do you still need to ask the customer before switching?
+
+Decide by the contract and the customer's requirements. If the customer named the fleet, the contract limits reassignment, or the goods are special, get the customer's confirmation first, even for a transfer to another truck in transit. In an emergency such as a traffic accident or a breakdown, when there is no time for the written process, the dispatcher calls the customer first to explain and keeps the call or message record. Afterward, the dispatcher sends a written notice, asks the customer to complete the confirmation, and files it with the switch record.
+
+### If the customer complains about a delay after a switch, how do you find who is responsible?
+
+Pull the switch record from the transport management system. It shows when the original carrier reported the exception, when the agent produced the backup plan, when the dispatcher confirmed, and when the customer replied. The team checks the exception reason, each party's confirmation time, and the contract terms against the record, then decides the cause of the delay and who is responsible.
+
+### The freight cost went up after the carrier switch. Who approves it?
+
+If the cost difference from a carrier switch is within the set threshold, the dispatcher on duty handles it under the existing rules. If it exceeds the threshold, it must go to the transport manager for sign-off. If the contract says the customer pays the extra cost, the team first gets the customer's written confirmation of the cost, then issues the dispatch order in the system.

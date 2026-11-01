@@ -1,0 +1,59 @@
+---
+title: "Cases From a Legal Research AI: How to Verify Them Before You Cite"
+seoTitle: "Legal Research AI: Verify Cases Before You Cite Them"
+description: When lawyers and in-house counsel use legal research AI to find similar cases and precedents, they cannot paste the model's summaries or case numbers straight into a complaint, a defense brief, or a legal opinion. Every case they plan to cite must be checked against the original text and its later appeal history on an official public platform or a licensed database.
+lang: en
+pubDate: 2026-11-01
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/legal-research-ai-case-check-cover.png
+coverAlt: A magnifying glass over a stack of case files, with a green beam linking the top file to a thick bound original volume on the right, on a dark green background
+sourceHash: '45017f26a915'
+---
+
+Before citing any case a legal research AI returns, go back to the court's public judgment database or the legal database your organization licenses and find the original text. The person handling the matter checks each case for the case number, court, judgment date, parties, and holding. They also check whether a higher court reversed it or sent it back for retrial. AI-generated summaries cannot go straight into formal documents. The handling lawyer or in-house counsel is responsible for citation accuracy, and keeps a record of every case they checked.
+
+import noteFig from '../media/legal-research-ai-case-check-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: two document puzzle pieces that do not fit with an alert mark, two documents compared side by side under a magnifier, a ticked checklist with a file box, and a document with parts covered by dark bars next to an eraser, each with an English label board" caption="Figure: Legal Research AI | Case Verification" width="wide" border />
+
+## Where retrieved cases often go wrong
+
+After you enter the disputed issue, the tool may return a case number that does not exist, the wrong court for a case, or a summary that does not match the original. For example, the model may stitch together case number parts from different years and regions into a fake number no one can find. Or the case number is real, but the court and parties attached to it are wrong and have nothing to do with the matter at hand.
+
+An AI summary may also present a party's arguments as the court's findings. The summary may seem to fully support your position. When you pull the original judgment and compare, you find the passage was an argument one party made at trial, and not part of the court's reasoning section where it states its conclusions. Or the model gives a first-instance judgment, and the case was later reversed, vacated, or sent back for retrial on appeal or in a retrial.
+
+## What to check against the original before citing
+
+When the handling lawyer gets the candidate list, the first step is to use the case number or party names to pull the full judgment from the court's public judgment database, or from a professional legal database the firm or company licenses. In this verification step, first check the header: the case number, trial court, judgment date, party roles, and cause of action must match what the tool listed exactly.
+
+After the basic details, read the findings of fact and the reasoning. Check whether the core transaction structure, breach, or disputed issue is really the same as in your matter. For any holding you plan to put into a complaint, a defense brief, or a legal opinion, quote and check it directly from the original judgment, and do not use sentences the AI paraphrased. Finally, follow the case number to related documents. Confirm whether the judgment is in force and whether it was later reversed on appeal or changed by a retrial ruling.
+
+## Who checks and how to keep verification records
+
+The lawyer or in-house counsel who drafts a document checks each case it cites, and records the search source and the result. Because each case can be checked against its original, this is a good place to let AI do the first screen. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. When the lead lawyer, partner, or head of legal reviews and signs the document, they spot-check the original-text screenshots and the in-force status of key cases against the working file. This confirms no case was copied in without a check.
+
+The team keeps a simple case verification sheet in the case management system or the case file index. For each cited case, it records the source database, the check date, the name of the person who checked it, and the result of the appeal and retrial check. The original judgment text goes into the electronic case file for reference. Any case whose full text cannot be found on the public platform or in the licensed database, and so cannot be verified, is struck out and not used, however well its summary fits.
+
+## How to prepare case materials before giving them to a tool
+
+For example, the handling lawyer plans to give a general-purpose AI tool a draft complaint, correspondence, the contract in dispute, or an internal case memo. Before submitting, check confidentiality obligations and your organization's rules, and redact party names, business information, and similar content.
+
+Before entering case facts into a general-purpose tool, replace sensitive information by hand: names of individuals, full company names, specific addresses, bank account numbers, and non-public commercial terms. Use placeholders such as "Party A", "Party B", or "an equipment supplier", and keep only the disputed issue and the legal relationship. If your organization has clear rules on the scope of AI tool use and confidentiality levels, follow them strictly. For how to redact case materials before giving them to AI, see <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>.
+
+## Legal research AI: FAQ
+
+### The AI says the case has a link to the original. Do I still need to check?
+
+Yes. A link in the chat window is not enough. Some links lead to dead pages, or jump to a completely unrelated document. The handling lawyer still needs to open the link, or pull the full text from an authoritative database, and check the case number and the court's reasoning item by item.
+
+### Can I cite the holding the AI summarized?
+
+Not directly in a formal legal document. When the model condenses a long text, it may drop key preconditions, or even present a party's defense as the court's conclusion. Any quotation in a formal document must be checked against the court's reasoning section in the original judgment.
+
+### Can another AI do the case verification?
+
+Another AI can help with a first comparison. For example, put the original judgment and the draft document side by side and have it mark mismatched case numbers, dates, or quotations. The handling lawyer still has to check the document's authenticity on the public platform and the licensed database, confirm its later appeal status, and make the final citation decision. Responsibility for case verification cannot be handed to a tool.
