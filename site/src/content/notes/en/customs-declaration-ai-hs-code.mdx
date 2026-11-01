@@ -1,0 +1,68 @@
+---
+title: "AI Pre-Fills the Customs Declaration. Who Is Liable for a Wrong HS Code?"
+seoTitle: "AI Customs Declaration Pre-Fill: Who Owns HS Code Errors?"
+description: When trading and customs brokerage companies use AI to pre-fill customs declarations and suggest HS code classifications, legal liability for the declaration before customs still sits with the consignee or consignor and the customs broker they engage. Internally, companies confirm fields by tier and keep the candidate codes, classification basis, and override records.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/customs-declaration-ai-hs-code-cover.png
+coverAlt: A stack of white forms and a grey scanner arm projecting fields as glowing green strips, a hand pressing an emerald code block on a grey tariff book, and a grey shipping container and brass stamp on the right, on a dark green base
+sourceHash: '5e85f038c86b'
+---
+
+When AI pre-fills a customs declaration, the parties legally liable to customs for the declaration are still the consignee or consignor of the import or export goods and the customs broker they engage. Neither the tool vendor nor the AI is a declarant. Inside the company, draw the lines first. Decide which routine fields the tool may carry over from the source documents, and which fields a customs clerk must check one by one. HS code classification is always written into the declaration only after a customs clerk confirms it. Sensitive goods, new products, low-confidence suggestions, and candidate codes that differ widely go to the customs supervisor. For a new product that remains unclear, the company applies to customs for an advance classification ruling before the goods are actually imported or exported.
+
+import noteFig from '../media/customs-declaration-ai-hs-code-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right joined by green arrows: a scanner extracting fields from forms, a hand with a magnifier over a tariff book, a small figure in a hard hat beside a shipping container, and a document with a return arrow and a pen, each above an English label board" caption="Figure: Customs Declaration Pre-Fill | HS Code Classification" width="wide" border />
+
+## Which fields AI pre-fill can carry over
+
+For customs declaration pre-fill, a common approach is to have the tool read the invoice, packing list, contract, bill of lading, and declaration element data. It extracts the product name, specification and model, quantity, number of packages, gross weight, net weight, and terms of trade, and can be configured to fill them into the matching fields of the draft declaration. When one invoice lists several products, it can also be configured to split them into several declaration lines. With blurry scans or handwritten documents, recognition depends on how legible the writing is, and a person must check the important extracted fields against the original.
+
+Once the draft is filled, the system can be configured to run a pre-declaration logic check and flag places where the documents do not agree:
+
+- **Amount, quantity, and gross and net weight**: check that unit price times quantity matches the total, and that gross weight is not entered as less than net weight.
+- **Units of measure and declaration elements**: check whether the product name conflicts with the declared material, whether the transaction unit and the statutory unit were converted correctly, and whether regulatory documents and declaration elements follow the filing rules.
+
+When the check finds an issue, the system can be configured to show which source document the data came from, so the operator can go back to the contract, invoice, or packing list. It can also be configured so that the declaration cannot be submitted until the pre-declaration check passes.
+
+## Why HS code classification needs a person to confirm
+
+In day-to-day customs work, the same material often gets different codes depending on who handles it. When a tool suggests an HS code classification, it usually looks at the product name, specification, composition, and use, compares them with the code database and the company's past classification records, and lists several candidate codes with confidence levels and classification basis. For the candidates to be reliable, the company needs to keep its past classification records and material master data clean and feed them to the AI. For how to organize them, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+Even with past records behind it, the AI's HS code suggestion is only a reference. A customs clerk must confirm or override it before it goes into the declaration, and both direct acceptance and manual override are recorded. Internal confirmation can have two levels. For familiar products shipped often, the clerk on duty checks and signs. Sensitive goods, new products, low-confidence candidates, or candidates that differ widely go up to the customs supervisor. For a new product whose classification is truly unclear, the company can apply to customs for an advance classification ruling before the goods are actually imported or exported.
+
+## Who is liable before customs, and how to split duties internally
+
+Under China's customs rules on declarations, the consignee or consignor of import or export goods and the customs broker they engage must declare truthfully under the law. They bear legal liability for the truthfulness, accuracy, completeness, and conformity of the declaration. The rules on commodity classification also state that the consignee or consignor or its agent must declare the product name and specification and model truthfully and accurately, classify the goods, and determine the commodity code. When applying for an advance classification ruling, the applicant is likewise legally liable for the truthfulness, accuracy, completeness, and conformity of the materials submitted.
+
+A customs broker that takes on a job must make a reasonable review of the truthfulness, validity, and completeness of what the client provides, including the product name, specification and model, use, and the contract, invoice, and packing list. Externally, the consignee or consignor and the broker are liable. Internally, duties are split by one rule: whoever confirms signs and keeps the record.
+
+- **Business and documentation staff**: own the source documents such as the contract, invoice, packing list, and declaration element data. When the logic check finds contradictions in the source documents, they get them corrected.
+- **Customs clerk on duty**: checks important fields on blurry scans and handwritten documents against the originals, confirms codes for routine goods, and signs.
+- **Customs supervisor**: decides codes for sensitive goods, new products, and items with widely differing candidates, and decides whether to apply for an advance ruling.
+
+## What to do when a wrong classification is found after filing, and what to record
+
+When the consignee or consignor finds that a filed classification needs to change, it applies to customs under the rules for amending and withdrawing declarations. Once customs has accepted a declaration, it in principle cannot be amended or withdrawn, except in the cases the rules allow. For how to roll back after a mistake and how to assign responsibility, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
+Internal records follow the same rule: whoever confirms signs and keeps the record. For classification, record which candidates the AI gave, their confidence levels and classification basis, who chose which code, and the reason for any override. For ordinary fields, when a person overwrites a field the pre-fill derived, the system can be configured to record the old value, the new value, and the operator.
+
+## Customs declaration pre-fill: FAQ
+
+### The invoice and packing list are blurry scans or handwritten. Can they go through AI pre-fill?
+
+The AI can extract a first draft, but a person must check the important fields. Blurry scans and unclear handwriting both affect recognition. The operator checks each item against the original documents, and the system is configured so that a declaration cannot be submitted until the pre-declaration check passes.
+
+### We use an outside customs broker. Is it enough to send them the AI pre-filled draft?
+
+No. The consignee or consignor is liable for the declaration, and the broker is required to make a reasonable review of the product name, specification and model, use, contract, invoice, and packing list. When sending the pre-filled draft, also send the full set of original documents and declaration element data. Both sides check them before declaring to customs.
+
+### Can we just use the AI's first candidate for HS code classification?
+
+No. Before customs, the consignee or consignor or its agent is liable for HS code classification, and the AI's candidates are only a reference. The customs clerk checks the product name, specification, composition, use, and classification basis, and accepts the code only if they match. Sensitive goods, new products, or candidates that differ widely go to the customs supervisor. For a new product that remains unclear, apply to customs for an advance classification ruling before the goods are actually imported or exported.
