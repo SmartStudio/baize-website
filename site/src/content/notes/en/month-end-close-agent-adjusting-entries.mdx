@@ -1,0 +1,68 @@
+---
+title: "A Month-End Close Agent Drafted Adjusting Entries. How Do Accountants Review Them?"
+seoTitle: "Month-End Close Agent Adjusting Entries: How to Review"
+description: Finance teams use a month-end close agent to draft adjusting entries such as accruals, amortization, and reconciliation differences. The agent only creates suggested drafts with structured support in a review workspace and does not write to the general ledger. Accountants review them in tiers by tolerance band, and entries post through the standard approval flow.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/month-end-close-agent-adjusting-entries-cover.png
+coverAlt: A desk calendar, a grey robotic arm placing a translucent draft card into a clear glass review tray, a hand with a pen checking a glowing emerald card, and behind a gate a closed ledger book and a balance scale, on a dark green base
+sourceHash: '31d2450a0fc1'
+---
+
+At month-end close, a month-end close agent only drafts adjusting entries. It does not write to the general ledger. Its drafts sit in a review workspace as suggestions. Formal vouchers go through the standard approval flow and post only after a person enters them or an authorized approver approves them. The person who prepares an entry cannot approve it. Accountants check three things on each adjusting entry: whether the calculation support traces back to source data and the general ledger, whether the amount is right when recalculated from that support, and whether the debit and credit accounts and the period are right. Entries inside the company's tolerance band get fast approval plus sample review. Entries outside the tolerance or over the materiality threshold get full review, one by one.
+
+import noteFig from '../media/month-end-close-agent-adjusting-entries-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right joined by green arrows: a robotic arm placing draft cards into a glass tray, a calculator with supporting documents, a sorting rack split into a green fast lane and a grey full-review lane, and a four-drawer cabinet with a green padlock, each above an English label board" caption="Figure: Month-End Close Agent | Adjusting Entries" width="wide" border />
+
+## Which entries the agent drafts at month-end
+
+Five month-end tasks suit AI: matching intercompany and subledger reconciliations and sorting differences by cause, suggesting expense accruals and amortization, rolling forward account balances, writing first drafts of period variance analysis, and checking the close checklist. For the controls that follow AP reconciliation downstream, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+
+When the agent handles documents from outside, the first step is to cut its write access. External invoices and supplier statements are untrusted external files. The step that reads them gets no write tools. It only extracts amounts and document details for matching. This keeps unusual content hidden in an external file from changing the books.
+
+All draft adjusting entries stay in the review workspace, marked as suggestions. Formal vouchers go through the company's existing approval flow. They post after the general ledger accountant enters them or an approver approves them, which keeps two-person review in place.
+
+## What support each adjusting entry must carry
+
+If a draft shows only an account and an amount, the approver cannot review it. Each adjusting entry carries structured calculation support that shows the method and the data sources:
+
+- **Historical averages and open orders**: for accruals of recurring expenses, attach the rolling average of actual amounts over recent months, or link the open purchase order details.
+- **Contract schedules and seasonal patterns**: attach the contract payment schedule, the amortization period, and the account's seasonal pattern. Accrual entries of a month-end accrual nature can be configured to carry an automatic reversal flag for the first day of the next period.
+- **Supporting documents and ledger queries**: give the supporting document number or the general ledger query link, so the general ledger accountant and the finance manager can open the underlying details in one click.
+
+When rolling forward account balances, the result must tie to the general ledger closing balance. If an amount does not reconcile, the draft lists the difference as it is and does not force a plug entry. If the cause of a difference cannot be found, the draft says the cause is unknown and sends it to the finance manager. It does not make up a reason.
+
+## The order accountants review in, and how tiers work
+
+The general ledger accountant reviews each draft in a fixed order. First, open the supporting documents or ledger query and check that the support traces back to source data and the general ledger. Next, recalculate the amount with the method the draft states. Last, check the debit and credit accounts, the accounting period, and the next-period automatic reversal flag.
+
+At the peak of the close, entries pile up. To keep approvers from clicking "approve" through hundreds of suggestions, the system can be configured for tiered review by tolerance band. Routine suggestions inside the company's tolerance band get fast approval with sample review. Anything outside the tolerance or over the materiality threshold is pulled out for full review with a mandatory written reason. Before using the agent in a live close, the finance team can have it re-run several closed months and match its drafts entry by entry against what was actually posted. For how to run the evaluation, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>.
+
+## What to keep for the audit trail
+
+When auditors look at close workpapers, they ask three things: what the machine calculated, who reviewed it, and whether the same number can be reproduced later. The month-end close agent keeps records in four layers:
+
+- **Input data snapshot**: record which general ledger data the drafts used and the cutoff time of the snapshot. If the agent reads live data that keeps changing, an auditor cannot reproduce the numbers later.
+- **Machine draft archive**: store every AI draft with a timestamp and system version, marked as machine-generated until a person formally approves it.
+- **Human review ownership**: record the named approver, the approval time, and whether the accountant edited the draft before approving. Accepted as-is and accepted after edits are recorded separately.
+- **Model and constraints for the period**: record which model version and which instruction constraints the month's close used, and whether anyone changed the configuration without approval during the close.
+
+## Month-end close agents: FAQ
+
+### The balance roll-forward does not tie to the general ledger closing balance. Will the agent fill the difference automatically?
+
+No, and it should not be configured to. The account balance roll-forward must tie to the general ledger closing balance. When it does not, the draft shows the difference and the details involved and does not create a plug entry. If the existing accounting rules cannot explain the gap, the draft marks the cause as unknown and sends it to the finance manager. It does not invent an explanation.
+
+### Can the agent read supplier statements and invoices and change the books directly?
+
+No. Invoices and supplier statements from outside are untrusted external files. The reading and parsing step only extracts invoice amounts and document details and has no write permission. If a difference really needs an adjustment, the agent can only draft a suggested adjusting entry in the review workspace. The general ledger accountant checks the source documents, and the entry posts through the two-person approval flow.
+
+### An accountant edited an adjusting entry. Will the agent use the old calculation next month?
+
+If only the current period's draft voucher was edited and the underlying rule was not, the agent uses the old method next month. The standard practice is for the general ledger accountant to record the reason when editing a draft. If the accrual or allocation rule itself needs to change, finance staff update the rule base, and the change takes effect after the finance manager approves it. The agent does not change anything on its own in the background. Next month it recalculates using the approved new rule.

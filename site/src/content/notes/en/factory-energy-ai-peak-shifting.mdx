@@ -1,0 +1,71 @@
+---
+title: "Factory Energy Optimization: Will Production Shift Off-Peak?"
+description: In factory energy optimization, AI can combine real-time production load with time-of-use electricity prices to suggest off-peak operation. Order delivery dates, yield, equipment condition, and shift staffing belong to production and process engineering, so a load-shifting plan must state its equipment and order impact and be confirmed by production planning, the shop floor, and process engineering before it runs.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/factory-energy-ai-peak-shifting-cover.png
+coverAlt: A row of grey machines including an air compressor, a tank, and a unit with an electricity meter, with glowing green energy lines running from an orange sun to a grey crescent moon above them, and an emerald block placed on one machine, on a dark green base
+sourceHash: '2f80bca2a887'
+---
+
+A factory energy optimization plan that saves on electricity by running machines off-peak must pass three checks first: production planning, the shop floor manager, and process engineering. AI can combine real-time production load with time-of-use electricity prices and work out which machines would cost less to run in which time slots. Order delivery dates, product yield, equipment condition, and shift staffing do not belong to the energy department. So the AI output is only a proposal. The energy manager submits it. Production planning and the shop floor manager check whether the floor can move the work. Process engineering checks whether it affects quality. When there is a conflict, the plant manager decides by the priorities the company has set. By default, delivery dates and yield come first.
+
+import noteFig from '../media/factory-energy-ai-peak-shifting-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right joined by green arrows: factory machines with green tags and a checklist, a clock dial split into day and night halves, three stamps around a plan card, and an electricity meter beside a bill with a magnifier, each above an English label board" caption="Figure: Factory Energy Optimization | Time-of-Use Electricity Prices" width="wide" border />
+
+## The AI first finds out which loads can move
+
+Off-peak production means producing more in low-price valley hours and running less in high-price peak hours. Time-of-use tariffs usually have critical peak, peak, flat, and valley periods. The periods and prices differ by region. A common approach is to use sub-meters to record each production unit's consumption in peak, flat, and valley periods, pull production and cost data from ERP and MES, and match consumption to specific production jobs and equipment run status.
+
+Before drafting a load-shifting plan, exclude the loads on the floor that cannot be moved:
+
+- **Core equipment that cannot stop**: core process equipment with strict continuous-run requirements cannot be interrupted or delayed.
+- **Equipment with high start-stop losses**: some machines take several hours to heat up after a restart. Frequent starts and stops use more electricity. Include start-stop cost and minimum continuous-run time constraints.
+- **Equipment on rush orders**: machines tied up by urgent orders stay out of load scheduling. Delivery comes first.
+- **Process equipment sensitive to power swings**: power fluctuations on process machines can damage product quality. Energy savings must not affect yield.
+
+Auxiliary processes such as cleaning, purified water production, air compressors, and exhaust gas treatment often have several hours of scheduling flexibility. They are good candidates to move first.
+
+## What the plan must state
+
+Once the baseline consumption is known, an energy agent combines real-time production load with time-of-use prices and suggests peak shaving and valley filling, energy storage operation, and off-peak operation for energy-intensive equipment. Starting from the baseline production plan, it moves some of the jobs that energy-intensive equipment was scheduled to run in peak hours into valley hours, and produces a load-shifting plan. It can also be configured to simulate the baseline plan and the shifted plan separately and compare total benefit.
+
+The simulation cannot count only the peak-valley price difference. After a machine moves to valley hours, its throughput may drop, and keeping total output the same often requires longer run time. Both costs belong in the calculation, and equipment wear can be added to the assessment as well. Watch the basic demand charge too. In some regions the basic charge is based on the month's maximum demand, so one power spike raises the basic charge for the whole month. Besides moving consumption, stagger machine start times so simultaneous starts do not create a demand spike.
+
+The final schedule adjustment includes suggested start and stop times for equipment. Each item states four things: which machines move, the new start and stop times, the estimated savings on the electricity bill, and which work-in-progress orders and upstream and downstream processes are affected.
+
+## Who decides whether production gives way
+
+The energy manager receives the proposal and starts an internal co-sign. A load-shifting plan touches delivery dates, staffing, and process at the same time. The three parties confirm separately according to their roles, and the schedule does not change unless all three sign:
+
+- **Energy and utilities manager**: confirms the peak and valley periods, the maximum demand limit, and the slack in auxiliary processes, then prepares the plan and submits it.
+- **Production planning and shop floor manager**: check delivery dates for affected orders, staffing for valley-hour shifts, and material handoff between upstream and downstream processes, and confirm the floor can run the schedule.
+- **Process engineer**: confirms that machine starts and stops meet continuous-run time constraints and that power changes do not affect yield.
+
+Production planning issues the revised schedule only after all three confirm. If the energy department shows a saving but production planning finds it would delay a delivery, or process engineering sees a quality risk, the plant manager resolves the conflict by the priorities the company has set. By default, delivery dates and yield rank above energy savings.
+
+## What to measure after execution and how to review
+
+Whether load shifting saved money is clear once you compare meter readings with the electricity bill. Use cases whose results can be checked on the spot are good to start with. For how to choose them, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. Before changing the actual shop floor schedule, the team can run an offline simulation against past plans and past electricity bills to check that the calculation logic is right.
+
+After the new schedule is running, review it against the actual electricity bill and order delivery deviations. For which numbers to look at, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>. The review checks four things: actual consumption in each peak, flat, and valley period and the maximum demand for the basic charge; actual throughput in valley hours and the extra run time; product yield and equipment condition during the period; and delivery deviations for affected orders. If a machine moved to valley hours saves less on electricity than the extra run time costs, or delays deliveries, it comes off the scheduling list in the next cycle.
+
+## Factory energy optimization: FAQ
+
+### The night shift is short-staffed. How does the AI's valley-hour plan work in practice?
+
+Before drafting the plan, write each shift's staffing constraints into the scheduling assumptions. When the night shift is short of people, move auxiliary processes with scheduling flexibility first, such as cleaning, purified water production, air compressors, and exhaust gas treatment. Main-line equipment that needs someone watching stays on shifts with enough staff, and joins load scheduling once staffing is adjusted.
+
+### We moved all energy-intensive equipment into valley hours and started it together. Why didn't the bill go down?
+
+Most likely the plant hit a demand spike, or start-stop losses ate the savings. In some regions the basic charge is based on the month's maximum demand. When several energy-intensive machines all start as soon as valley hours begin, the momentary power spike raises the basic charge for the whole month. Some machines take hours to heat up, and frequent starts and stops use more energy. When drafting the plan, stagger the start times of each machine, and include start-stop cost and continuous-run time constraints in the total.
+
+### The time-of-use tariff changed. Does the AI's load-shifting plan need to be recalculated?
+
+Yes. Once the period boundaries or prices change, the old start and stop windows and the savings estimate no longer hold. The energy manager re-runs the simulation of the baseline plan and the shifted plan with the new tariff, confirms total benefit and the maximum demand limit, and then sends the plan to production planning and the shop floor manager for confirmation before it runs.

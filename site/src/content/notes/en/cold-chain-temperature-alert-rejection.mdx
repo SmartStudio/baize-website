@@ -1,0 +1,66 @@
+---
+title: "Cold Chain Temperature Alarm: Should You Reject the Shipment?"
+seoTitle: "Cold Chain Temperature Alarm: Reject the Shipment?"
+description: When a cold chain temperature alarm fires, logistics companies and cargo owners decide on rejection from the full temperature record, measured surface and core temperatures, packaging condition, and their receiving rules. Unclear cases go to the quality lead, who decides and keeps a record.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/cold-chain-temperature-alert-rejection-cover.png
+coverAlt: A grey refrigerated truck with its rear doors open and a frosted crate inside, a data logger on the crate with a glowing green temperature line rising above it, a hand holding a probe thermometer, a clipboard and a brass stamp, on a dark green base
+sourceHash: 'ba028c8ab886'
+---
+
+A cold chain temperature alarm, in transit or on arrival, means the load had a temperature excursion signal. Whether to accept it depends on the company's receiving rules and the evidence on site. Software or AI can be configured to read the full record from the temperature data logger, mark the over-temperature periods, how far they went out of range, and how long they lasted, and compare them with the temperature and humidity requirements on the product label and in the contract. The output is a handover exception report. If the full record is missing, the temperature went outside the required range, measured temperatures do not match, or the food is in abnormal condition, the receiver refuses the load under the rules. Refrigerated or frozen drugs that fail their temperature requirement are rejected on arrival. Edge cases go to the quality lead, who decides and records the reason. The AI does not make the rejection call and does not change the original temperature record.
+
+import noteFig from '../media/cold-chain-temperature-alert-rejection-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right joined by green arrows: a temperature data logger with a probe and magnifier, a red stop sign with a white hand in front of a translucent crate, a quality inspector in a lab coat holding a clipboard, and a grey filing cabinet with green folders, each above an English label board" caption="Figure: Cold Chain Temperature Control | Temperature Excursions" width="wide" border />
+
+## What evidence to check first after an alarm
+
+The hygiene specification for food cold chain logistics is a mandatory Chinese national standard. It covers temperature-controlled logistics for food from the time it leaves the factory until it is sold. It requires cold stores and transport vehicles to have devices that monitor, record, alarm on, and regulate temperature and humidity. The monitoring devices must be calibrated on a schedule, with records. Food that needs temperature and humidity control must stay within the label or the applicable standard during transport. Temperature in transit is monitored continuously in real time, and the records must be true and accurate. When the temperature or humidity in a vehicle or cold store goes outside the set range, staff take corrective and emergency action at once and record the range and duration of the excursion.
+
+When a refrigerated truck arrives and triggers a cold chain temperature alarm, the receiver and the inspector collect evidence as the handover rules require. Software can be configured to compile the following into a handover exception report:
+
+- **Full temperature record and ambient temperature**: check whether the vehicle's ambient temperature at the time is within spec. At warehouse intake and at delivery handover, check the full temperature record and the carrier's in-transit corrective action log.
+- **Measured surface and core temperatures**: measure and record the surface temperature of the outer carton or inner packaging. If the surface temperature is outside the required range, measure the core temperature of the food.
+- **Goods and packaging condition**: check the condition of the food. Confirm the logistics packaging is intact, clean, free of contamination, and free of odor. Check product type, quantity, and temperature information, and add the storage location of the packaging photos.
+- **Comparison with temperature requirements**: the tool reads the logger's full record, marks the over-temperature periods, the range, and the duration, and puts them next to the temperature requirements on the product label and in the contract.
+
+The full temperature record and the on-site measurements can be checked right there. Work whose results can be verified on the spot is a good first use case. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+## When to refuse the load outright
+
+Once the handover exception report is ready, the receiver checks it against the company's receiving rules. When a company sets up its temperature and humidity procedures, risk controls, and emergency plans, it writes the rejection conditions into the receiving rules. Staff are trained on handover and emergency handling before they start the job. Who to report a food safety problem to, and how to stop the goods, are defined in advance as duties and authority.
+
+At a food cold chain handover, the load is refused under the rules if the full temperature record is missing, the temperature went outside the required range, measured temperatures do not match, or the food is in abnormal condition. Drug cold chains follow drug regulations. China's Good Supply Practice for pharmaceutical products requires that refrigerated and frozen drugs be checked on arrival, with records of the transport method, the temperature record during transport, the transit time, and other quality control conditions. Drugs that fail the temperature requirement must be rejected.
+
+## Who decides unclear cases, and on what basis
+
+The receiving dock also sees cases the rules do not cover directly. For example, the truck had a short alarm in transit and the carrier logged a corrective action. On arrival, the vehicle's ambient temperature is normal, the measured carton surface temperature and food core temperature are both within range, and the packaging is intact with no odor. The receiver cannot release this kind of temperature exception verbally, and the tool cannot decide it on its own.
+
+The workflow can be configured to stop on any temperature exception the rules do not cover. It sends the handover exception report to the quality lead, together with the full data, the measured surface and core temperatures, the photo location, and the carrier's corrective action log. For how a tool should stop at an edge case, hand off to a person, and keep a record, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>. The quality lead decides to accept or reject based on the type of food, the range and duration of the excursion, and the measured core temperature. The reason is filed with the report.
+
+## How to keep handover records and handle disputes
+
+Whether the load is rejected or accepted, file the handover record, the full temperature record, the measured surface and core temperatures, the carrier's corrective action log, the site photos, and the quality lead's reasoning. Under the food cold chain logistics hygiene specification, records are kept for at least six months after the food's shelf life ends. Food with no defined shelf life has a retention period of at least two years.
+
+When the carrier or the cargo owner disputes a rejection, the warehouse pulls the handover exception report, the records from the regularly calibrated monitoring devices, and the on-site measurements and checks them. The original temperature record can be configured as read-only. Neither the AI nor the operators change it, and signatures and timestamps are kept in full.
+
+## Cold chain temperature alarms: FAQ
+
+### If the thermometer in the truck reads normal at receiving, can we sign for the load?
+
+No. At warehouse intake and delivery handover, the vehicle's current ambient temperature is not enough. Check the full temperature record. Confirm the logistics packaging is intact, clean, free of contamination, and free of odor. Check product type, quantity, and temperature information, and measure the surface temperature of the outer carton or inner packaging. If the surface temperature is outside the required range, also measure the food's core temperature. Accept the load only if everything passes.
+
+### Refrigerated or frozen drugs arrive with a temperature mismatch. Can we put them in the warehouse first and sort it out later?
+
+No. China's Good Supply Practice for pharmaceutical products requires that refrigerated and frozen drugs be checked on arrival, with records of the transport method, the temperature record during transport, the transit time, and other quality control conditions. Drugs that fail the temperature requirement must be rejected.
+
+### The temperature excursion lasted only a short time. Can we still accept the goods?
+
+It depends on the temperature requirements on the label and in the contract, the full temperature record, and the measured surface and core temperatures on arrival. If the company's receiving rules already cover the case, apply them. For a short excursion the rules do not cover, such as a brief over-temperature in transit where the measured core temperature and food condition are within range, the quality lead decides and files the reasoning.

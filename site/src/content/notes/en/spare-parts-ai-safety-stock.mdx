@@ -1,0 +1,72 @@
+---
+title: "AI Sets Spare Parts Safety Stock. Who Owns a Line Stop From a Stockout?"
+seoTitle: "AI Spare Parts Safety Stock: Who Owns a Stockout Line Stop?"
+description: When manufacturers use algorithms or AI to calculate spare parts safety stock, the model outputs a suggested level and its basis, and the business and maintenance teams own the final number. Criticality ratings, service levels, and stock reductions need approval from authorized owners. After a stockout stops the line, the review traces criticality, data, lead time, and approval to assign responsibility.
+lang: en
+pubDate: 2026-11-01
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/spare-parts-ai-safety-stock-cover.png
+coverAlt: A grey shelf holding gears, bearings, and motors with one part glowing emerald and a glowing green probability curve above it, a grey conveyor unit beside it, and a hand pressing a copper stamp on an approval card, on a dark green base
+sourceHash: 'd49d39b6e26c'
+---
+
+When AI or an algorithm calculates spare parts safety stock, the tool gives only a suggested level and its basis. Responsibility for the number does not pass to the model. The equipment supervisor and production set the criticality rating of spare parts together. Equipment, production, and finance decide the trade-off between service level and capital tied up, under company rules. Lowering stock of critical spares or removing spares from stock needs approval from authorized staff. After a stockout stops the line, the review follows four links to assign responsibility: criticality rating, master data, lead time estimate, and approval.
+
+import noteFig from '../media/spare-parts-ai-safety-stock-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models from left to right joined by green arrows: a conveyor with a warning sign and a green tag, a gear with a clipped note card on a small wooden bench, a hand holding a pen next to a copper stamp, and a chain under a magnifier, each above an English label board" caption="Figure: Spare Parts Safety Stock | Maintenance Spares" width="wide" border />
+
+## First identify which spares stop the line when missing
+
+Plant spare parts inventory often builds up by accident. Some is left over from emergency purchases, some from shutdown maintenance, and some arrived before any replenishment policy existed. After a few years, capital is tied up in spares that never move, while the one part that stops the line is out of stock. Cutting inventory by turnover alone tends to remove critical parts that rarely move but stop the line when missing.
+
+The calculation starts from criticality rating. The equipment supervisor and production assess together what happens to the line in a stockout: the whole line stops, part of capacity is lost, there is a safety or environmental risk, or work is only inconvenienced. Spares with severe consequences get a service level close to the highest, however low their turnover. Once ratings are set, calculate the two demand types separately:
+
+- **Wear parts with regular consumption**: use the classic reorder point method. Safety stock is proportional to the variability of consumption and lead time, and is set to meet the chosen service level. These items have stable consumption and can be checked directly against the issue records, so they are good to start with. See <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+- **Critical spares with intermittent consumption**: these leave the store once or twice in several years and have no meaningful average. Use the installed base on site, the estimated failure rate, and the real lead time to calculate how many sets to hold so that the probability of "missing when needed" stays below the company's acceptable limit.
+
+## What basis the AI's suggestion must carry
+
+Each AI suggestion can be configured to come with the installed base, replacement records, lead time, and calculation method. If the tool calculates item by item without looking at the installed base on site or checking the technical condition of slow-moving stock, the result cannot be used directly:
+
+- **Installed base and technical compatibility**: check the number of units installed and in service on the floor. Check whether slow-moving stock has lost traceability, passed its shelf life, or is incompatible with the current equipment version.
+- **Replacement records and life distribution**: the algorithm can use a sliding window over past replacement records, combined with mean time between failures, to estimate the part's life distribution and the probability of a replacement in the next lead time. If the probability exceeds the company's threshold, count it, then compare with the number from historical consumption statistics and take the larger. Equipment is often installed in batches or maintained in campaigns, so replacements cluster, and a normal-distribution assumption may be wrong. Maintenance staff check the result against the maintenance plan.
+- **Real lead time and its variability**: the real lead time includes manufacturing, testing, documentation, transport, customs clearance, and incoming inspection. It is often longer than the delivery date promised on the order. The variability of the lead time is what drives how high safety stock must be.
+- **Consistent material codes**: check for duplicate purchases caused by inconsistent code descriptions or duplicate codes.
+
+Part of the risk can move to suppliers through consignment stock or supply agreements with agreed response times. This works only if the agreement states the response time, the storage location, and the replenishment conditions.
+
+## Who approves changes and removals
+
+Spare parts management, done properly, is a policy: criticality per item, service level per category, measured lead times, periodic review rules, and named owners for exception approval. At each periodic review, the software can be configured to recalculate suggested levels from the latest replacement records and measured lead times and flag items that need adjustment.
+
+A suggested level goes through approval before it enters the inventory policy. Small adjustments to routine wear parts within the set service level are checked and updated by the storekeeper and purchasing. Lowering stock of critical parts, removing standing spares, or changing the service level and the cap on capital tied up are approved by equipment, production, and finance under company rules. The software is not configured to let the model lower critical part levels directly.
+
+## How to review after a stockout stops the line
+
+After a stockout stops the line, pull the criticality records, the AI's suggestion basis, the purchasing lead time records, and the approval logs, and review four links to assign responsibility:
+
+- **Check the criticality rating**: check whether the original rating missed an assessment or underestimated the consequence of a line stop. A wrong rating is the responsibility of the equipment and production staff who set it.
+- **Check the master data**: check for duplicate codes, missing replacement records, or an installed base that was not updated. Bad data is the responsibility of the data maintenance role.
+- **Check the lead time estimate**: check whether the estimate used only the promised order date and left out testing, customs clearance, and incoming inspection, or whether a consignment agreement was never put in place. This is the responsibility of purchasing and supplier management.
+- **Check the approval decision**: if the algorithm suggested raising stock because lead time grew or the failure rate rose, and the approver did not adopt it or lowered the level by hand, the signing approver is responsible.
+
+For how to trace records and assign responsibility after a tool-assisted process goes wrong, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>. After the review, update the criticality ratings, measured lead times, and replacement records.
+
+## Spare parts safety stock: FAQ
+
+### Why does cutting inventory by turnover alone tend to remove critical parts?
+
+Critical spares with intermittent consumption leave the store once or twice in several years, so their turnover on paper is very low. A stockout stops the whole line or creates a safety or environmental risk. Cutting stock purely by turnover removes these critical parts first. Meanwhile, truly obsolete stock with duplicate codes, expired shelf life, or incompatibility with current equipment stays in the warehouse because nobody checked its technical condition.
+
+### Can we use the delivery date on the purchase order to calculate safety stock?
+
+No. The real lead time includes manufacturing, testing, documentation, transport, customs clearance, and incoming inspection, and is often longer than the delivery date promised on the order. The variability of the whole lead time is what drives how high safety stock must be, so the calculation should use the real lead times measured on past orders.
+
+### A spare part is used once every few years. How does AI calculate its safety stock?
+
+A part used once every few years has no usable average consumption. AI can use the installed base on site, the estimated failure rate, and the real lead time to calculate how many sets to hold so that the probability of a stockout stays below the company's acceptable limit. This can be combined with supplier consignment stock or a supply agreement that states the response time, storage location, and replenishment conditions. The equipment supervisor confirms the final stocking plan.
