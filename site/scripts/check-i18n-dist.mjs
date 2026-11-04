@@ -37,13 +37,20 @@ export function hrefTarget(href, base) {
  * 所以这里不区分装饰图:站上的图都该有一句描述。
  */
 export function imgsMissingAlt(html) {
-  return [...html.matchAll(/<img\b[^>]*>/gi)]
-    .map((m) => m[0])
-    .filter((tag) => {
-      const m = tag.match(/\salt(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?(?=[\s/>])/i);
-      return !m || !(m[1] ?? m[2] ?? m[3] ?? '').trim();
-    });
+  // 标签和属性都按引号切:alt="a > b" 里的 > 不算标签结束,title="… alt='x' …" 里的 alt 不算属性。
+  const tags = html.replace(/<!--[\s\S]*?-->/g, '').matchAll(/<img\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gi);
+  return [...tags]
+    .filter((m) => {
+      let alt = null;
+      for (const a of m[1].matchAll(/([^\s=/>"']+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?/g)) {
+        if (a[1].toLowerCase() === 'alt') alt = a[2] ?? a[3] ?? a[4] ?? '';
+      }
+      return alt === null || !decodeSpaces(alt).trim();
+    })
+    .map((m) => m[0]);
 }
+
+const decodeSpaces = (s) => s.replace(/&nbsp;|&#160;|&#x0*a0;|&#32;|&#x0*20;/gi, ' ').replace(/\u00a0/g, ' ');
 
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
@@ -70,7 +77,15 @@ function apiNoteSlugs(notesEnDir) {
   );
 }
 
-export function checkDist(dist, base, { redirectsFile, notesEnDir }) {
+/** href → 站内绝对路径(去掉 query/hash);外站、协议相对、mailto 等返回 null。同源的绝对 URL 也算站内。 */
+export function sitePath(href, origin) {
+  if (href.startsWith('//')) return null;
+  if (href.startsWith('/')) return href.replace(/[?#].*$/, '');
+  if (origin && href.startsWith(`${origin}/`)) return new URL(href).pathname;
+  return null;
+}
+
+export function checkDist(dist, base, { redirectsFile, notesEnDir, origin = 'https://fxai.ai' }) {
   const errors = [];
   const add = (msg, file) => errors.push({ msg, file });
   const exists = (rel) => existsSync(join(dist, rel));
@@ -96,10 +111,13 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir }) {
     for (const tag of imgsMissingAlt(html)) add(`图片缺 alt: ${tag.slice(0, 80)}`, file);
     // 中文页上指向英文站的链接(页头 EN 切换等):只有中文版的笔记不能指向不存在的 /en/notes/<slug>/。
     if (file.startsWith('en/')) continue;
-    for (const m of html.matchAll(/\bhref="(\/[^"]*)"/g)) {
-      if (!m[1].startsWith(`${base}en/`)) continue;
-      const target = hrefTarget(m[1], base);
-      if (target && !exists(target)) add(`链接目标不存在: ${m[1]}`, file);
+    // 只看 <a>:<link rel="canonical|alternate"> 在镜像站上本来就指向正式站 https://fxai.ai/...,hreflang 另有上面的配对检查。
+    for (const m of html.matchAll(/<a\b[^>]*?\bhref="([^"]*)"/g)) {
+      const path = sitePath(m[1], origin);
+      if (path === null || !(path.startsWith('/en/') || path.startsWith(`${base}en/`))) continue;
+      const target = hrefTarget(path, base);
+      if (target === null) add(`站内链接缺 base 前缀 ${base}: ${m[1]}`, file);
+      else if (!exists(target)) add(`链接目标不存在: ${m[1]}`, file);
     }
   }
 
@@ -107,7 +125,8 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir }) {
   for (const sm of walk(dist).map((p) => relative(dist, p)).filter((p) => /^sitemap-\d+\.xml$/.test(p))) {
     for (const m of read(sm).matchAll(/<loc>([^<]+)<\/loc>/g)) {
       const target = hrefTarget(new URL(m[1]).pathname, base);
-      if (target && !exists(target)) add(`sitemap 地址没有页面: ${m[1]}`, sm);
+      if (target === null) add(`sitemap 地址不在 base ${base} 下: ${m[1]}`, sm);
+      else if (!exists(target)) add(`sitemap 地址没有页面: ${m[1]}`, sm);
     }
   }
 
@@ -152,6 +171,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const errors = checkDist(dist, base, {
     redirectsFile: fileURLToPath(new URL('../public/_redirects', import.meta.url)),
     notesEnDir: fileURLToPath(new URL('../src/content/notes/en/', import.meta.url)),
+    origin: new URL(process.env.PUBLIC_SITE_URL ?? 'https://fxai.ai').origin,
   });
   if (errors.length === 0) {
     console.log(`check:i18n ok (${dist}, base ${base})`);

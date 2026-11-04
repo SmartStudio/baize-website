@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { visibleCjk, hrefTarget, imgsMissingAlt } from './check-i18n-dist.mjs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { visibleCjk, hrefTarget, imgsMissingAlt, sitePath, checkDist } from './check-i18n-dist.mjs';
 
 describe('visibleCjk', () => {
   it('忽略 script 里的 JSON-LD', () => {
@@ -39,5 +42,61 @@ describe('imgsMissingAlt', () => {
   it('有描述的 alt 不报,data-alt 之类不算 alt', () => {
     expect(imgsMissingAlt('<img src="a.webp" alt="白泽明理微信二维码" loading="lazy">')).toEqual([]);
     expect(imgsMissingAlt('<img data-alt="x" src="a.webp">')).toHaveLength(1);
+  });
+});
+
+describe('imgsMissingAlt 边界', () => {
+  it('alt 里带 > 不误报,title 里的 alt= 不算,实体空格算空,注释里的图不算', () => {
+    expect(imgsMissingAlt('<img src="x" alt="Requests > available workers">')).toEqual([]);
+    expect(imgsMissingAlt(`<img src="x" title="example alt='description' here">`)).toHaveLength(1);
+    expect(imgsMissingAlt('<img src="x" alt="&#32;&nbsp;">')).toHaveLength(1);
+    expect(imgsMissingAlt('<!-- <img src="x"> -->')).toEqual([]);
+  });
+});
+
+describe('sitePath', () => {
+  it('根相对与同源绝对地址算站内,外站不算', () => {
+    expect(sitePath('/en/notes/x/#a', 'https://fxai.ai')).toBe('/en/notes/x/');
+    expect(sitePath('https://fxai.ai/en/notes/x/', 'https://fxai.ai')).toBe('/en/notes/x/');
+    expect(sitePath('https://example.com/en/', 'https://fxai.ai')).toBeNull();
+    expect(sitePath('//cdn.example.com/a', 'https://fxai.ai')).toBeNull();
+  });
+});
+
+describe('checkDist: 中文页的 /en/ 链接与 sitemap', () => {
+  const page = (body) => `<!doctype html><html lang="zh-CN"><body>${body}</body></html>`;
+  const make = (files) => {
+    const dir = mkdtempSync(join(tmpdir(), 'i18n-dist-'));
+    for (const [rel, text] of Object.entries(files)) {
+      mkdirSync(dirname(join(dir, rel)), { recursive: true });
+      writeFileSync(join(dir, rel), text);
+    }
+    return dir;
+  };
+  const msgs = (dist, base) => checkDist(dist, base, { notesEnDir: '/nonexistent' }).map((e) => e.msg);
+
+  it('base / 下:中文页指向不存在的英文笔记(相对或同源绝对)要报', () => {
+    const dist = make({
+      'notes/a/index.html': page('<a href="/en/notes/a/">EN</a><a href="https://fxai.ai/en/notes/b/">b</a><a href="/en/notes/">ok</a>'),
+      'en/notes/index.html': '<html lang="en"><body>ok</body></html>',
+      'sitemap-0.xml': '<urlset><url><loc>https://fxai.ai/notes/a/</loc></url><url><loc>https://fxai.ai/en/notes/zz/</loc></url></urlset>',
+    });
+    const m = msgs(dist, '/');
+    expect(m).toContain('链接目标不存在: /en/notes/a/');
+    expect(m).toContain('链接目标不存在: https://fxai.ai/en/notes/b/');
+    expect(m).toContain('sitemap 地址没有页面: https://fxai.ai/en/notes/zz/');
+    expect(m.some((x) => x.includes('/en/notes/"') || x.endsWith(': /en/notes/'))).toBe(false);
+  });
+
+  it('子路径 base 下:缺前缀的 /en/ 链接和不在 base 下的 sitemap 地址要报', () => {
+    const dist = make({
+      'notes/a/index.html': page('<a href="/en/notes/a/">EN</a><a href="/baize-website/en/notes/">ok</a>'),
+      'en/notes/index.html': '<html lang="en"><body>ok</body></html>',
+      'sitemap-0.xml': '<urlset><url><loc>https://fxai.ai/baize-website/notes/a/</loc></url><url><loc>https://fxai.ai/en/notes/zz/</loc></url></urlset>',
+    });
+    const m = msgs(dist, '/baize-website/');
+    expect(m).toContain('站内链接缺 base 前缀 /baize-website/: /en/notes/a/');
+    expect(m).toContain('sitemap 地址不在 base /baize-website/ 下: https://fxai.ai/en/notes/zz/');
+    expect(m.filter((x) => x.includes('/baize-website/en/notes/'))).toEqual([]);
   });
 });
