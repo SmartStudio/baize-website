@@ -81,8 +81,13 @@ function apiNoteSlugs(notesEnDir) {
 export function sitePath(href, origin) {
   if (href.startsWith('//')) return null;
   if (href.startsWith('/')) return href.replace(/[?#].*$/, '');
-  if (origin && href.startsWith(`${origin}/`)) return new URL(href).pathname;
-  return null;
+  if (!origin || !/^https?:\/\//i.test(href)) return null;
+  try {
+    const u = new URL(href);
+    return u.origin === new URL(origin).origin ? u.pathname : null;
+  } catch {
+    return null;
+  }
 }
 
 export function checkDist(dist, base, { redirectsFile, notesEnDir, origin = 'https://fxai.ai' }) {
@@ -112,7 +117,7 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir, origin = 'htt
     // 中文页上指向英文站的链接(页头 EN 切换等):只有中文版的笔记不能指向不存在的 /en/notes/<slug>/。
     if (file.startsWith('en/')) continue;
     // 只看 <a>:<link rel="canonical|alternate"> 在镜像站上本来就指向正式站 https://fxai.ai/...,hreflang 另有上面的配对检查。
-    for (const m of html.matchAll(/<a\b[^>]*?\bhref="([^"]*)"/g)) {
+    for (const m of html.matchAll(/<a\b(?:[^>"']|"[^"]*"|'[^']*')*?\shref="([^"]*)"/gi)) {
       const path = sitePath(m[1], origin);
       if (path === null || !(path.startsWith('/en/') || path.startsWith(`${base}en/`))) continue;
       const target = hrefTarget(path, base);

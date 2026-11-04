@@ -60,6 +60,7 @@ describe('sitePath', () => {
     expect(sitePath('https://fxai.ai/en/notes/x/', 'https://fxai.ai')).toBe('/en/notes/x/');
     expect(sitePath('https://example.com/en/', 'https://fxai.ai')).toBeNull();
     expect(sitePath('//cdn.example.com/a', 'https://fxai.ai')).toBeNull();
+    expect(sitePath('https://FXAI.ai:443/en/notes/x/', 'https://fxai.ai')).toBe('/en/notes/x/');
   });
 });
 
@@ -77,13 +78,14 @@ describe('checkDist: 中文页的 /en/ 链接与 sitemap', () => {
 
   it('base / 下:中文页指向不存在的英文笔记(相对或同源绝对)要报', () => {
     const dist = make({
-      'notes/a/index.html': page('<a href="/en/notes/a/">EN</a><a href="https://fxai.ai/en/notes/b/">b</a><a href="/en/notes/">ok</a>'),
+      'notes/a/index.html': page('<a href="/en/notes/a/">EN</a><a href="https://fxai.ai/en/notes/b/">b</a><a href="/en/notes/">ok</a><a title="a > b" href="/en/notes/c/">c</a>'),
       'en/notes/index.html': '<html lang="en"><body>ok</body></html>',
       'sitemap-0.xml': '<urlset><url><loc>https://fxai.ai/notes/a/</loc></url><url><loc>https://fxai.ai/en/notes/zz/</loc></url></urlset>',
     });
     const m = msgs(dist, '/');
     expect(m).toContain('链接目标不存在: /en/notes/a/');
     expect(m).toContain('链接目标不存在: https://fxai.ai/en/notes/b/');
+    expect(m).toContain('链接目标不存在: /en/notes/c/');
     expect(m).toContain('sitemap 地址没有页面: https://fxai.ai/en/notes/zz/');
     expect(m.some((x) => x.includes('/en/notes/"') || x.endsWith(': /en/notes/'))).toBe(false);
   });
