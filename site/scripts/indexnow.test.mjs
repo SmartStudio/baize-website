@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { indexNowKey, pathsForChanges } from './indexnow.mjs';
+import { indexNowKey, isNewlyPublished, pathsForChanges } from './indexnow.mjs';
 
 const pub = { draft: false, category: '企业落地' };
 const meta = (f) => (f.includes('draft') ? { now: { draft: true }, before: null } : f.includes('unpub') ? { now: { ...pub, draft: true }, before: pub } : { now: pub, before: pub });
@@ -30,6 +30,23 @@ describe('pathsForChanges', () => {
   });
   it('adds redirect sources with a trailing slash', () => {
     expect(pathsForChanges([], { redirectLines: ['/notes/old/ /notes/new/ 301', '/notes/old /notes/new/ 301'] })).toEqual(['/notes/old/']);
+  });
+});
+
+describe('onlyNew mode', () => {
+  const m = (f) => (f.includes('new') ? { now: pub, before: null } : f.includes('wasdraft') ? { now: pub, before: { draft: true } } : f.includes('unpub') ? { now: { draft: true }, before: pub } : f.includes('draft') ? { now: { draft: true }, before: null } : { now: pub, before: pub });
+  it('predicate', () => {
+    expect(isNewlyPublished({ now: pub, before: null })).toBe(true);
+    expect(isNewlyPublished({ now: pub, before: { draft: true } })).toBe(true);
+    expect(isNewlyPublished({ now: pub, before: pub })).toBe(false);
+    expect(isNewlyPublished({ now: { draft: true }, before: pub })).toBe(false);
+    expect(isNewlyPublished({ now: null, before: pub })).toBe(false);
+  });
+  it('submits only newly published notes plus their list page', () => {
+    expect(pathsForChanges([
+      'site/src/content/notes/new-a.mdx', 'site/src/content/notes/en/wasdraft-b.mdx', 'site/src/content/notes/edited.mdx',
+      'site/src/content/notes/unpub.mdx', 'site/src/content/notes/draft-c.mdx', 'site/src/i18n/home.ts', 'site/src/pages/fxai/terms.mdx',
+    ], { meta: m, onlyNew: true, redirectLines: ['/notes/old/ /notes/new/ 301'] })).toEqual(['/en/notes/', '/en/notes/wasdraft-b/', '/notes/', '/notes/new-a/']);
   });
 });
 

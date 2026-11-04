@@ -1,7 +1,9 @@
 // 部署上线后把本次 push 改动的页面推给 IndexNow(Bing、Yandex 等共用,api.indexnow.org 会转发)。
 // 由 .github/workflows/indexnow.yml 在 push 到 master 后调用;也可以本地手动跑:
-//   node scripts/indexnow.mjs --from <sha> --to <sha> [--dry-run]
+//   node scripts/indexnow.mjs --from <sha> --to <sha> [--dry-run] [--all-changes]
 //   node scripts/indexnow.mjs --urls "/notes/a/ /notes/b/" [--dry-run]
+// 默认 --only-new:只推本次新发布的笔记(之前不存在或 draft:true,现在已发布)及其所在列表页;
+// 首页、分类页、静态页、法务页、_redirects 都不推。--all-changes 恢复推送全部改动页面的旧行为。
 // 流程:git diff 出改动文件 → 映射成线上 URL → 轮询 /build.txt 等 CF Pages 部署到 --to 这个提交 → POST。
 // 密钥是公开的(IndexNow 的设计就是把 key 文件放在站点根目录供校验),不是机密;它就是 public/<key>.txt。
 import { execFileSync } from 'node:child_process';
@@ -32,13 +34,17 @@ const parseFm = (text) => {
  * 笔记现在和改动前的 frontmatter(category、draft)。文件在某一侧不存在时那一侧为 null。
  * 改动前一侧用 git show 读;没给 from(手动 --urls 模式不会走到这里)时只看现在。
  */
-function noteMetaAt(from) {
+function noteMetaAt(from, to) {
   return (file) => {
     const p = `${siteDir}${file.replace(/^site\//, '')}`;
-    const now = existsSync(p) ? parseFm(readFileSync(p, 'utf8')) : null;
+    let now = null;
+    if (to) {
+      // 给了 --to 就读那个提交里的版本,本地 dry-run 比对别的分支时也准确。
+      try { now = parseFm(gitShow(`${to}:${file}`)); } catch { now = null; }
+    } else if (existsSync(p)) now = parseFm(readFileSync(p, 'utf8'));
     let before = null;
     if (from) {
-      try { before = parseFm(git('show', `${from}:${file}`)); } catch { before = null; }
+      try { before = parseFm(gitShow(`${from}:${file}`)); } catch { before = null; }
     }
     return { now, before };
   };
@@ -49,13 +55,20 @@ function noteMetaAt(from) {
  * 只映射能确定落在哪一页的文件;布局、样式这类全站改动不推,免得每次都把整站推一遍。
  * redirectLines 是 _redirects 里新增/删除的行,源地址也推,让搜索引擎早点看到 301。
  */
-export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines = [] } = {}) {
+export const isNewlyPublished = ({ now, before }) => Boolean(now && !now.draft) && !(before && !before.draft);
+
+export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines = [], onlyNew = false } = {}) {
   const out = new Set();
   for (const f of files) {
     let m;
     if ((m = f.match(/^site\/src\/content\/notes\/(en\/)?([^/]+)\.mdx$/))) {
       const en = m[1] ? '/en' : '';
       const { now, before } = meta(f);
+      if (onlyNew) {
+        // 只推新发布的笔记:之前不存在或是草稿,现在已发布。改段落、下线都不推。
+        if (isNewlyPublished({ now, before })) out.add(`${en}/notes/${m[2]}/`).add(`${en}/notes/`);
+        continue;
+      }
       // 前后都不是已发布状态(新建草稿、草稿改草稿)就不推;从已发布改成草稿或删掉的要推,让搜索引擎看到 404。
       const published = (x) => x && !x.draft;
       if (!published(now) && !published(before)) continue;
@@ -65,6 +78,8 @@ export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines 
       out.add(`${en}/`);
       const cat = info?.category && CATEGORY_SLUGS[info.category];
       if (cat) out.add(`${en}/notes/category/${cat}/`);
+    } else if (onlyNew) {
+      continue;
     } else if ((m = f.match(/^site\/src\/pages\/fxai\/(privacy|terms)(\/en)?\.mdx$/))) {
       out.add(`/fxai/${m[1]}/${m[2] ? 'en/' : ''}`);
     } else if ((m = f.match(/^site\/src\/(?:i18n\/([a-z]+)\.ts|pages\/(?:en\/)?([a-z]+)\.astro|components\/pages\/([A-Za-z]+)\.astro)$/))) {
@@ -74,7 +89,7 @@ export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines 
       else if (name === 'notesindex') out.add('/notes/').add('/en/notes/');
     }
   }
-  for (const line of redirectLines) {
+  for (const line of onlyNew ? [] : redirectLines) {
     const src = line.trim().split(/\s+/)[0];
     if (src?.startsWith('/') && src.endsWith('/')) out.add(src);
   }
@@ -83,6 +98,9 @@ export function pathsForChanges(files, { meta = noteMetaAt(null), redirectLines 
 
 // 在仓库根目录跑 git,改动文件路径统一是 site/... 形式。
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8', cwd: `${siteDir}..` }).trim();
+
+// 文件在某个提交里不存在是正常情况(新建/删除),不把 git 的报错打到终端。
+const gitShow = (spec) => execFileSync('git', ['show', spec], { encoding: 'utf8', cwd: `${siteDir}..`, stdio: ['ignore', 'pipe', 'ignore'] });
 
 function isAncestor(sha, live) {
   try {
@@ -112,6 +130,7 @@ async function main() {
   const argv = process.argv.slice(2);
   const opt = (name) => { const i = argv.indexOf(name); return i >= 0 ? argv[i + 1] : undefined; };
   const dryRun = argv.includes('--dry-run');
+  const onlyNew = !argv.includes('--all-changes');
   const key = indexNowKey();
   let paths;
   if (opt('--urls')) {
@@ -122,7 +141,7 @@ async function main() {
     const files = git('diff', '--name-only', from, to, '--', 'site/').split('\n').filter(Boolean);
     const redirectLines = git('diff', '-U0', from, to, '--', 'site/public/_redirects')
       .split('\n').filter((l) => /^[+-]\//.test(l)).map((l) => l.slice(1));
-    paths = pathsForChanges(files, { meta: noteMetaAt(from), redirectLines });
+    paths = pathsForChanges(files, { meta: noteMetaAt(from, to), redirectLines, onlyNew });
     if (!dryRun && paths.length) await waitForDeploy(to);
   }
   const urlList = paths.map((p) => new URL(p, SITE).href);
