@@ -5,6 +5,9 @@
  * 存在的理由是内链,不是装饰:笔记之间原本几乎没有互链,抓取器进到任何一篇都是
  * 死胡同,读者读完也没有下一步。这里给每篇笔记 3 条出边(推荐逻辑见 lib/notes.ts)。
  *
+ * 缩略图 alt 用目标笔记的 coverAlt(没有就用标题):alt="" 会被 Bing 站长工具报成「图片缺 alt」,
+ * 每篇笔记页 3 张。
+ *
  * 刻意不复用 NoteCard:这里是文末浅绿色带里的小卡,封面只做缩略图,
  * 分类 + 标题 + 一句话,够读者判断要不要点进去即可。
  */
@@ -30,7 +33,7 @@ const base = import.meta.env.BASE_URL;
           <li class="bz-related__item">
             <a class="bz-related__link" href={withBase(base, notePath(noteSlug(n.id), noteLang(n.id)))}>
               {n.data.cover ? (
-                <Image src={n.data.cover} alt="" class="bz-related__thumb" widths={[400, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" />
+                <Image src={n.data.cover} alt={n.data.coverAlt ?? n.data.title} class="bz-related__thumb" widths={[400, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" />
               ) : (
                 <span class="bz-related__thumb" aria-hidden="true"></span>
               )}

@@ -32,6 +32,19 @@ export function hrefTarget(href, base) {
   return last.includes('.') ? rest : `${rest}.html`;
 }
 
+/**
+ * 没有 alt 或 alt 为空的 <img> 标签。Bing 站长工具把 alt="" 也报成「图片缺 alt」,
+ * 所以这里不区分装饰图:站上的图都该有一句描述。
+ */
+export function imgsMissingAlt(html) {
+  return [...html.matchAll(/<img\b[^>]*>/gi)]
+    .map((m) => m[0])
+    .filter((tag) => {
+      const m = tag.match(/\salt(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?(?=[\s/>])/i);
+      return !m || !(m[1] ?? m[2] ?? m[3] ?? '').trim();
+    });
+}
+
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
     const p = join(dir, f);
@@ -75,6 +88,26 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir }) {
       if (target === file) continue;
       if (!exists(target)) add(`hreflang 目标不存在: /${target}`, file);
       else if (!alternateFiles(read(target)).includes(file)) add(`hreflang 目标没有指回本页: /${target}`, file);
+    }
+  }
+
+  for (const file of htmlFiles) {
+    const html = read(file);
+    for (const tag of imgsMissingAlt(html)) add(`图片缺 alt: ${tag.slice(0, 80)}`, file);
+    // 中文页上指向英文站的链接(页头 EN 切换等):只有中文版的笔记不能指向不存在的 /en/notes/<slug>/。
+    if (file.startsWith('en/')) continue;
+    for (const m of html.matchAll(/\bhref="(\/[^"]*)"/g)) {
+      if (!m[1].startsWith(`${base}en/`)) continue;
+      const target = hrefTarget(m[1], base);
+      if (target && !exists(target)) add(`链接目标不存在: ${m[1]}`, file);
+    }
+  }
+
+  // sitemap 里的每个地址都要在产物里有页面,不能让搜索引擎拿到 404。
+  for (const sm of walk(dist).map((p) => relative(dist, p)).filter((p) => /^sitemap-\d+\.xml$/.test(p))) {
+    for (const m of read(sm).matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      const target = hrefTarget(new URL(m[1]).pathname, base);
+      if (target && !exists(target)) add(`sitemap 地址没有页面: ${m[1]}`, sm);
     }
   }
 

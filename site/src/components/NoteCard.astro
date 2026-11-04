@@ -28,7 +28,7 @@ const displayCategory = categoryLabel(category, lang);
 <article class="note-card" data-category={category}>
   <a class="note-card__cover" href={href} tabindex="-1" aria-hidden="true">
     {cover && (
-      <Image src={cover} alt={coverAlt ?? ''} widths={[320, 640]} sizes="(max-width: 640px) 100vw, 380px" class="note-card__img" />
+      <Image src={cover} alt={coverAlt ?? title} widths={[320, 640]} sizes="(max-width: 640px) 100vw, 380px" class="note-card__img" />
     )}
     <span class="note-card__chip">{displayCategory}</span>
   </a>

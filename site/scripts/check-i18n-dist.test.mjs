@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { visibleCjk, hrefTarget } from './check-i18n-dist.mjs';
+import { visibleCjk, hrefTarget, imgsMissingAlt } from './check-i18n-dist.mjs';
 
 describe('visibleCjk', () => {
   it('忽略 script 里的 JSON-LD', () => {
@@ -26,5 +26,18 @@ describe('hrefTarget', () => {
   });
   it('不带 base 前缀的站内绝对路径返回 null', () => {
     expect(hrefTarget('/en/notes/', '/baize-website/')).toBeNull();
+  });
+});
+
+describe('imgsMissingAlt', () => {
+  it('没有 alt、alt 为空、Astro 输出的裸 alt 都算缺', () => {
+    expect(imgsMissingAlt('<img src="a.webp">')).toHaveLength(1);
+    expect(imgsMissingAlt('<img src="a.webp" alt="">')).toHaveLength(1);
+    expect(imgsMissingAlt('<img src="a.webp" alt sizes="100vw" loading="lazy">')).toHaveLength(1);
+    expect(imgsMissingAlt('<img src="a.webp" alt="  ">')).toHaveLength(1);
+  });
+  it('有描述的 alt 不报,data-alt 之类不算 alt', () => {
+    expect(imgsMissingAlt('<img src="a.webp" alt="白泽明理微信二维码" loading="lazy">')).toEqual([]);
+    expect(imgsMissingAlt('<img data-alt="x" src="a.webp">')).toHaveLength(1);
   });
 });

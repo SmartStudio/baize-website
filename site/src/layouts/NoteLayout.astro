@@ -272,7 +272,7 @@ const cta = isApiArticle
 
   <div id="bz-lightbox" class="bz-lightbox" role="dialog" aria-modal="true" aria-label={isEnglish ? 'View enlarged image' : '放大查看图片'} hidden>
     <button type="button" class="bz-lightbox__close" aria-label={isEnglish ? 'Close' : '关闭'}>✕</button>
-    <img class="bz-lightbox__img" src="" alt="" />
+    <img class="bz-lightbox__img" src="" alt={isEnglish ? 'Enlarged image' : '放大的图片'} />
     <p class="bz-lightbox__cap" hidden></p>
   </div>
 </BaseLayout>
