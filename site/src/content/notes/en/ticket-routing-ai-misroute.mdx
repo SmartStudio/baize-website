@@ -1,0 +1,67 @@
+---
+title: AI Sent the Ticket to the Wrong Team. Who Owns the SLA Breach?
+seoTitle: "AI Ticket Routing Errors: Who Owns the SLA Breach?"
+description: When AI misroutes a ticket, the customer SLA clock runs on. Internally, time splits into routing, misrouted holding, and handling; routing rules get fixed.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/ticket-routing-ai-misroute-cover.png
+coverAlt: A grey sorting hub on a dark green base dropping blank ticket cards down chutes into three grey team trays, one card in the wrong tray being pulled back along an emerald arc arrow, a glowing emerald clock ring still running above, and a copper hourglass beside the hub
+sourceHash: '82383695e8a8'
+---
+
+Even when AI routes a ticket to the wrong team, the customer-facing SLA breach still counts. It goes on the service team's overall results and is not removed from the report because AI made the routing error. For the internal review, the elapsed time is split. Time from the misroute until someone spots it goes to the routing stage, and customer service operations fixes the rules. If the receiving team sees the misroute but holds the ticket without sending it back, that time goes to the receiving team. Time after the right team confirms it has taken the ticket goes to that team.
+
+import noteFig from '../media/ticket-routing-ai-misroute-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a moving ticket card under a clock that keeps running, a time bar split into three colored segments with small markers, a card going back along an arc arrow with a small note pinned to it, and a rule booklet with a wrench and a loop arrow" caption="Figure: Ticket Routing | Ticket SLA" width="wide" border />
+
+## How the external clock runs after a misroute
+
+After a customer submits an issue, the customer-facing ticket SLA clock starts the moment the ticket is created. Whether AI misclassified it and sent it to the wrong team, or a person reassigned it along the way, the external clock does not reset or pause while the ticket moves between teams. The ticket keeps its original start time and the time already used. The team that takes it over inherits the time remaining. Restarting the clock on reassignment only makes the internal report look better. The customer's actual wait is no shorter.
+
+The team defines in its rules, in advance, when the clock may stop. Usually only external blocking states allow a pause, such as waiting for the customer to send supporting documents or to return a confirmation. Handoffs, consultations, and coordination between customer service and internal teams such as engineering or billing never pause the clock. To see which internal step is slow, some tools let you set a separate internal handoff target without changing the customer commitment. For example, the receiving team must confirm it has taken the ticket within a time limit the company sets. This target measures only how fast teams hand off to each other.
+
+## How internal responsibility is split after a breach
+
+Toward the customer, the whole ticket counts as one. Internally, the time is split by routing step. The team first sets the principle that only one team owns a ticket at any moment. It also writes down whether ownership moves when the ticket is sent out, or when the receiving team clicks to confirm it has taken the ticket. A common practice is that until the receiving team confirms, the ticket stays with the sending side, so no ticket is left with nobody responsible.
+
+When a ticket does breach its SLA, customer service operations pulls the ticket's full routing history and assigns each segment of time as follows.
+
+- **Routing detection time**: the idle time from when AI put the ticket in the wrong queue until someone opened it and saw the misroute. This goes to the routing stage. The customer service operations staff member who owns the routing rules is responsible for the improvement and adjusts the rules.
+- **Misrouted holding time**: frontline agents or the team lead on the receiving team saw that the ticket was not their team's job, but left it in the queue without sending it back or forwarding it in time. The time lost to this delay goes on the receiving team's record.
+- **Handling time**: after the ticket reaches the right team and the team confirms it, the time spent on troubleshooting, communication, and replies counts as that team's actual handling time.
+
+Before tying SLA breaches to team performance reviews, the routing rule owner and each team lead first agree on how time is counted and how appeals work. For how to set such review standards, see <NoteLink slug="call-qa-ai-scoring-rules">AI Scores Customer Service Calls: Who Sets the Deduction Rules?</NoteLink>.
+
+## How misrouted tickets are returned and handed over
+
+A company can set up AI ticket routing with a fallback queue. Tickets with vague requests, tickets that mix several issues such as billing and a fault, and tickets where classification confidence is not high enough go straight into a manual routing queue. A frontline agent looks at them before routing. The tool does not guess.
+
+When a ticket already routed to a specific team needs to be forwarded or returned, the person handling it hands over the context clearly, so teams do not bounce tickets back and forth. In a normal cross-team transfer, the sending side writes in the ticket's internal notes why it is transferring, what checks its team has already done, and what it suggests checking next. The person taking over then does not have to ask the customer the same questions again.
+
+For a ticket clearly misrouted by AI, when the receiving team returns it to the routing pool or reassigns it to the right team, it selects or writes the misroute reason in the return reason field. For example, the customer used refund wording but was actually asking about an API error. If the teams involved disagree on where the ticket belongs, the two team leads first decide who takes it and solves the customer's problem. Afterwards they work with customer service operations to clarify the responsibility dictionary. Tickets may not be bounced between queues again and again.
+
+## How routing rules are reviewed and improved
+
+Customer service operations regularly pulls the ticket SLA performance report and watches several kinds of data: the distribution of overall SLA breaches, internal handoff time between teams, how often and how long pause states were used, and the list of difficult tickets that were reassigned repeatedly.
+
+Grouping the misroute reasons from return records shows where the routing rules have gaps. A new business line may have launched without being added to the classification vocabulary. The responsibilities of similar queues may overlap by design. Or the pause state may be used to avoid breaches. Based on this, customer service operations adds routing conditions, tightens pause permissions, and uses frequent misroute samples to correct the classification prompts and the fallback threshold. For how human review protects quality at ticket closure, see <NoteLink slug="ai-cs-auto-close-vs-human-ticket-review">AI Customer Service Auto-Close: Why Tickets Still Need Human Review</NoteLink>.
+
+## Ticket routing: FAQ
+
+### The receiving team never confirms it has taken the ticket. Who owns the breach?
+
+It depends on the ownership transfer point and the internal handoff target the team agreed in advance. Until the receiving team confirms, the sending side still watches where the ticket goes. If the receiving team has not taken the ticket past the internal handoff limit the company sets, the extra handoff delay can be recorded separately against the receiving team. Customer service operations regularly lists tickets that were not taken in time.
+
+### A customer asks about several things in one message. Which team should AI route it to?
+
+These compound requests can be set to go to the manual routing queue first, or to the lead team for the main issue. After the lead team takes the ticket, it follows up on the main issue. For parts that need other teams, it opens internal sub-tickets or consultations. The lead team watches the deadline for the whole ticket and replies to the customer, so the customer is not passed around.
+
+### A misroute is found just before the ticket SLA expires. Can the clock restart?
+
+No. The customer-facing ticket SLA clock keeps running through the reassignment, and the right team inherits the time remaining. When little time is left, team leads can add an urgent flag under the internal escalation rules and handle the ticket first, to close the customer's issue. In the internal review afterwards, the time lost to the earlier misroute is separated out, assigned to the routing stage, and customer service operations changes the routing rules.

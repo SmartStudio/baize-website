@@ -1,0 +1,63 @@
+---
+title: Can AI Watch the Price Index Behind a Purchase Price Clause?
+description: AI can pull the index in a price adjustment clause, check the trigger, and draft the math. Buyers and finance verify, a manager signs, legal handles index gaps.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/procurement-contract-ai-price-index-cover.png
+coverAlt: A blank contract on a dark green base with its clause area lit emerald, a glowing emerald index line chart without numbers floating above, a grey agent module drawing a line from the chart to a blank calculation sheet, a sealed envelope nearby, and a hand holding a copper pen over the signature line
+sourceHash: 'b95a5d280265'
+---
+
+For a purchase price adjustment clause, AI can watch the agreed price index, pull the figures on schedule, check whether the adjustment threshold is triggered, and draft the calculation sheet and the notice. Interpreting ambiguous clause wording, reviewing the calculation, and signing letters to the supplier cannot be handed to the tool. The buyer checks the numbers, finance reviews them, and the purchasing manager sends the written notice and signs the confirmation. If the index stops being published or its methodology changes, AI stops and reports to a person. Legal reviews the clause, and the purchasing manager settles the matter with the supplier in writing.
+
+import noteFig from '../media/procurement-contract-ai-price-index-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a pinned contract card with three highlighted fields, a small line chart and a calculator beside a draft sheet, a sealed envelope with a copper seal in front of a filing cabinet, and a broken line chart with a stop sign and two hands shaking" caption="Figure: Purchase Price Adjustment Clause | Price Index" width="wide" border />
+
+## Which terms the clause must define first
+
+For price adjustments to run smoothly under a signed long-term supply contract, the purchase price adjustment clause must leave no ambiguity. For how legal checks such clauses for gaps at signing, see <NoteLink slug="contract-review-agent-risk-clauses">A Contract Review Agent Flagged the Risks. Does Legal Still Read Every Clause?</NoteLink>. Once the contract is in performance, the buyer checks the following terms against the signed original before entering rules into the tool:
+
+- **Index and base**: name a public, verifiable price index and the exact raw material grade and specification. Set the base date or base month and the base price, and what replaces the index if it stops being published.
+- **Formula and weighting**: set the share of raw material cost in the unit price and the formula. A common form is new unit price = base unit price × current index ÷ base index. Another adjusts only the raw material share of cost by the index change and leaves processing fees and fixed costs unchanged.
+- **Trigger and caps**: state that an adjustment is triggered only when the change exceeds a set threshold, how often adjustments happen, and the upper and lower limits for a single adjustment and for cumulative adjustments. State that the clause applies to both increases and decreases, so a supplier cannot push for an increase when material prices rise and stall when they fall.
+- **Effective date and locked orders**: state the date the new unit price takes effect, and that prices for orders already confirmed or paid stay locked. Also state that the market index is used only to calculate the size of the adjustment. It does not replace the quality, quantity, or delivery terms for the goods.
+
+## How far the tool can take index monitoring
+
+Once the contract terms are broken down, the company can configure the tool to pull the current value from public sources, using the index name, material grade, and data date written in the clause. The tool compares it with the base price, checks whether the change crosses the trigger, and shows how long until the next adjustment window. When the adjustment condition is triggered, some tools can generate a draft calculation sheet for the period and a draft written notice using the contract formula, and send them to the buyer handling the contract.
+
+When AI pulls data, it must not keep only a bare result number. Each pull saves a screenshot of the source page or a verifiable data reference, for later reconciliation. The company also defines the tool's limits. Legal gives the opinion when clause wording is open to more than one reading. The buyer calculates and finance reviews whether the adjusted unit price is right. The purchasing manager approves and sends the formal adjustment notice to the supplier and co-signs the price confirmation. The tool is not allowed to send letters to the supplier directly.
+
+## After a trigger, who checks the numbers and who sends the notice
+
+When the adjustment date in the contract arrives and the index change meets the trigger, the internal calculation and review come first. Then written confirmation with the supplier starts. The buyer opens the calculation sheet drafted by the tool. The buyer checks that the data date is right, that the raw material cost share and the caps were applied correctly, and that no locked orders already confirmed or paid were included by mistake. After that, finance reviews the formula steps and the original index screenshot.
+
+Once the internal numbers agree, the purchasing manager sends the written adjustment notice as the contract requires. The contract usually states that the supplier confirms within a set period after receiving the notice, and what happens if it does not. The buyer follows up until a confirmation signed and sealed by both parties comes back. When the supplier later invoices new batches, the unit price on the invoice must match this confirmation. For how to design the checks before payment, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+
+After each adjustment, the purchasing team archives the period's original index data, the calculation sheet, and the confirmation signed by both parties as one package. Even if the buyer changes roles, a third party with no background must be able to take these records and the contract clause and recalculate the same result on their own.
+
+## Handling index problems and mid-period price pressure
+
+During a long-term contract, external data sources can change. The linked index may stop being published, its updates may be delayed, or the publisher may change its sampling specification or methodology. The tool can be configured to stop and report to a person as soon as a data pull fails or a methodology field changes. AI is not allowed to find an index with a similar name and recalculate with it.
+
+Sharp short-term price moves also cause friction in execution. For example, the contract sets monthly adjustments, raw material prices jump mid-month, and the supplier's sales rep calls to ask for a higher price on this week's shipment. Or prices fall sharply and the buyer wants to push the price down early. In these cases, the team follows the adjustment cycle in the signed contract. If a change is truly needed, it goes through formal written negotiation and approval by authorized management. The buyer does not make verbal concessions beyond their authority on the phone or in chat groups.
+
+## Purchase price adjustment clauses: FAQ
+
+### Raw material prices fell below the trigger, but the supplier has not proposed an adjustment. What should we do?
+
+Under a clause that applies in both directions, the buyer starts the adjustment. The tool tracks each period's index change. When the decline meets the trigger, it still generates a downward calculation sheet and a draft written notice. After the buyer calculates and finance reviews, the purchasing manager sends a formal written price reduction notice to the supplier and follows up on the signed confirmation within the period set in the contract.
+
+### Confirmed orders are not fully delivered when the adjustment date arrives. Does their unit price change?
+
+It depends on the effective date and locked-price terms in the contract. Clauses usually state that prices for orders already confirmed or paid stay locked, and the new unit price applies only to batches confirmed after the effective date. When checking the adjustment scope, the buyer separates undelivered existing orders, so finance does not mix old and new unit prices and miscalculate accounts payable during reconciliation.
+
+### If the price index stops being published or changes its methodology, can AI switch to another index on its own?
+
+No. When the price index stops being published or its methodology changes, AI only stops, reports the error, and flags the change to the purchasing team. The team first follows any replacement mechanism written in the contract's adjustment clause. If the contract names no replacement index, or the wording is disputed, legal reviews the limits of the clause, and the purchasing manager negotiates a replacement with the supplier in writing and signs a supplementary confirmation.

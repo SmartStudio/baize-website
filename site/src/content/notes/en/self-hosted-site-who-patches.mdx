@@ -1,0 +1,66 @@
+---
+title: "Self-Hosting a Website: Who Patches the Vulnerabilities?"
+description: A self-hosted public site leaves OS, runtime, CMS, and plugin patches to you. Name an owner and deadline per layer, or move to managed hosting or static pages.
+lang: en
+pubDate: 2026-11-05
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/self-hosted-site-who-patches-cover.png
+coverAlt: A layered grey server stack on a dark green base with emerald patch plates being fixed to the machine, runtime, and plugin layers one by one, a small podcast microphone beside it, and a hand holding a copper wrench
+sourceHash: '2615025922a9'
+---
+
+This is note 09 in our podcast reading series, on self-hosting a website. It can be read on its own. A public website has layers: the operating system, the runtime, the site software, and plugins. When a vulnerability patch comes out for any layer, someone has to apply it promptly. Management first asks who patches each layer, whether patches can be applied within the deadline the company sets, and what happens when nobody patches on time. If there are no answers, move the public site to a managed hosting service or convert it to static pages. Put internal tools on the intranet or behind a login. If the site is built by an outside agency, the contract states who handles patches after launch and how fast they respond.
+
+import noteFig from '../media/self-hosted-site-who-patches-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a podcast microphone and a small shield, an hourglass with a loop arrow and a small robot arm testing a door, a three-layer stack with a patch plate on each layer, and a signpost pointing to a managed cloud server and a static page" caption="Figure: Website Self-Hosting | Vulnerability Patches" width="wide" border />
+
+## What Ben Thompson said
+
+In an article on October 26, Ben Thompson wrote about building his own website in the early years. The article is titled "The End of the Internet" and has an audio version. In 2003 he installed a newly released blogging package. He had to create the database and configure PHP himself, all by hand. Nothing went wrong back then.
+
+The week before he wrote the article, news came out that every version of PHP had a severe vulnerability that allowed remote code execution on the host. His site still runs on the same blogging software. The difference is that a managed hosting provider now runs it, and the site was patched before the vulnerability was made public. He said any other approach would be crazy, for him and for anyone.
+
+He also listed other security problems from the same week: new vulnerabilities in several widely used runtimes and developer tools, and a supply chain compromise. He noted that this was only part of the list.
+
+## Why self-hosting a public website has become harder
+
+Hand-built sites were fine in the early years. Ben Thompson gave his view of why that no longer holds. He argues that software is built on foundations people wrote, which were never solid. In the past, development mainly asked whether a program ran. It rarely asked whether every privilege escalation and race condition was blocked.
+
+In his account, attackers used to be limited by human time and skill, and could not test every corner one by one. AI now has unlimited time, and it can probe for vulnerabilities by trying again and again in place of cleverness. He expects security to get worse before it gets better, because defenders have AI too.
+
+From this, Ben Thompson says that running your own public website or app in the AI era is crazy. The way out he sees is to build small: tools for yourself and a small group of trusted people, not released publicly. His team has built many internal apps, and none of them are public.
+
+## Who patches each layer of the website
+
+For a company, every layer of a public website, from the base system to the top-level plugins, needs someone to follow up on vulnerability patches. Code that runs in a local environment still needs people after it goes live. For the operations problems that come after launch, see <NoteLink slug="deploy-last-mile">Works Locally, Fails in Production? The Last Mile of Deployment</NoteLink>. Broken down, each layer of a public website needs someone watching and patching:
+
+- **Server operating system**: kernel patches, updates to core security components, and settings for remote login and access permissions.
+- **Language and runtime**: for example, the PHP runtime the site depends on. When a vulnerability that allows remote code execution on the host is made public, it must be upgraded and fixed quickly.
+- **Site software, plugins, and themes**: the open-source site software itself, plus any form or layout plugins and themes installed on top. A missed patch on any of them can leave a way in.
+
+Under the common shared responsibility model for cloud servers, the cloud provider is responsible only for the data center's physical equipment, the underlying network, and the virtualization layer. Inside the server instance, the operating system patches, runtime upgrades, application security, and access permissions are all the responsibility of the customer renting the server. Some website hosting services cover more and also maintain the runtime and the site software. Which layers they cover depends on the contract.
+
+## What company management should choose now
+
+When the owner or management decides whether to keep self-hosting a site, they can bring the IT lead and the website owner together and ask three questions directly. Who patches each layer of the site, from the operating system and runtime to the plugins? After upstream releases a new patch, can the team test and apply it within the deadline the company sets? When nobody can patch on time, during holidays or after the maintainer leaves or changes roles, what is the backup?
+
+If any of the three has no answer, or nobody inside the company watches security updates, do not keep running a dynamic server exposed to the public internet. Sites that mainly display content, such as a company website or product pages, can be handed to a hosting provider that covers patch maintenance, or converted to static pages, which removes the database and server-side runtime. For how to host static pages, see <NoteLink slug="deploy-website-to-cloudflare">How to Deploy a Website to Cloudflare Pages for Free in Four Steps</NoteLink>. Internal productivity tools and dashboards that business units build are used only on the company intranet or behind employee login checks. They are never published directly to the public internet. When an outside vendor builds the site, the contract signed at the start states who applies patches after launch and how quickly they respond.
+
+## Website self-hosting: FAQ
+
+### Our website runs on a cloud server. Do we still need to assign someone to apply patches?
+
+Yes. Building a site on a standard cloud server is still self-hosting. Under the common shared responsibility model, the cloud provider handles only physical equipment, networking, and virtualization. Operating system patches, application security, and access permissions inside the server belong to the customer.
+
+### Where should dashboards and small internal tools built by the team live?
+
+Internal tools with no need to be public should not be exposed on the public internet. Put them on the company intranet, or add an employee login check in front of them, and open them only to trusted internal users. Do not publish them.
+
+### If an agency builds the website, who owns vulnerability patches?
+
+It depends on the website contract. If the contract does not say, nobody may handle vulnerability patches after launch. At signing, the contract should state which layers the agency patches, how quickly it responds after a patch is released, and who takes over account access and maintenance when the contract ends.

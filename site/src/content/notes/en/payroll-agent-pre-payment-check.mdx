@@ -1,0 +1,68 @@
+---
+title: A Payroll Agent Calculated the Pay. Who Checks It Before Payday?
+seoTitle: "Payroll Agent Pay Runs: Who Checks Before Payment?"
+description: A payroll agent compiles the pay run. Before payday, payroll staff check changes, accounting checks totals, HR and finance heads approve, and two people pay.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/payroll-agent-pre-payment-check-cover.png
+coverAlt: A grey agent machine on a dark green base printing a long blank payroll sheet with several rows lit emerald for review, two small desks with staff checking files nearby, a locked grey vault door behind, and a hand holding a copper stamp over the sheet
+sourceHash: 'ad4ec7b58183'
+---
+
+A payroll agent compiles the data and runs a first calculation. Before payment, a payroll specialist checks the line items, a finance accountant checks the totals, and the head of HR and the head of finance both approve. Then the cashier submits the payment and the finance supervisor reviews and authorizes it. Calculating pay and reviewing pay are split between different roles, and the agent has no permission to make payments. If underpayment or a missed payment is found after payday, the company pays the difference promptly once it is confirmed, and does not wait for the next payday.
+
+import noteFig from '../media/payroll-agent-pre-payment-check-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a blank sheet with several rows lit green and a small flag, two desks side by side with a folder on one and a calculator on the other, a copper stamp on a document with a separate key and a closed vault door, and an open ledger with a stack of coins and a green check mark" caption="Figure: Payroll Agent | Payroll Check" width="wide" border />
+
+## After calculation, flag the items to review
+
+When the monthly pay run starts, the company can configure a payroll agent to compile attendance records, performance results, HR records, and social insurance and housing fund deductions. Following the rules, it calculates each employee's gross pay, deductions, individual income tax, and net pay. Payroll data comes from several departments. Some tools can run a first payroll check after the trial calculation, using preset conditions, and flag the exceptions and changes that need a person to review. Companies usually set these cases as review items:
+
+- **Month-over-month change above the limit**: an employee's gross or net pay differs from last month by more than the set threshold. Someone checks whether a raise, back pay, or deduction supports it.
+- **Staff changes this month**: new hires, employees passing probation, transfers with pay changes, and leavers' final settlements. Someone checks the pro-rata pay and the date the new rate takes effect.
+- **Manually submitted data**: commissions, bonuses, and deductions that business units submit in spreadsheets. Someone checks the amounts and the employees they belong to against the original approval documents.
+- **Obvious anomalies**: results such as net pay below the local minimum wage, or a missing bank card number, are stopped for review.
+
+Before putting the tool into use, the team can run it repeatedly on ledgers from past months and see whether results stay stable across different combinations of changes. For the evaluation approach, see <NoteLink slug="agent-eval-suite-pass-rate-variance">Agent Evaluation: How Many Runs per Task Are Enough?</NoteLink>.
+
+## What the payroll specialist and finance each check
+
+Once the review list is ready, HR and finance each run their part of the payroll check. The same person does not both calculate and review. The payroll specialist works through each flagged item. The specialist reviews hiring and exit approvals, pay change notices, attendance confirmations, and the commission and deduction source documents signed by the business units, and checks that each change has documented support.
+
+If the specialist finds that source data is wrong, for example attendance missed a leave day or a business unit reported the wrong commission, the specialist sends the item back to the attendance administrator or the business unit to fix the source document. After the fix, the trial calculation runs again. The specialist does not edit figures directly in the payroll results sheet. Manual edits to the results sheet break the link between the payroll ledger and the attendance and performance base data, and later cumulative income tax and exit settlements will not reconcile.
+
+After the payroll specialist has cleared every review item and confirmed it, the payroll summary goes to the finance accountant for the totals. The accountant checks whether month-over-month changes in each department's total payroll are reasonable, and whether the payroll payable account balance equals net pay plus amounts withheld. The accountant also compares the social insurance, housing fund, and deduction totals with external receipts.
+
+## Who approves and who releases the payment
+
+Once line items and totals reconcile, the pay run moves to management approval and fund transfer. Some tools can configure a joint sign-off step. The payroll summary, along with a note on headcount changes and changes in department totals for the month, goes to the head of HR and the head of finance. Only after both have approved can the bank payroll file be exported.
+
+The payroll agent only compiles data, runs trial calculations, and flags exceptions. It has no permission to make payments. For how to design separation of duties and review gates before payment, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>. The company can set permissions in its internal policy and its online banking system. The cashier submits the bank payroll file or online banking instruction. The finance supervisor checks that the approval documents, the number of payees, and the total amount agree, then completes the review and authorization. The bank then executes the payroll.
+
+## How to correct wrong payments and keep a record
+
+Even with human review before payday, a late-reported change or a gap in documents occasionally means a wrong amount is found only after payroll is paid. Underpayment, missed payments, and overpayment are handled differently and must be dealt with separately.
+
+Once underpayment or a missed payment is confirmed, the company pays the difference promptly and does not wait for the next payday. Article 30 of the Labor Contract Law requires employers to pay workers in full and on time, as agreed in the labor contract and under national rules. Article 7 of the Interim Provisions on Wage Payment requires wages to be paid on the date agreed between employer and worker. The company completes the approval and payment for the correction as quickly as possible under these rules.
+
+For overpayment, the company first explains the reason and the calculation to the employee. It handles the amount according to its written policy and in a way the employee confirms, and keeps written records throughout. For complex cases where the right approach is unclear, the company first consults its legal team or a labor law adviser. Some tools can keep a full record of who recalculated, released, approved, or corrected each payment, when, and why, for later audits and reviews.
+
+## Payroll agents: FAQ
+
+### If source attendance or commission data is wrong, can the payroll specialist edit the payroll sheet directly?
+
+No. When source attendance or commission data is wrong, the payroll specialist sends the item back to the attendance administrator or the business unit that submitted it to fix the source document. The payroll agent then compiles and recalculates. This keeps the HR base data, the payroll ledger, and the finance journal entries consistent, and records who ran each recalculation and why.
+
+### An employee was underpaid. Can the difference be added to next month's payday?
+
+No. Under Article 30 of the Labor Contract Law and Article 7 of the Interim Provisions on Wage Payment, employers must pay workers in full and on time on the agreed date. Once underpayment or a missed payment is confirmed, the payroll specialist and the finance accountant confirm the difference and get the heads' approval. Then the cashier and finance supervisor make a separate payment promptly.
+
+### What does a payroll check cover?
+
+A payroll check runs at two levels: line items and totals. At the line-item level, the payroll specialist checks pro-rata pay for new hires and leavers, effective dates of pay changes, manually imported commissions, bonuses, and deductions, and month-over-month changes above the set threshold. At the totals level, the finance accountant checks month-over-month headcount and department totals, whether the payroll payable account equals net pay plus amounts withheld, and whether income tax, social insurance, and housing fund totals match the filing receipts.
