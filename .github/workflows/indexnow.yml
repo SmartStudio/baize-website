@@ -1,16 +1,18 @@
-name: IndexNow (push changed URLs to Bing)
+name: IndexNow (submit new or changed notes, one by one)
 
-# push 到 master 后:等 CF Pages 把这次提交部署上线(轮询 https://fxai.ai/build.txt),
-# 再把本次改动的页面 URL 推给 api.indexnow.org。key 是公开文件 site/public/<key>.txt,不需要 secret。
-# 手动补推:Actions 页面 Run workflow,填 urls(空格分隔的站内路径,如 /notes/foo/)。
+# push 到 master 且改了笔记 mdx 后:等 CF Pages 把这次提交部署上线(轮询 https://fxai.ai/build.txt),
+# 再逐篇检查新发布或正文有改动的笔记(线上 200、非 noindex、canonical 是自己、能看到新内容),
+# 通过的一篇一次推给 api.indexnow.org。列表页、首页、静态页、sitemap 都不推;没有定时任务、没有整站重交。
+# key 是公开文件 site/public/<key>.txt,不需要 secret。
+# 手动补推:Actions 页面 Run workflow,填 urls(只收单篇笔记路径,如 /notes/foo/),同样先查线上 200。
 on:
   push:
     branches: [master]
-    paths: ['site/**']
+    paths: ['site/src/content/notes/**']
   workflow_dispatch:
     inputs:
       urls:
-        description: 'Space-separated site paths to submit, e.g. /notes/foo/ /services/'
+        description: 'Space-separated single note paths, e.g. /notes/foo/ /en/notes/bar/ (index pages are rejected)'
         required: true
 
 permissions:
@@ -32,13 +34,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Submit changed URLs
+      - name: Submit new or changed notes
         if: github.event_name == 'push'
         env:
           FROM_SHA: ${{ github.event.before }}
           TO_SHA: ${{ github.sha }}
         run: node scripts/indexnow.mjs --from "$FROM_SHA" --to "$TO_SHA"
-      - name: Submit given URLs
+      - name: Submit given note URLs
         if: github.event_name == 'workflow_dispatch'
         env:
           URLS: ${{ inputs.urls }}
