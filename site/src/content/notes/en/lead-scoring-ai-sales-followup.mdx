@@ -1,0 +1,65 @@
+---
+title: "AI Scores a Lead High: How Fast Must Sales Follow Up?"
+description: Lead scores combine profile fit and recent behavior to set follow-up order and a response tier. Sales confirms MQL to SQL, and rejections retune the rules.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/lead-scoring-ai-sales-followup-cover.png
+coverAlt: A grey funnel on a dark green base dropping blank lead cards onto a short conveyor, each card topped by a glowing green bar of a different height, the tallest heading to a grey desk with a headset and a copper stopwatch
+sourceHash: '26876185da07'
+---
+
+A high lead score decides where the prospect sits in the follow-up queue and which response tier applies. How fast to follow up follows the tiers that marketing and sales agreed in advance. Demo bookings and explicit price requests go to the fast tier. Ordinary content downloads first get an intent check or go to nurturing. First valid contact requires a manual contact record from a sales rep or SDR. If the deadline passes, the sales manager gets an alert and can reassign the lead. Later, sales confirms MQL to SQL after talking with the prospect. If the conditions are not met, the lead goes back with one of a set of mutually exclusive reasons.
+
+import noteFig from '../media/lead-scoring-ai-sales-followup-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a person block and a cursor block feeding one green gauge bar, three stopwatches of different sizes on stepped stands with a flame, a card with a copper stamp beside a headset, and a card sent back along a curved arrow to a tuning dial, each with an English label board" caption="Figure: Lead Scoring | MQL to SQL" width="wide" border />
+
+## What a high score looks at, and what it misses
+
+A common lead score has two parts: a profile score and a behavior score. The profile score checks whether the prospect fits the target customer profile: industry, region, job title, company size and business need. The behavior score measures current interest and depth of engagement: pages visited, materials downloaded, event sign-ups and forms submitted. Combining the two keeps someone who clicked one link from going straight to sales.
+
+Even a high score only guides assignment. It does not set the probability of a deal. In the other direction, some prospects fill in few forms and engage rarely, and their total stays below the threshold. Yet their message asks for pricing, requests a trial, or states a purchase plan. These leads should not wait under the line to collect behavior points. When marketing or an SDR spots one, they pass it directly to sales.
+
+If a high-scoring prospect waits too long without contact, purchase intent fades. Some customer management tools let you set the score to decay over time, so leads with no outreach and no new activity drop a tier by rule.
+
+## How to tier follow-up deadlines by intent
+
+High-intent requests and ordinary content downloads should not share one follow-up deadline. A prospect who books a product demo or asks for a price needs a faster response tier. Leads from ordinary downloads or early-stage content sign-ups can first get a quick check by an SDR, or stay with marketing for nurturing. Do not copy another company's deadline for each tier. The marketing lead and the sales manager set them together, based on sales headcount, time zones covered, product complexity and daily lead volume. Once the tiers are set, both sides align four definitions, item by item, in the handoff agreement: timing, valid actions, overdue handling and source records.
+
+- **When the clock starts**: state whether the deadline counts from form submission, from the MQL flag, or from assignment to a sales rep. Define how workdays and off-hours count.
+- **First valid action**: messages sent automatically by trigger rules do not count. The rep needs a recorded manual contact attempt. If the team uses an outreach tool to help draft the first sales email, for who checks it before sending, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+- **Overdue alerts and reassignment**: the tool can be set to alert the sales manager when a deadline passes. If the original rep is overloaded or does not respond, the sales manager reassigns the lead to another rep.
+- **Channel source records**: record the source field accurately before scoring and assignment, so the team can compare intent by channel. For how to record the source of inquiries from overseas sites, see <NoteLink slug="export-site-geo-lead-attribution">GEO for B2B Export Websites: How to Attribute AI-Sourced Inquiries</NoteLink>.
+
+## Who confirms MQL to SQL
+
+A prospect who meets the marketing qualification standard becomes an MQL. Marketing and sales set that entry threshold together. The next step, MQL to SQL, cannot rest on the score alone. A sales rep or SDR confirms it through an actual conversation.
+
+The conversation confirms three things: the prospect has a clear business need, the contact is involved in the purchase decision, and there is a visible timeline. When all three hold, the sales rep confirms MQL to SQL in the tool and moves the lead into the opportunity queue.
+
+If any one is missing, for example the prospect only downloaded general material to learn, or the problem is real but the timing or budget is not ready, sales does not confirm MQL to SQL. The rep writes up the conversation and sends the lead back with a reason.
+
+## How rejection reasons feed back into scoring
+
+When sales sends a lead back, a vague note such as "poor quality" or "no interest" is not enough. Design the rejection menu as mutually exclusive reasons, each with exactly one destination. Invalid contact details go to data cleanup. Leads outside the target customer profile are excluded. Non-buyer identities such as competitor research or job seekers are also excluded. Leads with no current project but a real business problem, or with timing and budget not yet ready, go back to the marketing nurture pool. Leads already handled by another rep are logged and merged. Prospects who clearly decline contact are marked do-not-contact. Leads that could not be reached after several attempts go where the handoff agreement says.
+
+The marketing lead pulls the rejection details every month and checks how the reason mix changes. If many MQLs are judged invalid by sales over a period, do not respond by adding more leads. First check whether the scoring rules give too many points for a single download, whether ad targeting has drifted from the target audience, or whether one form source is bringing in many non-buyers. Once the cause is found, correct the profile weights and behavior points directly.
+
+## Lead scoring: FAQ
+
+### A prospect's score is below the threshold, but their message asks for a quote. Do we wait for the score before assigning?
+
+No. The score only guides queue order. If a prospect asks for pricing, requests a product trial, or mentions a purchase plan in a form or conversation, the SDR or marketing operations person on duty should pass the lead to a sales rep for fast-tier follow-up as soon as they spot it, even if the total score has not reached the threshold.
+
+### Sales keeps complaining that the MQLs they get cannot be worked. What should marketing change first?
+
+First stop adding lead volume blindly, and pull recent statistics on the mutually exclusive rejection reasons. If invalid contact details or non-buyer identities make up a large share, check the specific form sources and ad audiences. If leads fit the profile but generally have no project, the behavior score may give too many points for ordinary content engagement. Marketing and sales then retune the scoring rules together.
+
+### Can AI decide MQL to SQL automatically?
+
+AI cannot pass MQL to SQL on the score alone. Whether a lead becomes an SQL depends on a salesperson confirming in a real conversation that the prospect has a clear need, the contact is involved in the decision, and there is a visible timeline. Some tools can have AI extract these items from call notes or email threads into a draft for checking. The sales rep still verifies and ticks each item and adds the reasoning.

@@ -1,0 +1,65 @@
+---
+title: "Bank Reconciliation Agent: Who Chases the Unmatched Items?"
+description: A bank reconciliation agent matches entries, sorts unmatched items into four types and drafts the statement. Finance staff chase the vouchers and receipts.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/bank-reconciliation-agent-unmatched-cover.png
+coverAlt: Two long blank paper strips side by side on a dark green base, most rows joined by green check marks, a few unmatched rows lifted into small trays, a small terminal and a balance scale on one side, and a hand holding a copper magnifier over one tray
+sourceHash: '7ca741dfc01c'
+---
+
+A bank reconciliation agent matches entries between the books and the bank statement. It sorts the unmatched entries into the four types of reconciling items, drafts the bank reconciliation statement, and marks the likely cause and the missing voucher for each difference. Finance staff split the work of finding vouchers, getting bank receipts and deciding on errors. When the company has recorded a payment the bank has not yet paid out, the cashier asks the payee. When the bank has received or paid money the company has not yet recorded, the general ledger accountant gets the bank receipt and then books the entry. If the two balances still differ after reconciliation, or a single open item stays open longer than the number of days the company sets, the finance supervisor decides how to treat it.
+
+import noteFig from '../media/bank-reconciliation-agent-unmatched-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: green check marks joining two blank paper strips, four small trays each holding one document with two small role tokens, a magnifier over a tilted balance scale, and a closed ledger inside a green fence with a copper pen, each with an English label board" caption="Figure: Bank Reconciliation Agent | Reconciling Items" width="wide" border />
+
+## How far the agent can take the matching
+
+A company must check its bank cash book against the bank statement on a regular basis, at least once a month. If the two balances differ, someone prepares a bank reconciliation statement.
+
+Some finance software supports automatic matching. Same bank account, same currency, equal amount and opposite direction are mandatory conditions. Settlement number, counterparty name, counterparty account, business date and memo can be added as matching conditions as needed. Entries that fail automatic matching go to manual matching. With a direct bank-to-company connection, matching can be set to use the reconciliation code first, then amount, date, settlement number or memo.
+
+The bank reconciliation agent takes over the entries left unmatched after automatic matching. It compares the cash book and statement details line by line, pre-sorts them into the four types of reconciling items, drafts the bank reconciliation statement, and writes the likely cause and the settlement voucher to look for on each line.
+
+## Who chases each of the four types of reconciling items
+
+A difference between the two balances has two kinds of causes: reconciling items and booking errors. Reconciling items arise because the company and the bank receive settlement vouchers at different times and book them at different times. After the agent sorts the unmatched entries into four types, staff chase them by role as follows.
+
+- **Recorded by the company as received, not yet received by the bank**: the company has booked a receipt from a settlement voucher, and the bank statement does not show it yet. The agent marks the matching entry and settlement number. The cashier checks the settlement voucher on hand and asks the bank about posting status.
+- **Recorded by the company as paid, not yet paid by the bank**: the company has booked a payment the bank has not paid out, for example a check the payee has not cashed yet. The agent sends the item to the cashier, who asks the payee. These items often come from the upstream payment step. For the controls on the payment side, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+- **Received by the bank, not yet recorded by the company**: the bank has posted a receipt the company has not booked, for example a customer payment collected by the bank before the company has the voucher. The agent extracts the counterparty name and amount and alerts the general ledger accountant. The accountant gets the bank receipt and books the entry only after receiving it.
+- **Paid by the bank, not yet recorded by the company**: the bank has debited the account and the company has not booked it, for example a bank fee. The general ledger accountant also gets the bank receipt, confirms the fee, and books it from the voucher.
+
+## What to do if the balances still differ after reconciliation
+
+After the agent drafts the bank reconciliation statement, the cashier and the general ledger accountant first check whether the two adjusted balances are equal. If they are equal, both sides usually booked correctly, and the balance is the amount of deposits the company can actually use.
+
+If the adjusted balances still differ, usually some reconciling items were not found, or one or both sides booked an entry wrong. Staff keep tracing. The cashier and the general ledger accountant first check whether any unmatched entries were left unsorted. They then check the amount and direction of each cash book entry for input errors.
+
+If the balances still differ after this first check, or a reconciling item stays open longer than the number of days the company sets, the finance supervisor makes the call. The supervisor decides whether it is an internal booking error to correct or a matter to raise with the bank.
+
+## What the agent does not touch
+
+The bank reconciliation statement is only for checking. It is not a source document and cannot serve as the basis for adjusting entries or recording missed ones. Reconciling items themselves get no accounting entry. They are booked as normal when the settlement voucher arrives. The bank reconciliation agent only matches entries and drafts the statement. It cannot use the statement to book entries, and it cannot change journal entries on its own.
+
+The agent also does not change how strict the matching rules are. Some finance software lets users add settlement number, counterparty name, counterparty account, business date and memo as needed. The looser the matching conditions, the more false matches. The finance supervisor sets the matching rules, and every change is logged. If entries are matched wrongly, staff must be able to undo the match and find out who changed the rule. For rollback and accountability practices, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
+## Bank reconciliation agent: FAQ
+
+### Direct bank connections already match entries automatically. What is left for the agent?
+
+With a direct bank-to-company connection, matching can be set to use the reconciliation code first, then amount, date, settlement number or memo. Whatever automatic matching misses still goes to manual matching. The bank reconciliation agent handles that remaining difference. It compares memos and counterparty details line by line, pre-sorts items into the four types, marks the vouchers still needed, and produces a draft reconciliation statement for the cashier and the general ledger accountant to verify.
+
+### Once the reconciliation statement balances, should the book balance be changed to match?
+
+No. Equal adjusted balances mean both sides usually booked correctly. The adjusted figure is the amount of deposits the company can actually use, and it is only for checking. The bank reconciliation statement cannot serve as a source document for adjusting or recording entries. Entries in the cash book and the general ledger are booked only after the formal settlement voucher or bank receipt arrives.
+
+### What should happen to a reconciling item that stays open for a long time?
+
+First use the four types to find which side has not booked it. If the company has recorded a receipt or payment the bank has not, the cashier checks the settlement voucher and follows up with the payee or the bank. If the bank has recorded a receipt or payment the company has not, the general ledger accountant gets the bank receipt. If an item stays open longer than the number of days the company sets, the finance supervisor decides whether there is a booking error or whether to check with the bank. Until the settlement vouchers arrive, nobody forces the books to balance, and the reconciliation statement is not used as a basis for booking.

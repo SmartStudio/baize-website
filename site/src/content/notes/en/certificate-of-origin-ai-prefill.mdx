@@ -1,0 +1,60 @@
+---
+title: "AI Prefills the Certificate of Origin: Who Rules on Origin?"
+description: AI can prefill certificate of origin fields and list missing documents. Purchasing, cost accounting and customs verify origin status and sign before filing.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/certificate-of-origin-ai-prefill-cover.png
+coverAlt: A grey shipping container on a dark green base next to a blank certificate form on a clipboard with glowing green fields, an unmarked globe, and a hand pressing a copper stamp onto the form
+sourceHash: '15e2dceb794a'
+---
+
+AI can prefill the basic fields on a certificate of origin application. People verify and sign off on whether the goods qualify as originating and which rule of origin applies. The documentation clerk uses a tool to fill in product name, HS code, quantity and FOB value, draft the calculation worksheet, and list the missing documents. Purchasing collects supplier proof of origin. The cost accountant checks the product cost breakdown. The customs lead reviews the applicable criterion and the formula and signs, and only then does the clerk file with the issuing authority. Any material without proof of originating status counts as non-originating. If the result falls short of the threshold, the application stops.
+
+import noteFig from '../media/certificate-of-origin-ai-prefill-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a form with green filled field bars and a pen, three paths branching out of a small box, a purchasing folder chained to a calculator, and a copper stamp on a certificate with a grey archive box, each with an English label board" caption="Figure: Certificate of Origin | Rules of Origin" width="wide" border />
+
+## Which application fields AI can prefill
+
+When the documentation clerk prepares documents, some tools can read the customs declaration, the invoice and the bill of materials, extract product name, HS code, quantity and FOB value, and prefill them into a draft certificate of origin application. The workflow can also be set to draft a regional value content worksheet and a suggested origin criterion from the bill of materials. It then compares the result against the documents on hand and lists the missing raw material purchase invoices and supplier proofs of origin.
+
+To keep the prefill step from missing documents, the bill of materials, purchase contracts and invoices, and supplier proofs of origin need to be in one place that the tool can read under its permissions. For how to connect material scattered across business units so AI can read it, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>. If the shipment is paid by letter of credit and the credit requires a certificate of origin, the clerk also checks the draft against the credit terms after prefilling. For how to find discrepancies between documents, see <NoteLink slug="letter-of-credit-ai-discrepancy">AI Checks Letter of Credit Documents: How Do You Catch Every Discrepancy?</NoteLink>.
+
+## Three routes to origin and the common criteria
+
+Prefill only moves basic data onto the form. Whether the goods qualify as originating has to be checked clause by clause against the agreement text. Take RCEP as an example. Goods can qualify as originating in three ways. They are wholly obtained or produced in one member, which mostly covers primary products. They are produced entirely from originating materials of the members. Or, if non-originating materials are used in production, the product-specific rule for the first six digits of the HS code sets the criterion. HS classification is out of scope here. This note assumes the code is already settled when documents are prepared. The criteria that come up most in product-specific rules are change in tariff classification, regional value content, and the chemical reaction rule.
+
+- **Change in tariff classification**: after processing, the finished product falls under a different tariff classification from the non-originating materials. The change can be at chapter, heading or subheading level, meaning a change in the 2-digit, 4-digit or 6-digit code. Goods under this criterion also have a de minimis rule. If the non-originating materials that fail the classification change are worth no more than 10% of the goods' FOB value, the goods can still qualify as originating.
+- **Regional value content**: goods under this criterion need a regional value content of at least 40%. There are two methods, build-down and build-up. The build-down formula is FOB value minus the value of non-originating materials, divided by FOB value.
+- **Chemical reaction rule**: origin depends on whether the chemical reaction the rule requires takes place during production.
+
+## Who checks regional value content and material documents
+
+When the applicant files a certificate of origin application with the issuing authority, it cannot submit the tool's draft formula as is. It must submit the full set of documents that prove originating status: the product cost breakdown, the processing steps, purchase invoices and contracts for raw materials and parts, labels, outer packaging and so on. The applicant is responsible for the truth, completeness and accuracy of these documents.
+
+Inside the company, purchasing, the cost accountant and the customs lead split the review. Purchasing gets suppliers to provide proof of origin and the purchase contracts and invoices. Any material without proof of originating status counts as non-originating. If the regional value content then falls short, the application stops and is not filed. The cost accountant checks each material price in the product cost breakdown against the purchase invoices, and checks the FOB value against the export invoice. The customs lead reviews which rule of origin applies to the shipment, whether the de minimis rule is used, and whether the build-down or build-up formula is correct. After confirming, the customs lead signs, and then the clerk files.
+
+## Signing and filing, issuance after shipment, and three-year records
+
+After the customs lead signs, the documentation clerk files the application with customs or the China Council for the Promotion of International Trade (CCPIT). An RCEP certificate of origin should be issued before the goods ship. If it is not issued before shipment because of an error or another valid reason, the applicant can ask the issuing authority to issue it retroactively within 12 months from the date of shipment.
+
+Besides getting each certificate issued by customs or CCPIT, an approved exporter recognized by customs can issue its own declaration of origin. The conditions are: the company is a customs Advanced Certified Enterprise, it understands the rules of origin, and it has a complete document management system for originating status. Customs recognition is valid for three years. When an approved exporter issues its own declaration of origin, the company is responsible for its truth and accuracy. The steps above still all apply: purchasing collects proofs, the cost accountant checks the breakdown, and the customs lead reviews the formula and signs. Whether the company applies for a certificate or issues its own declaration, it keeps the related records for three years.
+
+## Certificate of origin: FAQ
+
+### The goods have already shipped. Can we still get an RCEP certificate of origin?
+
+Yes, under the rules. An RCEP certificate of origin should be issued before shipment. If it is issued after shipment because of an error or another valid reason, the applicant prepares the documents proving originating status and can apply to customs or CCPIT for retroactive issuance within 12 months from the date of shipment.
+
+### An approved exporter issues its own declaration of origin. Can AI review it and send it straight to the customer?
+
+It cannot skip human review. An approved exporter does not need an issuing authority to issue each certificate, but it is responsible for the truth and accuracy of its own declarations, and a complete document management system for originating status is one of the recognition conditions. After AI prefills the draft, purchasing, the cost accountant and the customs lead still need to approve and sign before it goes out.
+
+### Can AI calculate regional value content under the rules of origin directly?
+
+A tool can draft the build-down or build-up formula from the bill of materials and purchase prices. The draft cannot serve as the filing conclusion. Purchasing and the cost accountant check which materials count as non-originating and what each one cost, line by line against purchase invoices and the cost breakdown. The customs lead then approves and signs. The final formula and the full set of documents are filed with the application and kept for three years.
