@@ -1,0 +1,64 @@
+---
+title: "An Offboarding Agent Revokes Accounts: Who Owns the One It Misses?"
+seoTitle: "Offboarding Agent Account Revocation: Who Owns a Miss?"
+description: An offboarding agent revokes what is on the ledger. A miss on the list falls on the process and IT. A miss off it falls on the department head who left it out.
+lang: en
+pubDate: 2026-11-05
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/offboarding-agent-account-revoke-cover.png
+coverAlt: An empty desk and lamp on a dark green base. A grey agent robot pulls glowing green plugs from a row of sockets holding blank cards, while one separate card on the right is still plugged in and lit. A long checklist with blank checkboxes unrolls in front, and the robot drops a copper key into a tray.
+sourceHash: 'b771eaf6c59f'
+---
+
+An offboarding agent revokes access according to the existing ledger and reports the result. When an account is missed, check the list first. If the account was on the list and the agent did not handle it, the process and IT own the miss. If it was not on the list, the department head owns it for not reporting everything. The tool can only revoke registered access. Tools the employee signed up for on their own, business accounts tied to a personal email, shared account passwords, and self-made API keys have to come from a department inventory. Files, email, and the employee's agents go to the successor first, and only then are the accounts disabled.
+
+import noteFig from '../media/offboarding-agent-account-revoke-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a checklist clipboard with green check marks and an unplugged power cord, a magnifier over one card in a file box, a disc split into four colored quadrants each holding a small geometric shape, and an open ledger with a copper pushpin in one row" caption="Figure: Offboarding Agent | Account Revocation" width="wide" border />
+
+## Which list the offboarding agent uses to revoke accounts
+
+The security control catalog of the US National Institute of Standards and Technology (NIST) says that when a person leaves, the organization should, within a time period it defines: disable system access, terminate or revoke credentials and authenticators, conduct an exit interview, retrieve security-related items such as badges, tokens, and devices, and retain access to the organizational information and systems the person controlled. The catalog also recommends automated notification and automated disabling. A company that deploys an offboarding agent puts automated notification and list-based disabling into its process.
+
+The agent can be configured to use the departure date in the HR system, pull the list of accounts under that person, and start revocation. The list covers the single sign-on identity, email, business systems, shared accounts, cloud services and SaaS, API keys, and door access. The agent disables each one and reports the result. The list is only as accurate as the registration done when accounts were opened. For how to grant access by role at onboarding and keep records, see <NoteLink slug="employee-onboarding-agent-account-access">An Onboarding Agent Creates Accounts: How Should Access Follow the Role?</NoteLink>. If accounts were opened through a single ledger, the offboarding list will not have gaps.
+
+## Which items off the list are most often missed
+
+The real risks are often access rights that the IT ledger does not show. The agent pulls its list from the standard directory and cannot see entry points the employee opened outside the single sign-on system while in the role.
+
+During the exit interview and inventory, business departments focus on these entry points that are off the list.
+
+- **External tools the employee signed up for**: accounts on outside collaboration, design, or data tools registered with a work email or personal phone number. They are not connected to single sign-on, so the external login still works after the main account is disabled.
+- **Business accounts tied to a personal email**: customer portals, channel platforms, or third-party services opened early on and tied to a personal email and phone. After the person leaves, verification codes still go to their private devices.
+- **Shared account passwords**: team operations accounts, store back offices, or test accounts used by several people. Removing the person from the collaboration group is not enough. Without a password change, they can still log in.
+- **Self-made API keys and scheduled jobs**: API keys and scheduled jobs the employee created under their own name. After the named account is disabled, the key may keep pulling data in the background.
+
+## Who confirms and who signs
+
+Account revocation crosses HR milestones, the identity directory, business handover, and standalone back offices. IT or HR alone cannot cover every entry point. The offboarding approval form splits the sign-off steps by party. The HR specialist starts the process and confirms the last working day, and updates the trigger time at once if the date changes. The IT administrator handles the single sign-on identity and the accounts on the list, verifies the disable status the agent reports, and retrieves the badge, tokens, and devices.
+
+The department head confirms whether the list is complete, reports cloud services, SaaS, shared accounts, and self-made tools that are off the list, and arranges the data handover before accounts are disabled. For standalone systems with no integration, each system administrator confirms the disabling after receiving a ticket. Handover comes before disabling. Files and email under the departing person go to the successor, and so do the agents the person built while in the role. For who takes over these agents, see <NoteLink slug="agent-owner-when-employee-leaves">Who Owns an AI Agent When the Employee Who Built It Leaves?</NoteLink>. After the handover is settled, login access is disabled on schedule and shared account passwords are changed.
+
+## How to investigate a miss and update the registry
+
+After an employee leaves, someone may find that a business system still accepts their login, that an API key still pulls data in the background, or that an external SaaS platform still bills for their seat. Internal audit and IT security can trace responsibility through the revocation record from the departure date. The check starts with the access list that every party signed when the offboarding approval form was raised. They compare it against the missed account to see whether that account was on the list.
+
+If the account was on the list but was not revoked, the process configuration and the IT administrator, or the system administrator who did not act, own the miss. Typical causes are an API error that nobody handled, a manual ticket that timed out with no follow-up, or a shared account where the member was removed but the password was not changed. The team revokes the access at once and fixes the failure alerting. If the account was not on the confirmed list at all, the hiring department head owns the miss for an incomplete offboarding inventory. Typical cases are a tool the department opened on its own, an API key the employee created, or an unreported shared back office. Once confirmed, the team terminates the credentials and revokes access right away. It also adds the newly found systems and keys to the company's single access registry. Later onboarding and offboarding for the same role are checked against the updated standard list.
+
+## Offboarding agent: FAQ
+
+### An employee resigns and leaves the same day. What if there is no time for the normal handover?
+
+For a same-day departure or an urgent termination, HR confirms the last working time and notifies the IT administrator right away. IT first disables the single sign-on identity, company email, door access, and core business system access, and retrieves the badge and devices. Email, cloud drive documents, and automated jobs under the departing person are frozen in place. The department head then names a successor, who moves the data with IT's help and checks for accounts off the list.
+
+### The departing employee shared a common account with colleagues. Is removing them from the collaboration list enough?
+
+No. As long as the departing person knows the shared account's password, they may still log in from outside after leaving. The department head marks every shared account the employee used on the offboarding list. The system administrator changes the password on the last working day and rebinds authentication to current staff.
+
+### Does account revocation mean deleting the account or disabling it?
+
+Revocation should first disable system access and terminate or revoke login credentials. Do not delete the account right away. Deletion can wipe historical email, business documents, and audit logs along with it. First disable the person's login, change shared account passwords, and move files and data to the successor, so the organization keeps access to the information and systems the person controlled. Clean up later on a schedule under the company's retention policy.

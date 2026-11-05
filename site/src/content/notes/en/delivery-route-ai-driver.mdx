@@ -1,0 +1,59 @@
+---
+title: AI Planned the Delivery Route. What If Drivers Don't Follow It?
+seoTitle: "AI Delivery Routes: What If Drivers Don't Follow Them?"
+description: AI route plans miss site limits drivers know. Drivers log why they deviate, confirmed limits go into the rules, and routes are judged on on-time rate and mileage.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/delivery-route-ai-driver-cover.png
+coverAlt: A miniature city block on a dark green base. A grey van waits at an intersection. A glowing green route starts next to a small figure holding a blank tablet at a street corner and detours around a red-and-white barrier between two buildings. A copper clock hangs from a lamppost.
+sourceHash: 'bd5524c9ee6d'
+---
+
+When AI plans the delivery route and the driver does not follow the stop order, the fleet should not treat every deviation as a violation. It first collects the reason for each deviation and handles deviations in two groups. Some causes are valid: a road closed for works, a delivery time window, no place to park on site, or a residential gate that restricts trucks. The dispatcher records these limits and adds them back to the routing rules. If a check confirms a driver took a long detour for no reason or ran a private job on the way, the fleet lead handles it under fleet rules. Last-mile performance is judged by on-time delivery rate, mileage per order, and customer complaints. Route match rate alone is not used to judge drivers.
+
+import noteFig from '../media/delivery-route-ai-driver-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a road under a red-and-white barrier bar, a three-way fork with blank signs and a driver in a car raising a blank card, a hand placing a traffic cone on a ring binder above a green plus sign, and a round dial gauge beside a speedometer with an odometer readout" caption="Figure: Delivery Routes | Route Optimization" width="wide" border />
+
+## Why drivers change the planned order on the road
+
+A public research competition on last-mile delivery routes once released a set of historical routes that drivers had actually driven. Teams had to predict the stop order drivers would choose. The business observation behind the competition was simple. Drivers who know their area often do not follow the mathematically optimal route. They know road facts the routing model lacks: which side street is hard to drive, which courtyard has easy parking, and which neighboring drop points are easier to serve together.
+
+In daily urban last-mile delivery, an AI-planned route relies mainly on the digital map's road network, the coordinates of order addresses, and registered business hours. On the street, other things break the planned order: temporary municipal barriers close a road, an older residential compound locks its gate to trucks at set hours, trucks queue at a supermarket loading dock, or a recipient calls to change the delivery slot. To unload before a receiving window closes, drivers often swap the stop order on the spot. For whether to tell the customer in advance when line-haul transport changes carrier or plan, see <NoteLink slug="transport-dispatch-agent-carrier-switch">A Dispatch Agent Switches Carriers: Do You Need to Tell the Customer?</NoteLink>.
+
+## Log the reason for a deviation first, then handle it in one of two groups
+
+When the fleet finds that the actual track does not match the planned route, it first finds out what happened on the road each time. A company can configure the driver's handheld app to show short reason tags. When a driver changes the stop order or avoids a planned road section, the driver taps a preset option such as "road works," "customer rescheduled," "nowhere to park and unload," or "residential gate restriction." The driver does not have to stop at the roadside and type a long explanation.
+
+The dispatcher and fleet lead on duty review the tracks and reason tags collected in the back office and sort deviations into two groups. A valid adjustment matches road conditions or customer contact records. It does not reduce the driver's performance score, and the newly found limit goes into the road network database. In the other case, the track shows the vehicle met no road closure and received no customer reschedule, yet drove a large amount of extra mileage, or stopped for a long time away from any drop point to run a private job. The fleet lead then pulls the location details, checks with the driver, and holds the driver accountable under fleet management rules.
+
+## How the dispatch team adds limits back into the rules
+
+The deviation records that drivers select on their handhelds each day add up to a first-hand ledger of road facts that route optimization is missing. The dispatcher and logistics manager review it on a schedule to find the road sections and sites that drivers change most often. They configure each recurring obstacle as a constraint the routing tool can read, so later shifts get fewer routes that cannot be driven.
+
+Some tools support a detailed rule library maintained by site and road section. If a major customer's store opens its loading lane only at a fixed time each day, the dispatcher locks that receiving window in the customer record. If a narrow back street is too tight for a truck to turn, or has a trench dug for recent repairs, the dispatcher marks it as a no-truck section on the map layer. If a commercial complex accepts deliveries only through a side-door basement, the dispatcher moves the navigation drop point from the main entrance to the side-door loading spot. If several neighboring stalls usually sign for goods on the same trolley run, the dispatcher binds those drop points into a fixed group. As site limits fill in, the stop order from route optimization comes closer to how experienced drivers actually run, and a relief driver new to the route can follow it smoothly.
+
+## Which metrics to watch for last-mile results
+
+If the fleet sets "share of driving on the planned route" as a performance metric, a driver who knows the road ahead is blocked or has no parking still has to follow the map. The plan-compliance rate looks good, and the company and its customers pay for the extra fuel and the delays.
+
+To judge whether last-mile routes are planned well and whether the fleet runs reliably, the logistics manager watches actual delivery and cost results. Did the on-time delivery rate go up? Did actual mileage per order go down? Did customer complaints about delays and delivery experience go down? If the on-time rate holds, mileage per order falls, and complaints drop, machine routing and the drivers' on-site adjustments work well together. For how to choose business metrics that measure real output after an AI tool goes live, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+## Delivery routes: FAQ
+
+### Should a new driver who does not know the area be free to change the stop order?
+
+A new driver taking over a route does not yet know where parking is easy or which gates are strict. Following the planned order by default is safer. If the dispatcher has already added the parking spots, time windows, and no-truck sections that earlier drivers reported, the new driver avoids most problems by following the planned list. If the driver meets a sudden road closure or a customer reschedule, the driver taps a deviation reason and asks the dispatcher to help adjust.
+
+### What if a driver taps a random "road closed" tag on the handheld to fool the fleet?
+
+The dispatcher and fleet lead cross-check it against the tracks of other vehicles in the same area, customer call records, and photos of the road. If other trucks drove through that section normally at the same time, and only one vehicle reports a closure and detours every day, the fleet lead checks the dashcam footage with the driver. If the reason was false, the fleet treats it strictly as an unauthorized detour.
+
+### Drivers keep changing the routes that route optimization produces. Is the algorithm bad?
+
+Do not switch algorithms yet. First pull the deviation reason statistics from the back office and look at the distribution. If most changes come from receiving windows entered wrong, loading-dock locations placed wrong, or restricted side streets not marked, add these missing constraints to the routing rules and run another comparison. If drivers still prefer their old routes after the constraints are complete, the logistics manager compares the actual on-time delivery rate and mileage per order of the two routes, and fixes whichever plan has the better numbers.

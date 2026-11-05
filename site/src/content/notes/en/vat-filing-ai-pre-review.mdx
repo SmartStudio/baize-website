@@ -1,0 +1,58 @@
+---
+title: AI Prefills the VAT Return. Who Reviews It Before Filing?
+description: AI can match invoices and the books and draft the VAT worksheet. A tax accountant, finance manager, and finance head still review it before the return is filed.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/vat-filing-ai-pre-review-cover.png
+coverAlt: A large blank tax return form on a dark green base. A small grey robot holds a pen and fills in fields, and several fields light up emerald green. On the left, a stack of blank invoices and an open ledger are linked by green lines. Behind, three stepped platforms each hold a box-headed figure reading papers at a desk, and a copper stamp stands beside the form.
+sourceHash: 'e82ee4d7bb85'
+---
+
+AI can reconcile the accounts for a VAT return and draft the worksheet and supplementary entries. Before formal submission, the return passes three human checks. The tax accountant checks the worksheet and the supplementary lines. The finance manager reviews input tax credits and input tax transfers out. The finance head approves the return, submits it, and signs the confirmation statement. The e-tax bureau prefills from data it already holds, such as invoices issued. Revenue on the books with no invoice, other credit documents, and transfers out for welfare or personal consumption still depend on finance's own checks. The confirmation statement and the handling of failed comparison checks cannot be clicked through by AI.
+
+import noteFig from '../media/vat-filing-ai-pre-review-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a blank form with some fields filled green and some empty beside a pencil, a balance scale with invoices on one pan and a ledger on the other, three steps each with a green check mark, and two stacked blank sheets with a small wrench fixing a corner" caption="Figure: VAT Filing | Input Tax Credit" width="wide" border />
+
+## What the e-tax bureau prefills and what you add
+
+Under the filing guidance published by the tax authority, the new e-tax bureau offers general taxpayers three modes for the VAT and surcharges return: confirmation, supplementary entry, and full form. The platform recommends one based on the taxpayer's situation in the period. A company with simple business that has only routine invoicing and selected invoice data goes into confirmation mode. The page prefills some lines from invoices issued and other existing data for the taxpayer to confirm. A company with revenue not yet invoiced, other credit documents, input tax transferred out, or tax reductions in the period goes into supplementary entry mode to fill in those lines. A company with a complex business structure uses full form mode and fills in each form. Guangdong Province (excluding Shenzhen) began a pilot of the "VAT and Surcharges Return (Trial)" among some VAT taxpayers from October 1. The new return adds a "VAT and Surcharges Return Business Information Sheet," used to "collect tag information such as the taxpayer's registration attributes, applicable preferential policies, and special business types. After the taxpayer selects and confirms, the system intelligently judges and dynamically generates a filing interface suited to the taxpayer's special business scenarios." Taxpayers outside the pilot still use the old return.
+
+The figures the tax bureau prefills are not all of a company's taxable facts. Whenever a prefilled amount differs from the company's actual business or its books, the taxpayer adds the entry, or clicks "I want to fill in the form" on the page and changes each item in the form. If an invoice issued in the period had an error and needs a reversal and reissue, that also changes the period's output data directly. For how to control approval of invoicing errors upstream, see <NoteLink slug="invoice-issuing-agent-red-reversal">An Invoicing Agent Issued a Wrong Invoice. Who Approves the Red-Letter Reversal?</NoteLink>.
+
+## Which figures AI can check
+
+After the monthly close, the finance team can configure an internal AI tool as a reconciliation assistant before filing. It matches three sets of records: on the output side, the invoicing summary and the ledger of revenue not yet invoiced; on the input side, the invoices already selected and confirmed and other tax credit documents; and in the general ledger, the revenue and VAT payable accounts. It then produces a filing worksheet and a draft of supplementary entries for people to review.
+
+While building the worksheet, the tool flags several kinds of differences for the tax accountant to trace. If revenue recognized on the books, from main or other business, is higher than the amount invoiced in the period, it prompts a check for revenue not yet invoiced that needs adding. It lists input invoices the company has received and booked but has not yet selected and confirmed in its digital tax account, to avoid missed credits or a period mismatch. It flags invoices whose item names or expense notes mention meals, staff welfare, or personal consumption, prompting a check for whether they slipped into the list for credit. If the estimated tax burden for the period changes a lot from last month and goes past a set threshold, it reminds finance to explain why based on the month's business and purchases. The tool only lists these points with voucher numbers. It does not change the return on the e-tax bureau page.
+
+## Who reviews input tax credits and transfers out
+
+Whether input tax can be credited, and whether it should be transferred out, is checked first by the tax accountant and reviewed by the finance manager. Under the filing rules, an input invoice must first be selected for credit in the digital tax account to confirm its use, and then pass statistical confirmation, before it counts toward input tax credit for the period. For how to verify that a supplier invoice is genuine and belongs to real business when accounts payable books it, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>. If the use was marked vaguely when payables were booked, it is easy to select the wrong use at filing time.
+
+Under the general VAT rules, input tax on purchased goods, services, and similar items used for collective welfare or personal consumption cannot be credited against output tax. If input tax was already claimed and the use later changed to collective welfare or personal consumption, that input tax is transferred out in the current period. The finance manager takes the welfare and meal list that AI flagged and checks each item against expense claims, issue records, and the statistical confirmation sheet in the digital tax account. The manager approves which invoices are not selected and which credited amounts go into the transfer-out lines. The tax accountant corrects the worksheet and supplementary forms to match the facts and sends them, with a note on the changes, to the finance head for review.
+
+## What to do when a filing comparison check fails
+
+When the return is filled in and submitted, the e-tax bureau runs a filing comparison check. A failed check is either an advisory mismatch or a mandatory mismatch, and the two are handled in completely different ways. For an advisory mismatch, the page lets the taxpayer go back and edit, or confirm and submit after verifying that the data is correct. Confirming and submitting directly leaves a comparison exception record in the system. When the tax accountant sees an advisory pop-up, the accountant first finds which schedule or which item of uninvoiced revenue triggered it. If it is a normal business difference, the accountant reports it to the finance manager and keeps a written explanation on file. If it is a filing error, it is sent back and fixed on the spot.
+
+A mandatory mismatch means the return goes back for correction. Do not force the submission to save time. A forced submission creates a comparison exception that goes to the tax authority in charge. Until the exception is cleared, it affects the company's routine invoicing and delays settlement with downstream customers. Once all data is reconciled and the check passes, the page moves to the final submission step. The taxpayer must make a confirmation statement on the truth and completeness of the return. This confirmation means the company formally takes on responsibility for the tax return. The finance head reviews and signs it, then has a designated person click submit. It must never be configured so that an automation script or AI clicks the confirmation.
+
+## VAT filing: FAQ
+
+### The new e-tax bureau already prefills the return. Why does finance still check a worksheet internally first?
+
+The e-tax bureau's prefilled data comes from tax bureau records such as invoices issued and selected invoice statistics in the digital tax account. It does not know about revenue on the company's books with no invoice, other tax credit documents, or whether an invoice was actually used for collective welfare or personal consumption. Finance first uses the tool to check the book accounts against the tax bureau's prefilled figures. Only then can it complete the supplementary entries and transfer-out items before submission.
+
+### A mandatory mismatch pops up at submission. Can we force the submission to make the filing deadline?
+
+Do not force the submission casually. A forced submission after a mandatory mismatch creates a comparison exception that goes to the tax authority in charge. Until the exception is cleared, it affects the company's normal invoicing. The tax accountant should go back at once and check the reconciliation between the main return and its schedules and the data in the selection statistics sheet. After the differences are fixed and the finance manager has reviewed them, the return is submitted again.
+
+### We selected the wrong use for an input tax credit. Can it be changed after filing?
+
+If an invoice's use was confirmed wrongly, the company can apply to the tax authority in charge for a correction. If the invoice was already selected for input tax credit and the return was filed, and the use needs to change to export tax refund or agency tax refund, the company applies to the tax authority in charge for a correction. The authority confirms that the related input tax has been transferred out, then adjusts the invoice's use. If the company only finds that an invoice should not have been credited, it transfers out the input tax in the current period as required.

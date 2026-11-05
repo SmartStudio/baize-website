@@ -1,0 +1,63 @@
+---
+title: Prompt Injection Hidden in Invoice Emails. How Do Agents Defend?
+seoTitle: "Prompt Injection in Invoice Emails: How Agents Defend"
+description: Prompt injection now targets email-reading agents. Scan inbound mail for hidden text, give the agent read-only access, and keep payment approval and callbacks.
+lang: en
+pubDate: 2026-11-05
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/prompt-injection-invoice-email-agent-cover.png
+coverAlt: An opened blank envelope on a dark green base reveals a blank invoice. A thin green line runs from the invoice to a grey agent module inside a clear glass case. A grey card terminal with a padlock sits on the right, and a copper magnifier on a stand points at the invoice from the left.
+sourceHash: 'dff2c824ceec'
+---
+
+Prompt injection has started to target the agents that read email inside companies. Three layers of control stop it. Scan inbound mail for hidden content first. Give the agent the least privilege it needs, which means read-only with no sending. Keep payments on the existing accounts payable approval and callback verification. An email-reading agent sees characters the human eye cannot. If its permissions are too broad, text carried in an external email may be treated as a command. Forwarding to a new address, entering a payable, and changing a supplier's bank details all stay with a person to confirm.
+
+import noteFig from '../media/prompt-injection-invoice-email-agent-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: an open envelope holding a page with grey lines and a green glow inside, a figure at a laptop inside a glass case with an envelope outside it, a key beside a small locked door, and a telephone handset beside stacks of coins and a green check badge" caption="Figure: Prompt Injection | Hidden Instructions" width="wide" border />
+
+## What this batch of invoice emails hid
+
+In late October 2026, an email security company published a public report on a batch of invoice fraud emails aimed at AI that reads email. The sender posed as an executive of the receiving company, attached an invoice PDF, and added several layers of forged reply history below. The email pushed the recipient to pay before a discount expired. On the surface, it was a common executive-impersonation payment scam.
+
+These emails also hid an instruction written for email-reading AI deep in the body. One layer used styling to make the text tiny, white, and zero width and height, so neither the human eye nor screen readers could see it. Another layer encoded it in invisible Unicode tag characters. Once decoded, the instruction told the agent to forward the email and the invoice PDF unchanged to an address that looked like an accounts payable department. The report did not say any agent actually did this, or that any money was paid. Still, emails that target both people and their mail-reading tools have reached inboxes.
+
+## How hidden instructions fool an agent
+
+This kind of attack is called indirect prompt injection, the common form of prompt injection in external content. The attacker does not need access to the company's systems. It is enough to hide instructions in external content the agent processes. Common carriers are email, web pages, documents, and calendar invitations. People see the rendered layout. The agent receives the source and every character, and zero-size text and invisible encoded characters all go into the model.
+
+If the model's context does not separate system instructions from inbound mail, the model treats hidden instructions in the email as commands. Text that another workflow module extracted from external email and passed along may also carry instructions that were never cleaned out. For whether content handed over from another agent can be executed directly, see <NoteLink slug="agent-to-agent-trust-boundary">Multi-Agent Security: Can Agents Follow Forwarded Instructions Directly?</NoteLink>. The defense treats external content as data, never as instructions, keeps it separate from system instructions, and labels its source. It also checks inbound mail for hidden text and invisible characters. Mail with a detected hidden instruction can be tagged, quarantined, and reported to IT security, without being passed to the agent.
+
+## How much access the email-reading agent gets
+
+What an injected agent can do depends on its permissions. This batch of fraud emails told the agent to forward the original email and PDF, betting that the email-reading agent also held a send interface. If the agent can only read and cannot send, a hidden instruction that fools the model still stops at the tool call, because the agent lacks the permission.
+
+The IT security lead and the agent administrator limit the agent to the least privilege the task needs. They can write these rules into the permission configuration.
+
+- **Read-only mail channel**: the agent that sorts mail gets permission to read email, parse invoice PDFs, and draft internal to-do items. It gets no interface to send or forward mail outside.
+- **High-risk actions stay with a person**: forwarding to a new address, entering a payable in the AP system, and changing a supplier's bank details require explicit human confirmation by default. The agent cannot submit them on its own.
+- **Suspicious mail leaves the queue early**: when inbound checks flag an email with hidden styling or invisible characters, it goes straight to quarantine for IT security review and never enters the agent's reading queue.
+
+## Which payment checks stay out of the agent's hands
+
+Even if an email with forged executive replies and pressure to pay before a discount expires slips into the to-do list, whether money goes out still depends on the existing accounts payable approval and callback verification. The attacker forges the reply history and uses the discount deadline as pressure to make the clerk skip routine checks. A company that adopts an email-reading agent keeps every step of its existing payment controls.
+
+When accounts payable receives the bill draft the agent prepared, the team checks the purchase contract, receiving records, and invoice lines as usual. It confirms the bank account matches the supplier master record. If an executive's name is used to rush a payment, push payment before a discount deadline, or change bank details, the clerk follows policy and calls back on a known internal number to verify. The clerk does not trust the reply chain in the email. For how to control risk at each step before payment, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+
+## Prompt injection: FAQ
+
+### Did any company's agent actually fall for the invoice emails in the report and pay?
+
+The public report did not say that any company's agent followed the email's instructions and forwarded anything, and it did not mention any money paid as a result. Still, these samples have appeared in real inboxes. That shows attackers are building fraud emails specifically for how email-reading AI parses content. The IT security lead, the agent administrator, and the accounts payable team need to set the gateway detection rules and least-privilege limits before an incident.
+
+### If the email-reading agent only writes summaries and never sends mail, can it still be affected?
+
+Even with outbound sending turned off, unusual text in external email can still distort the summary. For example, it can push the model to leave out a warning about an unusual sender address, or to mark a forged executive payment demand as an urgent to-do. External emails and attachments still enter the model as plain data, stored separately from system instructions with their source labeled. Finance staff who act on a summary still open the original email and check the contract and receiving documents item by item.
+
+### How do you detect hidden instructions in an email?
+
+Hidden instructions are usually tucked into the body with tiny, white, zero-width-and-height styling, or encoded in invisible Unicode tag characters, so neither the human eye nor screen readers see them. The company's security gateway or detection rules scan inbound mail for invisible elements, text addressed to AI in code comments, and invisible Unicode characters. When something is found, the mail can be tagged, moved to quarantine, and reported to IT security, without being passed to the agent.
