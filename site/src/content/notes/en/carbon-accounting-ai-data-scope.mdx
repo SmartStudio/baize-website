@@ -1,0 +1,61 @@
+---
+title: "AI Calculates the Product Carbon Footprint: Who Signs Off on the Data?"
+seoTitle: "AI Product Carbon Footprint: Who Signs Off on the Data?"
+description: AI can pull activity data from ledgers, match emission factors, and draft a product carbon footprint. Named owners still sign the scope, data, and factors.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/carbon-accounting-ai-data-scope-cover.png
+coverAlt: A grey agent machine on a dark green base, wired with green lines to a filing cabinet, a fuel tank, and a meter box. It outputs a stack of blank paper next to a copper stamp, while a green dashed arrow loops from a product box to a factory, a truck, and a recycling bin and back
+sourceHash: 'c4f605619348'
+---
+
+AI can pull activity data from each business ledger, run the allocation, and produce a first draft of a product carbon footprint. The owner of each data set signs off on it. The carbon management lead fixes the functional unit and the life cycle boundary. The production, procurement, and energy data owners sign off on the raw activity data. The allocation method and the source and version of each emission factor are recorded one by one. Before the company publishes a declaration or reports figures to a customer, the numbers go through review, and only the reviewed version leaves the company.
+
+import noteFig from '../media/carbon-accounting-ai-data-scope-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a ledger joined by a green arrow to a calculator, a cardboard box inside a green dashed cube, a flask and two pens next to a data sheet, and a sealed certificate on a pedestal with a magnifier, each with an English label board" caption="Figure: Product carbon footprint | Footprint accounting" width="wide" border />
+
+## Which steps AI can handle in carbon footprint accounting
+
+The most time-consuming part of carbon footprint accounting is searching ledgers across business systems and aligning units. A team can configure a tool to read electricity, fuel, raw material input, and transport data from the energy metering, production, procurement, and logistics ledgers. The tool allocates the data by preset product and process rules, matches emission factors, and calculates a first draft. Every result can be traced through the base tables back to the original meter reading, material requisition, or waybill. This meets the verifiability requirement described in <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+Some tools also flag data gaps when they output the draft. Examples: a month with no meter reading, an auxiliary material that uses an estimate for now, or one material that mixes emission factors from different sources. When the carbon management team and the external verifier receive the draft, they can follow the flags straight to the business department and ask for the missing source documents.
+
+## Who sets the functional unit and the boundary
+
+The tool cannot decide the accounting scope for the company. Before work starts, the carbon management or sustainability lead sets the accounting boundary according to the general standard. The Ministry of Ecology and Environment answered press questions on the national standard *Greenhouse Gases: Carbon Footprint of Products, Requirements and Guidelines for Quantification*. According to that briefing, this national standard is the general standard for product carbon footprint accounting in China. It adopts the International Organization for Standardization's product carbon footprint standard, and its drafting principles match the internationally accepted life cycle assessment standards. The standard sets out these principles: a full life cycle perspective, a functional or declared unit, an iterative approach, priority for scientific methods, and completeness, consistency, coherence, accuracy, transparency, and avoiding double counting. It also defines the quantification steps, the life cycle stages, the principles for choosing the accounting boundary, and the calculation methods. On October 30, 2026, the State Administration for Market Regulation, the National Development and Reform Commission, the Ministry of Ecology and Environment, the Ministry of Industry and Information Technology, and the National Energy Administration jointly issued an action plan for building a standards system for key product carbon footprints. The plan calls for more than 100 national product carbon footprint standards.
+
+In practice, the carbon management lead first sets the functional unit or declared unit in writing. For example, the calculation can be per qualified finished unit or per unit of delivered weight. The lead also sets which life cycle stages are inside the boundary: raw material acquisition, manufacturing, distribution and transport, use, and end-of-life disposal. The lead records which stages are out of scope this time, and the cut-off rule used to exclude any minor input. Write the functional unit, the boundary rules, and the allocation basis into a clear document the tool can read, so the scope does not drift each time the numbers are rerun. For how to do this, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+## Who signs the activity data and the emission factors
+
+Once the boundary is set and the draft has run, the core inputs in the base tables are assigned to specific roles for signature and filing. An unsigned estimate table cannot pass.
+
+- **Raw activity data sign-off**: The energy data owner signs the electricity and fuel ledgers. The production data owner signs material input and output. The procurement lead signs raw material purchasing and transport data. Finance checks invoices and booking rules alongside them to prevent missed or double-counted entries.
+- **Allocation method locked in writing**: The carbon management lead works with production and finance to write down how shared workshop energy or combined shipments are allocated to single products and processes. Carbon footprint accounting across periods stays consistent. The method does not change on the fly because a result looks good or bad.
+- **Emission factor source and version register**: In their press briefing on the *Guidelines for Building Product Carbon Footprint Factor Databases*, the Ministry of Ecology and Environment and other departments listed these priority tasks: standardize how factor data is developed, define factor data sources and update requirements, assess factor data quality, and unify the naming, classification, and coding of factor data. The company records the source database and version of every emission factor it uses, and keeps a record each time a factor changes.
+
+## How to review before a public declaration
+
+After the draft fills its gaps and collects all internal signatures, it still goes through review before release. The national standard *Greenhouse Gases: Carbon Footprint of Products, Requirements and Guidelines for Quantification* sets requirements for reporting, critical review, and product carbon footprint declarations. Before the company publishes a product carbon footprint declaration or puts one in a bid document, it runs a review. Where independent verification is needed, an external verifier checks the original ledgers, the meters, and the calculation workpapers.
+
+A formal product carbon footprint declaration and report gives the final quantified value. It also states the life cycle stages included in and excluded from the boundary, the functional or declared unit, the allocation rules, the main assumptions, and the source and version of each emission factor. When a downstream customer sends a questionnaire asking for figures, sales, procurement, and customer service staff may only use the formal version that has completed internal co-signing, review, and filing. Drafts still being recalculated stay on the internal workspace and are never sent out.
+
+## Product carbon footprint: FAQ
+
+### A supplier cannot provide measured carbon data. Can we use an industry average for now?
+
+Yes. You can estimate with data from a public factor database, confirmed by the carbon management lead. State in the workpapers and the report which figures are estimates and which source they use. Replace them once you receive the supplier's measured data. Transparency is one of the basic principles in the national standard, so estimates must be labeled clearly.
+
+### A customer is pressing for carbon data. Can we send the draft AI just produced?
+
+Do not send the draft. A draft that the data owners have not signed and that has not finished review often still has data gaps or mismatched factor versions. Once the customer enters it into their own records, any mismatch found in verification means going back to explain and correct it. When a customer asks for figures, give only the reviewed formal version.
+
+### We changed an emission factor and the result changed. What now?
+
+First record in the carbon footprint accounting register which emission factor changed, the source database and version of the old and new factors, and the reason for the change. Then rerun the calculation with the same functional unit, accounting boundary, and allocation method, and explain the difference. If you have already given figures to an outside party, update them with the new reviewed version and tell them why.

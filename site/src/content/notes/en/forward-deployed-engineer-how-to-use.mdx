@@ -1,0 +1,62 @@
+---
+title: "Forward Deployed Engineers: How Should a Company Use Them?"
+description: Palantir CTO Shyam Sankar says forward deployed engineers belong to the product org. What to ask an FDE vendor, and how to set goals for your own on-site team.
+lang: en
+pubDate: 2026-11-05
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/forward-deployed-engineer-how-to-use-cover.png
+coverAlt: A grey product platform on a dark green base holding a copper compass, a monitor, a robot arm, and gears. A small figure in a cap carries a toolbox across a glowing green bridge to a factory, while a green two-way arc carrying three blank cards links the factory back to the platform
+sourceHash: 'a9b9b37ca46d'
+---
+
+This is note 10 in our podcast reading series. It can be read on its own. It covers forward deployed engineers (FDEs). According to Palantir CTO Shyam Sankar, forward deployed engineering is first a product strategy, and the job title is a downstream result. When an outside vendor offers to place FDEs on site, management and the IT lead should first ask three things: does the team report to product or to sales, how do field problems flow back into the product, and which work becomes general and which stays custom. When a company builds its own on-site team, it sets goals by measurable improvement in a business workflow. The team first learns the underlying data and processes, then on a regular schedule moves field workarounds into the internal platform.
+
+import noteFig from '../media/forward-deployed-engineer-how-to-use-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a chess knight on a chessboard, a tall green bar followed by grey bars that step down, a card riding a green curved arrow from a small shed onto a platform block, and a small figure at a computer in a cutaway office, each with an English label board" caption="Figure: Forward deployed engineer | FDE" width="wide" border />
+
+## How Sankar defines forward deployed engineering
+
+In an interview on October 29, 2026, Ben Thompson asked Palantir CTO Shyam Sankar whether model companies are copying forward deployed engineering or only copying the job title. Sankar said forward deployed engineer is now the hottest job title, and model companies are not the only ones using it. He also said that when he first proposed the concept, people said he was destroying the company. He was criticized for 17 years, and then it became the coolest thing.
+
+Sankar said the first question is what forward deployed engineering is, before who a forward deployed engineer is. In his words, forward deployed engineering is first a product strategy, and the job is a downstream result. The strategy is hard to copy. In Palantir's history, about five people understood it well enough to rebuild it somewhere else. Hiring someone who has worked as an FDE does not get you there. He named one organizational starting point: forward deployed engineers belong to the product organization, not to marketing and sales.
+
+## When this approach applies
+
+Sankar draws the boundary by the shape of customer demand. If customer needs cluster in the middle like a normal distribution, averaging signals from thousands of customers tells you what to build next, and this approach does not fit. If customers follow a power law, a few customers hit the hardest version of a common problem. Solving it wins the whole market, because other customers will hit it sooner or later. Then you go from the specific to the general.
+
+In the same interview, Sankar said the basic unit of an enterprise is the workflow, not the individual knowledge worker. His example: making one supply chain analyst more efficient may return nothing extra. The company gets value when the whole supply chain workflow improves in a measurable way. In his experience, going from specific to general is hard, and engineers hate throwaway work. The team only sees enough surface area to find the general solution for a whole group of customers after it has done the first, second, and third customer.
+
+## Why a new job title does not copy it
+
+Sankar said many companies take FDE to mean sending very smart engineers to work alongside customers. If there is no way to absorb what those engineers go through at the customer site into the product, Sankar calls it presales engineering under a new name. Absorbing field experience means deciding where the abstraction layer goes, and separating what becomes general from what stays with a single customer. Building end to end for one customer is overfitting to that customer.
+
+Sankar also roughly splits engineers into two groups. One group feels rewarded by getting the problem solved on site and is good at judging which problems are worth solving. The other group cares whether the thing is built well. Each group underrates the other's contribution, and management has to keep this unstable balance in check. He also described an internal lesson. Most work on the Palantir platform is now done through what they call AI FDE, which uses models to speed up building on the platform. About a year and a half ago, he required every new hire to learn the platform through AI FDE in their first week. It held them back. Many young employees knew the platform only through that abstraction and did not understand the building blocks underneath. Sankar said that even for strong AI supporters, the most important question is knowing when not to use AI. When Ben Thompson asked whether the model itself might become the FDE, Sankar said he is not worried about that now. Breaking a problem down correctly is worth a lot, and breaking it down only to "good enough" loses much of that value.
+
+## How to use this when hiring a vendor or building a team
+
+When an outside vendor offers to place FDEs on site, the owner, the business lead, and the IT lead should get answers to three questions before signing.
+
+- **Who the on-site staff report to**: Does the on-site team report to product or to sales? Are they measured on product progress or on deals closed and cash collected?
+- **How field problems flow back**: How do problems found on site get back into the vendor's standard product, and how long until they show up in a released version?
+- **Where general ends and custom begins**: After the first deployment, which parts become general features and which stay as custom work for your company?
+
+If the company builds its own on-site team, it sets goals by workflow, not by headcount. The business lead and engineers work on site together. They pick one or two of the hardest workflows with measurable results and finish them first. The reasoning matches <NoteLink slug="enterprise-ai-pilot-vs-accounts-for-all">Why Should an Enterprise AI Pilot Start With One Department?</NoteLink>. Record every workaround added on site, and decide on a schedule which ones move into the internal platform. For what is still missing when a working pilot scales to production, see <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>. AI can help with building day to day, but new hires learn the underlying data and processes first, then use the AI layer.
+
+## Forward deployed engineers: FAQ
+
+### What is the difference between a forward deployed engineer and a presales engineer?
+
+According to Sankar, the difference is whether field problems get absorbed into the product. Forward deployed engineers belong to the product organization, and hard problems they hit on site become capabilities of the general product. If you only send smart engineers to work at the customer and field experience never reaches the product, he calls it presales engineering under a new name.
+
+### Do small and mid-sized companies need forward deployed engineering?
+
+Sankar's power-law test is meant for the side that builds products, and a company can borrow the idea to judge its own case. For routine needs with mature software on the market, use a standard product first. An on-site team that starts from specific problems is worth building only for the hardest problems in your industry, where the improvement to the whole workflow can be measured.
+
+### An outside vendor offers to place FDEs on site. What should the company ask?
+
+First ask whether the on-site FDEs report to product or to sales. Then ask how field problems get back into the product and how long that takes. Last, ask which parts become general features after the work and which stay as custom work for your company. If field problems never reach the product, Sankar would call it presales engineering under a new name.

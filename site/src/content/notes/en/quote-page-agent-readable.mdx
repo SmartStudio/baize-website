@@ -1,0 +1,59 @@
+---
+title: "Agents Read Your Pricing Page: Who Signs Off on the Price Terms?"
+seoTitle: "Agent-Readable Pricing Pages: Who Signs Off on Prices?"
+description: Buyer agents scrape public pricing pages, and a misread price can pass as your official terms. Who signs plan details, tax terms, and price changes.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/quote-page-agent-readable-cover.png
+coverAlt: A web page panel listing a few fields stands on a dark green base. A grey camera-like agent module on the left scans it with a green beam, green lines link the page to three small desks below holding a chart, a calculator, and a balance scale, and a copper pen signs a blank sheet on the right
+sourceHash: 'd5cdec71a177'
+---
+
+A pricing page on a company website is public. When a buyer's price comparison agent scrapes its text, the price it reads may be treated as the company's official price terms. So launching the page and every price change need signatures. Sales operations or the pricing lead sets the tiers and billing terms. Finance checks taxes, currency, public discounts, and effective dates. Legal approves the validity period and the "the contract prevails" statement. The marketing website owner publishes only the signed version and does not change numbers on their own.
+
+import noteFig from '../media/quote-page-agent-readable-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a small robot with a solid green eye reading a web page with a few lines of text, three green-edged cards in a tray, a stack of web pages with a green circular arrow, and a blank sheet with three lines and a pen, each with an English label board" caption="Figure: Pricing page | Machine-readable pricing" width="wide" border />
+
+## What agents read from a pricing page
+
+When a buyer has an agent collect vendor options, the agent mostly reads the text the website's pricing page returns directly. Content in images, collapsed sections, and pop-ups may not be read. For how to change landing pages overall for machine price comparison, see <NoteLink slug="agent-buyer-b2b-landing-page">How to Write a B2B Landing Page for AI Agent Buyers</NoteLink>. On the public pricing page, if plan prices are baked into a static poster image, hidden behind a monthly/annual toggle that needs a manual click, or generated entirely by scripts after the page loads, outside scrapers may not read the price at all, or may read only part of the default state.
+
+Once the visible text is right, the website team can follow search engines' structured data documentation and add a machine-readable price layer in the page code. It states the product name, price tier, price, billing currency, price validity period, and unit of pricing in standard fields. This structured data must match the visible text on the page exactly. A price or internal discount that is not on the visible page cannot be added to the structured data alone.
+
+## Which price terms to spell out
+
+Every plan or price tier keeps these items together in one block: plan name, price, currency, billing period, pricing unit (per account, per usage, or per call), who it is for, included services, overage or feature limits, whether tax is included, whether a sales quote is required, and the effective date or last updated date of the current version. If the fields are scattered across the page, a scraper can easily pair Plan A's price with Plan B's included quota.
+
+When you write an amount, use a full sentence that states the billing period and pricing unit for that amount. If the page shows only "from" and an amount, a scraper cannot tell whether it is a fixed annual total, a base price per account, a limited-time promotional price, or an annual price spread across months. For custom pricing or enterprise tiers for large customers, do not leave the price field blank or show only a dash. Write "Contact sales for a quote" in that spot, and list the main factors sales uses to price it, such as concurrency, deployment method, or service level.
+
+## Which places change together when the price changes
+
+A website pricing page rarely has just one card. The summary at the top, the price cards in the middle, the plan comparison table below, the FAQ at the bottom, the machine-readable price data in the code, and the updated date in the footer often all carry price information. When the business changes public pricing, the marketing website team lists these places in one linked checklist and replaces all of them in one release. Miss any one and the same page shows old and new prices at once. The buyer's tool scrapes both, and a pricing dispute follows.
+
+After the new version goes live, marketing and sales operations spot-check the text the page returns directly and the underlying structured data the way an outside scraper would. They confirm that outside tools actually get the newly approved price. Each price change is logged in an internal register with a version number and effective date. Old campaign pricing pages or past feature pages that are replaced are either taken offline or marked as expired in a visible spot, so search engine caches and old links do not keep spreading expired terms.
+
+## Who signs before launch
+
+Conditions on a public pricing page become the starting point for later commercial negotiation, so signatures are split by role. The pricing lead or sales operations sets each tier's plan name, amount, pricing unit, and feature limits. Finance approves whether the displayed price includes tax, the settlement currency, how annual or volume public discounts are calculated, and the date the new price takes effect. For how to manage private discount room when a customer talks to sales one on one, see <NoteLink slug="sales-quote-agent-discount-floor">A Sales Discount Agent Cuts Prices on Its Own. Who Sets the Floor?</NoteLink>.
+
+Legal checks how the validity period is written and whether the page wording could be read as a public commitment. Legal also puts a boundary statement in a visible spot, along the lines of "This public page is for reference in evaluation and estimates only. The final price and the rights and obligations of both parties are governed by the formal signed contract and the sealed quotation." The marketing website owner comes last. They update the visible text and the machine-readable price data only from the final version that pricing, finance, and legal have co-signed, and do not edit text or numbers in the back end on their own.
+
+## Pricing pages: FAQ
+
+### The enterprise plan has no fixed price. How should the public pricing page describe it so scrapers do not miss it?
+
+Do not leave the enterprise price field empty or show only a "book a demo" button. In the price spot on the enterprise card, write "Contact sales for a quote". Follow it with short full sentences listing the capabilities included in that tier and the factors used to price it, such as account count, data volume, deployment environment, or service response level. Buyer comparison tools can then keep the enterprise plan on the shortlist and pass it on for a human inquiry.
+
+### What happens to the old campaign pricing page after a promotion ends?
+
+When the promotion ends, the marketing website owner removes the promotional price markers on the expiry date signed in advance. The price cards, comparison table, FAQ, and underlying structured data all switch back to the regular list price, and the page date is updated. A standalone landing page built for a single promotion is either taken offline, or states in its first-screen text that the promotion has ended. This stops outside tools from scraping the expired low price.
+
+### The machine-readable price and the visible price do not match. Which one counts?
+
+When the two do not match, the website owner first takes the conflicting module offline or corrects it right away from the internally co-signed final version. Internally, the version co-signed by pricing, finance, and legal is the reference. Externally, the rules stated on the page apply, and the formal sealed quotation and written contract prevail. After the fix, trace back whether the card, comparison table, FAQ, or machine-readable data missed the sync, and add that spot to the price change checklist.
