@@ -118,12 +118,25 @@ describe('plan (live checks)', () => {
     expect(r.submit).toEqual([]);
     expect(f).not.toHaveBeenCalled();
   });
-  it('refuses a bulk run', async () => {
-    const f = vi.fn();
-    const many = Array.from({ length: MAX_PER_RUN + 1 }, (_, i) => ({ path: `/notes/n${i}/`, fingerprints: fp }));
+  it('caps a run at the first MAX_PER_RUN candidates and logs the remainder', async () => {
+    const many = Array.from({ length: MAX_PER_RUN + 2 }, (_, i) => ({ path: `/notes/n${i}/`, fingerprints: fp }));
+    const f = vi.fn(async (url) => res(200, page(url, TEXT)));
     const r = await plan(many, { fetchImpl: f, ...fast });
-    expect(r.submit).toEqual([]);
-    expect(f).not.toHaveBeenCalled();
+    expect(r.submit).toEqual(many.slice(0, MAX_PER_RUN).map((c) => `https://fxai.ai${c.path}`));
+    expect(r.skipped).toEqual([
+      { url: 'https://fxai.ai/notes/n10/', reason: 'over the 10-per-run cap; not submitted this run (resubmit manually if needed)' },
+      { url: 'https://fxai.ai/notes/n11/', reason: 'over the 10-per-run cap; not submitted this run (resubmit manually if needed)' },
+    ]);
+    expect(f).toHaveBeenCalledTimes(MAX_PER_RUN);
+  });
+  it('submits one POST per URL even when capped', async () => {
+    const many = Array.from({ length: MAX_PER_RUN + 2 }, (_, i) => ({ path: `/notes/n${i}/`, fingerprints: null }));
+    const f = vi.fn(async (url) => res(200, page(url, 'x')));
+    const posts = [];
+    const { submit } = await plan(many, { fetchImpl: f, ...fast });
+    for (const url of submit) posts.push(await submitOne(url, 'k', { fetchImpl: vi.fn(async () => res(200)) }));
+    expect(submit).toHaveLength(MAX_PER_RUN);
+    expect(posts).toHaveLength(MAX_PER_RUN);
   });
   it('checkLive decodes entities and ignores tags/typography in highlighted code', async () => {
     const html = page(U, '<pre><code><span>brand&#x20;new</span> <span>prompt&#39;s&nbsp;text</span></code></pre> “引号”…');

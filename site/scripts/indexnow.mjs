@@ -4,7 +4,7 @@
 //   node scripts/indexnow.mjs --urls "/notes/a/ /en/notes/b/" [--dry-run]
 // 规则(11/5 Bing 收录整改方案):
 // 1. 只交单篇笔记页 /notes/<slug>/、/en/notes/<slug>/。列表页、分类页、首页、静态页、sitemap 一律不交。
-// 2. 每篇单独一次请求。不做整批、整站或 sitemap 重交;一次 push 候选超过 MAX_PER_RUN 篇就整次不交。
+// 2. 每篇单独一次请求。不做整批、整站或 sitemap 重交;一次 push 最多交 MAX_PER_RUN 篇(按路径排序的前 10 篇),超出的在 CI 日志里逐条列出,留待下次或手动补交。
 // 3. 交之前逐篇抓线上页:必须直接返回 200(301/404 都不交,只有中文版的笔记对应的 /en/ 自然 404 被跳过),
 //    不能是 noindex,必须有 canonical 且指向它自己,页面要已经是新内容(找得到新增的文字,或删掉的文字已经不在)。
 // IndexNow 只是通知有更新,不保证收录。密钥是公开文件 public/<key>.txt,不是机密。
@@ -191,14 +191,11 @@ export async function checkLive(url, fp, { fetchImpl = fetch, retries = 2, waitM
   }
 }
 
-/** 逐个检查候选,返回 { submit: [url], skipped: [{url, reason}] }。超过 MAX_PER_RUN 篇整次不交。 */
+/** 逐个检查候选,返回 { submit: [url], skipped: [{url, reason}] }。超过 MAX_PER_RUN 篇只交前 MAX_PER_RUN 篇(候选已按路径排序),其余记入 skipped。 */
 export async function plan(cands, opts = {}) {
-  const skipped = [];
-  if (cands.length > MAX_PER_RUN) {
-    return { submit: [], skipped: cands.map((c) => ({ url: new URL(c.path, SITE).href, reason: `more than ${MAX_PER_RUN} notes in one run, refusing bulk submit` })) };
-  }
+  const skipped = cands.slice(MAX_PER_RUN).map((c) => ({ url: new URL(c.path, SITE).href, reason: `over the ${MAX_PER_RUN}-per-run cap; not submitted this run (resubmit manually if needed)` }));
   const submit = [];
-  for (const c of cands) {
+  for (const c of cands.slice(0, MAX_PER_RUN)) {
     const url = new URL(c.path, SITE).href;
     if (!isNotePath(c.path)) { skipped.push({ url, reason: 'not a single note page' }); continue; }
     const r = await checkLive(url, c.fingerprints ?? null, opts);
