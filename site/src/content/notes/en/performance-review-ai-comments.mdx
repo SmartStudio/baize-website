@@ -1,0 +1,64 @@
+---
+title: AI Drafts Performance Review Comments. What Should the Manager Still Change?
+seoTitle: "AI Performance Review Comments: What Managers Must Edit"
+description: AI drafts performance review comments from work records. The manager checks each fact, sets the rating, makes improvement steps concrete, and signs the review.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/performance-review-ai-comments-cover.png
+coverAlt: A hand with a copper pen writing on a blank review sheet on a grey clipboard, a glowing green draft card floating above, and two facing grey chairs with a small round table nearby, on a dark green base
+sourceHash: '8a4661bfdb89'
+---
+
+AI can turn scattered work records into a first draft of performance review comments. Before signing and submitting, the direct manager changes at least four things: facts, conclusions, calibration, and improvement actions. The manager owns the final comments. The tool only summarizes facts, pulls out highlights, and polishes, expands, or shortens text. The manager sets the rating. A draft that fails the checks on facts, reasoning, and improvement actions cannot be submitted as is. Finally, the manager explains the review to the employee in person in the performance conversation.
+
+import noteFig from '../media/performance-review-ai-comments-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a grey folder inside green framing brackets, a hand editing paper with a pen beside a copper stamp, two facing chairs with a small round table, and green circular arrows around a gear and a ruler, each with an English label board" caption="Figure: Performance Review Comments | Performance Conversation" width="wide" border />
+
+## Before drafting, set the data the tool may read
+
+Before launching a drafting tool, HR and business managers decide which materials the tool may read to generate comments. The allowed scope covers the employee's goals and results for the current review period, daily task records, existing evaluations and multi-source feedback, and filed daily and weekly reports. Every input must match the employee and the current review period. Older events outside the period and information unrelated to work stay out of the input.
+
+With the material boundary set, the AI's job is clear. It summarizes scattered task records into organized facts, pulls out key output, drafts item-level or overall comments, or polishes, expands, and shortens a draft the manager wrote. The task records and goal results cited in a draft can be checked against the original records on the spot. Results this easy to verify suit tool drafting first. For the selection principle, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+## Four things the direct manager changes in the draft
+
+The direct manager owns the final review conclusion. With the draft in hand, the manager first checks whether the work facts are complete and whether the judgment matches the current role's requirements. Sentences from the tool read smoothly, but the tool does not judge what matters most in the business. Before signing, change at least these four things.
+
+- **Check each fact from this period**: compare the goal progress, task results, and multi-source feedback in the draft against the original records. Delete any statement without a source, and delete older events outside the period and information unrelated to work.
+- **Set the conclusion and rating yourself**: the tool only summarizes material. The manager decides whether the employee meets the role's requirements and which rating to give. The tool does not make that judgment.
+- **Calibrate against peers in the same role**: put comments for others in similar roles on the team side by side. Do not let consistent tool wording make people with different output read the same.
+- **Turn improvement areas into concrete actions**: delete generic phrases and replace them with specific actions the employee can take in the next review period.
+
+The company can configure the submission flow with three required checks: whether the comment cites facts from this period, whether it states the basis for the judgment, and whether it gives an actionable improvement direction. AI content that fails these checks cannot be submitted directly. Once the manager signs and submits, the material becomes the manager's formal review. For who is responsible when a tool goes wrong in HR scenarios, see <NoteLink slug="hr-policy-agent-wrong-answer">An Employee Q&A Agent Got the Leave Policy Wrong. Who Is Responsible?</NoteLink>.
+
+## Using the comments and an outline in the performance conversation
+
+Submitting the comments is not the last step. They get tested in the performance conversation. There, the manager explains the basis for the conclusion in their own words and agrees with the employee on improvement actions for the next period. The manager does not read the draft aloud or blame the conclusion on the tool.
+
+When preparing the conversation, some tools can draft an outline in stages: opening, common ground, shared goals, action plan, and encouragement and support. They also offer suggested phrasing. The outline helps the manager structure the conversation and not miss shared goals or follow-up support. The phrasing is only a reference, and the manager adjusts it to how the conversation goes.
+
+## Choosing pilot departments and adjusting rules from edit records
+
+There is no need to roll this out company-wide at once. Pilot in departments where reviews are frequent, managers carry a heavy writing load, and task and goal data are fairly complete. After one review cycle, the HR business partner pulls the back-end data to see how much of the drafts was kept, how much managers changed, and whether the average time to write one review went down.
+
+When assessing the pilot, the team can spot-check on four dimensions. For factual accuracy, pick a few reviews at random and check the original data they cite. For specificity, see whether the comments reflect the role and individual differences. For consistency, compare the rating standards across employees in similar roles. For safe use, check that account permissions, operation logs, and data isolation are configured tightly. HR regularly collects which generated suggestions managers often delete or rewrite whole, which roles lack process records to write from, and how much scoring strictness differs between managers after using the tool. HR then adjusts the input data scope, the check rules, and manager training.
+
+## Performance review comments: FAQ
+
+### Can the tool draft comments for roles with few process records?
+
+For roles without goal records, task trails, or multi-source feedback, the tool has no facts from this period, and forcing a draft only produces filler. These teams should hold off on automatic drafting and first fill in period goals, delivery records at key milestones, and stage feedback. Let the tool summarize only the items the existing material supports. The direct manager writes the rest by hand from day-to-day observation.
+
+### How do we stop managers from submitting the draft without changing a word?
+
+Configure the submission flow with three required checks: whether the comment cites facts from this period, whether it states the basis for the judgment, and whether it gives an actionable improvement direction. AI content that fails the checks cannot be submitted. At filing, the HR business partner measures how much each draft changed and checks the cited original data on randomly picked reviews. Reviews submitted with unverified facts go back for rework, and later manager training corrects the habit.
+
+### If an employee asks in the conversation whether AI wrote the review, how should the manager answer?
+
+The manager says plainly that the draft used a tool to summarize daily work records, and that the manager checked every fact, judgment, and the final rating and signed for them. The manager then walks through the task records and feedback from this period behind each conclusion. If the employee disputes a cited fact, check the original record on the spot, or review it through the company's performance appeal process.
