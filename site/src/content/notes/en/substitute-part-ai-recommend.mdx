@@ -1,0 +1,60 @@
+---
+title: "AI Recommends Substitute Parts: What Do Engineers Verify?"
+description: AI extracts datasheet specs, searches past defects, and flags compliance gaps in substitutes. Engineers verify part numbers, margins, tests, and approvals.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/substitute-part-ai-recommend-cover.png
+coverAlt: A grey circuit board on a dark green base with an empty chip socket glowing green at the edges and a copper probe touching the board. A tray beside it holds two chips, one glowing green, a grey projector module behind casts a blank green screen, and a blank manual lies open in front
+sourceHash: 'a185b7d215d7'
+---
+
+For substitute part recommendations, AI can produce a candidate list, a parameter comparison table, and the reasons for excluding other part numbers. Hardware and process engineers verify each item and sign before a substitute is released for production. Engineers check the full orderable part numbers and datasheet versions of the original and candidate parts, check every claim against the page in the original datasheet, calculate the margin under this board's actual operating conditions, and decide whether to run board-level tests. They also work with quality and procurement to confirm whether the customer must approve in writing.
+
+import noteFig from '../media/substitute-part-ai-recommend-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a magnifier on an open manual with a green bookmark, a small circuit board with a chip, a thermometer and a probe, a conveyor that splits in two with one chip on each branch, and two storage bins marked with a shopping cart and a gear, each with an English label board" caption="Figure: Substitute part recommendation | Part substitution" width="wide" border />
+
+## How far AI can take the substitute part comparison
+
+In electronics manufacturing, substituting a part involves the customer's approval scope, electrical equivalence, package size and assembly process compatibility, and environmental and industry compliance. It is much more than changing a code in a spreadsheet. A team can configure an internal tool to read both parts' datasheets first and line up operating voltage range, output current, package size, operating temperature range, and part grade in a comparison table. Each conclusion carries the page number in the datasheet it comes from. The tool also lists the reasons for the recommendation and why other candidates were dropped. Work where every output can be checked against the source matches the use case principle in <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+Beyond reading datasheets, some tools can search across databases for past substitution requests of the same kind, past customer approval comments, incoming inspection exception reports, and field return defect records, so engineers can spot problems early. For compliance and document control, AI can check whether the candidate part's environmental declarations, moisture sensitivity level notes, and shelf life documents are complete, and flag missing items for procurement to chase. It can also draft the substitution request for the customer from a template, which engineers review and edit before it goes out.
+
+## What engineers verify, item by item
+
+AI cannot release a substitute part on its own. Before checking, the engineer confirms that the top of the comparison table shows the full orderable part number, including the suffix, package type, and temperature grade, and saves the datasheet version used for the comparison. A supplier's verbal or emailed claim of "fully compatible" is only a lead to investigate. It cannot be the basis for release. The engineer then follows the page numbers AI gives back to the original datasheet. This guards against the model misreading a table that spans pages, or putting specs measured at different ambient temperatures or test frequencies on the same row.
+
+Matching paper specs are a necessary condition only. In circuits sensitive to parasitics and transient response, such as power conversion, RF transceivers, and high-speed interfaces, two parts with similar rated specs can behave very differently on the same board. The engineer recalculates the derating margin for this circuit's actual operating conditions, and schedules a board-level test when unsure. How deep to verify depends on how different the parts are, how important the circuit is, and the risk to the whole product. A low-risk passive component may pass after document review and a sample check of appearance and dimensions. A processor, power device, RF device, or chip that interacts with firmware needs controlled sample boards and broader regression testing. The risk of counterfeit or refurbished parts in spot-market channels cannot be caught by a model reasoning over text. Procurement controls sourcing, and the quality team runs incoming inspection.
+
+## How to separate a channel change, a part number change, and a design change
+
+When procurement reports a shortage and looks for a substitute, R&D and quality first look at the scope of the change and put each substitution into the right track.
+
+- **Same manufacturer and same full part number, new supply channel only**: The part itself has not changed. Handle it under supplier change and incoming inspection rules, and check source evidence and lot records.
+- **New brand or new full part number**: Even if the pins look the same, electrical parameters, package details, and firmware compatibility may differ. It always goes through part difference assessment and verification.
+- **Changes to the schematic, the PCB, or the control strategy**: This goes beyond a simple part swap and counts as a design change. Open and review it under the engineering change process. For how BOM comparison and approvals are divided in these changes, see <NoteLink slug="engineering-change-bom-ai-compare">AI Compares BOM Changes: Who Approves the Engineering Change Notice?</NoteLink>.
+
+## How approval and introduction are recorded
+
+The internal register records "approved for purchasing and stocking" and "approved for production use" separately, and they are not mixed until substitution verification is done. When a long-lead part needs to be locked in fast, procurement can buy a small quantity of samples for engineering verification with authorization. Until engineering and quality sign the release, the warehouse marks the parts as pending verification and does not issue them to production work orders. For any part that the contract or quality agreement says needs customer approval, the team gets the customer's written approval before production. The approval states the board name, hardware revision, and quantity limit or validity period it applies to.
+
+A temporary special approval granted for one sudden shortage applies only to the agreed batch of work orders. It cannot be added to the long-term approved parts list along the way. After verification and customer approval are complete, document control and engineering update the formal BOM, pick-and-place programs, soldering process cards, and line test files. Purchasing, warehouse kitting, SMT assembly, and final testing then all work from the same latest version.
+
+## Substitute part recommendation: FAQ
+
+### The distributor provided the manufacturer's cross-reference table saying the part is a drop-in replacement. Do we still need to verify?
+
+Yes. A cross-reference table from the manufacturer or distributor usually only says the two parts serve similar functions. It cannot guarantee for the company that the part works with a specific board's routing, switching frequency, thermal conditions, and firmware timing. Engineers can use the cross-reference table as a candidate input. The full part number check, the datasheet review, the margin calculation for this board's conditions, and any needed board-level test all still happen.
+
+### During an urgent shortage, can we buy parts and run board-level verification at the same time?
+
+Yes, if purchasing for stock and release for production are handled separately. After the R&D and procurement leads assess the risk as controllable, they approve buying samples or a small spot quantity for controlled sample-board testing. The warehouse and production records mark that batch as pending verification and quarantined. Once the board-level test passes and internal signatures and the customer's written approval are all in place, the status switches to approved for production.
+
+### A substitution was approved once. Can we use it directly the next time we are short?
+
+First pull the previous approval and check its scope. If the previous one was a temporary substitution for a single shortage, the approval usually limits the boards, hardware revision, production quantity, or end date. Past the date or on a different batch, it does not apply. Only part numbers that completed full reliability verification under long-term introduction standards, passed formal review, and were added to the long-term approved parts list can be used under the routine substitution rules.

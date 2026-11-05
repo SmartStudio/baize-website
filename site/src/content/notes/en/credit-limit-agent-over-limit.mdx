@@ -1,0 +1,68 @@
+---
+title: "A Credit Limit Agent Adjusts Limits: Who Approves Over-Limit Shipments?"
+seoTitle: "Credit Limit Agents: Who Approves Over-Limit Shipments?"
+description: A credit limit agent suggests limit changes from payments, overdues, and order trends, and checks limits before shipping. Finance and managers approve by tier.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/credit-limit-agent-over-limit-cover.png
+coverAlt: A grey warehouse with an open roll-up door on a dark green base, a truck stopped at a green and white barrier gate beside a gauge post with a glowing green mark, a round grey agent module, a stack of blank forms and coins on the ground, and a small figure at a desk holding a copper stamp
+sourceHash: '98f131776c78'
+---
+
+An agent calculates suggested changes to a customer's credit limit from payment history, overdue balances, and order trends. People approve every limit change and every release of an over-limit shipment. The credit controller initiates changes to the standing limit, and the finance manager approves them by the company's own amount tiers. A document that trips the over-limit or overdue check before shipping is put on hold first. Sales files a reason and requests an override. The finance manager approves small overruns. Large overruns, or any with overdue balances, go up to the head of finance or the general manager for signature.
+
+import noteFig from '../media/credit-limit-agent-over-limit-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: stacks of coins with a blank form and a calculator, a truck stopped at a green and white barrier gate, three desks rising from low to high each with a stamp, and coins falling along a green curved arrow into a piggy bank next to a magnifier, each with an English label board" caption="Figure: Customer credit limit | Over-limit shipments" width="wide" border />
+
+## Which numbers the agent uses to adjust limits
+
+When the credit controller or the accounts receivable accountant reviews customer credit on a schedule, the agent gathers the customer's recent payment records, overdue history, and open order trend, and generates a limit adjustment proposal. The proposal lists the current total credit limit, the amount in use, recent payment speed, and the makeup of open receivables. It lays out the calculation behind raising or tightening the limit, so the credit controller can check it against business reality in the first review.
+
+The amount in use changes in real time as business documents move. New sales orders, issued delivery notices, confirmed sales outbound orders, and booked receivables all use up the limit. The amount is released only after finance applies a receipt, or after the warehouse completes a return receipt. When the agent calculates the available balance, it includes these open documents, so it does not look only at the finance receivables ledger and miss orders that just came in and are waiting to ship.
+
+After calculating a proposal, the agent only submits a draft. It does not change the credit ceiling in master data itself. The credit controller initiates a change request for the standing limit, using the deal background sales provides. The finance manager approves it by the company's own amount tiers. For how finance sets credit limits and price floors for the business, see <NoteLink slug="sales-quote-agent-discount-floor">A Sales Discount Agent Cuts Prices on Its Own. Who Sets the Floor?</NoteLink>.
+
+## How the limit is checked before shipping
+
+Some management software can attach credit control to sales orders, delivery notices, and sales outbound orders, and runs the check when a document is submitted or approved. One setup accepts orders and holds shipments. When a customer is over its limit, sales can still enter the order and arrange materials, and the hard block comes at the delivery notice or outbound step. Documents within the limit go through normal approval. Documents that trigger an over-limit shipment go to management for approval, and the warehouse ships only after approval. When companies configure check rules by customer risk level, control strength usually comes in four tiers.
+
+- **Warning**: A pop-up on submission reminds the credit controller and the salesperson to watch the balance. The document keeps moving.
+- **Override approval**: The document stops at the current approval step and goes to a manager with override authority. It is released only after approval.
+- **Cancel the transaction**: The over-limit document is terminated and does not enter the picking or shipping queue.
+- **Freeze the customer**: The customer code is frozen. No new or in-flight document under that customer can be submitted.
+
+The check covers more than the total limit. Some tools also check days overdue, overdue amount, overdue share, and a per-order limit. With these checks in place, a shipping document is put on hold even when the total limit has room, if an old balance is past the company's day threshold or the overdue share is over the line. Before shipping, the agent checks the limit and overdue status item by item. When a check fails, it puts the document on hold and drafts an override request with the customer name, the overrun amount, the overdue status, the salesperson's explanation, and the expected payment date. For which calls to let through and which to stop for human review, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+## Who approves an over-limit shipment, and at what level
+
+The agent sends the drafted override request to the salesperson responsible for the customer. The salesperson checks why the customer needs the goods, adds the expected payment arrangement, and submits it for approval. The salesperson and the sales lead can only initiate the request and confirm the business is real. They cannot approve over-limit shipments for their own accounts. Release authority sits with finance and company management, who sign by the company's own amount tiers and the overdue status.
+
+- **Small overrun with no overdue balance**: If past payments are normal, nothing is overdue, and the overrun falls within the small tier, the finance manager approves.
+- **Large overrun or overdue balance**: If the overrun crosses the company's amount tier, or the account has unpaid overdue balances, it goes up to the head of finance or the general manager.
+- **Temporary limit for a set period**: When a customer needs a short-term increase for heavy peak-season pickups, some tools support a temporary credit limit. It is approved by the company's own amount tiers, carries an expiry date, and lapses on that date.
+
+## How overrides are reviewed afterwards
+
+Every released override is kept on record with the customer name, the linked document number, the overrun amount, the approver, and the date. The credit controller or the accounts receivable accountant pulls the override register on a schedule and checks each one for payment.
+
+On the expected payment date the salesperson gave, the agent checks whether the receivable tied to that override has arrived and been applied. It sends the list of missed payments to the credit controller and the finance manager. Customers who pay on time keep their credit tier. For customers who pay late after an override, the credit controller lowers the standing limit at the next review, removes eligibility for temporary limits, or raises the control level from override to freeze, which tightens future order intake and shipping.
+
+## Customer credit limits: FAQ
+
+### The customer just paid but the receipt is not applied yet, so the limit is not released. Can we ship first?
+
+In the common setup, the amount in use is released only after the receipt is booked. If the customer has wired the money but finance has not finished matching and applying it, the agent still calculates the available balance as unpaid. It will not release a shipment based on a transfer screenshot from sales. For an urgent shipment, either ask the accounts receivable accountant to verify the bank receipt and book it first to release the limit, or submit an override through the over-limit process.
+
+### The total limit still has room, but one old invoice is overdue. Can we ship as normal?
+
+It depends on which checks the company has configured. If days overdue, overdue amount, or overdue share are part of the shipping check, the delivery notice and outbound order are put on hold once an old balance passes the threshold, even when the total limit has room. An override with an overdue record needs a higher approval level than a plain limit shortfall. It goes up to the head of finance or the general manager under the tier rules.
+
+### A major customer needs goods urgently. Can we ship first and approve later?
+
+Over-limit shipments are never shipped first and approved later. The warehouse does not ship until it sees the approved override status in the system. For a major customer's urgent order, use the expedited override channel. The agent first puts the customer's account data, the overrun amount, and the payment history on a card for the approver. A finance manager or lead with authority checks it online and signs on the spot. If the customer needs several consecutive pickups, apply for a temporary credit limit with an expiry date under the company's own amount tiers.

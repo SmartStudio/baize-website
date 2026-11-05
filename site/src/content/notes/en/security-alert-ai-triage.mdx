@@ -1,0 +1,69 @@
+---
+title: "AI Triages Security Alerts: Which Ones Should Wake the On-Call Analyst?"
+seoTitle: "AI Security Alert Triage: When to Wake the On-Call Analyst"
+description: In AI alert triage, rules dedupe raw logs, the model proposes, and hard gates decide. Known threats, sensitive assets, and low confidence wake SOC on-call.
+lang: en
+pubDate: 2026-11-05
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/security-alert-ai-triage-cover.png
+coverAlt: A security operations room on a dark green base with a row of blank monitors showing small green dots and two analysts at the screens. A layered funnel filters falling alert blocks into a grey agent module and a lever gate, with a box of filtered blocks on the left and an analyst asleep at a desk with a copper bell and a crescent lamp on the right
+sourceHash: 'f10b59d8d852'
+---
+
+Security alert triage follows a fixed order: a pre-filter funnel, then a model proposal, then a deterministic gate that decides. AI does not silently close cases or block anything on its own. The SOC on-call analyst is woken right away for these events: the AI proposes escalation, the alert matches a known threat indicator, it links to a case under investigation, it touches a sensitive asset, it needs a device isolated or an account disabled, or the model has low confidence. Known false positives closed by deterministic rules, and authorized activity inside a declared exercise window, wait for the day shift to check.
+
+import noteFig from '../media/security-alert-ai-triage-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a chip module wired directly to a server by a cracked cable with green sparks, a funnel with layered sieves and balls falling through, an alarm clock and a crescent moon with a vertical line between them, and a hand signing a blank sheet next to an open logbook, each with an English label board" caption="Figure: Security alert triage | SOC on-call" width="wide" border />
+
+## Why not hand every alert to AI
+
+When a security team first adopts a large language model, it is tempting to feed every raw alert from sensors, firewalls, and endpoint detection straight to the model for review one by one. That runs into three practical problems. The first is that inference cost grows with scanner noise. Duplicate logs during business peaks or vulnerability scans push up the call bill.
+
+The second problem is missing context. When the model reads a single raw alert in isolation, it cannot see related assets or change ticket background. It cannot tell an approved maintenance change from a real attack that uses similar techniques, and it may wave a real intrusion through as routine maintenance. The third problem is the lack of a deterministic gate and a traceable audit record. In the post-review, nobody can find out why a high-risk alert was suppressed in the middle of the night.
+
+## The funnel before AI
+
+Before calling the model, the team can set up a deterministic funnel that screens out high-frequency noise and known background first. When raw alerts enter the platform, fixed rules run first. They sort out duplicate events that need no model reasoning, leads tied to open investigations, and test activity declared in advance. This cuts wasted calls and fills in investigation context.
+
+- **Dedupe and merge into cases**: Remove duplicate events. Within a set time window, repeat alerts from the same rule on the same asset merge into one case, so one fault does not flood the queue.
+- **Attach to open incidents**: If a new alert shares a host or file hash with an incident under investigation, it joins the existing case as evidence and is not triaged on its own.
+- **Check exercise windows**: Match declared penetration test and red team windows. Matching activity is tagged and written to the audit record, not closed automatically. Anything outside the declared scope goes to a person.
+- **Filter known false positives**: False positives that meet low-severity and high-confidence conditions are closed by deterministic rules. Every change to a closure rule records who changed it and when it took effect.
+
+Only alerts left after this funnel go to the model. The model reads the aggregated context and proposes "escalate", "close", or "needs more information", with a confidence level, reasoning, and evidence. If an alert shows an internal agent going beyond its authorized scope, see <NoteLink slug="agent-scope-drift-runtime-response">An Agent Exceeds Its Authorized Scope: Downgrade It or Stop It?</NoteLink> for how to respond.
+
+## When to wake the on-call analyst
+
+Under the "model proposes, deterministic gate decides" rule, every model proposal passes through a gate. The gate decides whether to wake the SOC on-call staff at night or put the case in the day shift queue. Automatic closure cannot cross three boundaries: known threat indicators, active related incidents, and unverified indicators. Cases in these three groups are never closed automatically. Some tools also support a volume cap and a master switch for automatic closure. If silent closures spike abnormally, pulling the master switch turns every automatic closure into an escalation at once. For stop conditions and decision logs, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
+
+The security lead writes the night wake-up conditions into the on-call schedule and escalation path. Any one of the following calls the analyst on shift.
+
+- **The model proposes escalation or asks for information**: The model suspects an intrusion and proposes escalation, or the evidence is incomplete and it returns "needs more information" with low confidence.
+- **High-risk or linked indicators**: The alert carries a known threat indicator, or links by host, account, or hash to a security incident that is still open.
+- **Sensitive asset list**: The alert falls on a sensitive asset such as a core business system, a financial accounting system, a domain controller, or an administrator account. For these assets, even a high-confidence closure proposal from the model goes to a person to sign off.
+- **Blocking actions**: The case needs an immediate action that may interrupt normal office work or production, such as isolating a managed device or disabling a domain or business account.
+
+## Who approves response actions, and how they are recorded
+
+For actions that change the production environment, such as isolating a device, disabling an account, or blocking a business port, AI only drafts a response proposal. The proposal lists the affected hosts, the related business owner, and the rollback steps. It runs only after the SOC on-call analyst checks and approves it. For actions that risk downtime of a core business system, the analyst also follows the escalation path set by the security lead and contacts IT operations and the business system owner to confirm together.
+
+A person closes every case that enters the escalation queue. The analyst's decision to approve, reject, or request more information is written to an append-only audit record, with the operator's identity, the time, and the reason. The security lead sets the on-call schedule, escalation path, and sensitive asset list. The security lead also regularly samples alerts closed by rules and by the model, and tightens the funnel and gate settings when there are signs of missed detections.
+
+## Security alert triage: FAQ
+
+### A red team exercise declared in advance triggered alerts. Can rules close them directly?
+
+Not automatically. When the funnel matches a declared penetration test or red team window, it can tag these alerts and write them to the audit record. Nobody needs to be woken at night, and the day shift checks them against the exercise register. If the probing goes beyond the declared scope, it goes to a person for investigation right away.
+
+### The model proposed closing an alert on a sensitive asset with high confidence. Can we let it go?
+
+No. A compromised core business system, financial system, or administrator account has too large an impact. If an alert falls on the sensitive asset list, the closure proposal stops at the gate no matter how confident the model is. The analyst on shift checks the logs and signs before the case is closed.
+
+### There is only one SOC analyst on the night shift. Can AI approve response actions instead?
+
+No. Even with only one SOC analyst on the night shift, isolating devices and disabling accounts stay as proposals. They run only after the on-call analyst approves, which prevents blocking a business host by mistake and causing an incident. If a lone analyst is unsure about a complex alert, they follow the predefined escalation path and contact the security lead or the business system owner to decide together.

@@ -1,0 +1,62 @@
+---
+title: "AI Drafts the Contract: Who Controls the Template Clauses?"
+description: AI contract drafts pull text only from legal's controlled templates and clause library. Legal owns template changes. People approve deviations and notices.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/contract-drafting-ai-template-cover.png
+coverAlt: A locked grey drawer cabinet on a dark green base with an open drawer of blank clause cards. A grey agent robot takes a card out, joined by a green line to a blank contract with a copper pen, with a shelf of template folders behind and two small figures reading documents at two desks
+sourceHash: 'de01d0a9d811'
+---
+
+When AI produces first drafts of contracts, it may only pull text from the contract template library and clause library that legal has approved and published. It fills fields with the deal terms the business enters. It does not write legal clauses of its own. Legal is responsible for launching, revising, and retiring templates. The contract administrator publishes new versions and takes old versions offline. The business drafter is responsible for the accuracy of the deal information. Any change that deviates from the template, and any added clause, goes to legal for approval.
+
+import noteFig from '../media/contract-drafting-ai-template-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a locked drawer cabinet with a card pulled out, a row of folders with one green tab, two small desks side by side holding a briefcase and a balance scale, and a shield and a green triangle in front of a blank contract, each with an English label board" caption="Figure: Contract drafting | Contract templates" width="wide" border />
+
+## Where the AI draft gets its clauses
+
+When a company rolls out this capability, it usually first sets up a controlled contract template library, a standard clause library, and a structured field library in its contract management software. The model is not allowed to write legal text freely. A business user starts a drafting request and enters the commercial terms: the counterparty's full legal name, the subject of the deal, the contract amount, the term, the delivery milestones, and the payment method. The AI matches the current template for that business type, puts the deal terms into the reserved field slots, and assembles a first draft for checking.
+
+Some contract tools let AI suggest field values, alternative clauses, and explanations of clause risk. All of these stay at the draft suggestion level and do not become effective text directly. The business drafter or legal confirms each item before it is adopted. If the team has no controlled library yet and staff want to paste deal background into an external general-purpose chat tool for drafting help, see <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink> for how to mask trade secrets before pasting.
+
+## Who launches, changes, and retires contract templates
+
+Legal owns every contract template and alternative clause. Launches, changes, and retirements are logged from start to finish. Back-end write access to the template and clause libraries is not open to all business staff. Legal controls clause admission and version changes, the contract administrator publishes and unpublishes, and frontline staff can only pull the current effective version they are authorized to use.
+
+The national guidance technical document *General Principles for AI-Assisted Contract Drafting and Review Services*, issued and in effect since August 2026, is China's first national standard specifically for AI-assisted contract drafting and review services. It gives a technical basis covering security safeguards, service disclosure, functional applicability, user experience, and continuous iteration.
+
+- **Legal approves content**: Legal is the template owner. It decides whether a template for a given deal type can launch, which wording needs revision, and when an old version is retired. Every change is logged with a version number and an effective date. When an outside regulation changes, or a lawsuit or dispute exposes a clause problem, legal leads the revision and notifies the business lines that use the template.
+- **The contract administrator handles publishing**: The contract administrator publishes new versions and takes old versions offline in the back end. Some tools support batch online updates to linked clause libraries. This makes sure the AI drafting interface can only pull the current effective version, and stops business staff from reusing a retired version saved on their own computers.
+- **The business requests changes but does not edit the library**: If a salesperson or buyer finds in negotiations that a standard term often meets resistance, they can submit a change request to legal. They have no back-end access to edit the shared templates or clause library themselves.
+
+## What the drafter owns and what legal owns
+
+After the first draft is generated, the business drafter and legal split responsibilities between commercial facts and legal risk, and neither signs for the other. The business drafter is responsible for the commercial information in the fields. The drafter checks that the counterparty name, specifications, amount calculation, term, delivery and acceptance milestones, and payment accounts match the outcome of the negotiation. The drafter cannot rely on legal to check whether the unit price or delivery address is wrong.
+
+If the business keeps the current standard text and does not change any locked legal clause, the document can go through the normal commercial approval flow. If the negotiation needs to delete or change standard wording, replace the liability terms, or add supplementary clauses, the AI marks the exact places in the draft that deviate from the template. Some tools also compare versions automatically and highlight added and deleted wording for legal review. Some contract tools tie each approval to a specific text version. If someone edits the body after approval, the tool flags that the current text no longer matches the approved version and sends it back for approval. If the deal is negotiated on the other party's paper, see <NoteLink slug="contract-review-agent-risk-clauses">A Contract Review Agent Flagged the Risks. Does Legal Still Read Every Clause?</NoteLink> for how review is divided.
+
+## What standard terms must call out
+
+Standard contract templates that a company reuses with customers or suppliers may legally count as standard terms. Under China's Civil Code, standard terms are clauses a party drafts in advance for repeated use and does not negotiate with the other party when the contract is concluded. The party that provides standard terms must set the rights and obligations of the parties according to the principle of fairness. This still applies when AI generates the first draft.
+
+The Civil Code also sets a duty to call out and explain. For any clause that exempts or reduces the provider's own liability, or otherwise has a major bearing on the other party's interests, the provider must draw the other party's attention to it in a reasonable way and explain it if asked. If the provider fails this duty and the other party therefore does not notice or understand a clause with a major bearing on its interests, the other party can claim that the clause is not part of the contract. When legal maintains external templates, it should fix exemption, liability-cap, and jurisdiction clauses in bold and underline, or add a separate confirmation checkbox page in the e-signature flow. The AI keeps these formats when it generates a draft and does not remove them.
+
+## Contract drafting: FAQ
+
+### A salesperson thinks the standard template is too long. Can they delete a few clauses and send it straight to the customer?
+
+They cannot delete clauses on their own and send the contract out. The acceptance, breach, and intellectual property clauses in a standard template depend on each other. Business staff only fill the open commercial fields. Deleting a locked clause by hand is a non-standard deviation. Tools that support version comparison mark the deleted paragraphs and pass them to legal to assess the resulting exposure. The outgoing copy is generated only after approval.
+
+### After approval, someone changed the payment date before signing. Does it need approval again?
+
+Yes. Some contract management tools tie the approval decision to the specific text version at the time. Even a change to only the payment date or the delivery location creates a difference between the current text and the approved version. When the tool detects the mismatch, it raises a flag and blocks sealing or issuing. The drafter explains the reason for the change and resubmits for approval.
+
+### The contract template has a new version. What happens to old-version contracts still in approval?
+
+First look at why the template changed. If legal revised it urgently because a new regulation took effect or to close a gap after losing a past dispute, the contract administrator tells drafters of in-flight documents to switch to the new text, and the changed text goes back into approval. If the change is a routine wording cleanup, the document finishes the original flow under the company's transition rules. Contracts already sealed and in effect are performed as signed and switch to the new version at the next renewal.

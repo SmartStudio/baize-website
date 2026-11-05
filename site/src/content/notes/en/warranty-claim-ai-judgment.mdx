@@ -1,0 +1,59 @@
+---
+title: "AI Screens Warranty Claims: Who Decides Whether It Is Still Covered?"
+seoTitle: "AI Warranty Claim Screening: Who Decides Coverage?"
+description: AI checks proof of purchase, delivery and install records, repair history, and photos to pre-screen warranty claims. People confirm coverage and review denials.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/warranty-claim-ai-judgment-cover.png
+coverAlt: A service counter on a dark green base holding a grey washing machine, a copper shield trophy, a blank receipt, and a blank desk calendar. A grey scanner module scans the receipt with green light, and behind it a repair bench holds a machine opened up and tools, with an empty chair in front
+sourceHash: '87538dc20eaa'
+---
+
+AI can check documents and pre-screen warranty claims. Who confirms coverage depends on the type of ticket: customer service staff, repair engineers, or the after-sales supervisor. For routine tickets with clear dates, complete documents, and no sign of human damage, customer service confirms by the rules. Tickets involving water damage, unauthorized disassembly, or misuse are decided by a repair engineer after inspection. Tickets with a disputed start date, missing documents, or a complaint go to the after-sales supervisor. AI cannot tell a customer that a claim is denied.
+
+import noteFig from '../media/warranty-claim-ai-judgment-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a roll of receipt and a record card with a green check mark, a cardboard box and a wrench next to a blank desk calendar, a disassembled washing machine with its door open beside a screwdriver and a magnifier, and a small figure at a desk holding a stamp next to a green pause symbol, each with an English label board" caption="Figure: Warranty decisions | Warranty period" width="wide" border />
+
+## Which documents AI reads in the first screen
+
+When a customer files a repair request, the after-sales team can configure the ticketing tool to gather the proof of purchase and order, the delivery or installation record, past repair and replacement records, and the customer's description and photos. From these records, the tool calculates the warranty start date and checks whether the claim is within the period. It then compares the case with the company's warranty policy and the national exclusions for repair, replacement, and return. In the back end it suggests "in warranty", "out of warranty", or "needs checking", and lists its reasoning in the ticket sidebar for a person to verify.
+
+The first-screen suggestion stays in the internal agent console and is not sent to the customer. A few exterior photos from the customer cannot show whether a dent in the housing is related to an internal fault, or whether someone opened the machine without authorization. At this step, the tool pulls together records scattered across the order, logistics, and repair databases, and flags gaps or mismatched dates. This saves customer service from switching windows to look up records.
+
+## When the warranty period starts
+
+Before configuring the calculation rules in the back end, legal and the after-sales lead align the time rules with the law. Under the State Council's *Regulations for the Implementation of the Consumer Rights Protection Law*, the return, replacement, and repair periods a business agrees with a consumer cannot be shorter than national requirements. The period starts on the date the goods are delivered or the service is completed. The back end can take the date from the courier delivery record or the in-store pickup record. For goods the business installs separately, the period starts on the installation completion date in the installation ticket. After a replacement, the replacement and repair periods restart from the date the replacement is completed. Time spent in repair does not count toward the period. When calculating the end date, extend it by the time from intake to return of the repaired unit.
+
+A company can also promise a longer or broader warranty than national rules require. The *Provisions on Liability for Repair, Replacement, and Return of Certain Commodities* (commonly called the "three guarantees" rules) state that they do not release a company from promises to consumers that go beyond the rules. If a company has publicly promised a longer warranty or broader coverage, its internal rules follow that promise. When the ship date, delivery date, and installation date do not match, or past repair records are not linked to the same serial number, the tool marks the ticket "needs checking" and sends it to the after-sales supervisor.
+
+## Who judges human damage and exclusions
+
+Being within the period is only the base condition. Whether the repair is free also depends on the legal exclusions. Under the "three guarantees" rules, the following cases are not covered by the three guarantees, though paid repair is still available: damage from improper use, maintenance, or storage by the consumer; damage from disassembly by someone without repair responsibility under the three guarantees; no three-guarantees certificate and no valid invoice; a model on the certificate that does not match the product being repaired, or a certificate that has been altered; and damage from force majeure.
+
+In daily dispatch, the authority to verify is split by role. For tickets with clear dates, complete documents, and no sign of human damage, customer service confirms by the rules and lets them through. Tickets that require judging a physical cause, such as human damage, unauthorized disassembly, or water ingress, wait until a repair engineer inspects the unit and records evidence. For how to manage boundaries when on-site inspection collects data from the customer's device, see <NoteLink slug="field-service-ai-customer-device-data">Field Service AI Wants to Upload Customer Device Data. Is That OK?</NoteLink>. The after-sales supervisor decides tickets where the ship, delivery, and installation dates do not match, where the paper documents are lost but the customer can prove the purchase with an electronic order, payment record, or device activation record, or where the customer has already filed a complaint. Edge cases where responsibility cannot be settled quickly are handled in the customer's favor first. After closure, the after-sales supervisor and legal review them on a schedule and update the back-end rules.
+
+## How to tell a customer the claim is denied
+
+If the customer service channel is set up to send first-screen results without human review, one wrong sentence can become a public commitment or start a dispute. For how responsibility for automatic replies is assigned, see <NoteLink slug="ai-cs-can-reply-vs-who-owns-liability">AI Customer Service Compliance: Who Owns What the Bot Promises?</NoteLink>. The team restricts permissions in the back end so AI cannot tell a customer "your warranty has expired" or deny a claim directly.
+
+Every denial is confirmed first in the back end by customer service, a repair engineer, or the after-sales supervisor. The reviewer's name, the confirmation time, and the teardown evidence photos go into the ticket file. When a person replies to the customer, they cover two things. First, the basis for the decision, such as the delivery or installation completion date, the extensions from past repairs and replacements, or the moisture damage or tampering the engineer photographed during teardown. Second, under the "three guarantees" rules, the customer can switch to paid repair. The reply includes parts and labor quote options so the customer can decide whether to go ahead with the repair.
+
+## Warranty decisions: FAQ
+
+### The customer lost the paper warranty certificate and the invoice. Can they still get free warranty repair?
+
+Do not deny the claim right away. The "three guarantees" rules list having no certificate and no valid invoice as an exclusion. If the customer can show an electronic order, electronic invoice, payment record, or installation file that proves the purchase source and start date, the after-sales supervisor verifies the back-end records and decides under the company's warranty policy whether to treat it as in warranty.
+
+### The product has been repaired several times and failed again within the period. How is the earlier repair time counted?
+
+Under the State Council's *Regulations for the Implementation of the Consumer Rights Protection Law*, repair time does not count toward the return, replacement, and repair periods. When calculating the remaining period, subtract the time spent on each past repair and extend the end date. If the whole unit was replaced earlier, the period restarts from the date the replacement was completed.
+
+### Does the warranty period start from the invoice date or the delivery date?
+
+Follow the State Council's *Regulations for the Implementation of the Consumer Rights Protection Law*. The period starts on the date the goods are delivered or the service is completed. For online purchases, that is usually the date of signed delivery. For goods the business installs separately, it starts on the installation completion date. If the company promised a longer warranty, the promise applies. Repair time does not count toward the period, and after a replacement the period restarts from the replacement completion date. The "three guarantees" rules say the period starts on the invoice date. The implementing regulations are a State Council administrative regulation with higher legal force, so starting the back-end calculation from the delivery date is the safer choice.

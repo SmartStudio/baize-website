@@ -1,0 +1,67 @@
+---
+title: "AI Fills Gaps in MES Work Reports: Who Fixes Counts That Don't Match?"
+seoTitle: "AI Fills MES Work Report Gaps: Who Fixes the Counts?"
+description: AI compares machine counts, scans, inspections, and receipts to draft MES work report fixes. It never edits the ledger. Floor, quality, and finance approve.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/mes-work-report-ai-fill-cover.png
+coverAlt: Two machine tools and a conveyor carrying parts with a copper counter on a dark green base. Machine screens, a barcode scanner, and a blank record board are wired with green lines to a round grey agent module, which links to a blank card with a green tag and then to a small figure at a computer terminal
+sourceHash: 'f70e7878154b'
+---
+
+When MES work reports have gaps, or counts between upstream and downstream operations do not match, AI can compare machine counts, scans, inspection records, and warehouse receipts and draft a back-fill. Each draft is tagged "AI back-fill pending confirmation". AI cannot change the production ledger itself. The reporting operator and the team lead confirm differences within the current shift and operation. The production supervisor approves differences that cross operations or shifts, or that affect inventory or piece-rate pay. Quality confirms anything that involves a pass or scrap decision. Data that has already been settled keeps its original record, and changes go through a separate adjustment document.
+
+import noteFig from '../media/mes-work-report-ai-fill-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a terminal with keypad and a barcode scanner with a magnifier, a blank sheet with a green tag on its top right corner, three steps each with a small figure and a green check mark, and a green two-way arrow between a shelf and stacks of coins, each with an English label board" caption="Figure: MES work reporting | Work order reporting" width="wide" border />
+
+## Why work report counts do not match
+
+When a workshop reconciles its work order reporting ledger, mismatches between upstream and downstream quantities usually come from how the floor records and collects data. Some teams fill in only a total completed count and leave out intermediate states. A proper ledger records input, passed, rework, scrap, and pending inspection separately. Semi-finished goods without an inspection result sit under pending inspection until the inspection decision moves them to passed or defective.
+
+A management team that wants a quick read on reporting quality can pick a random day of report details and look at how the timestamps are spread. If many records cluster on the hour or at the end of a shift, the floor is back-filling at shift end as a habit. Other common sources of distortion: operators report only total output and not defects; barcodes are stuck on the machine housing for convenience instead of on the moving workpiece; and machine stoppages or changeover problems are passed on only by word of mouth at shift handover.
+
+Three common collection rules apply: no duplicate entry, no entry for another role, and no after-the-fact entry. Whoever does the work enters it at the workstation terminal. The team lead only reviews the numbers and does not enter data for operators. On the floor, a terminal sometimes loses its network or a scan gets missed. Banning back-fills completely pushes workers to keep counts on scraps of paper and enter them quietly after the shift. The safer approach keeps a compliant back-fill channel, tags every back-filled record, and keeps those records out of the on-time rate and first-pass yield statistics.
+
+## How far AI can go with back-fills
+
+As work orders move through the floor, AI pulls together machine counts, workstation scan logs, inspection decisions, and finished goods receipts, and cross-checks them. It finds work orders with unreported operations or quantities that do not line up between steps. The check covers the work order number, operation sequence, reporting staff, timestamp, machine, and quality result. This saves production clerks from checking paper routing cards line by line every day.
+
+Some tools can raise an alert when the cumulative reported quantity exceeds the planned work order quantity, when the same operation is submitted twice, or when someone not authorized at that workstation scans in. They do not delete submitted original records automatically. After AI finds a gap, it drafts a back-fill proposal from the evidence on hand. The proposal states which operation is missing, the suggested input or output quantity, and which machine count or receipt log it is based on. Every proposal is tagged "AI back-fill pending confirmation" and sent to the workshop.
+
+AI only checks and drafts. Reported quantities are written to the ledger after the responsible person on the floor confirms them. If a misconfigured tool writes wrong data into the back end, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink> for how to roll back and assign responsibility.
+
+## Who confirms and who approves
+
+Work report drafts tagged "AI back-fill pending confirmation" are routed to different roles by scope of impact and job responsibility. AI never edits the production ledger directly. Each pending draft carries its source logs and operation details. The responsible role checks the physical goods and inspection documents before the entry takes effect.
+
+- **Same shift and same operation**: A missed scan or under-report found before the shift ends, and within the same operation, goes to the operator on that shift to check against the physical goods. The team lead counts the work in progress on site, and the two confirm it together.
+- **Quality status decisions**: If the back-fill splits quantities into passed, rework, or scrap, it goes to the shift inspector, who checks the inspection records and signs. The production team cannot change pending-inspection goods to passed on its own.
+- **Cross-operation and cross-shift approval**: If an upstream operation's missing report blocks a downstream report, if a quantity difference is found only after shift handover, or if the change affects work-in-progress inventory or piece-rate pay, it goes to the production supervisor for approval.
+
+The production supervisor and the workshop clerk regularly group the causes of back-fills and mismatches into categories such as missed scans, fallen barcodes, missed terminal entries, and late inspection. When the same machine or operation keeps showing the same kind of difference, the production and equipment teams go to the floor and change the collection point, which cuts back-fills at the source.
+
+## How to sync inventory and piece-rate pay after a fix
+
+Some manufacturing software can set a check rule before a work order closes. If the cumulative reported quantity does not match the plan, the close is blocked, which pushes the workshop to account for work in progress before closing. For data that has already gone into finance or piece-rate settlement, the system can keep the original record, the review notes, and the final confirmation status. It does not edit the original record. The part that needs changing goes on a separate adjustment document. For how to keep a trail of data changes and trace them later, compare <NoteLink slug="erp-master-data-agent-change-trace">An AI Agent Edits ERP Master Data: How Do You Trace a Bad Change?</NoteLink>.
+
+Once corrected report data passes review and takes effect, a change notice goes to the warehouse, quality, and finance. The warehouse keeper checks physical receipts against the balance at each operation. The piece-rate accountant applies the adjustment document in the current or next payroll, paying back or deducting the difference. This keeps the warehouse books and pay slips from staying on the old numbers after the workshop changes its output.
+
+## MES work reporting: FAQ
+
+### Operators are too busy. Can the team lead enter everything at the end of the shift?
+
+No. Entering for another role and back-filling at shift end together push all timestamps to just before the shift ends. That hides the real line takt for each period, and it is easy to miss rework and scrap pulled out mid-shift. If workstation entry is truly tedious, link machine counts to the barcode scanner first to cut keystrokes. Keep the split where whoever operates reports, and the team lead reviews.
+
+### We found an over-report or a duplicate report. Can the software just delete the wrong record?
+
+Do not delete original records. Some tools can block quantities over the work order or duplicate operations with a pop-up. If a stored record can be erased silently, the month-end reconciliation cannot show whether someone mis-tapped or someone padded piece-rate counts. The safer fix keeps the original record and the review note next to the original document, and goes through supervisor approval for a reversing entry or a quantity adjustment document.
+
+### The work order was already closed when we found a missing report. Can we still add it?
+
+Yes, through the formal post-close supplementary report process. The production supervisor starts a supplementary report request for the work order. The reporting operator and the team lead state why the report was missed and attach evidence such as photos of the physical goods and signed routing cards. After approval and entry, inventory, quality, and finance are notified, and the warehouse and finance recheck book against physical stock and piece-rate amounts. The full set of documents is tagged as a back-fill and filed for audit.
