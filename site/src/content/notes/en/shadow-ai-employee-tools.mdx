@@ -1,0 +1,68 @@
+---
+title: "Shadow AI: Should You Block Employees' Personal AI Tools or Register Them?"
+seoTitle: "Shadow AI: Block Employee AI Tools or Register Them?"
+description: Blocking AI sites outright pushes work onto personal devices. Find tools in use via traffic and self-reports, set data red lines, and offer approved alternatives.
+lang: en
+pubDate: 2026-11-05
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/shadow-ai-employee-tools-cover.png
+coverAlt: A grey laptop with a blank screen and a phone, a translucent chat bubble floating behind them, and a hand dropping a glowing green registration card into a grey box next to a copper padlock, on a dark green base
+sourceHash: 'a33d4308f265'
+---
+
+Shadow AI governance starts with registration and discovery, then applies controls by data sensitivity. A blanket block is not the approach. After the security team finds the tools in use through gateway traffic and employee self-reporting, it puts customer data, contracts, source code, and employee personal information behind red lines, and provides approved alternatives for high-frequency office needs. The security lead and legal and compliance then set an AI use policy together, with a clear processing deadline for new tool requests. Each department head confirms how their department uses the tools.
+
+import noteFig from '../media/shadow-ai-employee-tools-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a laptop and phone with a speech bubble and a magnifier, a router with green flow lines leading to a registration checklist, a three-tier tray stack with a red top tier showing a stop hand above two green tiers, and a policy handbook beside a copper stamp and pen, each with an English label board" caption="Figure: Shadow AI | AI Use Policy" width="wide" border />
+
+## What shadow AI means, and why employees bypass approval
+
+Shadow AI covers employees or outside contractors using AI tools without approval from the information security team and without back-end oversight. It shows up in two common forms in daily work. In one, business staff use unapproved external web apps on their own, for example uploading a prospect list to a public chat tool to produce a report. In the other, developers wire an external model into a customer-facing product without review. Even when the tool is on the company's procurement list, an employee who skips the company account and signs in with a personal account is also using it without approval. This note covers external tools employees use on their own in daily work. For auditing agents built inside the company, see <NoteLink slug="agent-sprawl-inventory">Agent Management Starts With an Inventory: Who Runs Employee-Built Agents?</NoteLink>.
+
+Employees have practical reasons to go around company processes for tools. External tools are cheap or free, work as soon as the browser opens, and save time on writing documents and organizing spreadsheets. Meanwhile, the company's compliant procurement and security review chain is long and blocks tools that business teams need now. If management only blocks every domain on the office network, employees may switch to personal phones or home computers to keep uploading files. The risk moves from where the gateway can see it to a blind spot nobody can see.
+
+## Find what is in use through traffic review and self-registration
+
+Before setting rules, the information security team needs to know how many external tools are running in the company, which business departments use them most, and what kinds of material go into them. The security team cannot harden permissions or audit tools it does not know about, and the company's external attack surface grows. Once intellectual property, customer lists, or employee personal data uploaded by employees sit in an external tool's database, a data breach at that vendor hits the company directly and can put it out of line with data security and privacy compliance requirements.
+
+Discovery can run on two tracks: technical discovery and employee self-reporting. On the technical side, an application-aware gateway or network proxy reviews access traffic, together with DNS query records, to find which external apps employees visit. Cloud access security broker and data loss prevention features then restrict where sensitive data can go. On the management side, each department gets a self-reporting channel where employees register the external tools they use, their department, and the types of data they have uploaded. Common needs come into the open for assessment.
+
+## Draw red lines by data classification and set blocking policies
+
+Once the inventory is clear, the security and legal teams draw red lines by data sensitivity. Customer data, contracts, source code, financial information, and employee personal data never go into unapproved external tools. When the business truly needs a tool to work on contract text, it first masks sensitive fields following <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>. On the gateway and security tool side, the company can configure the following controls.
+
+- **Access policies by identity**: some security tools can set allow, block, isolate, or redirect for an AI tool per employee identity, steering access to unapproved tools into controlled channels.
+- **Sensitive data detection in prompts**: prompts employees type can be scanned for sensitive data. Inputs containing personal information, source code, or financial information are blocked and logged.
+- **Approved alternative tools**: for common office needs that departments report most, provide approved alternatives, so employees have less reason to find external tools on their own.
+
+## How to write the AI use policy, and who approves new tools
+
+Gateway blocking cannot see private activity on personal devices, so the rules also go into an AI use policy that everyone follows. The information security lead and the legal and compliance team write the policy together. Each department head confirms the specific uses in their department. The policy covers both full-time employees and outside contractors.
+
+Employees complain that compliance approval takes too long, so new tool registration requests get a clear processing deadline in days set by the company. When an employee needs an external tool, they submit the tool name, business purpose, and the scope of data it will handle through the process. Security and legal return a decision within the deadline. When approvals do not drag, employees do not bypass official channels to keep their work on schedule.
+
+## Shadow AI: FAQ
+
+### Why is signing in to a company-approved tool with a personal account a violation?
+
+Signing in to an approved tool with a personal account is also unapproved use. After switching to a personal account, activity falls outside the information security team's oversight. The company cannot apply consistent access control by employee identity or log sensitive data in prompts. If intellectual property, customer data, or employee personal data goes into a personal account, it sits in an external database outside company control. That still creates breach risk and affects the company's ability to meet data security and privacy compliance requirements.
+
+### Why does blocking every external AI website make things harder to manage?
+
+A blanket block only stops traffic on the office network. It does not stop employees' personal phones and home computers. As long as the need for productivity in daily work remains and the company offers no approved alternatives, employees may move work material to personal devices and keep using external tools there. The gateway and DNS records then look clean, while the actual data leaving the company has moved from where the security team can monitor it to a blind spot nobody can see.
+
+### What should an AI use policy cover?
+
+A workable AI use policy usually covers six things:
+
+- the list of company-approved tools and where each applies
+- data red lines that must not leave the company, such as customer data, contracts, source code, and personal information
+- the submission channel for new tool registration requests, the approver, and the processing deadline set by the company
+- an account rule that bars using personal accounts on office tools for company business
+- how violations found by gateway blocking or spot checks are handled
+- a process for security and legal to review and update the approved list on a regular schedule

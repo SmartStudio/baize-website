@@ -1,0 +1,65 @@
+---
+title: A Finance Pilot Agent Ran for Three Months. What Earns It Production Status?
+seoTitle: "Finance AI Agent Pilot: Exit Criteria for Production"
+description: A finance pilot agent goes live only when metrics are met, replay and parallel-run records exist, false blocks and misses are counted, and drills are signed.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/agent-pilot-exit-criteria-finance-cover.png
+coverAlt: A grey robotic arm sorting a stack of documents next to a calculator, a glowing green checklist panel above, and a hand pressing a copper stamp onto a blank approval card, on a dark green base
+sourceHash: 'b2d97d0eddce'
+---
+
+Whether a finance pilot agent moves to production after three months depends on two things. Every finance acceptance metric written before the pilot started must be met, and the evidence must be complete. The finance team needs replay and parallel-run records on real documents, results with false blocks and misses counted separately, and a record of the fallback drill. The finance, internal audit, and IT leads then each sign and file the results. If a project started without written metrics, the team writes the metrics first and runs another parallel-run period. A user department saying the tool feels convenient is not grounds for moving it into production.
+
+import noteFig from '../media/agent-pilot-exit-criteria-finance-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a clipboard and pen with a green bullseye target, two parallel tracks carrying documents under a replay arrow, three copper stamps on a sheet next to a red fallback switch, and a desk calendar beside a file box with green folders, each with an English label board" caption="Figure: Finance Pilot Agent | Finance Acceptance Metrics" width="wide" border />
+
+## Before production, check for written metrics
+
+When a shared service center or finance department runs pilot acceptance, the common practice is to put the finance acceptance metrics on a paper or electronic checklist that people can tick and sign. Each row states four things: the acceptance item, the test method, the pass line, and the signer. For the general engineering items to check when a pilot scales to production, see <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>. Finance adds a focus on document accuracy, risk blocking, and audit traceability on top of that list.
+
+The finance lead sets each pass line according to business risk. There is no need to copy numbers from peers. Count false blocks and misses as separate items. A false block is a document that should pass but gets stopped, and it costs reviewer hours in the shared service center. A miss is a document that should be stopped but gets through, and it creates compliance and funds risk directly. For high-risk violations, the pass line requires every one to be blocked. During acceptance, the team can build a batch of violating test documents and mix them into the sample set to verify this. Every rejected document must also cite the rule behind the rejection, so the team can answer audit questions with evidence.
+
+## How to run replay and parallel runs
+
+An accuracy test does not pass because the agent handled a batch of routine documents with clean fields. The team can pull a set of samples with settled conclusions from the historical document archive, have the AI rerun them, and compare its output with the original human conclusions to get an agreement rate. The sample must cover three types: normal documents, abnormal documents, and documents at the edge of a rule. If there are no historical labels, the team can run a blind test. Finance staff review a batch independently without seeing the AI's prompts, then compare their calls with the AI's calls one by one.
+
+Offline samples are not enough. Before formal sign-off, the team also checks parallel-run data from the live business flow, for example whether agreement with human review over two consecutive weeks clears the set pass line. Some finance teams split go-live acceptance into two stages. An initial acceptance happens in the first week after launch. It only checks whether the process runs end to end, whether the service stays up, and whether document data matches upstream and downstream systems. After one full month of stable operation comes final acceptance. The team replays every real business document from that month, and the final pass line is stricter than the initial one. The team also checks performance during month-end close and peak reimbursement periods, to confirm documents do not queue or pile up at peak times.
+
+## Fallback drills and signers
+
+Before production, IT and the shared service center configure the fallback measures and run a real drill. A plan document alone does not count. The review system can be set up with a one-click manual fallback switch. When switched on, the AI drops from blocking documents to only adding hint tags, so reimbursement review keeps running. When the underlying model responds abnormally, the process can fall back to the original rule-only checks. Business data also needs snapshots, so the system can roll back to a snapshot when something goes wrong. The drill records the switchover time, how document states recovered, and who operated it. That record becomes an attachment to final acceptance.
+
+Once the evidence is ready, the acceptance checklist is split by role across three signers. Each signs only the items they own.
+
+- **Finance lead**: checks sample replay and parallel-run results, and signs the two finance acceptance metrics for accuracy and misses.
+- **Internal audit lead**: spot-checks rule citations on rejected documents and the operation logs, and signs explainability of conclusions and end-to-end audit trail.
+- **IT lead**: checks month-end peak load test results and the fallback drill record, and signs performance, availability, and fallback.
+
+If any one of the three leaves an item unsigned, the pilot stays in the parallel-run observation period and does not get formal blocking authority.
+
+## What to check every week after go-live
+
+After all three sign, the shared service center files the full replay report, the peak load test report, and the signed acceptance checklist for reference. It also writes the boundary into the finance policy: the AI only outputs review conclusions and rule hints, and finance staff keep the final authority to approve or reject. For which output metrics to track in daily operation, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+Quality checks after go-live run weekly. Each week the finance QA role pulls the false-block and miss lists from the review database. When false blocks cluster on one document type, the rule maintainers adjust the rule or its threshold to cut extra review work in the shared service center. When a miss turns up, the team closes the rule gap that same week and adds the case to the regression sample set, so the same kind of violation does not get through again.
+
+## Finance pilot agent: FAQ
+
+### If the pilot started without an acceptance checklist, can it go to production after three months?
+
+Not because people find it useful. For a project that started without a checklist, finance, internal audit, and IT first write the acceptance items, test methods, and pass lines and sign them. The team then runs another parallel-run period on real documents and does a real fallback drill. The pilot moves to production only after every piece of evidence meets its pass line.
+
+### Why count false blocks and misses as two separate items?
+
+The two metrics have different business consequences, and one overall agreement rate hides the risk. A high false-block rate adds manual review work for shared service center reviewers. A miss lets a problem document through that should have been stopped. Misses therefore get their own pass line, and for high-risk violations the team builds a batch of violating test documents and tests until every one is blocked.
+
+### Who sets the finance acceptance metrics, and who signs them?
+
+The finance acceptance metrics are written before the pilot starts. The finance lead sets the pass lines and signs accuracy and misses at final acceptance. The internal audit lead signs explainability and the audit trail. The IT lead signs month-end peak performance, availability, and fallback. If a business rule change mid-pilot requires changing a metric, the same people sign again to confirm it.

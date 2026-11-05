@@ -1,0 +1,59 @@
+---
+title: AI Checks the First Article Against the Drawing. Who Signs Off?
+seoTitle: "First Article Inspection With AI: Who Signs Off?"
+description: AI extracts drawing tolerances, checks document versions, and compiles measurements for first article inspection. Inspectors sign release on measured values.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/first-article-inspection-ai-cover.png
+coverAlt: A machined grey part on a granite inspection plate being measured with calipers, outlined in green, with a blank drawing behind it and a hand pressing a copper stamp toward a blank tag, on a dark green base
+sourceHash: 'bfaa1ca8b52f'
+---
+
+In first article inspection, AI compares the part against the drawing, drafts the inspection plan, checks document versions, and compiles the report. The authority to sign off the first article stays with the inspector and the shift lead, or whichever quality role the company designates. The signer confirms that measured values fall within tolerance and that the floor uses the current valid documents. If the tool flags a version mismatch, data close to a tolerance limit, or an expired gauge calibration, nobody signs release until every flag is resolved. Until sign-off is complete, the system can be configured to block batch production.
+
+import noteFig from '../media/first-article-inspection-ai-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a machine tool holding a first part with a small green flag, a drawing with a magnifier and a green version tag, calipers measuring a part beside a hand holding a pen and a copper stamp, and a part in front of a red barrier next to a retained sample box, each with an English label board" caption="Figure: First Article Inspection | First Article Approval" width="wide" border />
+
+## When a first article is required
+
+The points that trigger first article inspection on the floor are clear: line changeover, mold change, material change, shift change, return from equipment repair, new product trial runs, and formal implementation of an engineering change. Each one requires a first article first. This step sits before batch production starts. It verifies that the current equipment parameters, mold condition, loaded material, and floor working conditions together can produce good parts consistently. For how to split work in in-line visual spot checks after batch production starts, see <NoteLink slug="ai-visual-inspection-spot-check">Who Owns a Missed Defect in AI Visual Inspection, and How Much Manual Checking Should Stay?</NoteLink>.
+
+First article checks commonly fail on the floor in three ways. Production starts the line to hit output and inspects afterward. The inspector works from an old drawing or an old work instruction and misses features added by an engineering change. The paper form has a row of check marks but no measured values, so nobody can prove what was checked when a problem comes up later.
+
+## Where AI drawing comparison helps
+
+Once drawings and controlled documents are connected to the tool, preparation and error-proofing checks take less searching. Some tools can read PDF or scanned drawings, extract dimensions, tolerances, and geometric requirements, and generate an inspection item list and a draft inspection plan for the quality engineer or inspector to check. They can also flag key features based on this product's past first article defects, so the inspector on shift measures them closely.
+
+Version checking is a separate task. The drawing and BOM versions for the first article come from the change order. For who controls the change step, see <NoteLink slug="engineering-change-bom-ai-compare">AI Compares BOM Changes: Who Approves the Engineering Change Notice?</NoteLink>. Some tools can check whether the drawing, BOM, and work instruction used for this first article are the current valid versions and match the latest engineering change. After the inspector enters measurements, the tool can also be configured to check for missed items, measured values close to tolerance limits, and expired gauge calibration. It then compiles measured values, photos, and gauge numbers into a first article report linked to the work order, equipment, mold, and operator.
+
+## Who signs the first article, and what they sign
+
+However fast it reads drawings and compiles reports, the AI cannot judge a first article as conforming. Conformance depends on whether measured values are within tolerance. The inspector makes the call from the measurements and keeps a record. Some tools can create the inspection task when triggered, bring up the standard, and move the form status forward. At the release step, a quality role still confirms.
+
+Sign-off roles follow each plant's internal rules. Some companies require dual sign-off by the inspector and the shift lead, with the time and operator on the record. Others have the quality department sign the first article approval form. With either method, the signer first resolves every flag from the tool: version mismatches, features near the limit, and expired gauges. If any flag is open, nobody signs. Customers in aerospace and medical devices may require a full first article report that verifies every design feature number one by one. The customer contract decides whether that report format is required.
+
+## Handling and recording nonconforming and near-limit results
+
+Until the first article is judged conforming, the production system can be configured to restrict further production reporting or lock batch release. This closes the gap of starting the line first and inspecting later. Inspection results have four states: conforming, nonconforming, pending, and reinspection. Conforming means all measurements are within tolerance and document versions are correct. Borderline disputes or results waiting for a quality engineer go to pending, and the line cannot start the batch until a formal conclusion comes. Once a result is nonconforming, the process can be configured to put the work order on hold and notify process, the production supervisor, and the quality engineer to come and investigate. After they adjust the equipment or mold or replace the material, they take a new sample and submit it, moving through reinspection until it passes.
+
+When a measured value is within tolerance but close to a limit, the tool flags it. Process, production, and quality check the equipment and mold condition first, stabilize it, and then confirm the first article. They do not push the batch through on near-limit parameters. A conforming first article gets a dedicated tag and stays until the order finishes, as the reference sample for later patrol inspections. First article inspection confirms the start-up conditions after a changeover. Patrol inspection checks at set intervals whether the continuous process drifts. The two complement each other.
+
+## First article inspection: FAQ
+
+### Do we need the full first article report that aerospace or medical device customers require for every order?
+
+No need to apply the full report format to ordinary orders. The full first article report that aerospace and medical device customers require measures and verifies every design feature number one by one, which takes a lot of work to prepare. The customer contract decides whether that format is required. For regular orders, the plant's own first article report is enough, as long as it keeps measured values, photos, gauge numbers, and links to the work order, equipment, mold, and operator.
+
+### Once the first article passes, can we skip patrol inspection later?
+
+No. The two inspections cover different things. First article inspection confirms that equipment, mold, material, and working conditions after a changeover, mold change, or material change can produce good parts. Whether the process drifts once the batch runs depends on patrol inspection at set intervals. The tagged conforming first article kept until the order ends serves as the physical reference for patrol inspection.
+
+### After the first article is signed, who owns problems that show up later in the batch?
+
+Check the retained records item by item: measured values at the time, document versions, gauge calibration status, and the signer. A conforming first article only shows the conditions were right at changeover. If the first article records are complete and the defects came from process drift partway through the batch, follow the patrol inspection records to the process control. If the first article record itself missed an inspection item, lacks measured values, or used an old drawing or work instruction, go back to the first article sign-off step.

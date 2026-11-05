@@ -1,0 +1,64 @@
+---
+title: "Splitting AI Coding Credits: By Person, by Team, or by Project?"
+seoTitle: "AI Coding Credits: Split by Person, Team, or Project?"
+description: Stack per-person caps with team budgets for AI coding credits. Split by project only when it has its own budget. Set a request flow and review usage monthly.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/dev-team-ai-credit-limits-cover.png
+coverAlt: A grey laptop with a blank screen next to three grey trays holding tokens, a dial glowing green with a cap line behind them, and a hand turning a copper knob, on a dark green base
+sourceHash: 'ac6112d113a8'
+---
+
+AI credits for an engineering team can be managed by stacking a per-person cap on top of a team budget. Splitting by project only applies when a project has its own budget or its costs are billed to a client. The engineering lead and finance set the split rules together before anyone starts using the tool, and each team lead handles day-to-day allocation within the team. When a member hits the usage cap, extra credit goes through a request with a record. Each month the team reviews the usage report and raises limits only for the heavy users, without raising the cap for everyone.
+
+import noteFig from '../media/dev-team-ai-credit-limits-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: three trays holding coins with person tokens and a folder behind them, stacked discs with a green cap on top, a request form with a plus badge and a copper stamp, and a desk calendar beside a bar chart and a wrench, each with an English label board" caption="Figure: AI Coding Credits | Usage Caps" width="wide" border />
+
+## What each of the three splits covers
+
+Splitting by person, by team, and by project each control a different cost boundary. A per-person usage cap stops one person's usage from running away on large jobs or high-frequency calls. A team budget lines up with department costs and finance accounts, so each business team controls its own spending beyond the plan. Splitting by project only applies when the project has its own budget or the cost is billed to a client. Some platforms let you attach a budget to one code repository and account for it by project.
+
+An engineering team can set a per-person cap and a team budget on the same team at once. If a project has no separate budget and no development cost is billed to a client, adding another layer by repository or project only gives finance and team leads one more reconciliation step at month end. The engineering lead and finance decide which layers to turn on and set each layer at an amount tier the company chooses, before anyone starts using the tool. The platform admin configures the budgets and caps in the console in advance.
+
+## When several caps stack, which one applies
+
+Some coding assistant platforms bill by usage and support per-person limits at three levels: one cap for everyone, a per-person cap set by cost center such as a department or team, and a cap set for one individual. Once a team's per-person cap is set by cost center, current members and anyone who joins later get that tier. A member who leaves the team no longer falls under it, so nobody has to rebuild the list each month. When several rules apply at once, the more specific one wins. An individual cap overrides the team's per-person cap, and the team's per-person cap overrides the company-wide cap.
+
+Per-person caps and team budgets count usage differently, and they trigger a stop under separate conditions.
+
+- **Individual and team per-person caps**: these count all usage by the person, including the part already included in the plan. When usage hits the cap, access stops with no buffer. Some platforms send no warning for individual caps. Setting a cap to zero stops the credit-consuming features immediately.
+- **Team budget**: this covers the usage billed beyond the plan. It only blocks usage when the "stop at budget" switch is turned on in the console. With the switch off, it tracks cost without blocking anyone.
+
+When both rules are set on one team, neither replaces the other. Even if the team budget has room left, a person who reaches their own cap first is still stopped. In the other direction, when one team uses up its budget and the stop triggers, only that team's members are stopped. Other teams are not affected.
+
+## How to add credit after hitting the cap
+
+When an engineer hits the usage cap during a deadline crunch or a large code change, they do not ask the admin to lift it verbally. They submit a request through the agreed process. The requester or the team lead writes three things on the request: what the credit is for, how much to add, and how long the temporary increase lasts. After approval, the record is kept for reference.
+
+Before approving, the team lead checks whether the team budget still has room. If the individual cap can rise within the team budget's remaining room, the team lead approves and the platform admin changes that member's individual tier. If the team budget is also nearly used up and needs an increase too, the engineering lead and finance both approve before the cost center budget tier changes. Every temporary increase records its expiry date. When the task ends, the admin moves the member back to the default tier, so temporary increases do not stay in the console indefinitely.
+
+## What to check each month before adjusting
+
+Once usage-based billing starts, a total fixed at the start of the year rarely matches each month's engineering bill. For how to connect the budget to usage billing, see <NoteLink slug="ai-usage-pricing-budget">Can an Annual IT Budget Handle Usage-Based AI Pricing?</NoteLink>. The engineering lead, finance, and team leads pull a usage report once a month and fine-tune allocations against actual consumption.
+
+The monthly report focuses on two groups. The first is members who run close to the cap for long periods and request extra credit several times. After confirming the load is normal coding work, the team raises those individuals' caps directly, without raising the baseline for everyone. The second is accounts with almost no usage. After confirming the role does not need the tool, the team tightens the cap for those individuals or sets it to zero. If agents the team builds use the same credits, their usage counts too. For how to find out who owns them, see <NoteLink slug="agent-sprawl-inventory">Agent Management Starts With an Inventory: Who Runs Employee-Built Agents?</NoteLink>. Once the team knows who runs each agent, it attaches the agent to the matching team or repository budget.
+
+## AI coding credits: FAQ
+
+### When a new hire joins a team or a member transfers, does the platform admin change limits by hand?
+
+With a per-person cap set by cost center, routine joins and transfers need no monthly manual setup. Some platforms let you bind the per-person cap to a department or team. Current members and future joiners get the same tier, and it stops applying when someone leaves the team. Only members who had an individual increase or decrease set earlier need a check at transfer time, to decide whether their individual cap should change too.
+
+### The team has a budget. Why did the month-end bill still go over?
+
+First check whether the "stop at budget" switch is on in the console. The team budget covers usage billed beyond the plan. With the switch off, the platform tracks cost but does not block calls. Set both the budget and the blocking switch before the team starts using the tool.
+
+### What happens when someone hits the usage cap halfway through a task?
+
+On some platforms, access stops as soon as the individual cap is reached, with no buffer and no advance warning. When a task gets cut off halfway, the team lead raises that person's cap temporarily through the request process, writes down the task purpose, the amount of the increase, and the validity period, and keeps the record. Afterward, the monthly report review shows whether this was a special task or the original cap was set too low.
