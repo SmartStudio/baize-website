@@ -1,0 +1,58 @@
+---
+title: AI Checks Collection Documents. Who Fixes the Mismatches?
+description: In a collection the bank only counts document types and copies. AI checks them against the contract, clerks fix mismatches, sales and finance pick D/P or D/A.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/documentary-collection-ai-doc-check-cover.png
+coverAlt: A grey bank counter on a dark green base beside a stack of blank documents and an open blank contract folder, emerald light lines linking matching fields between them, a grey container behind, and a hand holding a copper pen
+sourceHash: '0cac708534e6'
+---
+
+In a documentary collection, the bank does not review what the documents say. Before sending the documents, the exporter can use AI to check the commercial invoice, packing list, bill of lading, and certificate of origin item by item against the sales contract and the collection instruction. The documentation clerk verifies each mismatch found and reissues internal documents. External documents such as the bill of lading are corrected through the carrier or freight forwarder. Changes to the contract itself are confirmed in writing between the salesperson and the buyer. Whether to use documents against payment (D/P) or documents against acceptance (D/A) is decided by the salesperson and the person responsible for collecting payment, based on the buyer's creditworthiness. AI only checks. It does not change the collection instruction.
+
+import noteFig from '../media/documentary-collection-ai-doc-check-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a stack of blank documents in a counting machine at a bank counter, a blank form and a contract joined by green lines with one mismatch marked in copper, a forked path leading to a desk and to a small cargo ship, and a balance scale with a stack of coins on one side and a small buyer building on the other" caption="Figure: Collection Documents | Documents Against Payment" width="wide" border />
+
+## What the bank checks in a collection, and what it does not
+
+Under a letter of credit, the bank examines the documents. Under a collection, it does not. For how letter of credit document examination works, see <NoteLink slug="letter-of-credit-ai-discrepancy">AI Checks Letter of Credit Documents: How Do You Catch Every Discrepancy?</NoteLink>. In a collection, under the ICC Uniform Rules for Collections, the bank only determines that the documents received appear to match the collection instruction in type and number of copies. If documents are missing, or documents not listed are included, the bank notifies the principal promptly. It then presents the documents as received and does no further review.
+
+The bank is not responsible for the form, completeness, accuracy, genuineness, or legal effect of the documents. It is also not responsible for the description, quantity, weight, quality, packing, or value of the goods stated in them. Even if the invoice total is miscalculated, the consignee name on the bill of lading is missing a letter, or the product name on the certificate of origin does not match the contract, the documents are still sent to the collecting bank abroad. If the importer then cites the mismatch to refuse to take up the documents or to push the price down, the exporter bears the demurrage costs at the port and the collection risk.
+
+## How AI compares documents against the sales contract
+
+To catch errors in-house before the documents go to the bank, the exporter can configure a document-checking tool to read the sales contract, the draft collection instruction, and the full set of collection documents together. After the documentation clerk uploads the commercial invoice, packing list, bill of lading, certificate of origin, and other files, the tool lines up the fields across documents and against the contract, and compares them item by item.
+
+The comparison covers the fields where document errors are common. On the commercial invoice: whether the product name, specification wording, quantity, unit price, and total amount match the contract terms. On the packing list: whether the number of packages, gross and net weights, and shipping marks match the ocean bill of lading and the certificate of origin exactly. On the bill of lading: whether the consignee and notify party fields, and the release terms on the collection instruction, follow the contract's settlement terms. The tool also counts the types of documents uploaded and the number of originals and copies, and checks the documents prepared against the collection instruction. This avoids the bank finding missing copies and asking for more.
+
+## Who makes the corrections after a mismatch is flagged
+
+After the comparison, the tool outputs only a table of differences with the location in the original text. It does not change any document file. The documentation clerk checks each line of the table against the paper or electronic original. After ruling out scan recognition errors, the clerk arranges corrections according to who issued each document. For documents the exporter prepares in-house, such as the commercial invoice and packing list, spelling errors, missing shipping marks, or wrong totals are fixed by the documentation clerk, who reissues the correct version and replaces the archived copy.
+
+If the container and seal numbers, package count and gross weight, ports of loading and discharge, or consignee field on the ocean bill of lading are wrong, the documentation clerk cannot change them. The clerk contacts the carrier or freight forwarder at once to request an amendment and reissue. If a document issued by an outside body, such as the certificate of origin, is wrong, the correction and reissue go through the original application channel. If a small change in the quantity loaded, a split shipment, or a late price change makes the documents differ from the original sales contract, the documentation clerk has no authority to change the contract terms. The matter goes to the salesperson handling the order, who negotiates with the overseas buyer. After the buyer signs a written confirmation, the documents and the collection instruction are corrected together.
+
+## Who decides between documents against payment and documents against acceptance
+
+Whether payment under a collection arrives on time depends on the importer's creditworthiness. The bank does not bear that risk. Collections are divided by release terms. Under documents against payment, the collecting bank releases the documents only after the importer pays in full. Under documents against acceptance, the documents are released and the goods can be picked up once the importer accepts a time draft. Whether the money arrives when the draft matures depends on the importer.
+
+The salesperson and the finance or collections lead decide which release terms to use, based on the buyer's creditworthiness. For how to check a buyer's background before signing, see <NoteLink slug="overseas-buyer-due-diligence-ai">AI Due Diligence on Overseas Buyers: How Far Can You Trust It?</NoteLink>. According to banks' export collection service descriptions, the collection instruction must state which release terms apply. If it does not, documents against payment applies. If the tool finds that the release terms on the instruction conflict with the contract, it only highlights the conflict for a person to verify. It does not change the instruction. After the documents are sent, if the exporter wants to reduce the amount, extend the term, or change the release terms, it must submit a written request to the bank, signed by an authorized signatory and bearing the agreed seal.
+
+## Collection documents: FAQ
+
+### The collection instruction leaves out the release terms. Which terms will the bank apply?
+
+Under banks' export collection rules, the collection instruction must state documents against payment or documents against acceptance. If it does not, documents against payment applies. To avoid a dispute with the buyer over release terms after the documents reach the collecting bank, the documentation clerk can use the tool before submission to check the instruction's release terms against the payment terms in the sales contract and make sure they match.
+
+### Under documents against acceptance, the importer accepted the draft but did not pay at maturity. Can the bank be held liable?
+
+No. Whether payment under a collection arrives on time depends on the importer's creditworthiness. The bank only passes on and presents documents according to the collection instruction and has no payment obligation. Under documents against acceptance, the importer can take the documents and pick up the goods once it accepts the draft. If it refuses to pay at maturity, only the exporter can pursue the importer. Before allowing documents against acceptance, the collections lead must assess the buyer's creditworthiness carefully.
+
+### A document under documents against payment turns out to be wrong after sending. Can it still be corrected?
+
+When a document under documents against payment is found to be wrong, the documentation clerk first contacts the remitting bank to confirm where the documents are. The bank does not review document content for the exporter. If a document's content is wrong, the exporter issues a correct document and gives it to the remitting bank to forward, with a cover letter explaining the change. If the change involves reducing the amount, extending the term, or switching from documents against payment to other release terms, the exporter must also submit a written request signed by an authorized signatory and bearing the agreed seal.

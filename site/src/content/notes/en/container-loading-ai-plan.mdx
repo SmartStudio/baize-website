@@ -1,0 +1,61 @@
+---
+title: "AI Plans the Container Load: Who Owns It When Cargo Won't Fit?"
+seoTitle: "AI Container Loading Plans: Who Owns a Load That Won't Fit?"
+description: An AI loading plan is a layout suggestion. When cargo won't fit or runs overweight, trace the data and the floor work. The shipper owns the verified gross mass.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/container-loading-ai-plan-cover.png
+coverAlt: An open grey shipping container on a weighbridge on a dark green base, with blank cartons and pallets stacked inside along an emerald glowing wireframe layout, a forklift beside it, and a copper tape measure resting on a carton
+sourceHash: '8cf3b4051b3b'
+---
+
+A container loading plan calculated by AI is only a suggested layout of space. When cargo will not fit on site or runs overweight, the team does not blame the tool. It traces back step by step. If length, width, height, or gross weight was entered wrong, the party that supplied the data is responsible, and the shipper's business lead follows up. If the plan works but the cargo still will not go in on site, the warehouse loading supervisor adjusts the arrangement and records it, and the planner updates the base data. If the container's gross mass does not match the actual weight, the legal responsibility sits with the shipper. The container is delivered for loading onto the vessel only after it is verified again and passes.
+
+import noteFig from '../media/container-loading-ai-plan-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a blank carton with a tape measure and a small weight, three interlocked rings with a magnifier over one ring, a container on a weighbridge with a green check mark, and a clipboard and pencil next to a small ship with cargo slots" caption="Figure: Container Loading Plan | Container Stowage" width="wide" border />
+
+## What input data the stowage layout depends on
+
+Before an LCL or FCL export shipment, the documentation clerk or planner uses a tool to plan container stowage. Whether the resulting layout drawing is usable depends on how accurate the base parameters are. The planner enters each item's outer package length, width, and height, unit weight, whether it can be turned upside down, whether it can bear stacking, and whether it is fragile. The planner also sets the container's internal dimensions and the maximum operating gross mass on its CSC safety approval plate as boundary conditions.
+
+Beyond the carton specifications on paper, actual loading also has to fit pallets, dunnage, and securing materials. Stacked cartons that absorb moisture or are squeezed by strapping change their outer dimensions. If the planner leaves out pallet height, or enters the bare net weight as the packed gross weight, the AI container loading plan may not fit or may run overweight on site. Once a container is loaded, whether the cargo fits and whether the weight crosses the limit can be seen on the spot. For how to pick this kind of work, whose results can be checked on the spot, as the first tasks for a tool, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+## Which step to check first when cargo won't fit or runs overweight
+
+After the planner sends the stowage drawing to the warehouse, the warehouse loading supervisor checks it before work starts: the front-to-back and side-to-side weight distribution, the stacking limits for upper and lower layers, and whether the estimated total weight is close to the container type's maximum operating gross mass. If the dock team finds that the cargo will not fit, or the weighbridge shows it is overweight, the team checks the data source, the floor conditions, and the weight verification one step at a time.
+
+First, check the input data. The factory may have changed the corrugated board spec of its outer cartons without notice, the documentation may have a wrong dimension, or the gross weight may be a guess. For errors at the source, the party that supplied the data is responsible. The shipper's business lead follows up with the factory or the person who submitted the data. If remeasured dimensions match the entered data and the plan itself works, but the cargo will not go in because cartons swelled from moisture, forklifts need working clearance, or timber bracing takes up space, the warehouse loading supervisor adjusts the arrangement to the actual conditions and records the reason. The documentation clerk or planner adds the clearance margin to the material parameters. If the measured gross mass after loading does not match the declared verified weight, or even exceeds the weight limit on the CSC safety approval plate, the shipper is responsible for delivery. The warehouse must restow the container and complete gross mass verification again before delivery.
+
+## Who carries full responsibility for verifying container gross mass
+
+Fitting the cargo in the box is only the earlier step. Whether a loaded export container can go on the ship depends on gross mass verification. Amendments to the International Convention for the Safety of Life at Sea (SOLAS) require the shipper to verify the gross mass of a packed container before it is delivered for shipment. The shipper provides it in the shipping document, as early as possible, to the master or the master's representative and to the terminal, for preparing the ship's stowage plan. A container without a verified gross mass is not loaded onto the ship, unless the ship and the terminal obtain the verified gross mass by other means.
+
+Under the rules, there are only two compliant methods to verify container gross mass. Method one weighs the whole container after it is packed and sealed. Method two weighs all cargo, pallets, dunnage, and securing materials in the container separately, then adds the tare weight of the empty container. Estimates are not allowed. The theoretical total weight from a container stowage tool cannot be entered directly as the verified gross mass.
+
+China's rules state that the verified gross mass of a packed container must not exceed the maximum operating gross mass on the CSC safety approval plate. The difference between the shipper's verified gross mass and the actual weight must not exceed 5%, with a maximum difference of 1 tonne. The shipping document must state the verified gross mass, the verification method, and a verification declaration. Before sending documents to the shipping line or terminal, the documentation clerk checks each item against the weighbridge ticket or the itemized weighing records.
+
+## How to record changes on site and adjust space bookings
+
+Each time the arrangement on site differs from the original container loading plan, the warehouse loading supervisor records on the loading work order the actual number of pieces loaded, which rows of cargo changed stacking orientation, and how many pallets and securing materials were used. The supervisor photographs the loaded container before sealing and sends the photos to the documentation clerk or planner. The planner updates the package dimensions, load limits, and volume margin parameters in the material master data based on this feedback, so the same goods do not show the same deviation in later shipments.
+
+If the check on site confirms the whole batch will not fit and some cargo is left behind, or if the measured gross mass approaches the plate limit and the shipment has to be split, the container type changed, or trucking and space bookings adjusted, the warehouse loading supervisor reports this promptly to the shipper's business lead. The business lead decides whether to book more containers or ship in batches, and has the documentation clerk update the customs declaration and ocean shipping documents. For whether to inform the customer before switching trucking fleets or changing the transport plan, see <NoteLink slug="transport-dispatch-agent-carrier-switch">A Dispatch Agent Switches Carriers: Do You Need to Tell the Customer?</NoteLink>.
+
+## Container loading plans: FAQ
+
+### Supplier carton dimensions are often wrong. How does the planner prevent loads that won't fit?
+
+For new products on their first shipment, or suppliers that change packaging often, the warehouse can spot-check outer carton dimensions and unit gross weight at goods receipt. The planner then uses the measured values in place of the supplier's estimates when calculating the plan. Some tools can set a volume margin by package type, which leaves a buffer for carton deformation and dunnage.
+
+### The loaded container weighs more than the maximum operating gross mass on its plate. Can it go straight to the terminal?
+
+No. China's rules state that the verified gross mass must not exceed the maximum operating gross mass on the CSC safety approval plate. If the whole-container weight exceeds the limit, the warehouse loading supervisor stops the outbound process at once. Together with the planner and the shipper's business lead, the supervisor arranges unloading to reduce the weight. After that, the container is sealed and weighed again, a new verification declaration is issued, and the documents are amended. Only then is it delivered to the port.
+
+### Can the total weight from a container stowage plan be declared as the verified gross mass?
+
+No. The weight from a container stowage plan is a reference value from the layout stage. The legal verified gross mass comes from weighing the whole container after sealing, or from weighing each item of cargo, pallets, dunnage, and securing materials by the prescribed procedure and adding the empty container's weight. Estimates are not allowed. If the declared figure differs from the actual weight by more than 5% or more than 1 tonne, the shipper must verify again and correct the documents before the container is delivered for loading.

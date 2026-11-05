@@ -1,0 +1,63 @@
+---
+title: AI Drafts the Shift Handover Log. Who Answers for a Missed Fault?
+seoTitle: "AI Shift Handover Logs: Who Answers for a Missed Fault?"
+description: AI drafts a shift handover log from alarms, production records, and notes. The outgoing lead fills gaps and signs; the incoming lead checks on site and signs.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/shift-handover-ai-log-cover.png
+coverAlt: A workshop machine on a dark green base with a blank handover clipboard on a stand, a small grey agent module projecting emerald light onto the clipboard, and two figures in hard hats meeting beside the machine, one handing a clipboard with a copper pen to the other
+sourceHash: '2e9b56cf50c7'
+---
+
+The outgoing shift lead is responsible for the content of the shift handover record. AI only prepares the draft. If the draft leaves something out and the outgoing lead signs without filling it in, it counts as the outgoing lead's missed report, not the AI's. Both leads check equipment, parameters, tools, and records item by item on the production line, and sign together once everything is clear. The outgoing lead stays at the post until signing. After signing, the incoming lead is responsible for the shift. The workshop manager decides how the record rules change.
+
+import noteFig from '../media/shift-handover-ai-log-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a record board with blank rows and green check boxes, a sticky note and a speech bubble being added into a notebook, two figures in hard hats beside a machine with a pen above paper, and a blank record page under a magnifier with a copper tag" caption="Figure: Shift Handover Record | Shift Handover Log" width="wide" border />
+
+## Which fields the shift handover record must cover
+
+Whether or not a tool drafts it, the shift handover record cannot leave out any required field. Shift handover rules in many places commonly require each shift to record: the production or operating status during the shift, equipment faults and how they were handled, unfinished tasks and their deadlines, safety hazards and the measures taken, the status of tools and spare parts, and instructions from supervisors and points to watch.
+
+Fields on anomalies and open items need detail and facts. A line such as "machine repaired" or "to follow up" is not enough. For each equipment anomaly during the shift, write when it happened, the cause, what the shift did and the result, and any problems and risks not yet fully resolved. For unfinished work the next shift must continue, write the person responsible, the deadline, and the next steps. With these written down, the incoming crew knows which machines to watch and when each task is due.
+
+## What the tool can draft and what it cannot see
+
+Near the end of a shift, some tools can combine equipment alarms from the shift's machines, production records, and voice or text notes the shift lead recorded along the way. The tool lays them out in fixed fields as a shift handover log draft, and lists open alarms and unfinished tasks in a prominent place to remind the shift lead. For how to connect alarm streams, production records, and crew handwritten or verbal notes so the tool can read them, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>. The company can also configure the submission flow so that a draft with any open alarm and no handling note cannot be submitted for handover.
+
+Even with machine alarms and work reports connected, an AI-generated shift handover log has blind spots. AI cannot see anything that never entered an online record: an unusual noise an operator mentioned out loud at the machine, a temporary parameter change a maintenance technician wrote on a sticky note during a repair, a warning barrier set up on the spot. Unless someone enters or dictates these into the notes, the draft is blank on them. The AI text is only a base draft. Before submitting, the outgoing shift lead checks and adds each of these offline events.
+
+## How the on-site check and the joint signatures work
+
+After the outgoing shift lead reviews the draft and adds temporary measures and remaining risks, the handover moves to the on-site check. The handover cannot be signed while sitting in the crew break room looking at a screen. The outgoing and incoming shift leads walk to the workstations and machines together and check, item by item against the record, the equipment's running condition, the current process parameters, the tools and spare parts in place, and whether safety measures are in effect.
+
+Under shift handover rules, if any anomaly on site is not dealt with, the record is unclear, a safety hazard is not explained, or the incoming lead has not checked and confirmed, the handover does not happen. When this happens, the outgoing shift lead works with the shift crew or the maintenance technician to deal with the problem on site first, and writes up the remaining risks and precautions clearly.
+
+After the incoming shift lead checks each item on site and confirms it, the outgoing and incoming leads both formally sign the shift handover record. The signatures set the boundary of responsibility between the two shifts. Until both have signed, the outgoing shift lead may not leave the post. Once both have signed, the outgoing crew can leave. Line operation, follow-up on open tasks, and safety oversight after the handover are then fully the incoming shift lead's responsibility.
+
+## How missed faults are traced, and who changes the rules
+
+If the workshop later has a quality swing, an equipment stoppage, or a safety incident, the workshop manager and the maintenance technician pull the shift handover log and the alarm history from that time to trace responsibility. For which routine line-monitoring tasks a tool can handle on its own and which need a person, see <NoteLink slug="factory-resident-agent-what-to-handle">A Resident Agent Watches the Line: What Can It Do on Its Own?</NoteLink>. "The AI wrote the draft" is not accepted as an excuse. Responsibility is set by what both leads signed and by the checks done on site.
+
+If the shift had an equipment anomaly, a temporary parameter change, or a safety hazard that was missing from the AI draft because it never entered an online record, and the outgoing shift lead signed over without checking and adding it, it counts as the outgoing lead's missed report, not the AI's. If the record clearly stated the open problems, the owners, and the deadlines for unfinished work, and the incoming shift lead checked and signed on site but then failed to watch an item or broke procedure, the incoming lead is responsible for what happened after the handover.
+
+After each missed report or handover dispute, the workshop manager reviews whether the crew did not follow the process, or whether the record template and blocking conditions have a gap. The workshop manager approves all changes to the shift handover record rules and to the blocking conditions for open alarms. Crews and maintenance technicians follow the updated rules.
+
+## Shift handover records: FAQ
+
+### The machine alarm is still sounding and the fault is not fixed. Can we sign and change shifts?
+
+It depends on whether the anomaly is fully explained. Under shift handover rules, if an anomaly is not dealt with, the record is unclear, a hazard is not explained, or the incoming lead has not confirmed, there is no handover. When a repair runs across shifts, the outgoing shift lead and the maintenance technician write down the fault time, the cause, the measures taken, the remaining risks, and the person responsible. The incoming shift lead confirms on site and then signs. If the company has specific rules for repairs that span shifts, follow those rules.
+
+### The shift lead left a voice note and AI transcribed it wrong. Who is responsible?
+
+The outgoing shift lead, who is responsible for checking. Voice and text notes only save the lead from typing everything again. The outgoing shift lead still reviews the draft line by line before signing. If a machine name, process parameter, or handling result was transcribed wrong and the lead signed without correcting it, the outgoing lead is responsible for any misjudgment that follows.
+
+### AI wrote the shift handover log. Does the person signing still need to read every line?
+
+Yes, line by line, and on site against the actual equipment. Signing means taking responsibility for the content of the shift handover log. The outgoing shift lead checks each line and adds verbal findings on site, handwritten notes, and temporary measures. The incoming shift lead checks equipment and parameters on site and signs to take over only after confirming the record matches reality.

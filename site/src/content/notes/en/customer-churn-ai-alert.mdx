@@ -1,0 +1,64 @@
+---
+title: AI Raised a Churn Alert. Who Works to Keep the Customer?
+description: After an AI churn alert, the success manager checks usage, tickets, and payments and asks why. Sales approves discounts. Track gross and net renewal.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/customer-churn-ai-alert-cover.png
+coverAlt: A small grey client office building on a dark green base with a dimming emerald health gauge and a small warning light in front, a desk with a phone and a blank customer file beside it, and a hand holding out a copper life ring toward the building
+sourceHash: 'b471c78e511f'
+---
+
+When a customer churn alert fires, the customer success manager is the first owner. The manager first verifies whether the backend signals are real, then contacts the customer to learn the reason. Anything involving price, contract changes, or discount concessions goes to the account manager or sales for approval under the company's own amount tiers. AI does not send offers to customers on its own. For large accounts or problems that span several departments, the head of customer success brings in management. Each case records the reason and the outcome, which are used to tune the alert rules. When renewal rates are reviewed, gross renewal rate and net renewal rate are looked at separately.
+
+import noteFig from '../media/customer-churn-ai-alert-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a gauge, a ticket card, and a coin feeding into one dashboard, a magnifier over a gauge next to a telephone, a three-step staircase with a copper key on the top step, and two stacks of blocks side by side with one stack taller by a green block" caption="Figure: Customer Churn Alert | Renewal Rate" width="wide" border />
+
+## Which signals make up customer health
+
+Login counts alone are easy to misread. The customer may be on a holiday shutdown or in the middle of an internal reorganization. When the team defines customer health, it can configure the tool to combine several kinds of routine business signals:
+
+- Product usage: daily activity and how deeply core features are used.
+- Seat or account coverage: how many purchased seats are activated and in daily use.
+- Customer feedback and satisfaction: past survey scores and comments in routine communication.
+- Tickets: the number of tickets filed recently and whether handling is backed up.
+- Contract and payment: renewal progress and whether past invoices were paid on schedule.
+
+These signals are combined on one risk card. When anomalies exceed the set thresholds, the tool triggers a customer churn alert. Frontline staff no longer have to check records across several backend systems. The alert from the tool is only a risk signal. Backend data can show that usage behavior or payment timing changed. Why the customer uses the product less, and which business step is stuck, has to be learned by a person asking.
+
+## Who picks up the alert first and verifies it
+
+When an alert card arrives, the customer success manager, as first owner, takes over the follow-up. The manager does not send template messages pushing the customer to renew as soon as the alert appears. First the manager verifies the signals internally. The manager asks the technical team whether a tracking failure or unsynced backend data broke the activity record. Then the manager reviews recent correspondence to check whether the customer just changed its main contact, or paused a related business project.
+
+After ruling out unsynced data and known project pauses, the customer success manager arranges a call with the customer's contact or the department that actually uses the product, and asks the specific reason for the drop in usage or satisfaction. Some tools can draft a follow-up email from recent tickets and an activity summary. For how to keep a human check on such outreach before it is sent, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+
+## How to split retention actions and authority
+
+After learning the customer's specific concerns, the team hands off work by role, so the customer success manager does not make every external commitment alone. If a new operator at the customer is unfamiliar with features, a workflow is not running smoothly, or old fault tickets have been open too long, the customer success manager arranges targeted training or gets technical support to resolve them first. Once the customer asks to cut seats, change contract payment terms, lower the price, or get a renewal discount, the account manager or salesperson responsible for the account takes over the negotiation.
+
+Commercial concessions and contract changes always go through human sign-off under the company's own amount tiers and approval authority. The tool's permissions do not allow it to generate offers or promise discounts to customers. If a major account signals it intends to cancel, or the customer's problem involves product development, delivery, legal, finance, and other departments that frontline staff cannot coordinate, the head of customer success summarizes the core issues and brings in management to decide and allocate resources.
+
+## Record outcomes and review renewal rates
+
+When each alert case closes, the customer success manager records the real reason learned from the customer, the retention actions taken, and whether the customer renewed or left. The team pulls historical records on a schedule and reviews them in both directions. For customers who triggered an alert but renewed on time, the team checks which signal changes caused the false alarm. For customers who never triggered an alert but suddenly cancelled, the team traces which early signals were missed. The team then adjusts the customer health definitions and the alert rules. For how to measure how much work a tool actually completed after launch, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+When management reviews and assesses renewal rates at business meetings, it looks at gross renewal rate and net renewal rate separately. Gross renewal rate counts only the original contract revenue renewed by the customers present at the start of the period. It excludes expansion purchases made during the period. Net renewal rate starts from gross renewal rate, adds expansion revenue from existing customers, and subtracts downgrades and lost customers. If only net renewal rate is tracked, expansion from some existing customers can hide churn from others. With both numbers side by side, the team can see how much revenue was lost to churn.
+
+## Customer churn alerts: FAQ
+
+### Can the tool be set to send a renewal discount as soon as an alert fires?
+
+No. The alert is a risk signal based on usage, ticket, and payment data. Sending an offer before learning the reason can give away margin to customers who would have renewed anyway, and it does not fix real problems such as blocked features or stalled tickets. Anything involving price, contracts, or discounts goes to the account manager or sales for approval within their authority.
+
+### Alerts often fire for customers who are using the product normally. How should the rules be adjusted?
+
+After verifying the signals each time, the customer success manager records the cause of the false alarm, such as a new main contact at the customer, a paused project, or unsynced data. The team regularly compares two groups: customers who triggered alerts but did not churn, and customers who churned without an alert. It fixes data sync paths and adjusts the set thresholds to reduce false alarms and misses over time.
+
+### Should we look at gross renewal rate or net renewal rate?
+
+Look at both. Gross renewal rate counts only the original revenue retained from customers at the start of the period, with no expansion, and measures how much original revenue was kept. Net renewal rate adds expansion and subtracts downgrades and churn. Heavy expansion makes net renewal rate look good. To find real churn, watch gross renewal rate.

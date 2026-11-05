@@ -1,0 +1,66 @@
+---
+title: When AI Traces Batches for a Recall, Who Sets the Scope?
+description: AI can trace a faulty batch to its materials, shifts, and warehouses. The quality lead and other teams set the recall scope; legal checks reporting duties.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/batch-traceability-ai-recall-cover.png
+coverAlt: A small grey production line on a dark green base, with an emerald light line running from a raw material sack through the line to a warehouse rack and a delivery truck, and a hand holding a copper magnifier over one finished box
+sourceHash: '03fac72faa55'
+---
+
+For quality traceability, AI can start from the batch number of a faulty finished product. It traces upstream to raw material batches, production lines, shifts, and equipment, then downstream to related finished batches, warehouses, and the customers who received shipments. It lists the affected candidates with the evidence for each. The quality lead runs the recall scope decision. Production, warehousing and logistics, and sales verify the evidence, and the quality lead makes the call. Legal checks the reporting duties and deadlines. Under China's Interim Provisions on the Administration of Consumer Product Recalls, the producer reports the recall plan and carries it out. The AI list is only a list of candidates. Gaps such as missing records or mixed batches are flagged and handed to people to decide.
+
+import noteFig from '../media/batch-traceability-ai-recall-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right joined by green arrows: a raw material sack and a finished carton joined by an up-and-down arrow beside a small production line, a checklist with one broken row marked by a copper pin, three small chairs around a table inside a ring on a map, and a wider ring drawn around the table with a small truck returning" caption="Figure: Quality Traceability | Batch Traceability" width="wide" border />
+
+## What batch traceability checks upstream and downstream
+
+When a consumer goods producer receives a customer complaint or a failed spot check, it first enters the faulty batch number into a configured tool for batch traceability. Upstream, the tool pulls records from the manufacturing execution system and material ledgers: which raw material batches the finished batch used, which production line it ran on, which shift made it, and which equipment processed it. It links raw material receipts, workshop material issue slips, and process work reports.
+
+Once it has the suspect upstream raw material batches or equipment time windows, the tool traces downstream. It finds which other finished batches used the same raw material batch, which company warehouses hold them now, where in-transit goods are headed, and which distributors or customers have already received them. The Interim Provisions encourage producers to build a traceability system for consumer products. Records for material requisitions, material issues, work reports, and outbound shipments need to be linked in normal operations. Then the full upstream and downstream chain can be pulled quickly when a problem appears.
+
+## How to read the candidate list and handle gaps
+
+After the tool runs batch traceability, it can be configured to output a list of affected candidates. Each entry lists why it was included, such as sharing a raw material batch, or passing through the same equipment on the same shift. Each department can then check the list line by line.
+
+Floor ledgers often have gaps in the traceability chain. A raw material batch may have no requisition record, or batches may have been mixed during a changeover. At a gap, the tool can be configured to flag the missing point, stop, and report to a person, without guessing to fill it in. For when an unattended workflow should stop and how to keep records, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
+
+The quality lead brings production and warehousing together to review the flagged gaps. Where the original documents can fill a gap, they check those first. Where mixed batches make the flow impossible to separate, the quality lead decides to widen the scope to cover the related batches. If the investigation finds that the underlying batch or material records were changed incorrectly, see <NoteLink slug="erp-master-data-agent-change-trace">An AI Agent Edits ERP Master Data: How Do You Trace a Bad Change?</NoteLink> for how to trace it.
+
+## Who sets the recall scope, and the reporting deadlines
+
+Once the candidate list is ready, the team first checks the nature of the problem against the Interim Provisions. Under the Provisions, a defect is an unreasonable danger to personal or property safety that exists generally in consumer products of the same batch, model, or category, caused by design, manufacturing, warnings, or similar reasons. When a producer finds that a consumer product may have a defect, it must organize an investigation and analysis at once. If it concludes a defect exists, it must start a recall at once and must not conceal the defect.
+
+When setting the recall scope and making external reports, the roles are:
+
+- **Quality lead**: runs the investigation and analysis, combines test results with the traceability evidence, and decides the recall scope.
+- **Production, warehousing and logistics**: production checks the start and end points of line shifts and work in process. Warehousing and logistics check stock quantities and freeze batches waiting to ship.
+- **Sales and legal**: sales checks the list of customers who received shipments and their contact details. Legal checks the reporting duties, deadlines, and required document elements.
+
+If the product has caused or may cause death, serious personal injury, or major property loss, or if a recall is being carried out outside China, the producer and other business operators must report to the provincial market regulation authority where they are located within two working days of discovery. For a voluntary recall, the producer reports the recall plan to the provincial market regulation authority within ten working days of concluding through investigation that a defect exists. The plan states the scope of products to recall, the defect, emergency measures, recall measures, the responsible body, contact details, and the schedule.
+
+## Fixing an inaccurate recall scope and keeping records
+
+During a recall, tests on returned products or later investigation may show that adjacent shifts or related batches carry the same unreasonable danger. That means the original scope was too narrow. Under the Interim Provisions, a producer that finds the recall scope inaccurate must carry out the recall again.
+
+To redraw the scope, the team enters the newly found faulty batch numbers and test conclusions into the tool and runs batch traceability again. The tool pulls the added related finished batches and their destinations. The quality lead brings production, warehousing and logistics, sales, and legal together to review the evidence, then updates the recall plan. Warehousing freezes the additional batches in stock. Sales sends notices to the customers on the new list. All investigation evidence, candidate lists, people's rulings on gaps, regulatory reports, and return handling details are archived. The Provisions require recall records to be kept for at least five years.
+
+## Quality traceability: FAQ
+
+### Can the list of affected batches from AI go straight into the recall plan report?
+
+No. The tool gives only a list of candidates, and the producer is responsible for the recall plan. Before reporting, the quality lead brings in production, warehousing and logistics, and sales to verify the material issue, shift, and shipment evidence for each batch. Legal checks the required report elements, and then the plan is submitted.
+
+### If a consumer product may cause serious injury, can the report wait until every batch is traced?
+
+No. Under the Interim Provisions, if the product has caused or may cause death, serious personal injury, or major property loss, or if a recall is being carried out outside China, the report goes to the provincial market regulation authority within two working days of discovery. A voluntary recall plan is reported within ten working days of concluding that a defect exists.
+
+### Records break off halfway through batch traceability. How is the recall scope set?
+
+When batch traceability hits a gap such as missing records or mixed batches, the tool only flags the gap and does not fill it in. The quality lead decides, based on conditions on site, whether to check the original records first or to widen the scope to every batch the gap could cover. Under the Provisions, if the recall scope later turns out to be inaccurate, the recall must be carried out again.
