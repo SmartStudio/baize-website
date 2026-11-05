@@ -1,6 +1,8 @@
 ---
 title: Run Qwen3.8-27B Locally on Mac with Unsloth
 description: Pick an Unsloth Dynamic GGUF from Apple Silicon unified memory, then run Qwen3.8-27B with Desktop, Studio, or llama.cpp. On 32GB Macs, use UD-Q4_K_XL (~17.9GB).
+seoTitle: "Run Qwen3.8-27B on a Mac: Which Unsloth Quant (32GB/48GB)"
+seoDescription: "On a 32GB Mac pick UD-Q4_K_XL (about 17.9GB); on 48GB pick UD-Q5_K_XL. Includes file sizes and how to run it in Desktop, Studio, or llama.cpp."
 lang: en
 pubDate: 2026-08-16
 category: AI编程
@@ -20,7 +22,7 @@ howto:
       text: Download the matching file from unsloth/Qwen3.8-27B-GGUF. On 32GB, that file is UD-Q4_K_XL.
     - name: Chat with thinking-mode sampling
       text: Use temperature 1.0, top_p 0.95, and top_k 20. Start context at 8192, then raise it only if RAM remains.
-sourceHash: 'c2087ad14bf0'
+sourceHash: '98d0e6829f3f'
 ---
 
 Qwen3.8-27B runs on Apple Silicon unified memory. Unsloth's 4-bit Dynamic GGUF is about 18GB. A 24GB Mac can load it if you keep context short. 32GB is the comfortable default. Follow Unsloth's [Qwen3.8 guide](https://unsloth.ai/docs/models/qwen3.8) and download weights from [unsloth/Qwen3.8-27B-GGUF](https://huggingface.co/unsloth/Qwen3.8-27B-GGUF).
