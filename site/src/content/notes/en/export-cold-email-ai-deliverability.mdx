@@ -1,0 +1,63 @@
+---
+title: AI Writes Your Export Cold Emails. How Many Can You Send Before Spam?
+seoTitle: "AI Cold Emails for Export: How Many Avoid the Spam Folder?"
+description: No daily cold email count is safe by itself. Authenticate the domain, clean the list, keep complaints low, and let bounce and complaint rates set the daily cap.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/export-cold-email-ai-deliverability-cover.png
+coverAlt: A grey globe on a dark green base. Blank envelopes fly along glowing green arcs toward a row of grey mailboxes, and one envelope drops into a grey square bin. On the left a server cabinet carries a shield badge and connects to a copper control knob.
+sourceHash: 'b738061b6763'
+---
+
+There is no fixed safe number of export cold emails per day. Email deliverability depends on whether the sending domain's authentication is set up, whether recipients click "report spam," whether the list is accurate, and whether send volume suddenly spikes. AI makes drafting cold emails faster. Recipient mailbox filters have not relaxed. A company should send outreach from a separate domain or subdomain with full authentication. The export sales manager sets one daily limit based on bounce rate and complaint rate. Each email is rewritten for its customer and keeps an unsubscribe option.
+
+import noteFig from '../media/export-cold-email-ai-deliverability-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a server cabinet with a shield and green check mark, a gauge dial beside a small neat stack of envelopes, an envelope tied with a green ribbon bow in front of an open door, and an envelope under a curved green return arrow beside a green flag" caption="Figure: Export Cold Emails | Email Deliverability" width="wide" border />
+
+## Which authentication to set up before sending
+
+Before the sales team sends anything, the IT administrator who manages the sending domain sets up authentication by following a major mailbox provider's sender guidelines. The guidelines require every sender to set up at least SPF or DKIM. A sender that sends around 5,000 or more emails a day to that provider's personal accounts is classed as a bulk sender. Volume from all subdomains under one primary domain counts together, and a sender that reaches the threshold once stays classed as a bulk sender. A bulk sender's domain needs all three of SPF, DKIM, and DMARC, and the domain shown in the From address must align with the authenticated domain.
+
+To keep outreach bounces from hurting the office mailboxes the company uses to negotiate with existing customers and send contracts, export cold emails should not go out from the company's primary domain. They should use a separate standalone domain or a dedicated subdomain. If the company picks a subdomain under the primary domain, IT and the export sales manager should know that the subdomain's daily volume still counts toward the primary domain's total. Once the whole company's combined volume reaches the threshold of around 5,000, the entire primary domain falls under the bulk sender rules. Even if the team sends little today, IT should set up SPF, DKIM, DMARC, and domain alignment in one go when it launches a new sending domain. That avoids sudden rejections when volume grows later.
+
+## How to set the daily send volume
+
+The major mailbox provider's sender guidelines remind senders to keep volume and content within what recipients expect. They ask for extra care with recipients who have never been contacted, and for volume to increase gradually. Most export cold emails go to buyers who do not know the sender. If a newly launched domain or mailbox starts with a large batch, receivers may throttle or reject it, and deliverability drops.
+
+Sales reps cannot raise their own volume. The export sales manager sets the daily send limit based on the domain's age, the recent bounce rate, and the recipient complaint rate. The sending tool can be configured to stop each account once it hits the limit. A new domain starts with a small volume. After a period of normal delivery with no abnormal bounces, the volume rises slowly according to bounce rate and complaint rate. Before a list enters the send pool, it goes through address validation to remove typos and long-dead addresses, which cuts hard bounces. For which human checks an AI-drafted outreach email passes before anyone clicks send, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+
+## How to keep AI-written cold emails from reading like a mass mailing
+
+If AI produces one generic English template and the team only swaps the greeting and company name before sending it in bulk, the result is the same subject line, the same introduction, and a page full of links. Mail gateways can identify that as mass marketing, and overseas buyers may get annoyed and click "report spam."
+
+When a sales rep drafts with AI, the rep first gives the tool the target customer's main product categories from its website, its recent new product direction, or local market specifications. The AI then rewrites the opening of each email for that customer and the matching product line. Keep it short. The first email carries few large attachments and few external links. Under the major mailbox provider's sender guidelines, a bulk sender's marketing emails must support one-click unsubscribe and show a clear unsubscribe link in the body. Small senders should do the same. Process each unsubscribe request within two days and remove the person from all later outreach lists. If a customer replies to a cold email with an inquiry and asks for samples, for how to screen real buyers, see <NoteLink slug="b2b-sample-request-ai-qualify">AI Screening for Export Sample Requests: Who Gets Free Samples?</NoteLink>.
+
+## How to watch bounces and complaints
+
+After outreach goes out, the export sales manager and the IT staff who manage the domain review the sending dashboard and the mailbox provider's feedback records on a schedule. Based on real delivery data, they decide whether to keep, lower, or slightly raise the daily quota. They focus on three records.
+
+- **Spam complaint rate**: under the major mailbox provider's sender guidelines, the share of users who report spam should stay below 0.1% and should never reach 0.3%. If the complaint rate starts to rise, stop the current batch and review the list.
+- **Hard and soft bounce records**: remove an invalid address from the customer database permanently as soon as it causes a hard bounce. If soft bounces from full inboxes or temporary rejections keep coming from one domain, pause delivery to that domain.
+- **Unsubscribe list sync time**: configure the system so that when a customer clicks unsubscribe or replies asking to stop, the address enters the global suppression list within two days. This stops another rep in the same team from emailing the same recipient from a different mailbox.
+
+Only after these records stay stable for a while should the team consider a small increase in volume.
+
+## Export cold emails: FAQ
+
+### If we send cold emails from a subdomain under the company's primary domain, can we stay under the bulk sender threshold?
+
+No. Volume is combined. Under the major mailbox provider's sender guidelines, volume from all subdomains under one primary domain counts together. A combined total of around 5,000 or more in one day makes the sender a bulk sender, and the classification stays once reached. To keep outreach swings from affecting the primary domain's daily office mail, register a separate standalone domain for cold emails and set up full sender authentication on it.
+
+### A sales rep has a batch of email addresses from old trade show business cards. Can AI write the emails and send them all at once?
+
+No. Old business cards often include dead addresses of people who have left. Recipients who have never been contacted are also more likely to report spam. Before sending, run address validation and remove invalid addresses. Then pick the buying contacts whose main products actually match, and send in small batches within the daily quota the export sales manager sets.
+
+### Deliverability has dropped. What should we check first?
+
+When deliverability declines, IT first checks whether SPF, DKIM, and DMARC pass and whether the sending domain aligns with the authenticated domain. Next, look at the breakdown of bounce reasons in the dashboard and whether the spam complaint rate is near 0.1% or higher. Then check whether volume recently spiked or a new unvalidated list was used. Lower the daily send volume until the cause is found.

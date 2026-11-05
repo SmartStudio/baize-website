@@ -1,0 +1,67 @@
+---
+title: AI Drafts Sales Visit Notes. Who Checks Them Before They Enter the CRM?
+seoTitle: "AI Sales Visit Notes: Who Checks Them Before the CRM?"
+description: AI can draft sales visit notes. The rep who ran the deal checks each field before it enters the CRM, asks before recording, and keeps deal stage changes manual.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/sales-visit-notes-ai-crm-cover.png
+coverAlt: A small meeting table on a dark green base where two figures talk. A grey recorder on the table sends green sound waves into a grey agent module, which outputs a blank notes card with a copper pen on it. The card breaks into small blank field tiles that flow toward a grey CRM cabinet with an open drawer.
+sourceHash: '5d50d1589d9a'
+---
+
+AI can draft sales visit notes. Before the notes are formally written into the CRM, the sales rep who runs the deal checks and confirms each item. If the rep wants to record on site, the rep tells the customer before the visit starts and gets consent. The deal stage, amount, quote, and delivery date that AI extracts stay in a pending state until the rep checks them against what was actually said and releases them. AI may not advance a deal stage on its own or send follow-up emails to the customer directly. The sales manager spot-checks deal changes in the weekly meeting, and sales operations compares notes against field quality on a schedule.
+
+import noteFig from '../media/sales-visit-notes-ai-crm-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a microphone beside a figure raising one hand under a blank speech bubble, a blank draft page with small tiles breaking away, a figure with a pen checking tiles in front of a filing cabinet, and a magnifier over an open cabinet drawer" caption="Figure: Sales Visit Notes | CRM Entry" width="wide" border />
+
+## How to tell the customer in advance about recording a visit
+
+Before a sales rep turns on a recorder or a phone's recording function at the customer's site, the rep tells the customers present that the recording is only for writing up the visit record. Recording starts only after they clearly agree. Visit recordings and transcripts contain personal information, such as customer names and titles, contact details, and business conversation. Collection and use must follow the notice-and-consent requirements of the Personal Information Protection Law and the company's internal data management rules.
+
+If a customer is not comfortable with recording, the rep puts the recorder away and writes key points by hand. After leaving the customer's office, the rep reviews the conversation by voice dictation or text notes. Original audio recorded with consent must not stay on the rep's personal phone for a long time or be forwarded freely. A company can configure the tool to keep the original after upload and transcription for the period the company sets, then clean it up under policy. Playback access is open only to the rep on the deal and their direct manager.
+
+## Which deal fields the tool drafts and extracts
+
+Some tools can turn an on-site recording transcript, or the voice dictation and scattered text notes a rep makes after a visit, into a draft of the visit notes. They also extract matching fields for CRM entry. The common extracted items fall into these groups:
+
+- **Contacts and titles**: the names and departments of the customer contacts present that day, with their specific titles and their roles in the purchase decision.
+- **Customer needs and concerns**: the business pain points and acceptance expectations the customer stated clearly, plus concerns about switching cost, implementation time, or compliance.
+- **Competitors and current solution**: the solution the customer uses now, other suppliers it is talking to, and the points it compares, as mentioned during the visit.
+- **Budget and timeline**: the project approval status and budget range the customer shared, the expected go-live window, and internal procurement milestones.
+- **Next steps and deal suggestions**: the agreed dates for extra materials, a demo, or a return visit, plus the tool's suggested deal stage change.
+
+These items are first generated as a draft. The notes page can be configured to show an "AI-generated" label, so presales, delivery, and managers who read the record later can tell the original record from the machine's draft. When every customer visit record is accurate, other business tools that pull the customer's history later stay on track. For how to manage that underlying data, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+## What the rep checks before the record goes in
+
+The final confirmer for CRM entry is always the rep who made the visit that day. A presales consultant or sales assistant does not sign off on behalf of the responsible rep. A company can configure the CRM so that every field AI fills starts in a pending state. Only after the rep confirms each one does the data enter the deal record and count toward pipeline statistics.
+
+When checking the draft, the rep focuses on the line between what was said and what was inferred. An idea the customer mentioned in passing may get written up by AI as a firm need, following the context. The rep marks these machine inferences separately or deletes them, and keeps only facts the customer confirmed in person. For any verbal commitment or price figure from the customer, and any talk of discount terms or delivery lead time, the rep checks word by word against the transcript or on-site notes. This catches transcription errors such as homophones or a wrong unit on an amount.
+
+Moving a deal to the next stage or changing the expected contract value is always confirmed manually by the rep. AI is not given permission to change the deal stage on its own. If the tool drafts a post-meeting follow-up email to the customer from the visit notes, AI cannot send that outbound email directly either. For how to set approval steps before sending, see <NoteLink slug="crm-outbound-agent-send-approval">Which CRM Outbound Agent Emails Need Human Approval Before Sending?</NoteLink>.
+
+## How the sales manager and operations team spot-check on a schedule
+
+The process does not end when the rep confirms. In the weekly deal review meeting, the sales manager picks the deals whose stage changed or whose expected value went up that week and spot-checks them. The manager compares the visit notes, transcript excerpts, and the deal card to see whether the customer's own words support the current stage. This stops vague small talk from being counted as project progress.
+
+Sales operations or the CRM administrator pulls the stored records on a fixed cycle and checks whether the notes match the final CRM fields. The operations team counts which fields reps often rewrite heavily at confirmation, such as budget basis, decision-maker role, or competitor activity. Once they find the field types the tool gets wrong most often, the CRM administrator adjusts the extraction prompts, field descriptions, and validation rules on the confirmation screen, so reps redo less by hand.
+
+## Sales visit notes: FAQ
+
+### If the customer does not agree to recording, can the tool still write up the notes?
+
+Yes. The input changes to the rep's own debrief. The rep does not record at the customer's site. After the visit and leaving the customer's office, while memory is fresh, the rep records a short voice dictation on the phone or types a few key points. The tool turns them into a draft and extracts the fields. The rep still checks and confirms before the record goes in.
+
+### Can anyone in the company pull up and listen to the original visit recordings?
+
+Access is limited under the company's data permission rules. The recordings contain customer contacts' personal information and details of business talks. The tool can be configured so that only the rep on the deal, the direct sales manager, and authorized compliance reviewers can access them. The originals are cleaned up by rule once the company's retention period ends.
+
+### AI turned a customer's passing remark into purchase intent in the CRM entry. What now?
+
+At the CRM confirmation step, the rep checks the transcript and changes the purchase intent AI inflated back to what the customer actually said, or deletes the inference. Deal stage and expected value are filled strictly from the customer's clear statements plus the rep's judgment on site. If the same misjudgment keeps happening, the rep sends samples to the CRM administrator, who tightens the purchase intent criteria in the prompt.

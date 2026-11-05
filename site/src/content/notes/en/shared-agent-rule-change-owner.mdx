@@ -1,0 +1,63 @@
+---
+title: "Agent Rule Changes: Who Decides When Several Departments Share One?"
+seoTitle: "Shared Agent Rule Changes: Who Has the Final Say?"
+description: When several departments share one agent, one owner controls its prompts, thresholds, and tools. Each change gets approval, sample replay, and a saved version.
+lang: en
+pubDate: 2026-11-05
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/shared-agent-rule-change-owner-cover.png
+coverAlt: An open blank rulebook on a pedestal at the center of a dark green base. Green lines run from it to three small buildings, a factory, a warehouse, and an office. A figure in a hard hat holds a copper key in front of the pedestal, and a stack of blank pages with a curved return arrow floats above.
+sourceHash: '32bdbbd5813d'
+---
+
+When several departments share one agent, only one owner can make the final call on rule changes. This owner usually sits in the shared services center. Finance, purchasing, sales, and the other user departments submit requests and do not edit the live configuration themselves. Every change goes through a ticket and change approval. The business contacts of the affected departments sign off first. Changes that touch payments, approval routing, or outbound email also need internal control confirmation. Before release, the owner replays each department's historical samples and records a version number. When departments' requirements conflict and the configuration cannot be split, their common superior decides.
+
+import noteFig from '../media/shared-agent-rule-change-owner-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a figure behind a lectern holding a rulebook, a three-level tray with a document going into the top level, three hands putting green check marks on one sheet of paper, and a stack of pages with a copper return arrow and a green play button" caption="Figure: Agent Rule Changes | Change Approval" width="wide" border />
+
+## Who owns the rules of an agent several departments share
+
+When one agent inside a company handles finance document review, purchasing sourcing comparisons, and first-pass screening of sales contracts at the same time, its underlying prompts, decision thresholds, approval routing, and list of callable tools are all connected. The live rules of a shared agent like this can only have one named owner. The owner can sit in the shared services center and hold the release switch for the production environment. The IT team maintains the underlying environment and keeps account permissions separate.
+
+Each business department names one business contact who collects its team's change requests. If purchasing thinks supplier qualification checks are too strict, or sales wants a prompt for some routine contract terms relaxed, the department contact writes the request up as a ticket and sends it to the owner in the shared services center. The admin console can be configured to remove business departments' permission to edit live prompts and routing tables directly. If the owner changes roles or leaves, for how to prevent a gap in the handover, see <NoteLink slug="agent-owner-when-employee-leaves">Who Owns an AI Agent When the Employee Who Built It Leaves?</NoteLink>.
+
+## What a change approval ticket must state
+
+When the owner receives a change request from a business department, the owner first opens a formal change approval process. The ticket states what will change and why, lists the shared departments and upstream and downstream processes affected, and attaches a test plan and a rollback plan. A request with no scope of impact or no rollback plan goes back for more detail and does not enter review. To balance routine maintenance speed against risk control, the team can manage agent rule changes in tiers by the size of the change:
+
+- **Prompt wording tweaks**: changes only to polite phrasing or formatting in replies, with no change to decision logic or routing. These take a simplified approval and can be scheduled for release.
+- **Decision logic and permission changes**: any change to a decision threshold or an approval routing node, and any new interface or external tool permission for the agent, goes through full change approval.
+- **Emergency fixes for live faults**: when the production environment keeps throwing errors or blocking the wrong documents and losses must stop now, the owner may fix it first. The owner then files the full approval ticket and cause record within the time limit the company sets.
+
+For which parts of a change impact assessment can be checked with tools, and at which step a person still has to sign, see <NoteLink slug="it-change-management-agent-signoff">AI Agents in IT Change Review: Which Steps Still Need a Human Sign-Off?</NoteLink>.
+
+## How sign-off works across departments and control points
+
+When one department changes a shared rule, it may block another department's normal documents. When the owner reviews a change ticket and finds that the change affects another shared department's input format, blocking criteria, or processing time, the owner sends the ticket to those departments' business contacts to sign off one by one. If any one of them does not agree, the change cannot go to production.
+
+If the request touches a risk control point, such as the boundary of approval authority, the trigger conditions for payment instructions, or outbound email to customers and suppliers, business contact approval is not enough. The change approval flow also adds an internal control sign-off. When two business departments ask for changes in opposite directions, for example sales wants looser first-pass criteria for customer complaint refunds and finance wants stricter blocking, the owner first assesses whether the platform can split the configuration by department. If it cannot be split for technical or process reasons, the owner writes up both requests with a comparison of their impact and sends it to the departments' common superior to decide.
+
+## Replay testing before release, and rollback after an error
+
+Before a signed-off rule change goes to production, the owner runs a cross-department replay of historical samples in a test environment. The owner pulls a set of normal and abnormal documents from the real past records of finance, purchasing, and sales, and runs them again under the new rule. The owner compares the classification results, threshold triggers, and routing before and after the change, item by item. This confirms that the requesting department gets the expected result and that the other shared departments' existing normal documents are not caught by mistake.
+
+Some tools can give every rule release its own version number and save the full prompt text and threshold parameters of that version, together with a configuration snapshot of the routing table and tool permissions. On the day a new version takes live traffic, the owner notifies the contacts of all shared departments and states the effective time and what changed. If a department reports abnormal document flow after release, the owner does not rewrite prompts on the spot. The owner switches back to the previous stable configuration in the admin console, finds the root cause of the conflict offline, and then files a new ticket.
+
+## Agent rule changes: FAQ
+
+### A department only wants to add its own reference criteria to the agent. Do other departments need to know?
+
+It still goes through a ticket and assessment, and the other departments are notified after release. New reference criteria may change how other departments' documents are judged, or conflict with their terms. The owner replays each department's historical samples to confirm there is no interference, then sends the release notice as agreed.
+
+### The live rules suddenly misjudge a large number of documents in the middle of the night, and there is no time for sign-off. What now?
+
+Use the emergency change channel. Roll back to the previous stable configuration first, or turn off the faulty rule to stop the losses. Once business is back to normal during the day, the owner files the change ticket within the time the company sets. The ticket states what happened that night, the temporary action taken, and the plan for a permanent fix. The relevant contacts and internal control then complete the confirmation records.
+
+### If an agent rule change only adjusts one threshold, does it still need change approval?
+
+Yes. When a decision threshold changes, the line between documents that pass and documents sent to manual review moves too, and every department that shares the agent is affected. Under the tiers above, a threshold change goes through full change approval. The historical sample replay, sign-off from the affected departments' contacts, and version records cannot be skipped.

@@ -1,0 +1,65 @@
+---
+title: When AI Reviews Equipment Check Photos, Who Owns a Missed Defect?
+seoTitle: "AI Equipment Check Photos: Who Owns a Missed Defect?"
+description: When AI reviews equipment check photos and a defect slips through, the person who signed the check sheet still owns it. Sound, heat and vibration checks stay manual.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/equipment-spot-check-ai-photo-cover.png
+coverAlt: A grey industrial pump on a dark green base. A phone on a tripod photographs it inside a green viewfinder and sends the photo to a grey agent module on the right. A green dashed box marks a part behind the pump that the camera cannot see. A blank record board stands on the left and a copper wrench lies in front.
+sourceHash: '893adf0f74b8'
+---
+
+After a plant starts using AI to review equipment check photos, a missed defect is first classified by what happened on site. If the inspector never went to the machine, or submitted a photo of another machine or an old photo, the inspector is responsible. If the inspector took the photo as required, the AI did not spot the hazard, and the inspector did not catch it either, the person who signed the check sheet still answers for the items they ticked. The AI's photo result is only an aid. Listening, touch-temperature, and vibration items are still measured by hand and entered by a person. The equipment supervisor decides which items may use AI-assisted reading.
+
+import noteFig from '../media/equipment-spot-check-ai-photo-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right, joined by green arrows: a clipboard with five blank rows and five small icons, a phone whose viewfinder captures only half of a gear, a magnifier over a gear with a copper tag cracked in two, and a supervisor stamping papers at a desk beside an open padlock" caption="Figure: Equipment Checks | Check Sheet" width="wide" border />
+
+## How the check sheet puts the five fixed elements into practice
+
+Daily equipment checks in a workshop rely on five fixed elements that pin down each check. When a team runs the checks, every check sheet matches the machine's check standard line by line, with no gray areas:
+
+- **Fixed point**: mark the exact part to check on each machine, down to a specific valve, bearing housing, or gauge panel.
+- **Fixed standard**: state the pass criterion for each part, such as the normal fluid level range, pressure range, or required fastening state.
+- **Fixed interval**: set how often each part is checked, and separate every-shift items, routine patrol items, and periodic recheck items.
+- **Fixed person**: name who makes the round: the operator on shift, a dedicated inspector, or a maintenance technician.
+- **Fixed method**: state whether to look or listen, or to take a temperature with an infrared thermometer or measure vibration with a vibration meter.
+
+The operator or inspector takes the check sheet to the machine and ticks each item as normal or abnormal against the standard. They also enter the measured values, any abnormal signs they see, and what they did on the spot. To stop people from skipping machines or filling in the sheet from the duty room, the plant can configure its patrol software with a fixed route and order. The task for a machine appears only when the inspector scans the machine's nameplate code at that machine. If a check is overdue, the software reminds the inspector and the team leader.
+
+## What photo recognition can and cannot judge
+
+In daily checks, on-site photos serve as proof the inspector was there and help check the equipment's exterior. They do not replace the inspector standing at the machine and checking each item. Some tools can run several checks on an uploaded photo. They confirm the image shows the scanned machine and the specified part, and that the photo was newly taken on site this time. They read dial pressure gauges, level gauge scales, and control cabinet indicator lights. They compare this photo with the previous baseline photo to find oil leaks, shifted bolt torque marks, or missing guard parts. When an image is unclear, for example because of glare, obstruction, or a dirty gauge face, they flag it for review and pass it to a person.
+
+A photo tool cannot judge any hazard that does not show in the image. Noise from internal bearing wear has to be identified by ear or with a listening rod. Heat on a motor housing or terminal block has to be read with a temperature tool. Looseness or imbalance in high-speed parts has to be captured with a vibration meter. The inspector still measures these listening, touch, and measuring items on site and enters the values on the check sheet by hand. Once a check does catch an abnormal signal, for how to rank its urgency and decide whether to stop the machine, see <NoteLink slug="predictive-maintenance-alert-triage">Too Many Predictive Maintenance Alerts: Which Ones Mean Stop the Machine?</NoteLink>.
+
+## How to assign responsibility for a missed defect
+
+When a machine fails and a review traces it back to a missed daily check, the plant first pulls the scan records, the original image watermarks, and the check sheet signatures. It sorts the miss into one of two cases. In the first case, the inspector never went to the machine, photographed the identical machine next to it, or re-shot an old normal photo. This is falsification. The inspector is responsible and is handled under company rules. The patrol app can lock the upload path from the phone's photo album, force the live camera to open, and stamp the capture time and workshop location on the image. This closes the route for passing off old photos at the point of entry.
+
+In the second case, the inspector followed the route and took a clear photo. The AI did not mark the slight oil seepage or crack in the image, the inspector did not see it either, and ticked the item as passed. Here the inspector who signed or confirmed the check sheet still bears direct responsibility for the items they ticked. "The machine raised no alarm" does not excuse them. The equipment technician then archives the photos the machine misjudged for a separate review. The technician analyzes whether the lighting angle was wrong or the recognition rules missed a feature. For how visual recognition misses and human review fit together, see <NoteLink slug="ai-visual-inspection-spot-check">Who Owns a Missed Defect in AI Visual Inspection, and How Much Manual Checking Should Stay?</NoteLink>.
+
+## Who approves check standards and automated items
+
+The equipment supervisor sets and changes which parts each check sheet covers and where each pass line sits. Inspectors and software maintainers may not remove check items or loosen standards on their own. The equipment technician collects photo samples of false alarms and misses from the floor, plus inspector feedback. The technician first adjusts the photo angle requirements or recognition rules in a test environment, gathers enough validation results, and then submits them to the equipment supervisor for approval.
+
+To configure an exterior or gauge item so that AI prefills a pass suggestion, the item must first be validated against the plant's historical photos of normal and abnormal conditions. Once the recognition accuracy holds up, the equipment supervisor signs off and the item goes live. For any item the equipment supervisor has not confirmed, the tool only stores the photo. The result field stays blank until the inspector fills it in on site.
+
+## Equipment checks: FAQ
+
+### The workshop is dark or the equipment is oily, and the tool keeps flagging photos as unclear. What should we do?
+
+The inspector first wipes the gauge window and sight port, turns on a flashlight, and retakes the photo. The inspector reads the value on the spot and enters it by hand. If a part's mounting position keeps it from being photographed clearly over time, the inspector reports it to the equipment technician for an on-site look. The equipment supervisor decides whether to add lighting, change the photo angle, or return the item to a manual visual check.
+
+### Operators are in a hurry at shift change. Can they finish the rounds and fill in the records later in the break room?
+
+The patrol tool can require the inspector to scan, photograph, and enter values on the spot at the scheduled time. Once the inspector leaves the machine or the time window passes, that task can no longer be submitted. Recording at the machine avoids wrong gauge readings filled in from memory across several machines. When an abnormality is investigated later, the time watermark on the photo also matches the scan time.
+
+### Can every item on the check sheet switch to photos judged by AI?
+
+No. Items that need listening, touch, or measurement, such as abnormal noise, temperature rise, and vibration, can only be measured by a person on site. Even items visible to the eye, such as gauge readings and external leaks, must first be validated against the plant's historical photos to show the AI judges them accurately. Assisted reading is allowed only after the equipment supervisor confirms.
