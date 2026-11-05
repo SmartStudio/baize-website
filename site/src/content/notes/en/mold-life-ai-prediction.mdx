@@ -1,0 +1,67 @@
+---
+title: "AI Predicts Mold Life: Who Decides on an Early Mold Change?"
+description: Mold life prediction flags early wear from shot counts, dimensions and defects. The mold engineer decides on an early change. Shot intervals stay the floor.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/mold-life-ai-prediction-cover.png
+coverAlt: A grey injection mold split open in a small press frame on a dark green base, a tray of plastic parts beside it, a glowing green wear curve floating above the mold, a caliper on a part, and a hand resting a copper wrench next to the mold
+sourceHash: 'cc180bfc9a37'
+---
+
+On the shop floor, mold life prediction pulls together shot count records, dimensional inspection, defect trends and repair history. It warns in advance that a mold may start wearing before it reaches its planned interval. Whether to actually stop early and change the mold is decided by the mold engineer or the mold shop supervisor, after looking at the mold itself and recent dimensional data. Once a change is decided, production planning schedules the downtime window, and a quality engineer measures the first parts after the change and releases them. AI warnings do not replace the existing mold maintenance interval. When the shot count is reached, the mold comes off for maintenance as usual.
+
+import noteFig from '../media/mold-life-ai-prediction-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a mold with a counter dial and a small pile of defective parts, a caliper measuring a molded part next to the mold, a crane changing a mold beside a calendar slot with a green flag on the first part, and a mold on a repair bench next to a scrap bin with a copper tag, each with an English label board" caption="Figure: Mold Life Prediction | Mold Maintenance" width="wide" border />
+
+## Two shot count ledgers, and the extra data AI looks at
+
+Injection molding and stamping shops manage molds by shot count, the number of cycles. They usually keep two ledgers. One compares cumulative shots with the design life. The other compares shots since the last maintenance with the maintenance interval. When the count reaches a warning percentage, the system warns that maintenance is due soon or that the mold is near its design life. When the count reaches the maintenance interval or the design life, it says maintenance is required or the mold has reached end of life. Some mold management tools can be set to lock a mold once it reaches its cycle output, so it cannot be scheduled again until the using department arranges maintenance.
+
+A fixed shot count keeps the routine rhythm. It tends to miss a mold that wears early inside its maintenance interval. Besides shot count, the shop can add condition-based triggers. It monitors trends in scrap codes, product dimensional deviation, flash and short shots, along with statistical process control indicators, and uses them to schedule maintenance earlier.
+
+One study on injection molds trained a model on product dimensional measurements plus mold life cycle data. It separated three states: run-in, production and wear. Classification accuracy for the wear state was 88%. In that dataset, the most common maintenance reason was product dimensions going out of tolerance. A shop starting mold life prediction can connect its dimensional inspection records first.
+
+## What to verify first when a warning arrives
+
+When the model warns that a mold in production may wear early, the line does not stop and pull the mold right away. People first pull up the evidence attached to the warning and check it. The mold engineer or the mold shop supervisor reviews recent dimensional inspection records and statistical process control indicators. They check whether dimensional deviation, flash, short shots and scrap codes are really rising steadily. For how to triage a large number of warnings by level, see <NoteLink slug="predictive-maintenance-alert-triage">Too Many Predictive Maintenance Alerts: Which Ones Mean Stop the Machine?</NoteLink>.
+
+After checking the online data, the mold engineer or the mold shop supervisor also goes to the floor and inspects the actual mold, comparing parts in production with the mold's condition. The actual wear and the maintenance needed are settled by inspection on site. Nobody opens a mold removal order from the predicted status on the screen alone.
+
+If inspection on site confirms signs of wear, the early mold change or early maintenance starts. If the mold and recent dimensional data look normal on site and the prediction was wrong, the result of this check also goes back into the record for later model tuning.
+
+## Who decides on an early change, and who schedules the window
+
+Once inspection on site confirms that the mold is wearing earlier than planned, the machine operator or the model warning alone does not decide when to stop and change the mold, or whether to release production afterward. Four roles split the work.
+
+- **The mold engineer or mold shop supervisor decides**: based on the inspection on site and recent dimensional data, they decide whether to change the mold early or do maintenance early.
+- **Production planning schedules the change window**: after the early change is confirmed, planning sets the specific window based on batches in production and the machine schedule, so an unplanned stop does not disrupt deliveries.
+- **The quality engineer confirms first-batch dimensions**: when the changed or maintained mold goes back on the machine, the first batch of parts goes to the quality engineer for dimensional inspection. Continuous production is released only after the parts pass.
+- **The shot count limit stays as the floor**: AI warnings do not replace the existing shot count limit. Even if the model never flags a problem, the mold comes off for maintenance when shots since the last maintenance reach the set interval.
+
+## Repair or scrap
+
+After the mold comes off and is taken apart for inspection, the actual wear, the specific maintenance, and whether it goes to repair or scrap are all decided by inspection on site. Normal wear gets standard mold maintenance. If the parts produced no longer meet quality requirements, a mold repair notice is issued and the mold goes to repair.
+
+The wear cause and the rework the mold repair technician identifies on site go into the repair history. For how veteran technicians' experience gets into work order records, see <NoteLink slug="maintenance-work-order-ai-diagnosis">AI Equipment Fault Diagnosis: Getting Veteran Technicians' Know-How into Work Orders</NoteLink>. After repair, the mold's service life is reassessed first. The mold goes back into use only after it is confirmed usable.
+
+If inspection confirms that repair cannot restore the mold to quality requirements, or its usage and past maintenance and repair records show it should not be used further, the technical department fills in a scrap form. The mold is scrapped after the supervisor approves.
+
+## Mold life prediction: FAQ
+
+### AI has not flagged any wear risk. Can maintenance wait a little after the mold reaches the set shot count?
+
+No. Cumulative shots against design life and shots since maintenance against the maintenance interval are the base line of defense. Some mold management tools are also set to lock a mold after it reaches its cycle output so it cannot be scheduled. AI warnings do not replace the shot count limit. When the count is reached, maintenance happens.
+
+### Inspection on site shows the mold is not worn. What happens to the wrong warning?
+
+The mold engineer writes the conclusion from the inspection on site and the check of recent dimensional data back into the record, and marks that this warning did not match actual wear. Only when both correct and incorrect predictions have confirmed records on file can the model be tuned further against measured results.
+
+### Mold maintenance already runs on shot count. Do we still need AI prediction?
+
+Maintenance by shot count interval is the floor. When the count is reached, the mold stops for maintenance. AI prediction also looks at dimensional deviation, flash, short shots and statistical process control trends, to warn that a mold may wear before its planned interval. After a warning, the mold engineer inspects the mold on site to confirm. Wrong predictions are also recorded and used to tune the model.

@@ -1,0 +1,63 @@
+---
+title: "AI Grades Returns at Inspection: Who Approves Resale?"
+description: AI judges returns from photos, checks expiry and batch, and suggests a grade. Staff test function, and set roles approve resale, repair or scrap by grade.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/returns-inspection-ai-grading-cover.png
+coverAlt: An opened grey return carton on an inspection bench on a dark green base, a camera on a robotic arm photographing the item, a row of four small bins with one glowing green, and a hand holding a copper tag
+sourceHash: '223bb869de05'
+---
+
+In returns inspection, AI can judge appearance from photos, check expiry dates and batches, and suggest a grade. People run the function tests and decide whether an item can be resold. For grades A and B, the inspector on site sets the grade and the inspection team lead spot-checks. Packages where AI and the inspector disagree go to a dispute area, and the team lead decides. For grade C, the repair staff and the merchandise owner work out the cost and decide whether to repair. For grade D, the warehouse manager approves the scrap and finance writes it off. No return goes into sellable stock before inspection, and no item with a safety or compliance risk goes back on the shelf.
+
+import noteFig from '../media/returns-inspection-ai-grading-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: an opened carton under a magnifier with a calendar tag, four small bins shading from green to grey, a hand holding a pen over a sorting tray under a copper stamp, and a camera beside a binder with green circular arrows, each with an English label board" caption="Figure: Returns Inspection | Return Grading" width="wide" border />
+
+## The fixed inspection order, and which steps AI can take
+
+When an e-commerce warehouse opens return packages to grade them, the floor follows a fixed check order: appearance first, then function, then packaging, and expiry and batch last. The fixed order prevents missed checks. For example, a near-expiry item does not go back on the shelf as grade A even if its appearance is perfect and its original packaging is intact, because it fails the expiry check. Any item with power gets an extra power-on test, because appearance does not reveal problems such as a faulty motor.
+
+Within this sequence, some tools can take over photo and label comparison. They read the product photos, packaging photos and label information taken at the workstation, make a first call on visible damage, check expiry and batch, and suggest a grade. Function tests such as the power-on test are still done by the inspector on site. The inspector can check an appearance grade against the item on the spot, so this step suits tool assistance first. For why to start with work whose result can be checked on the spot, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. The grading standard directly affects losses and reputation. Grading too strictly treats good goods as bad. Grading too loosely puts bad goods back on the shelf, which brings complaints and repeat returns.
+
+## The four grades and where the goods go
+
+After the appearance, function, packaging, expiry and batch checks, a common practice in e-commerce warehouses is to sort returned items into four grades. Each grade routes goods to a channel: normal restocking, repackaging or discount, repair and reinspection, or scrap. This keeps returns in different conditions from being mixed together.
+
+- **Grade A**: no visible damage, works normally, original packaging intact and expiry normal. After confirmation, the item goes straight back on the shelf into sellable stock.
+- **Grade B**: minor flaws but still sellable. The item is repackaged or discounted before restocking, and gets a separate marking in its bin location and in the system.
+- **Grade C**: a function problem that can be repaired. The item goes to repair and can be sold only after it passes reinspection. Items that cannot be repaired move to grade D.
+- **Grade D**: severe damage, water damage, expired, or a repair cost higher than the item's value. The item goes straight to scrap, is photographed on site as evidence, and does not return to sellable stock.
+
+Beyond the four-way routing, responsibilities and red lines need to be clear. Items confirmed to have a factory manufacturing defect or a fault covered by warranty are pulled out separately and returned to the supplier. Items damaged by the customer, or carrying a safety or compliance risk, are never resold. For which numbers the warehouse manager should watch once grade A items re-enter picking, see <NoteLink slug="warehouse-picking-ai-wave-planning">AI Plans Picking Waves: Which Numbers Should Supervisors Watch?</NoteLink>.
+
+## Who approves resale, and how disputed items are decided
+
+After the tool suggests a grade and the inspector finishes the function test, the decision on resale follows the grade. Routine grades A and B are set by the inspector, and the inspection team lead spot-checks on site according to procedure. For grade C items waiting for repair, the repair staff and the merchandise owner first work out the numbers together: whether the repaired item will sell, and whether the labor and parts are worth it. They repair only if it pays. Otherwise the item goes to scrap. For grade D scrap, the warehouse manager approves, and finance writes it off under the scrap process.
+
+On the floor, two inspectors often disagree, and the grade AI suggests often differs from the inspector's hands-on result. These disputed items are not forced to a decision at the workstation. They go to a dispute holding area first. Every day the inspection team lead reviews the dispute area together with experienced staff. They take two photos of each item, one of the whole item and one of the problem spot, set the grade, and the reviewer signs.
+
+## Per-order evidence records, and reviewing the grading rules
+
+The warehouse process can be set to lock the restocking entry for any package without a completed returns inspection record, so uninspected goods do not enter sellable stock. For every order inspected, the system keeps the full record: inspection photos, product serial number or batch, the specific tests, who graded it, and when. Later, for a supplier return or exchange, a finance scrap write-off, or a customer complaint, the original record can be pulled up by order.
+
+The daily dispute review records and buyers' repeat return orders build up into material for reviewing AI's grading standard. The warehouse manager and the inspection team lead regularly pull the items where AI's suggested grade differs from the team lead's signed review, and trace orders that were restocked, sold, and returned again. If the tool keeps grading a certain flaw too loosely, putting it back as grade A and causing repeat returns, tighten the appearance criteria. If the tool grades sellable minor flaws too strictly and reviewers keep changing them back to grade B, relax the recognition rules and align the manual spot-check standard at the same time.
+
+## Returns inspection: FAQ
+
+### A near-expiry item has perfect appearance and original packaging. Can it go back on the shelf as grade A?
+
+No. Returns inspection follows a fixed order: appearance, then function, then packaging, then expiry and batch. An item is grade A only if it passes all of them. A near-expiry item does not go back as grade A however good it looks, and uninspected goods also stay out of sellable stock.
+
+### Are all returns with function faults repaired in-house or scrapped?
+
+First find the source of the fault, then route the item. Items found to have a factory manufacturing defect or a fault still under warranty can be batched and returned to the supplier. Items damaged by the customer or carrying a safety or compliance risk are not resold. For the remaining repairable items, the repair staff and the merchandise owner assess sales prospects against labor and parts cost. They repair only if it pays. Otherwise the item moves to grade D for scrap.
+
+### AI and the inspector grade a return differently. Whose call stands?
+
+Do not set the grade on the spot. Put the item in the dispute area. Every day the inspection team lead reviews disputed items with experienced staff, takes two photos on site, one of the whole item and one of the problem spot, and the reviewer signs the final grade. The disagreement records are kept, so the team can review whether to adjust the AI rules or align the manual standard.

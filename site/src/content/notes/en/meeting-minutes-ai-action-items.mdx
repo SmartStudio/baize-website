@@ -1,0 +1,63 @@
+---
+title: "AI Sends the Meeting Minutes: Who Owns a Wrong Action Item?"
+description: AI meeting minutes should not write action items straight into the task system. The host confirms a preview grouped by owner, and errors trace to that step.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/meeting-minutes-ai-action-items-cover.png
+coverAlt: A grey meeting table with chairs and a microphone on a dark green base, a blank minutes sheet floating up and splitting into glowing green task cards that fly toward a grey envelope, and a hand ticking a card with a copper pen
+sourceHash: 'a60c1146edf1'
+---
+
+AI meeting minutes can be managed in two separate parts: drafting and distribution. The tool drafts the minutes automatically. The meeting host confirms the action items before they are sent or written into the task system. If an action item is wrong, responsibility follows the person who confirmed it. If the host confirmed it before it went out, the host sends a correction and fixes the assignment. If it went out automatically without confirmation, the workflow setup is at fault, and the person who set up that workflow changes the rules.
+
+import noteFig from '../media/meeting-minutes-ai-action-items-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a tray of cards with four kinds of tabs, a finger pointing at a preview card with a green check, two duplicate cards merged into one and placed in an envelope, and a card with a copper stamp under an undo arrow, each with an English label board" caption="Figure: AI Meeting Minutes | Action Items" width="wide" border />
+
+## Which parts of the minutes can become action items
+
+Meeting discussion is messy, and the transcript mixes all kinds of statements. Before extracting action items, sort the content into four types: confirmed facts, formal decisions, opinions under discussion, and open questions. Only actions that a formal decision clearly calls for become action items. Someone saying "we could consider it" is an opinion under discussion, not a decision. A colleague mentioning a business direction in passing is not an assignment unless it was settled in the meeting. Writing unsettled discussion as action items leaves a batch of tasks nobody owns after the meeting.
+
+Each action item states the task, owner, due date and deliverable. Some tools can extract these from the recording transcript, and the extraction rules can be set not to guess. If the transcript does not name who takes a task, the owner field says "unclaimed". If no date was set in the meeting, the due date field says "to be confirmed". The tool must not assign a task to whoever said the sentence, or to whoever sounded eager when replying.
+
+## What the host checks before action items go out
+
+Extracted action items are not written silently into the task system. The tool first generates an import preview, grouped by owner, and sends it to the meeting host or organizer to confirm. If the team has an administrative or project assistant, the assistant can check the preview first and then pass it to the host. Any item missing an owner or a due date goes to a "needs details" column. It is held and no task is created until the host fills in the owner and date.
+
+When the host or project assistant reviews the import preview, key numbers, owner assignments and negative statements must be checked sentence by sentence against the transcript, not confirmed from the auto summary. With phrases like "we won't do it" or "hold off for now", one missed negative word flips the meaning of the action item.
+
+## Splitting the task system write from the group notification
+
+Only after the host confirms the import preview does the tool write the approved items into the task system. To stop repeated runs from creating duplicate tasks, the write logic can be set to use "meeting ID plus item number" as a dedupe key. After writing, it returns four lists for the host or project assistant to check: succeeded, failed, skipped, and duplicate.
+
+- **Succeeded list**: items with owner and due date complete, written into the task system and assigned to the right owner.
+- **Failed list**: items that could not be written into the task system, left for the administrative or project assistant to investigate.
+- **Skipped list**: items not written this time, for example those missing an owner or due date and still in the "needs details" column.
+- **Duplicate list**: items that the "meeting ID plus item number" check found already created earlier, stopped this time so they are not created again.
+
+Besides task entries, the notification sent to attendees after the meeting also starts as a draft. Before sending, the host or assistant confirms the recipients and visibility. The notification body does not include the meeting recording download link, verbatim internal disagreements, or personal responsibility that has not been confirmed. For whether an agent needs approval before sending the follow-up notice, see <NoteLink slug="agent-read-mail-vs-calendar-send">AI Agent Permissions: Reading Email Is OK. Does Sending Need Approval?</NoteLink>.
+
+## How to correct a wrong action item and assign responsibility
+
+Once a wrong action item has gone out or been written into the task system, the host or project assistant first sends a correction to the original recipients. It states clearly the wrong task, the wrong owner, or the "we won't do it" decision. Next they withdraw the wrong task in the task system or reassign it to the real owner. Last, they record which step failed: the transcript was not checked, the preview was misread, or the workflow had no confirmation step at all. For how to withdraw a wrong task and assign responsibility, see <NoteLink slug="agent-rollback-and-accountability">AI Agent Rollback: How to Undo a Bad Action and Who Is Accountable</NoteLink>.
+
+Who owns a wrong action item depends on whether it went through the confirmation step. If the host confirmed the import preview and the notification draft and the error still went out, responsibility follows the confirmer, and the host sends the correction and adjusts the task. If the minutes were generated and the action items were written into the task system or sent to the group without the host's confirmation, the problem is in the workflow setup. The person who set up that workflow is responsible for adding the two steps: preview confirmation and draft review.
+
+## AI meeting minutes: FAQ
+
+### The transcript heard "hold off for now" as "go ahead now". How do we prevent that?
+
+Check the transcript during the preview step. For any item that involves key numbers, a named owner, or negative statements such as "we won't do it" or "hold off for now", the host and project assistant do not rely on the extracted sentence when confirming the import preview. They click back to the original transcript sentence, check the context, and release the item to the task system only after it checks out.
+
+### Can the meeting recording link and the points of disagreement go into the group notification?
+
+No. Before the notification draft goes out, check the recipients and visibility. Remove the recording download link, verbatim internal disagreements from the meeting, and any personal responsibility not yet settled. The notification keeps only confirmed formal decisions and approved action items.
+
+### Nobody claimed an action item. Can AI assign it to the person who spoke?
+
+The tool must not guess from who spoke or how they sounded. For action items without an owner settled in the recording, the owner field is always "unclaimed", and the item goes to the "needs details" column of the import preview without creating a task. The meeting host settles the owner and due date after the meeting, and the item is written into the task system once it is complete and confirmed.

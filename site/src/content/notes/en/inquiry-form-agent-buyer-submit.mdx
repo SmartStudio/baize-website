@@ -1,0 +1,61 @@
+---
+title: "Agent-Filled Inquiry Forms: Who Decides If a Lead Is Real?"
+description: Rebuild inquiry forms for buyer agents with separate fields, an agent flag and the principal's work email. Verify by email before sales sends a quote.
+lang: en
+pubDate: 2026-11-05
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/inquiry-form-agent-buyer-submit-cover.png
+coverAlt: A small grey robot on a dark green base filling glowing green fields on a blank web form, a grey envelope flying toward a grey sales desk, and a hand holding a copper magnifier over the envelope
+sourceHash: 'd7b6782165cd'
+---
+
+An inquiry form can be rebuilt, following web standards, into a structure that agents can fill in accurately. When an agent inquiry arrives, sales makes a first call on whether it is genuine, and the sales manager decides the unclear ones. Automated submissions never get a quote straight away. The website owner splits specification, quantity, delivery date, trade terms and destination port into separate fields, and adds a checkbox for "filled in by an agent on my behalf" plus fields for the principal's name and work email. Sales first checks whether the email domain matches the company name and whether the purchase request is specific. Sales then sends a confirmation email to the principal, and the inquiry moves to formal follow-up only after a real person replies.
+
+import noteFig from '../media/inquiry-form-agent-buyer-submit-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a robot and a person each holding a key card, a form split into separate green field blocks, an envelope with a green check under a magnifier, and a branching route with a location pin and a small chart, each with an English label board" caption="Figure: Inquiry Form | Agent Inquiries" width="wide" border />
+
+## What goes wrong when buyer agents fill in forms
+
+Once an export seller has turned its product pages into parameter tables that machines can read, the next thing it meets is buyers sending tools to fill in and submit its forms. For how a landing page can give buyer tools extractable facts, see <NoteLink slug="agent-buyer-b2b-landing-page">How to Write a B2B Landing Page for AI Agent Buyers</NoteLink>. At the form step, if the page has only one general message box, or the input fields lack clear labels, the filling tool may put data in the wrong field. Or it may leave only a vague price question and skip specification, quantity and destination port.
+
+The other problem is unclear identity and authority. In business-to-business purchasing, an agent filling in a form usually acts through one person on behalf of one company. The seller needs to know two things: which company the agent represents, and which person assigned it. Even if sales looks up the company name and finds that the company exists, that does not prove the person behind the form may make inquiries for that company. Even if both the person's name and the company check out, confirmed identity is not purchasing authority. The seller's website still decides what an outside agent may do on it and whether a submission counts as a valid inquiry.
+
+## How to change the inquiry form's fields and labels
+
+For filling tools to fill accurately and for the seller to screen easily, the marketing or website owner needs to standardize both the page labels and the business fields. On the front end, build the form with standard HTML elements. Give each input a clear label element and a name attribute, and put a technical contact email next to the form. Use the field names from the HTML standard's autocomplete attribute: organization for company name, email for email, tel for phone. To mark work contact details, add the work prefix, for example work email for a company work email.
+
+When designing business fields, do not put every purchasing condition into one large notes box. Split the purchasing details and the principal's details into separate fields.
+
+- **Purchasing detail fields**: make specification, quantity, delivery date, trade terms and destination port separate fields, so the submitter fills in each condition of a real order.
+- **Agent checkbox and principal fields**: add a dedicated checkbox for "filled in by an agent on my behalf", with fields for the principal's name and work email, so the person who assigned the agent is visible.
+
+## How to check whether an inquiry is genuine, and who decides
+
+After the form is updated, agent inquiries that arrive in the back end do not get a reply on sight. They are verified first, then passed to follow-up. Sales first checks whether the information in the form is consistent. Sales checks that the domain of the principal's work email matches the company name in the form, and that the purchase request is specific down to specification and quantity. If the email domain does not match the company, or specification and quantity are blank, sales marks the inquiry as pending verification and it does not go to quoting.
+
+If the fields look like a real order, the next step is email confirmation with a real person. The workflow can be set to send a confirmation email to the principal's work email, asking the principal to reply and confirm the inquiry. Until a real person replies, automated submissions never get a direct quote. Sales owns the first call on whether an inquiry is genuine. Complex or unclear cases go to the sales manager to decide.
+
+## Record the source separately and review against closed deals
+
+To see how many real opportunities agent-filled forms bring in, marketing and sales record the source clearly in the back end. Every lead with the agent checkbox ticked gets its own source value, "agent-filled", kept apart from ordinary web messages, so the team can later see how these agent inquiries convert. For how to record sources when inquiries arrive through several channels, see <NoteLink slug="export-inquiry-whatsapp-email-attribution">How to Record Lead Source When AI Sorts WhatsApp and Email Inquiries</NoteLink>.
+
+With "agent-filled" tracked separately, the sales manager and the website owner pull these records on a schedule. They trace back through confirmation email replies, first-call pass rates and actual closed deals. If most submissions missing destination port or trade terms go nowhere, make those fields required. If agent submissions without a company email domain almost never get a reply, tighten the form rules. The seller keeps adjusting, against deal results, whether to allow automated submissions and how to block spam inquiries.
+
+## Inquiry forms: FAQ
+
+### The buyer's company turns out to be real. Can we send a quote straight to the agent that submitted the inquiry?
+
+No direct quote. Confirming the company exists does not prove that the person running the tool may make inquiries for the company. Matching identity is not company authorization. For automated submissions, the seller first sends a confirmation email to the principal's work email. After a real person replies and the details check out, sales follows up with a quote.
+
+### What names should the form's autocomplete attributes use?
+
+Use the autofill field names from the HTML standard. Company name is organization, email address is email, and phone is tel. If you ask for work contact details, add the work prefix to the field name, for example work email for the company email. Use these together with clear label elements and name attributes.
+
+### Should agent inquiries be blocked outright?
+
+There is no need to block all of them. The seller can require the agent checkbox and the principal's name and work email on the inquiry form. When an agent inquiry arrives, sales checks the email domain and the specification and quantity, then sends a confirmation email and waits for a real person to reply. Whether to block, and which kinds to block, is set by clear rules on the seller's own website and adjusted on a schedule against actual deal results.
