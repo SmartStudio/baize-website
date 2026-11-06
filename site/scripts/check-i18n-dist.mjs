@@ -26,7 +26,7 @@ export function visibleCjk(html) {
 /** 站内 href → dist 里的相对文件路径;不以 base 开头的站内绝对路径返回 null。 */
 export function hrefTarget(href, base) {
   if (!href.startsWith(base)) return null;
-  const rest = href.slice(base.length).replace(/[?#].*$/, '');
+  const rest = href.slice(base.length).split(/[?#]/, 1)[0];
   if (rest === '' || rest.endsWith('/')) return `${rest}index.html`;
   const last = rest.split('/').pop();
   return last.includes('.') ? rest : `${rest}.html`;
@@ -67,6 +67,16 @@ const alternateFiles = (html) =>
     .filter((tag) => attr(tag, 'hreflang'))
     .map((tag) => hrefTarget(new URL(attr(tag, 'href')).pathname, '/'));
 
+function sitemapAlternatesXml(xml) {
+  const urls = new Map();
+  for (const m of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+    const loc = m[1].match(/<loc>([^<]+)<\/loc>/)?.[1];
+    if (!loc) continue;
+    urls.set(loc, [...m[1].matchAll(/<xhtml:link\b([^>]*)\/>/g)].map((x) => x[1]));
+  }
+  return urls;
+}
+
 function apiNoteSlugs(notesEnDir) {
   if (!existsSync(notesEnDir)) return new Set();
   return new Set(
@@ -80,7 +90,7 @@ function apiNoteSlugs(notesEnDir) {
 /** href → 站内绝对路径(去掉 query/hash);外站、协议相对、mailto 等返回 null。同源的绝对 URL 也算站内。 */
 export function sitePath(href, origin) {
   if (href.startsWith('//')) return null;
-  if (href.startsWith('/')) return href.replace(/[?#].*$/, '');
+  if (href.startsWith('/')) return href.split(/[?#]/, 1)[0];
   if (!origin || !/^https?:\/\//i.test(href)) return null;
   try {
     const u = new URL(href);
@@ -126,10 +136,46 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir, origin = 'htt
     }
   }
 
-  // sitemap 里的每个地址都要在产物里有页面,不能让搜索引擎拿到 404。
+  // sitemap-index 也声明正式域地址，不能被 GH 构建的 base 再拼一层。
+  if (exists('sitemap-index.xml')) {
+    for (const m of read('sitemap-index.xml').matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      const url = new URL(m[1]);
+      if (url.origin !== new URL(origin).origin || url.pathname !== '/sitemap-0.xml') {
+        add(`sitemap 索引地址不是正式域: ${m[1]}`, 'sitemap-index.xml');
+      }
+    }
+  }
+
+  for (const sm of walk(dist).map((p) => relative(dist, p)).filter((p) => /^sitemap-\d+\.xml$/.test(p))) {
+    for (const [src, tags] of sitemapAlternatesXml(read(sm))) {
+      const links = tags.map((tag) => ({ lang: attr(tag, 'hreflang'), url: attr(tag, 'href') }));
+      for (const link of links) {
+        const pair = links.find((x) => x.lang !== link.lang && x.lang !== 'x-default');
+        if (!pair) add('sitemap 缺双向语言链接: ' + src, sm);
+        if (!link.url.startsWith(origin)) add('sitemap 语言地址不是正式域: ' + link.url, sm);
+        if (base !== '/' && new URL(link.url).pathname.startsWith(base)) add('sitemap 语言地址含镜像 base: ' + link.url, sm);
+      }
+      const en = links.find((x) => x.lang === 'en')?.url;
+      const zh = links.find((x) => x.lang === 'zh-Hans')?.url;
+      const xd = links.find((x) => x.lang === 'x-default')?.url;
+      if (src.startsWith(origin + '/en/')) {
+        if (en !== src || !zh || zh.startsWith(origin + '/en/') || xd !== zh) add('sitemap 英文语言配对错误: ' + src, sm);
+      } else if (src.startsWith(origin + '/notes/')) {
+        if (!en || !en.startsWith(origin + '/en/') || zh !== src || xd !== zh) add('sitemap 中文语言配对错误: ' + src, sm);
+      }
+    }
+  }
+
+  // sitemap 对外仍是正式域地址；本地 dist 的页面文件则按 GH base 映射。
   for (const sm of walk(dist).map((p) => relative(dist, p)).filter((p) => /^sitemap-\d+\.xml$/.test(p))) {
     for (const m of read(sm).matchAll(/<loc>([^<]+)<\/loc>/g)) {
-      const target = hrefTarget(new URL(m[1]).pathname, base);
+      const url = new URL(m[1]);
+      if (url.origin !== new URL(origin).origin) {
+        add(`sitemap 地址不是正式域: ${m[1]}`, sm);
+        continue;
+      }
+      if (base !== '/' && url.pathname.startsWith(base)) add('sitemap 地址含镜像 base: ' + m[1], sm);
+      const target = hrefTarget(new URL(base, url.origin).pathname + url.pathname.slice(1), base);
       if (target === null) add(`sitemap 地址不在 base ${base} 下: ${m[1]}`, sm);
       else if (!exists(target)) add(`sitemap 地址没有页面: ${m[1]}`, sm);
     }
@@ -151,7 +197,7 @@ export function checkDist(dist, base, { redirectsFile, notesEnDir, origin = 'htt
       if (href.startsWith('//')) continue;
       const target = hrefTarget(href, base);
       if (target === null) add(`站内链接缺 base 前缀 ${base}: ${href}`, file);
-      else if (!exists(target)) add(`链接目标不存在: ${href}`, file);
+      else if (!exists(target) && !(base !== '/' && exists(href.replace(new RegExp('^' + base), '/')))) add(`链接目标不存在: ${href}`, file);
     }
   }
 

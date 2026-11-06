@@ -1,7 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import * as fs from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import * as path from 'node:path';
 import { visibleCjk, hrefTarget, imgsMissingAlt, sitePath, checkDist } from './check-i18n-dist.mjs';
 
 describe('visibleCjk', () => {
@@ -90,15 +92,73 @@ describe('checkDist: 中文页的 /en/ 链接与 sitemap', () => {
     expect(m.some((x) => x.includes('/en/notes/"') || x.endsWith(': /en/notes/'))).toBe(false);
   });
 
-  it('子路径 base 下:缺前缀的 /en/ 链接和不在 base 下的 sitemap 地址要报', () => {
+  it('子路径 base 下:sitemap 缺 base 时映射到 GH dist', () => {
     const dist = make({
       'notes/a/index.html': page('<a href="/en/notes/a/">EN</a><a href="/baize-website/en/notes/">ok</a>'),
+      'notes/ok/index.html': page('ok'),
       'en/notes/index.html': '<html lang="en"><body>ok</body></html>',
-      'sitemap-0.xml': '<urlset><url><loc>https://fxai.ai/baize-website/notes/a/</loc></url><url><loc>https://fxai.ai/en/notes/zz/</loc></url></urlset>',
+      'sitemap-0.xml': '<urlset><url><loc>https://fxai.ai/en/notes/zz/</loc></url></urlset>',
     });
     const m = msgs(dist, '/baize-website/');
     expect(m).toContain('站内链接缺 base 前缀 /baize-website/: /en/notes/a/');
-    expect(m).toContain('sitemap 地址不在 base /baize-website/ 下: https://fxai.ai/en/notes/zz/');
+    expect(m).toContain('sitemap 地址没有页面: https://fxai.ai/en/notes/zz/');
     expect(m.filter((x) => x.includes('/baize-website/en/notes/'))).toEqual([]);
+  });
+});
+import { canonicalSitemapUrl, canonicalSitemapIndex } from '../src/lib/sitemap-urls.mjs';
+
+describe('GH 镜像 sitemap 正式地址', () => {
+  const site = 'https://fxai.ai';
+  const base = '/baize-website/';
+  const d = fs.mkdtempSync(path.join(tmpdir(), 'gh-sitemap-'));
+  const msgs = (dist, base) => checkDist(dist, base, { notesEnDir: '/nonexistent' }).map((e) => e.msg);
+  it.each([
+    ['https://fxai.ai/baize-website/notes/phishing-email-ai-misblock/', 'https://fxai.ai/notes/phishing-email-ai-misblock/'],
+    ['https://fxai.ai/baize-website/en/notes/factory-power-anomaly-ai-alert/', 'https://fxai.ai/en/notes/factory-power-anomaly-ai-alert/'],
+    ['https://fxai.ai/baize-website/', 'https://fxai.ai/'],
+    ['https://fxai.ai/baize-website', 'https://fxai.ai/'],
+    ['https://fxai.ai/notes/official-document-ai-draft/', 'https://fxai.ai/notes/official-document-ai-draft/'],
+    ['https://others.example/baize-website/notes/official-document-ai-draft/', 'https://others.example/baize-website/notes/official-document-ai-draft/'],
+    ['https://fxai.ai/baize-website-more/x/', 'https://fxai.ai/baize-website-more/x/'],
+  ])('去掉实际 base 前缀：%s', (input, expected) => {
+    expect(canonicalSitemapUrl(input, site, base)).toBe(expected);
+  });
+
+  it('保留根路径和查询，CF defaults 不变', () => {
+    const input = 'https://fxai.ai/notes/social-comment-ai-reply/?ref=mirror';
+    expect(canonicalSitemapUrl(input, site, '/')).toBe(input);
+  });
+
+  it('校验器把正式 URL 映射回 GH dist，并拒绝镜像 base URL', () => {
+    const d = mkdtempSync(join(tmpdir(), 'gh-sitemap-'));
+    fs.mkdirSync(join(d, 'en', 'notes', 'ok'), { recursive: true });
+    fs.mkdirSync(join(d, 'notes', 'ok'), { recursive: true });
+    fs.mkdirSync(join(d, 'en', 'notes'), { recursive: true });
+    for (const f of []) {
+      fs.writeFileSync(join(d, f), '<html lang="en"><head><link rel="alternate" hreflang="zh-Hans" href="https://fxai.ai/" /><link rel="alternate" hreflang="en" href="https://fxai.ai/en/notes/ok/" /></head><body></body></html>');
+    }
+    for (const [f, zh, en] of [['index.html','/','/en/notes/'],['en/notes/index.html','/','/en/notes/'],['notes/ok/index.html','/notes/ok/','/en/notes/ok/'],['en/notes/ok/index.html','/notes/ok/','/en/notes/ok/']]) {
+      fs.writeFileSync(join(d,f),`<html><head><link rel="alternate" hreflang="zh-Hans" href="https://fxai.ai${zh}"/><link rel="alternate" hreflang="en" href="https://fxai.ai${en}"/></head></html>`);
+    }
+    fs.writeFileSync(join(d, 'sitemap-index.xml'), '<loc>https://fxai.ai/sitemap-0.xml</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod>');
+    fs.writeFileSync(join(d, 'sitemap-0.xml'), '<urlset><url><loc>https://fxai.ai/en/notes/ok/</loc><xhtml:link rel="alternate" hreflang="en" href="https://fxai.ai/en/notes/ok/"/><xhtml:link rel="alternate" hreflang="zh-Hans" href="https://fxai.ai/notes/ok/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://fxai.ai/notes/ok/"/></url></urlset>');
+    expect(msgs(d, '/baize-website/')).toEqual([]);
+    fs.writeFileSync(join(d, 'sitemap-0.xml'), '<urlset><url><loc>https://fxai.ai/baize-website/notes/phishing-email-ai-misblock/</loc></url></urlset>');
+    expect(msgs(d, '/baize-website/')).toContain('sitemap 地址含镜像 base: https://fxai.ai/baize-website/notes/phishing-email-ai-misblock/');
+  });
+
+  it('镜像索引拒绝 baize-website 而 CF 索引保留最后日期', () => {
+    const d = mkdtempSync(join(tmpdir(), 'gh-index-'));
+    fs.mkdirSync(d, { recursive: true });
+    fs.writeFileSync(join(d, 'sitemap-index.xml'), '<loc>https://fxai.ai/baize-website/sitemap-0.xml</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod>');
+    expect(msgs(d, '/baize-website/')).toContain('sitemap 索引地址不是正式域: https://fxai.ai/baize-website/sitemap-0.xml');
+    fs.writeFileSync(join(d, 'sitemap-index.xml'), '<loc>https://fxai.ai/sitemap-0.xml</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod>');
+    expect(msgs(d, '/')).toEqual([]);
+  });
+
+  it('镜像索引保留原 lastmod，只规范 loc', () => {
+    const old = '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://fxai.ai/baize-website/sitemap-0.xml</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod></sitemap></sitemapindex>';
+    const fixed = '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://fxai.ai/sitemap-0.xml</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod></sitemap></sitemapindex>';
+    expect(canonicalSitemapIndex(old, site, base)).toBe(fixed);
   });
 });

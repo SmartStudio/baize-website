@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { readFileSync, readdirSync, renameSync, rmdirSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { canonicalSitemapUrl, canonicalSitemapIndex } from './src/lib/sitemap-urls.mjs';
 
 const target = process.env.PUBLIC_DEPLOY_TARGET ?? 'cloudflare';
 // canonical 主域恒为 CF；两处构建都用它做 site，从而 sitemap/canonical 去重指向主站
@@ -67,7 +68,12 @@ warnStaleStaticLastmod();
 const LASTMOD = sitemapLastmods();
 
 function serializeSitemapItem(item) {
-  const path = '/' + new URL(item.url).pathname.slice(BASE.length);
+  item.url = canonicalSitemapUrl(item.url, SITE, BASE);
+  if (item.links) item.links = item.links.map((link) => ({
+    ...link,
+    url: canonicalSitemapUrl(link.url, SITE, BASE),
+  }));
+  const path = new URL(item.url).pathname;
   const lastmod = LASTMOD.get(path);
   if (lastmod) item.lastmod = new Date(lastmod).toISOString();
   // 页面 <head> 里的 hreflang 带 x-default(指中文版),sitemap 也补上,两处保持一致。
@@ -75,6 +81,20 @@ function serializeSitemapItem(item) {
   if (zh) item.links = [...item.links, { lang: 'x-default', url: zh.url }];
   return item;
 }
+
+// @astrojs/sitemap 的 serialize 不覆盖 index。它本身按 site + base 生成，
+// GH 镜像的文件目录仍需 base，但 sitemap 对外的索引地址要和正式站一致。
+const sitemapIndex = {
+  name: 'canonical-sitemap-index',
+  hooks: {
+    'astro:build:done': ({ dir }) => {
+      const file = new URL('sitemap-index.xml', dir);
+      const xml = readFileSync(file, 'utf8');
+      const normalized = canonicalSitemapIndex(xml, SITE, BASE);
+      if (xml !== normalized) writeFileSync(file, normalized);
+    },
+  },
+};
 
 // Astro 只把根路由 /404 输出成 404.html,/en/404 会落成 en/404/index.html。
 // CF Pages 对缺失地址按目录就近找 404.html,所以构建完把英文 404 挪到 en/404.html。
@@ -119,6 +139,7 @@ export default defineConfig({
     mdx(),
     sitemap({ i18n: { defaultLocale: 'zh', locales: { zh: 'zh-Hans', en: 'en' } }, serialize: serializeSitemapItem }),
     en404,
+    sitemapIndex,
     buildId,
   ],
   vite: {
