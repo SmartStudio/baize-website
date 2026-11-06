@@ -1,0 +1,63 @@
+---
+title: 'AI Drafts Official Documents: Who Reviews Before Issuance?'
+seoTitle: "AI Official Document Drafting: Who Reviews and Signs?"
+description: "When administrative and business departments use AI to assist in official document drafting, the tool can write first drafts, format to templates, and check required elements, but cannot replace inter-departmental consultation, general office review, or executive sign-off. Clear verification ownership for names, dates, and citations prevents flawed documents from going out."
+lang: en
+pubDate: 2026-11-06
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/official-document-ai-draft-cover.png
+coverAlt: "On an office desk over a dark teal base, a gray robotic arm writes with emerald light on a blank sheet, a small figure holds a magnifying glass over a sheet covered with an emerald grid template, another small figure in front signs a blank document with a copper fountain pen, and several stacks of blank documents sit on the desk"
+sourceHash: '002a4324d8ff'
+---
+
+When AI assists in official document drafting, the tool can write a first draft, typeset it to the company's document format, check elements against a template, and pull out cited prior documents, personal names, dates, and numbers into a checklist for the drafter to verify. AI does not decide the reason for issuing a document, does not replace cross-departmental consultation, does not replace general office review, and does not carry sign-off accountability. Before a document goes for signature, the general office reviews it, the head of the unit approves and signs it off, and any substantive change made after sign-off must go back to the original approver for re-review.
+
+import noteFig from '../media/official-document-ai-draft-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a robotic arm holding a pen writing on a blank sheet, a blank sheet covered by a green grid template beside a ruler, a small figure seated at a desk inspecting a sheet with a magnifying glass, and a fountain pen signing a blank sheet beside a seal, each with a label panel" caption="Figure: Official Document Drafting | Official Document Format" width="wide" border />
+
+## Which steps AI can handle in official document drafting
+
+The Regulations on Party and Government Official Document Processing divide document preparation into drafting, review, and sign-off; the drafting provisions require using the correct document type and standard format, and state that when matters involve the authority of other departments, the drafting unit must consult those departments fully and seek consensus. Enterprises are not bound by these regulations, and may refer to this workflow when setting their own rules for internal directives, management policies, and cross-departmental notices.
+
+At the drafting step, business department staff or general office secretaries can feed background materials, meeting minutes, and historical documents into the tool to generate a first-draft outline. If the text touches the responsibilities of other departments, the tool can list the related departments, but taking the draft to peer departments, collecting revision feedback, and reaching agreement must be done by the drafter in person. For how to organize a company's existing policies, past issuances, and document templates so a tool can call them reliably, see <NoteLink slug="enterprise-context-engineering">Enterprise Context Engineering: Making Company Knowledge Usable by AI Agents</NoteLink>.
+
+## What AI can check in official document format
+
+The national standard Format of Party and Government Official Documents states that it applies to official documents issued by Party and government organs at all levels, and that other organs and units may refer to it in practice; the standard divides document format into the header, body, and end matter. Whether a company uses an internal template adapted from the national standard or its own house style, it can configure the template rules in the tool so the tool runs a first pass on layout and required elements once drafting finishes.
+
+Secretarial staff can have the tool check whether the title is missing required elements, whether recipient unit names are written in full, whether section numbering in the body is sequential, whether the signature block and document date align, and whether an attachment note appears at the end whenever attachments are mentioned in the body. At the same time, the tool can extract every cited historical document title, personal name, place name, date, and statistical figure in the body into a standalone verification checklist for the drafter to check off item by item against the source records. Inspection work whose results can be verified on the spot fits an initial tool pass well; see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>.
+
+## What the general office reviews
+
+Once the drafting department finishes checking the first draft, it cannot bypass the general office and hand the document straight to an executive for signature. The Regulations on Party and Government Official Document Processing state that before an official document is submitted to the responsible head for sign-off, it must be reviewed by the general office; if review finds that issuing the document is inappropriate, it is returned to the drafting unit with reasons given; if it meets the conditions for issuance but its content requires further study and revision, the drafting unit revises and resubmits it.
+
+When reviewing an AI-assisted draft, the general office director and dedicated secretaries check the focal points listed in the regulations item by item:
+
+- **Reason for issuance and policy basis**: verify whether the document is necessary to issue, whether the reason for issuance is sufficient, and whether cited company rules and legal bases are accurate, preventing the tool from inventing background or misapplying policies to pad length.
+- **Issuance intent and alignment with existing documents**: check whether the body complies with policies and regulations, accurately and completely reflects the issuing unit's intent, and aligns with existing documents in force so a new notice does not conflict with prior rules; also confirm that matters involving the authority of other regions or departments have been fully coordinated.
+- **Document type, format, and wording details**: re-verify that the document type is correct and the format follows standards, check personal names, place names, dates, numbers, paragraph order, and citations word by word for accuracy, and confirm that wording, numerals, units of measurement, and punctuation follow standard usage.
+
+## Sign-off and pre-issuance recheck
+
+Only after passing general office review does the document move to formal sign-off. Referring to the practice in the Regulations on Party and Government Official Document Processing, an official document is approved and signed off by the responsible head of the unit, while major documents and upward submissions are signed off by the principal head; the signer writes an opinion, full name, and complete date; the regulations also state that circling or signing one's name counts as approval.
+
+After executive sign-off and before the document goes to printing and distribution, secretarial staff run a pre-issuance recheck, focusing on whether the signer's comments have been incorporated into the final text and whether the typeset proof contains line shifts or typos. If the recheck or typesetting stage reveals that substantive changes to the content are needed, secretarial staff cannot edit and print the document on their own, nor let the tool rewrite and swap in a passage on the fly; under the rules, the document must be returned to the original approver for re-review and go through sign-off procedures again before receiving a formal number and being issued.
+
+## Official document drafting: FAQ
+
+### Can an AI-drafted official document go straight to sign-off?
+
+The drafter cannot take an AI-generated draft directly to the unit head for signature. Under standard document preparation workflow, once drafting finishes, the drafting department first verifies facts and consultation feedback internally, then submits the draft to the general office to review the reason for issuance, policy basis, alignment with existing documents, and formatting details. Only after passing review is it submitted to the responsible head for sign-off; skipping general office review lets errors pass straight to the signer.
+
+### Do citations and numbers written by AI need to be checked?
+
+Every single one must be verified against original source records. When writing official documents, generative tools can mix up titles of past documents, misstate statistical bases, or invent plausible-looking document numbers. Personal names, place names, dates, numbers, paragraph order, and citations are core general office review items in the first place, and both drafters and reviewers must check the extracted list item by item against original records.
+
+### Must company documents follow the Party and government official document format?
+
+The national standard Format of Party and Government Official Documents states that it applies to official documents issued by Party and government organs at all levels, while other organs and units may refer to it in practice. Enterprises are not mandatorily bound by it and can set internal document format rules suited to their own management practices; whether a company chooses to refer to the national standard or use its own house standard, it simply puts the approved header, body, and end-matter templates into the knowledge base so the tool checks layout and elements strictly against the company's own template.
