@@ -1,0 +1,63 @@
+---
+title: 'Codex Code Review on PRs: What Do People Still Check?'
+seoTitle: "Codex Code Review on PRs: What People Check"
+description: "Codex can scan PRs through comment commands or automatic reviews and apply repository rules. Engineers check requirements and design, cross-service effects, and proposed fixes. Existing tests, branch protection, and human merge approvals remain in place."
+lang: en
+pubDate: 2026-11-06
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/codex-code-review-pr-cover.png
+coverAlt: On a dark teal base, PR cards and code lines feed a gray circular agent module; emerald arrows branch toward a rulebook and a tray with three slots for human review
+sourceHash: '71f9dd27d9cb'
+---
+
+In a GitHub repository, Codex code review can perform the first defect scan on routine PRs. Engineers retain the merge decision and responsibility for architecture and design. The team sets constraints in the repository's AGENTS.md and has Codex flag issues in the two highest severity levels first. Code owners and engineering leads focus on whether the change should be made, whether cross-service calls and data migrations are sound, and whether the reported issues are valid. Existing automated tests, branch protection, and human approval rules continue to apply.
+
+import noteFig from '../media/codex-code-review-pr-fig-en.png'
+
+<Figure src={noteFig} alt="Four groups, left to right: PR documents with a magnifier and comment bubbles, layered constraints above an open book, three trays for human review, and a weekly calendar with a return arrow to the rules" caption="Figure: Codex Code Review | PR Review" width="wide" border />
+
+## How to trigger Codex on a PR and what it reviews
+
+The official documentation describes manual and automatic triggers. The engineer opening a PR or a reviewer can comment `@codex review` on the GitHub PR. Codex reads the code changes, checks the repository guidance, and submits a standard GitHub code review. Teams that want an initial scan on each submission can enable automatic reviews in settings, after which each newly opened PR is reviewed. The help center states that the Code Review plugin is available on desktop and web. GitLab merge request review is currently in preview, which does not include automatic GitLab cloud reviews. For which daily development tasks suit Codex and which suit other coding tools, see <NoteLink slug="claude-code-or-codex-by-task">Claude Code or Codex: Which Tool Gets Which Task</NoteLink>.
+
+By default, Codex flags only issues in the two highest severity levels to avoid filling the discussion with minor suggestions. If a PR review has a specific focus, the engineer can add it directly after the comment command, for example asking it to look specifically for problems in database migrations. The security-focused `@codex security review` is currently in research preview. Teams can try it on a limited basis as needed, without using it to replace formal security checks before release.
+
+## Where to put review rules and how to write them
+
+The official documentation describes layered configuration to give the tool the repository's business constraints. Put review conventions in a "Code review rules" section of AGENTS.md. The root AGENTS.md contains rules that apply across the repository. Subdirectory AGENTS.md files contain rules for their services or modules. When Codex checks a changed file, it reads both the root rules and the more specific rules in the nearest applicable subdirectory.
+
+Start with a few short rules. The official blog suggests two or three initially, each stating a constraint that must hold and the safe way to meet it. Formatting and code-style checks, such as indentation and naming, belong in the static analysis tools in the continuous integration pipeline. Keeping them out of AGENTS.md leaves review attention for other issues. The official documentation states that these rules guide Codex's review and do not replace tests, branch protection, or required human approval. The official blog also describes Codex as an additional reviewer on the team.
+
+## Three areas people still need to review after the first scan
+
+A PR usually does not contain the business context from requirements review or show how cross-service calls behave in production. Once Codex handles the first scan, code owners and engineering leads can concentrate on three areas of human PR review.
+
+- **Requirements and design direction**: whether the change should be made, whether its approach fits product requirements and module responsibilities, and whether a problem that belongs in configuration or an upstream system has been forced into business code.
+- **Cross-module effects and data migration**: whether the change affects upstream or downstream service interfaces, message protocols, or shared table structures, and whether migration of existing production data and the rollback path allow a smooth transition.
+- **Verification of findings and fixes**: the help center says to check generated review comments against the code before relying on them and to review Codex's fixes before committing or merging them. People must determine whether each reported defect is real or a false positive and check whether the fix introduces new risks before merging.
+
+The merge button and repository permission boundaries stay as they are. The tool receives no permission to merge directly into the main branch. For the permissions, testing, and delivery arrangements that need to be resolved when the tool enters the development workflow, see <NoteLink slug="codex-into-real-workflow">What Does It Take to Make Codex Part of Your Team's Dev Workflow?</NoteLink>.
+
+## How to assess review quality and update the rules
+
+After connecting the tool to the repository, the engineering lead needs to monitor the signal-to-noise ratio. Too many false positives can lead engineers to ignore its comments. The team can set aside time each week to collect that week's PR review records and compare findings that engineers accepted and fixed with findings they rejected.
+
+Focus on frequently rejected comments. If the tool repeatedly reports a problem because it does not know a service's historical convention, the code owner adds that exception to the service's subdirectory AGENTS.md. If a type of production incident risk passed through the first scan, add an explicit prohibition to the "Code review rules" section in the root or relevant subdirectory. Add or revise only one or two specific rules at a time, then refine them against the following week's review results.
+
+## Codex Code Review: FAQ
+
+### Do I have to fix everything Codex flags?
+
+No. The help center says to verify generated review comments against the actual code before relying on them. The PR author and code owner check the context and fix confirmed defects, or merge Codex's proposed fix after reviewing it and confirming that it is correct. For confirmed false positives or findings that conflict with current business conventions, explain the reason in a comment and skip the change.
+
+### Should Codex also review formatting?
+
+Leave formatting to other checks. The official blog's approach assigns indentation, line breaks, import order, and other formatting and code-style issues to CI checks. The code review rules in AGENTS.md are reserved for business and engineering constraints that must hold, so Codex can focus on the two highest severity levels.
+
+### With Codex, how many people still need to approve a PR?
+
+Follow the team's existing branch protection settings and required number of human approvals. Adding the tool does not reduce the number of sign-offs. The official documentation states that review rules do not replace tests, branch protection, or required human approval. Codex is an additional PR reviewer. An engineer with the necessary authority still gives the final human approval to merge.

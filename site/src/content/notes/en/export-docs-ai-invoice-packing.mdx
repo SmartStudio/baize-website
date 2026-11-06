@@ -1,0 +1,62 @@
+---
+title: 'AI Prepares Export Documents: Who Fixes Invoice and Packing List Mismatches?'
+seoTitle: "AI Export Documents: Who Fixes Mismatches?"
+description: "AI can compare contracts, invoices, packing lists, and loading records, flagging differences in package counts, weights, and amounts with their sources. Warehouse staff confirm actual loading data, sales staff check contract pricing, and the documentation clerk updates the full set before sending it to the customs broker."
+lang: en
+pubDate: 2026-11-06
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/export-docs-ai-invoice-packing-cover.png
+coverAlt: On a dark teal base, an invoice and packing list are compared side by side and feed a gray circular agent module; an emerald arrow points to a finalized document stack and a customs stamp with an ink pad
+sourceHash: '627122cd5855'
+---
+
+When preparing export documents before shipment, AI can cross-check documents and identify the sources of discrepancies. Warehouse staff, sales staff, and the documentation clerk decide which documents to change within their responsibilities. The tool lays out packing lists, invoices, sales contracts, and on-site container-loading records side by side. Package counts and gross and net weights follow the actual packing results confirmed by warehouse or loading staff. Sales staff verify unit prices, total amounts, and trade terms against the contract. The documentation clerk updates the entire set to a consistent version before sending it to the customs broker. AI does not fill in product names on its own or change customs declaration elements.
+
+import noteFig from '../media/export-docs-ai-invoice-packing-fig-en.png'
+
+<Figure src={noteFig} alt="Four groups, left to right: documents compared side by side, a shipping box matched to a contract, a revised document set, and a filing gate followed by an amended document" caption="Figure: Export Documents | Invoice and Packing List" width="wide" border />
+
+## What AI can cross-check in export documents
+
+Around the time a bulk shipment is loaded, the documentation clerk often holds a draft contract from sales, a loading tally from the warehouse, and commercial invoices, packing lists, and draft customs declarations awaiting finalization. For screening requests during the earlier customer inquiry and sample-shipping stage, see <NoteLink slug="b2b-sample-request-ai-qualify">AI Screening for Export Sample Requests: Who Gets Free Samples?</NoteLink>. At the shipment stage, the tool can be configured to read these documents and compare them field by field. If payment is by letter of credit, see <NoteLink slug="letter-of-credit-ai-discrepancy">AI Checks Letter of Credit Documents: How Do You Catch Every Discrepancy?</NoteLink> for discrepancy checks under bank document examination rules.
+
+The tool puts product names, specifications and models, quantities, package counts, gross weights, net weights, shipping marks, unit prices, and total amounts from the contract, packing list, invoice, loading records, and draft customs declaration into a comparison table. It highlights mismatched cells and basic logical inconsistencies. For example, gross weight includes external packaging and net weight covers only the goods, so it flags net weight greater than or equal to gross weight. Beside each value, it identifies the source document, page, and line. AI only extracts information and locates differences. It leaves missing specifications or customs declaration elements blank and prompts a person to supply them, without inventing entries.
+
+## Which records to use when the numbers disagree
+
+Under the General Administration of Customs' Provisions of the Customs of the People's Republic of China on the Administration of Declarations for Import and Export Goods, declaration means submitting a customs declaration and accompanying documents to report the actual imported or exported goods. Consignees and consignors and their appointed customs brokers must declare truthfully in accordance with the law and bear the corresponding legal responsibility for the truthfulness, accuracy, completeness, and conformity to requirements of the declaration. Where Customs requires paper accompanying documents, their contents must match the electronic data. Accompanying documents presented for declaration include contracts, invoices, packing lists, cargo manifests, bills of lading or waybills, customs brokerage authorization agreements, and licenses and permits.
+
+Because the rules require a truthful account of the goods actually shipped, discrepancies must be reconciled against the physical goods and the contract. Choosing whichever document is easiest to alter does not meet that requirement.
+
+- **Physical goods and packaging data**: the product names, package counts, gross weights including packaging, net weights of goods alone, and outer-carton shipping marks must follow warehouse weighing records and the actual packing results after container loading is complete. Draft invoices and packing lists based on estimates are updated to the actual loaded figures.
+- **Commercial and pricing data**: unit prices, currencies, trade terms, and total amounts recalculated using actual loaded quantities follow the sales contract confirmed by buyer and seller. Updating the packing-list quantity also requires recalculating the invoice total.
+
+## Who confirms, edits, and sends the documents to the customs broker
+
+When the discrepancy list reaches the workbench, AI must not automatically overwrite the documents, and several people must not edit separate copies. Warehouse or loading staff first check tally records and weighbridge slips to confirm package counts and gross and net weights. If quantity changes affect the amount, sales staff check the contract and confirm pricing details with the buyer. Once both sides confirm, one documentation clerk makes all the changes.
+
+The clerk updates the invoice, packing list, and customs declaration materials together and replaces old drafts with final files carrying a version number to prevent mixed versions from being sent. Under the Provisions of the Customs of the People's Republic of China on the Administration of Declarations for Import and Export Goods, an appointed customs broker must reasonably examine the truthfulness, validity, and completeness of information supplied by its client. This examination covers contracts, invoices, transport documents, packing lists, and other documents. Consignees and consignors must also provide truthful information to the broker. After checking that the packing list and invoice agree with the contract and bill of lading or waybill, the clerk sends the broker one consistent version of the complete set.
+
+## What to do if an error is found after declaration
+
+When working to a vessel's departure deadline, the broker may already have submitted the declaration data before warehouse staff or the documentation clerk discover a transcription error in a carton count, gross or net weight, or unit price. At that point, correcting the internal packing list and invoice is insufficient. An application must be made to amend the submitted customs declaration under Customs rules.
+
+Under the Provisions of the Customs of the People's Republic of China on the Administration of Declarations for Import and Export Goods, an amendment or cancellation needed because of a declaration operator's error requires submitting contracts, invoices, packing lists, bills of lading or waybills, and other documents that reflect the actual goods, together with a detailed explanation. Where Customs has decided to place goods under port control, or goods are suspected of smuggling or violating customs supervision rules, the declaration cannot be amended or cancelled until the relevant procedures are completed. Completing AI document cross-checks before sending the set to the broker can catch errors and omissions before formal declaration.
+
+## Export documents: FAQ
+
+### Can AI-prepared documents be sent straight to the customs broker?
+
+No. Consignees and consignors bear legal responsibility for the truthfulness, accuracy, completeness, and conformity to requirements of declarations. The customs broker also reasonably examines contracts, invoices, transport documents, and packing lists. Before AI-generated drafts and comparison tables are formally sent to the broker, warehouse staff must verify actual loaded package counts and gross and net weights, sales staff must check unit prices and amounts, and the documentation clerk must finalize and sign off on one consistent set.
+
+### What if the customer asks for a product name on the invoice that differs from the actual goods?
+
+Report the actual imported or exported goods truthfully. Do not enter a false product name at the customer's request. The Provisions of the Customs of the People's Republic of China on the Administration of Declarations for Import and Export Goods require consignees and consignors to declare truthfully in accordance with the law. If a buyer asks for a different product name, sales staff explain the limits of compliant declaration, and the documentation clerk prepares the documents using the actual product name and transaction details.
+
+### The packing list and invoice gross weights do not match. Which one do you fix first?
+
+First obtain weighing records from warehouse or loading staff to verify the actual packing results. Distinguish gross weight including packaging from net weight of the goods alone. Once the actual loaded weights are confirmed, the documentation clerk updates the weights in the packing list, invoice, and customs declaration materials together. If the broker has already submitted the declaration and Customs has not decided to place the goods under port control, assemble the contract, invoice, packing list, bill of lading or waybill, and explanation, then apply for an amendment under the rules.

@@ -1,0 +1,63 @@
+---
+title: 'AI Judges Attendance Anomalies: Who Approves Makeup Punches?'
+seoTitle: "AI Attendance Anomalies: Who Approves Makeup?"
+description: "AI can compare schedules, leave requests, business trips, and off-site work records to classify attendance anomalies, attach evidence, and notify employees. Makeup-punch limits and deadlines follow company policy; direct supervisors approve requests, and HR reviews wage deductions. AI does not approve requests or edit attendance records."
+lang: en
+pubDate: 2026-11-06
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/attendance-anomaly-ai-makeup-cover.png
+coverAlt: On a dark teal base, a time clock and a stack of attendance cards connect to a gray circular agent module, then to a makeup-punch request envelope, a supervisor's stamp, and an HR folder
+sourceHash: '401b5d200dfa'
+---
+
+When checking daily or monthly attendance anomalies, AI compares documents, classifies anomalies, and attaches evidence. People decide makeup-punch approvals and record changes. After the attendance administrator configures the rules, the tool checks schedules, leave requests, business trip requests, and off-site work records, attaches evidence to each anomaly, and notifies the employee. Direct supervisors handle makeup-punch approvals, and HR reviews records involving wage deductions. Makeup-punch limits and deadlines follow the company's attendance policy. AI neither approves requests for supervisors nor changes attendance results.
+
+import noteFig from '../media/attendance-anomaly-ai-makeup-fig-en.png'
+
+<Figure src={noteFig} alt="Four groups, left to right: attendance cards paired with evidence, a policy book and clock for limits and deadlines, manager and HR stamps, and an edit ledger with reason tags" caption="Figure: Attendance Anomalies | Makeup-Punch Approval" width="wide" border />
+
+## How AI can classify attendance anomalies
+
+Before month-end payroll, the attendance administrator checks why each employee has a missing punch, late arrival, or early departure. Once connected to the attendance ledger and approval records, the tool can be configured to cross-check the current schedule, leave requests, business trip itineraries, and off-site check-in records. It separates the mixed attendance anomalies into three categories and routes each for handling.
+
+- **Leave or business travel not synchronized**: the employee has submitted a leave, business trip, or off-site work request, but a delay between systems or a request still in progress causes an anomaly in the punch record. The tool attaches the pending or approved request number and prompts staff to clear the anomaly once the document is filed.
+- **Schedule configuration errors**: a store or shift-based role has changed shifts, but the schedule was not updated in time, causing normal arrivals and departures to be counted as late or early. For edit permissions and audit trail requirements on the scheduling side, see <NoteLink slug="store-scheduling-agent-manager-edits">A Scheduling Agent Drafts the Rota: How Much Can Managers Change?</NoteLink>.
+- **Actual missed punches or late arrivals**: there is no leave or business travel document, the schedule is correct, and the employee did forget to punch or arrived late or left early. The tool attaches the day's access-control or punch transaction records and reminds the employee to submit a makeup-punch or leave request as required.
+
+Each notification card identifies the schedule and request it cites. Employees and supervisors can open the evidence directly, reducing exchanges of screenshots and questions.
+
+## Who sets and configures makeup-punch limits and deadlines
+
+The company's attendance policy defines which anomalies can be corrected and how long employees have to apply. The head of HR and management set these standards. AI sends reminders under the written policy and does not choose how lenient or strict to be. Some attendance tools let administrators configure whether employees can request makeup punches, how many they can request per attendance cycle, how far back a request can reach, and which attendance statuses permit a request. Available statuses include normal attendance, missing punches, late arrivals, and early departures.
+
+Once the company's limits on request count and days are configured, the tool enforces them. Employees who have used all their makeup punches for the current cycle cannot submit another request. When reminding employees to seek makeup-punch approval, AI can also show their remaining allowance for the cycle and the deadline, helping them complete the process within the permitted window.
+
+## Who approves makeup punches and who reviews the results
+
+After an employee submits a makeup-punch request, some attendance tools can notify the relevant approver of the pending task. The workflow can use a single approval by the direct supervisor, approval by the department supervisor, or successive approvals through several management levels. Once approved, the corresponding attendance anomaly record is updated. AI handles the preliminary checks and document compilation throughout this process. It does not approve or reject on a supervisor's behalf. For which tool actions can run automatically and which approval actions require a person, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+In daily operation, makeup-punch responsibilities can be divided into two checks. The direct supervisor first verifies what happened, using the business trip and off-site work records attached by AI. The supervisor is best placed to know whether the employee was meeting a customer on site or covering a shift at short notice and missed a punch. Before monthly payroll is locked, a second check collects attendance anomalies involving wage deductions because the makeup-punch allowance was exhausted, the deadline passed, or the request was rejected. An HR specialist reviews them individually, and only verified records enter the payroll calculation sheet.
+
+## What to retain when administrators edit records directly
+
+Besides employee makeup-punch requests, some attendance tools allow administrators to edit anomalous attendance records directly in the backend for cases such as devices losing network access or collective compensatory leave being omitted from the schedule configuration. This permission has explicit limits. Normal punches cannot be changed to anomalies. Only records within a recent period can be edited; older records outside that period cannot. After an edit, only the affected employee is notified, and the attendance report identifies the administrator who made it. Once saved, the change record can neither be deleted nor withdrawn.
+
+Because these backend changes cannot be withdrawn or erased, attendance administrators must not edit records on a verbal request alone or let AI call an administrator interface to change attendance results directly. For each necessary manual correction, the department involved or the equipment maintenance provider first supplies a written explanation or proof of the fault. The administrator records the reason, related document number, and confirming person in the remarks. At month-end, the head of HR spot-checks backend edit logs and archives direct edits separately from routine approval records.
+
+## Attendance anomalies and makeup punches: FAQ
+
+### An employee says they punched in but there is no record. How does AI judge it?
+
+AI does not directly decide whether the employee attended work. It can be configured to retrieve the day's raw punch transactions, device online status, office-network access records, or off-site location records and display them beside the anomaly. If the records show that the time clock was offline or a synchronization error occurred, the attendance administrator verifies and handles the issue. If the backend contains no trace of a punch, the employee is prompted to attach proof of being on site and submit a makeup-punch request for the direct supervisor to verify.
+
+### Can an administrator edit attendance records directly?
+
+Some attendance tools allow administrators to edit anomalous records from a recent period. Normal punches cannot be changed to anomalies. Reports record the administrator's name, only the affected employee is notified, and change records cannot be deleted or withdrawn. Use this operation only for documented cases such as a time-clock fault or a schedule configuration error affecting a group. Collect evidence before editing and record the reason during the edit. Routine individual missed punches still follow the normal process of employee submission and supervisor approval.
+
+### Can makeup-punch approval be auto-approved by AI?
+
+Automatic approval is not recommended. AI can flag requests already matched to business trip documents or off-site check-in records so approvers can review and confirm them together. The direct supervisor still decides whether to approve. Before payroll, HR reviews cases involving wage deductions because approval was denied or missed punches remained uncorrected after the allowance was exhausted. This keeps attendance decisions within the established policy.

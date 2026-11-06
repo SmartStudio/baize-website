@@ -1,0 +1,62 @@
+---
+title: 'AI Drafts Budget Variance Explanations: Who Signs Off on the Cause?'
+seoTitle: "Budget Variance Analysis with AI: Who Signs Off?"
+description: "Finance teams can let AI align accounts, split variances, and draft candidate causes with linked documents. Department heads sign off on internal execution causes; external causes feed next period's budget or a formal adjustment. AI does not assign blame or change budgets."
+lang: en
+pubDate: 2026-11-06
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/budget-variance-ai-explanation-cover.png
+coverAlt: On a dark teal base, ledgers and budget reports feed a gray circular agent module; an emerald arrow splits into a department sign-off stamp on one side and a next-period planning calendar on the other
+sourceHash: '43af4ee21864'
+---
+
+In budget variance analysis, AI is well suited to aligning accounts, splitting variances, and drafting candidate causes. Final sign-off on causes and accountability stays with people. The finance budget lead uses the tool to reconcile actual spend, budget lines, and contract orders. Variances caused by internal execution are reviewed and signed off by the expense-owning department head, who also supplies corrective actions. Variances driven by external conditions are summarized by the finance budget lead as input to next period's budget, or the executing unit requests an adjustment through the formal process. AI does not decide performance accountability and does not change budget amounts.
+
+import noteFig from '../media/budget-variance-ai-explanation-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a calculator and ledger splitting the variance, a forked folder of internal and external causes, a sign-off stamp with signature paper, and a ruler for accounting basis, each with a label panel" caption="Figure: Budget Variance Analysis | Expense Budget" width="wide" border />
+
+## Which steps in budget variance analysis AI can take
+
+According to the Ministry of Finance Accounting Department's interpretation of the internal control guidelines for comprehensive budgeting, the budget analysis process generally covers defining the analysis object, collecting data, identifying variances and their causes, proposing measures, and reporting back. Analysis draws on financial, operational, market, technical, policy, and legal information, using ratio analysis, comparative analysis, or factor analysis as appropriate to show budget execution from both quantitative and qualitative angles. The interpretation also flags risks at this step: when budget analysis is not timely, control over budget execution weakens; when corrective measures for variance causes are ineffective, analysis becomes a formality. Enterprises that can should move budget management onto information systems so execution is monitored and early warnings fire.
+
+For monthly or quarterly expense budget tracking, the tool can be configured to handle the first three steps. After the finance budget lead imports the ledger, AI aligns actuals to budget line items, computes the overspend or surplus, and splits it by price and volume or by department. The tool then pulls contracts, purchase orders, marketing activity, and headcount changes from the same period and drafts a list of candidate causes for any line above a configured threshold, attaching the supporting business records to each cause. Proposing corrective actions, assigning accountability, and issuing the formal report stay with people.
+
+## Internal and external causes follow different paths
+
+The Ministry of Finance interpretation states that budget variances are handled by cause. Variances caused by internal execution must be assigned to a responsible party, tied to budget performance reviews and rewards or penalties, and the executing unit's corrective actions are evaluated. Variances caused by external conditions are analyzed for long-term impact on strategy and treated as an input to next period's budget.
+
+Once the AI-drafted candidate causes reach the workbench, the finance budget lead and the business departments classify each variance and route it either to performance review or to budget planning. If the company has not yet sorted out how to budget and control the expense of AI usage itself, see <NoteLink slug="ai-usage-pricing-budget">Can an Annual IT Budget Handle Usage-Based AI Pricing?</NoteLink>.
+
+- **Internal execution causes**: for example a marketing campaign temporarily increased spend, a purchase closed above the planned unit price, or travel ran ahead of schedule. These go to the expense-owning department for verification, a written corrective action, and follow-up evaluation of the improvement.
+- **External condition causes**: for example industry policy changes, market swings, or force majeure slowing operations. The finance budget lead summarizes these and assesses whether they affect the business long term, keeping them as input to next period's budget. When objective factors cause a material variance that genuinely requires a mid-year change, the formal written adjustment process applies.
+
+## Who confirms the candidate causes and who signs
+
+The Ministry of Finance interpretation states that each budget executing unit must analyze and report its own execution in time, the head of the executing unit is accountable for the unit's results, and the execution report submitted upward must carry the unit head's signature or seal. Budget execution and budget performance review are also separated: a unit does not grade itself.
+
+Under this division of responsibility, the causes AI lists are only candidate drafts and cannot be filed as final. The workflow can route pending confirmations to each expense-owning department head. The head reviews each item against the attached contracts, orders, or headcount records. Where the link is accurate, the head adds the business explanation and corrective actions, then signs off. Where the variance is only a posting timing difference or a wrong record was attached, the head rewrites the real cause and then signs. Reports roll up to the budget management office. Evaluation is done by a higher-level unit or the budget administration, not by the executing unit itself.
+
+## Fix the accounting basis before computing variances
+
+When finance and the business argue over the same variance, the usual cause is that the two sides pull numbers on different bases. Which ledger the actuals come from, whether amounts include tax, and whether cross-period costs follow the contract period or the posting period all change the result. If the two bases do not match, the variance AI computes is meaningless and the cause analysis drifts with it. For reconciling conflicting metric definitions, see <NoteLink slug="ai-data-query-metric-definitions">AI Data Queries Return Two Sales Figures: Which Metric Definition Do You Trust?</NoteLink>.
+
+Before going live, the finance budget lead and the business departments agree on the account mapping, the tax-inclusive rule, and the cross-period allocation basis, and write them into the data-pull configuration. They also set the company's own amount thresholds so only variances above the threshold trigger record pulls and candidate cause drafting, while small residuals are skipped. Whenever the org structure or chart of accounts changes, the finance budget lead updates the mapping table and keeps a record, so variances stay comparable period over period.
+
+## Budget variance analysis: FAQ
+
+### What if the cause AI gives is wrong?
+
+AI only matches ledger movements against contracts, orders, activities, and headcount changes from the same period. It has no offline business context, so wrong matches and missed real causes are normal. The expense-owning department head rewrites the actual cause when reviewing the candidate list, attaches the correct evidence, and signs off. The finance budget lead periodically collects the corrected cases and adjusts the document-linking rules.
+
+### How small a variance can be ignored?
+
+Follow the company's own amount thresholds and fluctuation ratios. The finance budget lead agrees the thresholds with the budget management office in advance and configures them into the tool. Routine fluctuations within the threshold leave only a ledger record, with no document split and no verification ticket. Only lines above the threshold trigger candidate cause drafting and department sign-off.
+
+### Can AI request a budget adjustment when an expense budget is exceeded?
+
+Not a formal adjustment. AI can only assemble the variance, the linked records, and the candidate causes into a draft adjustment request. Under the Ministry of Finance interpretation, when objective factors such as market conditions, national policy, or force majeure cause a material variance that genuinely requires adjustment, the executing unit applies in writing level by level, stating the reason, the proposed adjustment, the before-and-after comparison, and the impact on overall targets, for review by the budget management office and deliberation by the budget committee. Overspend caused by internal execution is handled by assigning accountability and tying it to performance review; the adjustment conditions listed are for objective factors, so this kind of overspend is handled as accountability first, not absorbed through an adjustment.
