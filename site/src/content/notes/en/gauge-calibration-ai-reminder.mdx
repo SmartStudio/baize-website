@@ -1,0 +1,63 @@
+---
+title: 'Gauge Calibration Due: Who Takes Instruments Out of Service After an AI Reminder?'
+seoTitle: "Gauge Calibration AI Reminders: Who Stops Expired Tools?"
+description: "When a factory uses AI on its ledger to track gauge calibration and statutory verification due dates, the tool only sends advance reminders and flags overdue usage records. The metrology administrator decides to take expired unverified instruments out of service and tags them, the team leader removes them from the line, and the quality department sets the traceability scope for products measured while overdue."
+lang: en
+pubDate: 2026-11-06
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/gauge-calibration-ai-reminder-cover.png
+coverAlt: "On a workbench over a dark teal base sit a vernier caliper, a micrometer, and a pointer-only pressure gauge with a blank green tag; on the left a gray Agent robot glows with a small emerald bell, and on the right a small figure places a micrometer into a cabinet locked with a copper padlock"
+sourceHash: 'f6af3cc479c9'
+---
+
+After AI reminders are attached to the ledger for gauge calibration and statutory verification, the tool only sends advance reminders to submit instruments by the due date, notifies the production line to prepare spares, and checks for mismatches between the ledger and floor records. When an instrument reaches its due date without being submitted, the metrology administrator makes the out-of-service decision and attaches an out-of-service tag, and the using department's team leader removes the instrument from the workstation. Whether products measured with that instrument during the overdue period need traceability is evaluated and decided by the quality department. Company-defined calibration intervals also require a proposal from the metrology administrator and approval from the quality department before being changed.
+
+import noteFig from '../media/gauge-calibration-ai-reminder-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: two pressure gauges with a stamp beside one and a small figure inspecting the other with a magnifying glass, a pressure gauge beside a green hourglass and a closed rulebook, a small figure placing a pressure gauge into a padlocked box, and three cartons beside a pressure gauge with a dashed green arrow above pointing back to the gauge, each with a label panel" caption="Figure: Gauge Calibration | Calibration Interval" width="wide" border />
+
+## Distinguish verification from calibration first
+
+If calipers, balances, and pressure gauges are all recorded simply as calibration on the ledger, instruments subject to mandatory verification can easily miss statutory verification. Verification and calibration are managed differently: verification judges whether a measuring instrument passes or fails against statutory regulations, while calibration establishes the relationship between the instrument's indicated value and a standard value. Mandatory provisions in national metrology laws apply to verification.
+
+Under the Administrative Measures for the Verification of Working Measuring Instruments Subject to Mandatory Verification, working measuring instruments used in trade settlement, safety protection, medical and health care, or environmental monitoring that are listed in the mandatory catalog must be registered in a ledger by the using unit, filed with the local metrology administration, and submitted for periodic verification to the designated verification institution. Instruments for which verification has not been applied for as required, or that fail verification, may not be used. When building its ledger, a company must first separate mandatory-verification instruments from equipment managed internally for gauge calibration.
+
+## Who sets the interval
+
+The two regulations divide interval authority clearly. For working measuring instruments subject to mandatory verification, the verification interval is set by the verification institution performing the verification in accordance with verification regulations, and the using unit cannot extend it on its own. For non-mandatory measuring instruments, under the Implementing Regulations of the Metrology Law of the People's Republic of China, enterprises and institutions must equip themselves with metrology inspection facilities suited to their production, research, and operations, formulate specific verification management measures and rules, specify the detailed catalog of measuring instruments managed by the unit and their corresponding verification intervals, and ensure that non-mandatory measuring instruments in use are verified regularly.
+
+For gauges scheduled for calibration in a company's self-managed catalog, the calibration interval is set by the company in its own rules and catalog. Here the AI tool pulls and summarizes historical calibration data to show indication drift across past calibrations for a given type of gauge, giving the metrology administrator supporting evidence. Whether to adjust the interval is proposed by the metrology administrator and submitted to the quality department for approval before the ledger is updated.
+
+## Who stops and removes an instrument once due
+
+The Implementing Regulations of the Metrology Law of the People's Republic of China state that no unit or individual may use at a workstation any measuring instrument that lacks a verification pass seal or certificate, has exceeded its verification interval, or has failed verification, except those used for teaching demonstrations. The Rules for Administrative Penalties for Metrology Violations also state that when unqualified measuring instruments or instruments past their verification interval are used, regulatory authorities may order cessation of use and impose a fine.
+
+An AI reminder is only a follow-up layer on top of the metrology ledger, reminding the metrology administrator in advance to arrange submission and reminding the workshop to prepare spare gauges. Once an instrument reaches its due date without being submitted, the floor cuts off use by role:
+
+- **Out-of-service decision and tagging**: the metrology administrator changes the instrument status to out of service in the ledger and goes to the floor to attach an out-of-service tag to the instrument.
+- **Workstation removal and replacement**: the using department's team leader removes the out-of-service instrument from the workstation and issues a qualified spare to take its place, without waiting for AI prompts.
+- **Reconciling the ledger with floor records**: some tools compare the metrology ledger against production barcode scans and inspection records, alerting the quality department if an instrument marked out of service on the ledger is still being scanned on the floor or if an overdue instrument ID appears in inspection records. For when an automated run should stop and hand off to a person, see <NoteLink slug="agent-stop-conditions-decision-log">Agent Safety Guardrails: When to Stop an Unattended Run</NoteLink>.
+
+## How to trace products measured while overdue
+
+If the backend finds that a gauge was still used to measure products during an overdue period, once the metrology administrator spots the mismatch between ledger and floor usage, the administrator hands the instrument ID, the overdue time window, and the linked inspection ticket numbers to the quality department.
+
+The quality department first sends the overdue instrument for verification or calibration to see whether its actual indication error exceeded tolerances. If retesting shows the instrument was out of tolerance, whether products measured with it during the overdue window must be traced, and whether they undergo full re-inspection or a formal review process, is decided by the quality department. For concession acceptance of inspection results, see <NoteLink slug="incoming-inspection-ai-concession">AI Grades Incoming Material Batches. Who Signs a Concession?</NoteLink>.
+
+## Gauge calibration: FAQ
+
+### Is it a serious issue if an instrument is used just a few days past its due date?
+
+Yes. Keeping an instrument in use at a workstation even briefly past its due date is prohibited. The Implementing Regulations of the Metrology Law of the People's Republic of China prohibit using any measuring instrument at a workstation past its verification interval, and the Rules for Administrative Penalties for Metrology Violations provide for ordering cessation of use and imposing fines. Once overdue use is found, the team leader must immediately remove the instrument from the workstation, the metrology administrator attaches an out-of-service tag and arranges catch-up verification, and the quality department evaluates whether products measured during the overdue period require traceability and re-inspection.
+
+### What if AI sends a reminder and nobody acts on it?
+
+When reminders go unanswered, the company has added software notifications without an escalation or accountability rule. Escalation paths can be configured in the ledger rules: after an advance reminder goes to the metrology administrator and team leader, if no submission order or spare-gauge issue record is logged as the due date approaches, the notification escalates to the equipment administrator and the head of the quality department. If it remains unhandled on the due date itself, the metrology administrator issues an out-of-service order directly, and the quality inspection system can be configured to block entry of that instrument ID at the same time.
+
+### Can AI automatically adjust calibration intervals based on usage frequency?
+
+Do not let AI change intervals in the ledger on its own. For working measuring instruments subject to mandatory verification, the verification interval is set by the designated verification institution under statutory regulations, and the company has no authority to alter it. For instruments with company-defined calibration intervals in the non-mandatory catalog, the tool can summarize error trends across past calibrations and workshop barcode scan frequency to compile supporting evidence, but any change to the interval must be requested by the metrology administrator and signed off by the quality department before taking effect.
