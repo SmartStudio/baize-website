@@ -1,0 +1,69 @@
+---
+title: 'Putting AI Into the Accounting Process: Which Step Comes First?'
+seoTitle: "AI in the Accounting Process: Which Step Comes First?"
+description: "Before adding AI to an accounting process, map the workflow from document intake and account classification to reconciliation and close, automate rule-based checks first, and leave final close judgment and sign-off to accountants."
+lang: en
+pubDate: 2026-11-10
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/accounting-ai-process-first-cover.png
+coverAlt: "On a dark teal base, a row of gray trays forms a line: a box of blank documents on the left beside a small figure sorting blank folders on a rack, a gray robot with dot eyes sitting in the middle, a green-glowing balance scale next to a green block with a copper-bound ledger behind it, and a small figure signing a blank sheet on the far right"
+sourceHash: 'aaf0012c8a70'
+---
+
+Before adding AI to an accounting process, map the full line from document intake, classification, reconciliation, and adjustment through to period close, and write down who hands off to whom at each step and on what basis. Start by changing manual steps that have clear rules and can be checked item by item, such as account classification and reconciliation, and put the company's own bookkeeping rules into written documentation before handing them to AI. At close, an accountant judges whether the books are accurate and signs off. After launch, track how much manual time was saved and what work that time moved to against metrics set by the company.
+
+import noteFig from '../media/accounting-ai-process-first-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: two separate gray blocks; three blocks in a row with a green block in the middle; a two-pan balance scale glowing green; and a small figure signing a blank sheet of paper. Each panel has a label board." caption="Figure: Accounting Process | Bookkeeping" width="wide" border />
+
+## Lessons from rolling out agents step by step
+
+On November 5, 2026, tech analyst Ben Thompson published an interview with Sasan Goodarzi, CEO of financial software company Intuit. In the interview, Goodarzi said their biggest mistake and learning over the past year or two was launching a set of AI agents, one for payments, one for payroll, and one for accounting. Each piece worked well on its own, but they did not deliver a good end-to-end experience for customers. He gave two reasons: model capabilities a year earlier were what they were, and their design approach did not follow systems thinking.
+
+Goodarzi said the biggest lesson from their agent work was that results depend on how you design it and on the context and data you give it, or in his words, "it’s only as good as the context you give it, it’s only as good as the data that you give it". He also said that years ago, when he ran Intuit's accounting business, everything was manual, with accountants entering data by hand to make sure the books were right, and accountants told him the manual task they disliked most was doing debits and credits.
+
+When teams running finance, outsourced accounting, or financial systems push automation forward by buying a separate tool for each step and managing each in isolation without a unified context handoff upstream and downstream, they easily run into the exact issue Goodarzi described: each step works well alone, but they do not work well together.
+
+## Map the accounting process as a single line first
+
+A finance team can list the owner and basis for each step in the current accounting process segment by segment. Once the full chain is laid out, it becomes clear which two steps frequently stall and which data handoff lacks a unified standard.
+
+If a team only fixes isolated actions, information missed upstream still has to be checked again by hand downstream. For how document verification connects to payment and which control gates sit in between, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>. Put the inputs, outputs, and verification basis of upstream and downstream steps into one table and record three specific items:
+
+- **Document intake**: state the document source, the receiving person, and who incomplete documents are returned to for completion.
+- **Classification and reconciliation**: state the field requirements handed off from classification to reconciliation, and the ledgers or statements used as the basis for checking.
+- **Adjustment to close**: state who initiates variance adjustments, who approves them, and the confirmation conditions required before moving to close.
+
+## Change manual classification and reconciliation steps first
+
+Once the chain is mapped out, start with manual segments that have clear rules and can be checked item by item, such as account classification and reconciliation. Goodarzi said that at Intuit Connect, Intuit launched agent-assisted close capabilities where accounting firms can upload their own standard operating procedures, because every firm does the books differently, and the platform automates many of those steps; that lets accountants spend their time advising customers on how to expand, how many people to hire, and how much inventory they can buy.
+
+Internal company teams can follow the same sequence. A company's own bookkeeping rules, including how accounts map, how exceptions are handled, and who approves adjustments, must be written down in documents before being handed to AI. Until bookkeeping rules are written down, AI can only guess, and a person has to review its classification output line by line.
+
+Reconciliation also requires clear checking rules and exception routing upfront. For how to investigate unmatched amounts or timing differences in daily bank reconciliation, see <NoteLink slug="bank-reconciliation-agent-unmatched">Bank Reconciliation Agent: Who Chases the Unmatched Items?</NoteLink>. Hand routine checks with clear rules to the tool, and route exceptions to a designated person.
+
+## Leave judgment and sign-off to the accountant
+
+After manual checking is automated, period-close review stays with people. Goodarzi said closing the books is hard, and while they are automating a lot of financial data categorization, line-by-line reconciliation from the balance sheet to the general ledger, and verifying that revenue is recognized in the right category, the final judgment on whether the books are accurate and clean, and what decisions can be made from them, always matters. He added that the split used to be about 90% manual work and about 10% judgment, and in the future it will flip to about 90% judgment and about 10% manual work; as for when that happens, he said he does not know, maybe a year from now, maybe two years from now.
+
+In day-to-day operations, an accountant judges whether the books are right at close and signs off. Classification and reconciliation outputs from AI must keep a traceable basis showing which documented rule matched and which source document corresponds to each entry, so the accountant can spot-check and verify them before signing.
+
+After the tool goes live, the team tracks how much manual time was reduced and where that time went, such as whether it shifted to operational analysis or business advice. The company sets its own specific metrics and target values and reviews them periodically against the records.
+
+## Accounting Process: FAQ
+
+### When adding AI to the accounting process, which step comes first?
+
+First map the existing accounting process as a single line from document intake, classification, reconciliation, and adjustment to close, and write down who hands off to whom at each step and on what basis. When making changes, start with manual steps that have clear rules and can be checked item by item, such as account classification and reconciliation, rather than buying separate tools for isolated steps that each run on their own.
+
+### Can AI finish the period close on its own, or does an accountant still sign off?
+
+Tools can automate much of financial data categorization and line-by-line reconciliation from the balance sheet to the general ledger, but an accountant still judges whether the books are accurate and clean at close and signs off. Classification and reconciliation results produced by AI must retain a traceable basis for the accountant to check before signing.
+
+### Can we hand bookkeeping to AI before writing down our bookkeeping rules?
+
+No. A company's own bookkeeping rules, including how accounts map, how exceptions are handled, and who approves adjustments, must be put into written documents before being given to AI. Before those bookkeeping rules are written down, AI can only guess, and there is no way to make sure the books are done right.
