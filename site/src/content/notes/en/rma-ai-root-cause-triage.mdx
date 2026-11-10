@@ -1,0 +1,73 @@
+---
+title: 'RMA Returns: Who Decides the Root Cause?'
+seoTitle: "RMA Root Cause Triage: Who Confirms Return Reasons?"
+description: "In RMA workflows for equipment and parts, customer return reasons are for ticket creation only. A quality engineer confirms the root cause after physical inspection to guide cost allocation and supplier recovery."
+lang: en
+pubDate: 2026-11-10
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/rma-ai-root-cause-triage-cover.png
+coverAlt: "On a dark teal base, an open return carton with one gray and one green blank tag sits on a gray inspection bench while two small figures inspect removed parts with magnifying glasses; a gray robot with dot eyes sorts blank cards into small boxes on the left, and a copper-sided crate rests on a cart beside a green ramp and doorframe on the right"
+sourceHash: 'cf68fea46385'
+---
+
+In an RMA return workflow, the return root cause is confirmed by a quality engineer after physical inspection, while AI only provides candidate categories and supporting evidence without making the final decision. The reason filled in by the customer on the request is the customer's own account, so the system records the customer-stated reason and the post-inspection root cause in two separate fields. When the root cause points to a supplier component and requires recovery, quality and procurement jointly check inspection records and batch traceability before sending a claim to the supplier under the purchase contract. When an issue is judged to be caused by customer use and involves denying a refund or charging a fee, a customer service supervisor confirms it before replying to the customer.
+
+import noteFig from '../media/rma-ai-root-cause-triage-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: an open gray box with one gray tag and one green tag; a small gray robot beside a stack of blank cards; a small figure inspecting a part with a magnifying glass next to a green disc; and a gray wooden crate on a cart near a green-glowing doorframe. Each panel has a label board." caption="Figure: RMA Returns | Return Root Cause" width="wide" border />
+
+## Record the customer's stated reason separately from the post-inspection root cause
+
+When an equipment or parts company processes a return request, the return reason entered by the customer describes what the customer observed, such as a unit that will not power on, will not fit during installation, or has surface dents. The actual return root cause is determined only after the physical item is shipped back and quality staff complete teardown or bench testing.
+
+Help documentation from an enterprise management software system separates these two steps: a return reason code describes why the customer wants to return the item and is entered when creating the return order, whereas a disposition code is entered when receiving or physically inspecting the returned item to describe its condition. Each disposition code requires selecting a disposition action, which determines how the physical item is handled, how it is treated financially, and whether a replacement is sent to the customer. The disposition actions listed in the documentation include return to inventory with customer credit, credit only without requiring physical return, scrap with credit, replace, and return to customer (reject).
+
+When configuring return forms, split the customer reason and the post-inspection root cause into two separate fields. Fill in the customer reason when creating the ticket, and have quality staff fill in the post-inspection root cause and select the disposition code after physical inspection; for how returned items are graded during inspection, see <NoteLink slug="returns-inspection-ai-grading">AI Grades Returns at Inspection: Who Approves Resale?</NoteLink>. Keeping the two fields separate prevents customer descriptions from being counted as production line failures in quality statistics.
+
+## How far AI preliminary triage goes
+
+While the returned item is still in transit, AI can perform an initial triage. Some tools read the request text, failure photos, and serial number, then use the serial number to pull the production batch, outgoing inspection records for that batch, and past return records.
+
+After aggregating that data, AI outputs candidate root cause categories along with the supporting basis for each and pushes them to the quality engineer. Candidate categories can be set up as follows:
+
+- **Incoming component**: a component from the same supplier has similar failure records in the same batch.
+- **Manufacturing process**: outgoing inspection or assembly parameters for the same batch show variation.
+- **Shipping damage**: outer packaging photos show crushing, and the damage location matches the point of impact.
+- **Customer use**: operating environment or installation method falls outside the product manual, or there are signs of disassembly or modification.
+- **No fault found at inspection**: similar returns have repeatedly tested normal on the bench in the past.
+
+If photos are missing, the batch cannot be found, or the symptoms do not match historical records, AI marks the item as pending and routes it to the quality engineer.
+
+## Who confirms the root cause and who bears the cost
+
+Once the physical item reaches the inspection bench, the quality engineer checks the test results against the AI preliminary triage and confirms the return root cause. Only a quality engineer can enter or confirm the post-inspection root cause field; AI does not set the conclusion.
+
+After the return root cause is confirmed, the next step is determining who bears the shipping cost, repair fee, replacement cost, and refund. Article 40 of the PRC Product Quality Law states that a seller is responsible for repair, replacement, or return if a product sold does not possess the properties for use it should possess and no prior explanation was given, does not conform to the product standard marked as adopted, or does not conform to the quality condition indicated by way of product description or physical sample. When inspection confirms that the root cause lies in an incoming component or manufacturing process and the product fails to meet those quality conditions, the company processes a return, replacement, or repair for the customer under the law or contract and selects the corresponding disposition action.
+
+When an item is judged to be a customer use issue and the company plans to deny a refund or charge the customer, neither the inspector nor the system sends a notice directly. The case goes first to a customer service supervisor to check the photos, inspection data, and contract terms, and the customer is contacted only after confirmation; for how warranty coverage and cost responsibility are decided, see <NoteLink slug="warranty-claim-ai-judgment">AI Screens Warranty Claims: Who Decides Whether It Is Still Covered?</NoteLink>.
+
+## How to recover costs when the root cause points to a supplier
+
+When the root cause points to a purchased component, the company still has to settle accounts with the supplier after completing the return or replacement for the customer. Article 40 of the PRC Product Quality Law states that after a seller has taken responsibility for repair, replacement, return, or compensation for losses, if responsibility lies with the producer or with the supplier, the seller has the right to recover from the producer or supplier; where sales contracts or processing contracts concluded between producers, between sellers, or between producers and sellers contain different stipulations, the contracting parties follow the contract stipulations.
+
+When initiating recovery, a company cannot go to the supplier with only an AI preliminary triage. The quality engineer and procurement jointly check the teardown inspection record, batch traceability for the failed component, and the incoming inspection report, and send the package to the supplier under the purchase contract once the evidence is complete. When the recovery amount reaches a threshold set by the company, the heads of procurement and quality sign off to approve it.
+
+The system can be configured to aggregate returns by post-inspection root cause. When the same root cause reaches a count set by the company within a timeframe set by the company, it is routed to the quality department to open a corrective action project.
+
+## RMA Returns: FAQ
+
+### Can the return reason written by the customer be used directly as the root cause?
+
+No. What the customer writes is the observed symptom, which is entered in the customer reason field to create the ticket. The return root cause is entered in the post-inspection root cause field by a quality engineer after physical inspection.
+
+### How do we record a return when inspection finds no problem?
+
+After the physical item arrives, the quality engineer runs bench tests under the standard procedure. If all metrics are normal and the fault described by the customer cannot be reproduced, the quality engineer records it as no fault found at inspection in the post-inspection root cause field. Customer service staff then contact the customer to check the on-site installation environment and wiring, and select the corresponding disposition code under the contract terms and physical condition to decide whether to return the item to inventory with a customer credit or ship the original item back.
+
+### How do we recover from a supplier when the return root cause points to them?
+
+Once a quality engineer inspects the item and confirms that the return root cause is a supplier incoming component issue, quality and procurement staff jointly verify the physical inspection record along with outgoing and incoming batch traceability records to assemble a complete evidence package. They then send it to the supplier to process a claim or replacement under the signed purchase contract, following the company's own amount thresholds and occurrence counts for triggering recovery.
