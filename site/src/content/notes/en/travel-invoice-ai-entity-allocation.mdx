@@ -1,0 +1,63 @@
+---
+title: 'Travel Invoices Filed Under the Wrong Entity: Can You Fix Them?'
+seoTitle: "Wrong Entity on Travel Invoices: How to Fix and Reissue"
+description: "In multi-subsidiary groups, travel invoices often carry the wrong buyer entity or mix group bookings on one claim. AI flags entity and passenger mismatches so finance can reissue invoices or adjust the booking entity."
+lang: en
+pubDate: 2026-11-10
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/travel-invoice-ai-entity-allocation-cover.png
+coverAlt: "On a dark teal base, three small gray buildings stand in the back row with a copper facade on the middle one; in front, a small figure sorts invoices from a box between two empty trays beside a gray suitcase, while an emerald green chute on the right feeds a ticket into a tray and a gray robot with dot eyes points from the left"
+sourceHash: '942d875e1467'
+---
+
+When travel invoice allocation runs into a wrong buyer header or mixed expense claims, it can be fixed: finance staff verify the case and either have the invoice reissued under tax rules or adjust which entity the expense claim belongs to. In a group with multiple subsidiaries, employees booking business travel often put another subsidiary as the buyer name, or one colleague books tickets for several people and mixes all the invoices into a single expense claim. During allocation, AI reads the buyer name, unified social credit code, passenger ID information, and itinerary on each invoice, matches them against the travel request, the employee's home entity, and the cost-bearing department, and flags mismatches for a person to handle.
+
+import noteFig from '../media/travel-invoice-ai-entity-allocation-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a gray block connected to a ticket by a green arrow; three separate small tickets; two blocks with a green circular arrow between them; and a small figure holding a blank sheet next to a green checkmark. Each panel has a label board." caption="Figure: Travel Invoice Allocation | Invoiced Entity" width="wide" border />
+
+## Which fields on an invoice determine the entity it belongs to
+
+The State Taxation Administration, Ministry of Finance and China State Railway Group Announcement No. 8 of 2024 on fully digitalized e-invoices for rail passenger transport, effective November 1, 2024, states that the basic contents of a rail e-ticket e-invoice include the invoice number, issue date, buyer information, passenger ID information, itinerary information, fare, and QR code; railway transport enterprises issue the invoice truthfully based on the buyer name, unified social credit code, and itinerary information provided by the passenger; and passengers who need reimbursement and bookkeeping must obtain a rail e-ticket e-invoice. The "Fully Digitalized E-Invoice FAQ" published on the tax authority's e-tax platform states that a fully digitalized e-invoice marked as an air transport e-ticket itinerary or rail e-ticket adds fields for buyer name and unified social credit code alongside passenger information; when the invoice is used for tax credit, pre-tax deduction, and accounting reimbursement, the taxpayer must fill in those two fields with the information of the entity that will use the invoice for tax credit, pre-tax deduction, and accounting reimbursement.
+
+Finance first maintains an entity list showing each subsidiary's name, unified social credit code, and corresponding departments and employees. After an employee uploads an e-invoice, AI checks the invoiced entity on the invoice (buyer name and unified social credit code) against that entity list, and then against the cost-bearing entity on the travel request and the employee's home entity, flagging any document that does not match.
+
+## How to split tickets when several employees travel together
+
+When several employees travel together, one colleague often books tickets for the group and puts all the invoices into one person's expense claim after returning. If the claim is booked directly under the person who placed the order, an employee of Subsidiary A ends up claiming expenses for fellow travelers from Subsidiary B, or travel costs get mixed across departments.
+
+For group travel, the travel invoice allocation tool reads the passenger ID information, name, and itinerary on each invoice and checks them against the employees on the entity list and the travel requests. Tickets booked by a colleague should be split to each traveler's own expense claim based on the passenger ID information on the invoice, not grouped under the person who booked them. When another person's ticket is mixed into an expense claim, the tool flags the mismatch between the passenger and the claimant and prompts them to split the ticket out to the actual passenger so it is reimbursed under that passenger's own invoiced entity.
+
+## How to reissue an invoice when the buyer header is wrong
+
+When an employee selects the wrong company header and puts another subsidiary's buyer name or unified social credit code on the invoice, the wrong buyer header can be corrected. For train tickets, under Article 8 of Announcement No. 8 of 2024, if a passenger who has obtained a rail e-ticket e-invoice needs it reissued due to an error in the buyer information or other reasons, the railway transport enterprise issues a red-letter (reversing) e-invoice first and then reissues the invoice:
+
+- **Neither usage confirmation nor bookkeeping confirmation completed**: if the buyer has not completed usage confirmation or bookkeeping confirmation, the railway transport enterprise fills out a Red-Letter Invoice Information Confirmation Form and issues a red-letter (reversing) e-invoice; if the invoice has not been booked yet, finance returns the document and asks the employee to have it reissued promptly.
+- **Usage confirmation or bookkeeping confirmation already completed**: if the buyer has already completed usage confirmation or bookkeeping confirmation, the railway transport enterprise fills out the confirmation form, and after the buyer confirms it, issues a red-letter (reversing) e-invoice based on that confirmation form; this step requires finance at the subsidiary named on the original header to confirm the form.
+- **Already used for VAT credit declaration**: if the buyer has already used the invoice for a VAT credit declaration, the buyer should temporarily make a current-period input VAT reversal based on the VAT amount listed on the confirmed confirmation form, and after obtaining the red-letter (reversing) e-invoice, uses it together with the confirmation form as original accounting vouchers.
+
+For air tickets and other ticket types where buyer information was entered wrongly, reissuance follows the rules for each ticket type, and finance checks with the issuer first. For controls over invoice checking, bookkeeping, and payment, see <NoteLink slug="ap-invoice-agent-payment-control">AP Invoice Agents That Also Pay: Which Controls Can't Be Skipped?</NoteLink>.
+
+## Who makes the change after an exception is flagged
+
+When the tool finds that the buyer name and unified social credit code on an invoice do not match the employee's home entity, or finds mixed group tickets or an itinerary that does not match the travel request, it only flags the mismatch and suggests an entity without changing the booking entity on the expense claim itself. For which actions to allow automatically and which to hold for a person, see <NoteLink slug="agent-tool-call-auto-approval-rules">Agent Tool Call Auto-Approval: Which Calls to Allow or Block</NoteLink>.
+
+Changing entity allocation, initiating a reissue, and handling tax amounts are all done after confirmation by finance staff. Adjusting the booking entity on an expense claim, telling an employee to get an invoice reissued, confirming a Red-Letter Invoice Information Confirmation Form, and processing a current-period input VAT reversal are all executed after finance at the corresponding subsidiary confirms them, keeping a record of the original invoice, the confirmation form, and the handler.
+
+## Travel Invoice Allocation: FAQ
+
+### Whose expense claim gets the invoice when a colleague books the ticket?
+
+Tickets booked by a colleague go to each traveler's own expense claim based on the passenger ID information on the invoice, not to the person who booked them. Once the tool flags that the claimant and the passenger named on the ticket do not match, the booking colleague splits the ticket out to the actual passenger, and each person files for reimbursement under their own home entity and travel request.
+
+### Can an invoice still be reissued if the wrong header is found after bookkeeping?
+
+Yes. For train tickets, under Article 8 of Announcement No. 8 of 2024, if the buyer has already completed usage confirmation or bookkeeping confirmation, the railway transport enterprise fills out a Red-Letter Invoice Information Confirmation Form, and after finance at the buyer entity confirms it, issues a red-letter (reversing) e-invoice based on the confirmation form and reissues the invoice; if the invoice has already been used for a VAT credit declaration, finance processes a current-period input VAT reversal based on the VAT amount on the confirmed form as required by the announcement, and keeps the red-letter (reversing) e-invoice together with the confirmation form as original vouchers once received. Other ticket types follow their respective rules, and finance checks with the issuer first.
+
+### Does the invoice need to be reissued if the invoiced entity is right but a sister company bears the cost?
+
+The invoiced entity on the invoice (buyer name and unified social credit code) is the unit that uses it for reimbursement and bookkeeping. How costs are allocated inside the group is decided by finance under the company's internal settlement rules; whether an invoice needs to be reissued is judged by finance under tax rules, while AI only flags that the cost-bearing entity and the buyer on the invoice do not match and does not decide in place of finance.
