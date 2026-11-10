@@ -1,0 +1,65 @@
+---
+title: 'Mold Cavity Defect Hot Spots: Who Approves a Mold Change?'
+seoTitle: "Mold Cavity Defect Hot Spots: Who Approves Mold Changes?"
+description: "In multi-cavity injection molding, defect heat maps show which cavities concentrate short shots or flash. Engineers test process parameters within the approved window first, then route structural mold changes for multi-team sign-off."
+lang: en
+pubDate: 2026-11-10
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/mold-cavity-ai-defect-map-cover.png
+coverAlt: "On a dark teal base, an open gray injection mold has a row of circular cavities with two glowing green beside a tray of matching empty cavities; one small figure checks the cavities with a blank clipboard while another holds a mold file, with a copper-drawer tool cabinet and a gray robot with dot eyes on the right"
+sourceHash: 'a7ebeedb641d'
+---
+
+A mold cavity defect heat map aggregates short shots, flash, and other defects by cavity number in multi-cavity mass production to locate cavities where abnormalities cluster, while the decision to cut steel and modify the mold is made by on-site engineering and quality teams following a defined process. AI only outputs the hot spot distribution and candidate causes along with the corresponding batches and process parameters, without making a mold change decision. Once a heat map is generated, a process engineer first tests adjustments to injection speed, melt temperature, and mold temperature within the approved process window. If adjustments within the process window do not resolve the issue and it is confirmed to be a structural problem with runners or gates, the team initiates a mold change approval, which is co-signed by tooling, quality, and production and approved by the corresponding manager according to amount tiers set by the company; if customer-approved parts are involved, the company notifies the customer or resubmits samples as required by the customer contract and quality agreement.
+
+import noteFig from '../media/mold-cavity-ai-defect-map-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a gray block with circular cavities where several glow green; a two-compartment box with gears on one side and blocks on the other separated by a green divider; two small figures holding blank sheets with a green stamp between them; and two cavity blocks side by side with the left glowing green and the right all gray. Each panel has a label board." caption="Figure: Mold Cavity Defects | Mold Change Approval" width="wide" border />
+
+## How the heat map is built and what the shop floor checks first
+
+Injection molding plants often use multi-cavity molds for low-cost, high-efficiency mass production, and each molded part carries a cavity number mark. In daily production, a tool can aggregate quality inspection records by cavity number, defect type, production shift, and the process parameters at the time to plot a mold cavity defect heat map. For how inline quality inspection provides a backstop and how manual review fits in, see <NoteLink slug="ai-visual-inspection-spot-check">Who Owns a Missed Defect in AI Visual Inspection, and How Much Manual Checking Should Stay?</NoteLink>. The heat map shows which cavities repeatedly produce short shots or flash.
+
+The tool can be configured to list the cavity numbers where defects cluster, the batch numbers, and the process parameters at the time right beside the hot spots. When a few specific cavities report short shots across several shifts in a row, the tool lists the symptoms, parameter logs, and candidate causes and hands them to the process engineer and tooling engineer to investigate, without issuing an order to modify the mold.
+
+## Why cavity imbalance happens and how to separate process causes from mold causes
+
+Even when a multi-cavity mold has a geometrically balanced runner layout, mass production still runs into filling imbalance. An injection molding study published in 2024 notes that this imbalance comes from high shear-rate regions near the mold wall inside the runners, where high shear raises melt temperature, lowers viscosity, and makes the melt flow more easily; because of filling imbalance, some cavities are overpacked compared with others. Experimental results in the paper also show that smaller runner and gate dimensions worsen filling imbalance, and using glass-fiber-reinforced material also worsens filling imbalance.
+
+The same paper reviews two earlier studies: one study examined the effects of injection speed, melt temperature, and mold temperature on filling imbalance in an eight-cavity, geometrically balanced mold and found that adjusting those three process parameters can reduce imbalance; the other study tested multiple runner designs and process parameters to reduce filling imbalance, but noted that it cannot be eliminated completely. Cavity-to-cavity differences on a heat map can be checked against these two groups of factors. On the shop floor, candidate causes are split into two categories first: machine process parameters, and the runner and gate structure of the mold itself.
+
+- **Process parameter causes**: machine settings such as injection speed, melt temperature, and mold temperature. A process engineer first tests adjustments within the approved process window, records the parameter values changed each time along with the corresponding batch, and rechecks the heat map by cavity number to see whether short shots or flash changed.
+- **Mold structure causes**: hardware dimensions such as runner size and gate size. If injection speed, melt temperature, and mold temperature have all been tested within the approved process window and rechecking the heat map shows defects still clustered in the same cavities without improvement, the issue is classified as a mold structure problem and moved to mold change evaluation.
+
+## Which gates a mold change approval goes through and who signs off
+
+Once the team confirms that adjustments within the process window cannot fix the issue and runner or gate dimensions need to be modified, the shop floor formally initiates a mold change approval. Modifying a mold costs tooling fees, takes up machine and toolmaker schedule time, and can alter part dimensions, so several departments co-sign according to their responsibilities before any steel is cut.
+
+- **Tooling engineering drafts the plan**: based on the mold cavity defect heat map distribution and trial adjustment logs, the tooling engineer prepares a specific mold modification plan stating clearly which cavities will have their runner or gate dimensions changed and how the machining will be done.
+- **Quality evaluates customer impact**: the quality department evaluates how the mold change affects product dimensions and customer-approved parts. If customer-approved parts are involved, the team notifies the customer or resubmits samples as required by the customer contract and quality agreement rather than modifying the mold privately and shipping in volume.
+- **Production evaluates mold downtime**: based on open orders and the production schedule, the production department evaluates the downtime needed to pull the mold off the press for modification and trial runs, and coordinates production scheduling. For how routine mold wear is tracked and how press pull-offs are coordinated, see <NoteLink slug="mold-life-ai-prediction">AI Predicts Mold Life: Who Decides on an Early Mold Change?</NoteLink>.
+- **Managers sign off by amount tier**: machining and trial fees for the mold change are routed according to amount tiers set by the company, and the tool shop disassembles the mold and starts cutting only after the manager at the corresponding level signs off.
+
+## How to verify by cavity number and archive records after a mold change
+
+After the mold is modified and put through a trial run, quality inspection data from the trial batch is again aggregated by cavity number to plot a post-change mold cavity defect heat map, which is compared cavity by cavity against the pre-change map: whether the cavities where defects previously clustered have recovered, and whether cavities that were previously normal have developed new flash or dimensional shifts.
+
+Everything from the initial heat map alert and the process engineer's trial parameter records within the process window to the final mold modification plan, the sign-off approvers at each level, customer notification or sample resubmission records, and the pre-change versus post-change cavity heat map comparison and trial results is archived. If the same mold later shows defect fluctuations in specific cavities again, the team can pull the historical file to check which spots were modified and which parameters were adjusted before.
+
+## Mold Cavity Defects: FAQ
+
+### Can a heat map tell us directly whether to modify the mold?
+
+It cannot make a direct mold change decision. A mold cavity defect heat map lays out where short shots and flash cluster by cavity number alongside the batches and process parameters at the time, and offers candidate causes. Whether the issue can be solved by tuning the machine or requires cutting steel to change runners or gates can only be judged after a process engineer runs physical trials within the approved process window.
+
+### Do we tune process parameters first or modify the mold first?
+
+Tune the process first, and modify the mold only if tuning cannot fix it. When the shop floor receives a heat map, the first step is for a process engineer to adjust injection speed, melt temperature, and mold temperature within the approved process window and keep trial records; the heat map is then rechecked by cavity number, and if defects are eliminated or drop to an acceptable level, the mold is left untouched. Only when tuning within the process window fails to improve the defects is the problem attributed to mold structure factors such as runners or gates and submitted for a mold change.
+
+### Who needs to sign off on a mold change approval?
+
+A mold change approval requires joint review by tooling, quality, production, and the relevant managers. First, the tooling engineer issues a mold modification plan; the quality department evaluates the impact on product dimensions and customer-approved parts and checks whether the customer contract and quality agreement require customer notification or sample resubmission; the production department evaluates the impact of mold downtime on the production schedule; and finally, the corresponding manager signs off to release the job according to amount tiers set by the company.
