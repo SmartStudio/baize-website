@@ -1,0 +1,65 @@
+---
+title: 'NDA Clause Differences: Who Reviews Them?'
+seoTitle: "NDA Clause Comparison: Which Differences Go to Legal?"
+description: "When sales or procurement receives a counterparty NDA, compare it clause by clause against the company template and route it across three legal-defined tiers so business signs standard terms and legal reviews out-of-bounds or extra clauses."
+lang: en
+pubDate: 2026-11-10
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/ndas-ai-clause-diff-cover.png
+coverAlt: "On a dark teal base, two stacks of gray documents sit side by side on a platform connected by thin rods with one edge glowing green on the right stack; a gray padlock and a gray robot with dot eyes sit in front, while a small figure holding a blank folder walks toward the tallest copper door among three doors of different heights in the back"
+sourceHash: '09bf540831b9'
+---
+
+After receiving a counterparty's NDA text, compare its clauses against the company's standard template first, then follow a three-tier rule set by legal to decide who reviews and who signs. If the text matches the standard template or falls within an acceptable range, business staff can sign under the rules set by legal; if it goes beyond the acceptable range, it goes to legal for review; if it slips in clauses outside confidentiality, such as non-compete, non-solicitation, or intellectual property ownership, it always goes to legal. Legal defines which differences belong to which tier, and AI does not set the tiers on its own. Archive the signed version together with the comparison report, recording who reviewed which differences and who approved signing.
+
+import noteFig from '../media/ndas-ai-clause-diff-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a gray block split into horizontal strips along its side; two blocks side by side with the right edge glowing green; three blocks of different heights with the tallest middle one in green; and a small figure signing a blank sheet next to a small archive box. Each panel has a label board." caption="Figure: NDA | Clause Comparison" width="wide" border />
+
+## Break the standard template into a clause checklist first
+
+Sales, procurement, and business development teams receive NDAs from counterparties every week, and the other side usually sends its own template. Legal first breaks the company's standard NDA into a clause checklist, stating the acceptable range for each item, such as the acceptable window for the confidentiality term and the scope of permitted recipients. That checklist serves as the basis for clause comparison.
+
+Under Article 501 of the PRC Civil Code, trade secrets or other confidential information learned by parties in the course of concluding a contract must not be disclosed or improperly used, regardless of whether the contract is formed; a party that discloses or improperly uses such trade secrets or information and causes losses to the other party is liable for compensation. The PRC Anti-Unfair Competition Law (2025 revision), effective October 15, 2025, provides that trade secrets under the law refer to commercial information such as technical information and operational information that is not known to the public, has commercial value, and for which the rights holder has taken corresponding confidentiality measures.
+
+The Supreme People's Court judicial interpretation on civil trade secret cases states that where parties sign a confidentiality agreement or stipulate confidentiality obligations in a contract that are sufficient under normal circumstances to prevent disclosure of trade secrets, the people's court shall find that the rights holder took corresponding confidentiality measures; factors considered by the people's court in determining whether corresponding confidentiality measures were taken include the identifiability of the confidentiality measures and the degree of correspondence between the confidentiality measures and the trade secrets. When breaking down the checklist, legal can align the definition of confidential information with the technical and operational information the company actually needs to protect.
+
+## Which differences clause comparison flags
+
+When business staff receive a document from the other party, they first run the counterparty text through a tool for clause-by-clause comparison against the standard template; for redacting contract text before handing it to a tool, see <NoteLink slug="chatgpt-contract-paste-vs-redact">Should You Paste a Contract into ChatGPT? Redact It First</NoteLink>. Checking against the checklist prepared by legal, the tool compares the two texts item by item and flags specific discrepancies.
+
+The comparison report highlights two categories of items. The first category covers discrepancies in core confidentiality elements, including the definition of confidential information, unilateral versus mutual confidentiality, the confidentiality period, who information may be disclosed to, return or destruction upon expiration, liability for breach, and dispute resolution. Among these, the definition of confidential information must match the information the company actually needs to protect; if the counterparty text writes that definition too broadly or too narrowly, the tool flags it separately for legal. The second category covers slipped-in clauses, checking whether the counterparty text includes terms outside confidentiality such as non-compete, non-solicitation, or intellectual property ownership.
+
+## How differences are tiered and who reviews them
+
+Once differences are flagged, they are routed across three tiers defined in advance by legal to decide who reviews and who can sign:
+
+- **Tier 1**: if the text matches the company's standard template, or if the differences fall within the acceptable range written down by legal, business staff can sign under the rules set by legal without putting every agreement into the legal queue.
+- **Tier 2**: if clause terms go beyond the acceptable range set by legal, such as an out-of-bounds confidentiality period, an expanded list of permitted recipients, one-sided breach liability, or a confidential information definition that is too broad or too narrow, the agreement is routed to legal for review.
+- **Tier 3**: if the counterparty text slips in clauses outside confidentiality, such as non-compete, non-solicitation, or intellectual property ownership, it is always routed to legal regardless of how mild the other clauses are.
+
+Which differences belong to which tier is defined in advance by legal; AI only checks the text against the checklist and displays the differences without assigning tiers on its own. For how legal coordinates manual review once an agreement is routed over, see <NoteLink slug="contract-review-agent-risk-clauses">A Contract Review Agent Flagged the Risks. Does Legal Still Read Every Clause?</NoteLink>.
+
+## What records to keep before and after signing
+
+Whether business staff sign directly under the rules or sign after legal modifies and confirms the text, complete records must be kept before and after signing. Before initiating seal application or signature, business staff attach the comparison report to the approval form so reviewers can see right away where the text differs from the standard template and which tier it falls into.
+
+After the agreement is signed, the final signed version and the comparison report from that time are archived together. The archive record states who reviewed which differences, what handling instructions legal gave on out-of-bounds or slipped-in clauses, and who finally approved signing. If the team later needs to verify the protection boundary for a specific piece of technical or operational information as business progresses, or needs evidence in a dispute to show that the company took corresponding confidentiality measures, they can pull the signed version and comparison record directly to check.
+
+## NDA: FAQ
+
+### If the counterparty's NDA differs from the standard template by only a few words, does legal still need to review it?
+
+That depends on where those few words were changed and whether they go beyond the acceptable range set by legal. If it is only a change in phrasing order that remains within the interval allowed by the standard checklist after checking, business staff can sign under the rules set by legal; if the change falls in the definition of confidential information, unilateral versus mutual obligations, breach liability, or dispute resolution, even a few words that push the meaning outside the acceptable range must be routed to legal for review.
+
+### What if an NDA slips in a non-compete clause?
+
+Always route it to legal, and do not let business staff approve and sign it as a routine NDA. Non-compete, non-solicitation, and intellectual property ownership are clauses outside confidentiality and exceed the boundary authorized for routine NDA exchange; once the tool flags such slipped-in terms during comparison, the document goes straight to legal to decide whether to strike the clause and renegotiate or evaluate it separately.
+
+### Can business staff sign directly if clause comparison shows no differences?
+
+When clause comparison shows the text matches the standard template or falls entirely within the acceptable range set by legal, and contains no slipped-in clauses outside confidentiality, business staff can sign under the rules set by legal. Even then, the comparison report and the final signed version must be archived together with a record of who checked the text and who approved signing, so every signed agreement has a verifiable trail.
