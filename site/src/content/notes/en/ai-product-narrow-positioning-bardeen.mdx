@@ -1,0 +1,63 @@
+---
+title: 'Product Positioning Case: Why Bardeen Narrowed Users'
+seoTitle: "Product Positioning Case: Why Bardeen Narrowed Its Users"
+description: "When product positioning starts too broad and aims to serve every department as a general tool, user experience gets messy and engineering cannot prioritize features. Focusing on one market segment first helps downstream conversion."
+lang: en
+pubDate: 2026-11-10
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/ai-product-narrow-positioning-bardeen-cover.png
+coverAlt: "On a dark teal base, a large gray funnel on the left overflows with jumbled blocks that scatter across the floor, while on the right an emerald green channel carries a neat row of blocks to a gray workbench where a small gray dot-eyed robot sits and a small figure in the middle bends with a copper magnifying glass to inspect the row"
+sourceHash: '26b92c683da7'
+---
+
+When product positioning starts out trying to cover everything for every department, strong early acquisition numbers can still stall out later on user experience and engineering priorities. In an interview uploaded in late January 2026 on the Chinese podcast Kedaibiao Lizheng, former Bardeen full-time employee Chen Chang reviewed the company's experience: early on, the team built a tool that created workflows from natural-language prompts and drove strong traffic and active-user numbers through viral campaigns, only to learn in user interviews that actual usage was chaotic; after narrowing the target audience to a specific market segment serving only sales and marketing teams, internal focus and downstream conversion metrics improved.
+
+import noteFig from '../media/ai-product-narrow-positioning-bardeen-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: ascending stacks of small gray blocks with a green upward arrow; a gray tray piled with jumbled blocks; a neat row of blocks between two green guide rails; and a small figure placing one block onto a small gray table. Each panel has a label board." caption="Figure: Product Positioning | Market Segment" width="wide" border />
+
+## Early user growth from viral campaigns
+
+In the Kedaibiao Lizheng interview, Chen Chang said that Bardeen, the last company where she worked full-time, failed and went through a large round of layoffs after she left. In 2023, Bardeen launched what Chen Chang described as the first AI version of Zapier: previously, users of automation tools had to build complex workflows manually step by step, whereas Bardeen let a user state a single sentence to build the entire workflow.
+
+At launch, the team ran viral campaigns that drove rapid user acquisition. Chen Chang stated in the interview that in less than half a year, the product reached 100,000 to nearly 200,000 users; most came from cost-effective influencer placements combined with the wave of ChatGPT attention at the time, and she noted that many posts costing under $100 generated millions of impressions. Traffic, new sign-ups, and active user numbers on the dashboard all looked strong.
+
+## Why a general tool stalled both user experience and engineering
+
+With strong dashboard numbers, where did the trouble start? Chen Chang summed it up in the interview by saying one lesson was that the product was too general. At the time, the team wanted to build a horizontal tool that anyone in marketing, sales, or sales operations could pick up and use.
+
+That broad product positioning created strain on both sides. In Chen Chang's analysis, building a general tool pushed the entire burden of choice onto the user: first, users had to know clearly which business workflow they wanted to optimize; second, the product had to handle every kind of request from every kind of user at once. Meeting both conditions at the same time was very hard, leaving the actual user experience chaotic. Although top-line active numbers looked good, when the team sat down to conduct careful user interviews, they found the real experience fell short of what the dashboard suggested. Engineering was caught in a bind at the same time: the team received a wide assortment of feature requests and struggled to rank development priorities.
+
+## What changed after narrowing to sales and marketing teams
+
+Once the team recognized the flaw in the general-purpose approach, they narrowed the product and stopped opening it broadly to every role, focusing instead on sales and marketing teams. Chen Chang recalled in the interview that after this shift in focus, both user experience and internal product focus improved substantially, and downstream numbers such as conversion improved as well.
+
+The case gives three practical lessons:
+
+- **Define the audience before the feature list**: When setting product positioning, decide first which specific team will use the tool and which concrete task it solves for them, then plan the feature list, and expand only after gaining a foothold in that single market segment.
+- **Run user interviews even when dashboard metrics look strong**: Even when sign-up growth and daily active figures look healthy, sample users regularly for in-depth interviews to hear whether their actual step-by-step workflows run smoothly.
+- **Use the feature request backlog to diagnose positioning**: When product managers and engineers find the request list growing scattered and impossible to rank in priority discussions, that backlog is a direct signal that positioning is spread too wide.
+
+## How enterprise buyers and internal tool builders can apply this
+
+Narrowing before expanding applies equally when companies buy AI tools or build internal ones. Handing out accounts to every employee on day one, or building a general-purpose assistant for every department, runs into the same problem: employees do not know what to use it for, and the technical team receives scattered requests from all directions.
+
+A steadier approach is to pick one department and one concrete daily workflow for a pilot; for why internal rollouts should narrow scope first, see <NoteLink slug="enterprise-ai-pilot-vs-accounts-for-all">Why Should an Enterprise AI Pilot Start With One Department?</NoteLink>. When picking the first workflow to implement, prioritize tasks whose output can be checked on the spot once finished; for the selection criteria, see <NoteLink slug="ai-verifiable-work-first">Choosing Enterprise AI Use Cases: Start With Work You Can Verify on the Spot</NoteLink>. Get one task in one department running smoothly before copying it to the next team.
+
+## Product positioning: FAQ
+
+### Are general-purpose AI tools always bound to fail?
+
+There is no absolute rule, though startups and new projects face a steep climb when they start with a general-purpose tool. In Chen Chang's review of Bardeen, broad positioning required users to know on their own what workflow to optimize while requiring the product to handle disparate requests from everyone, which was hard to satisfy at the same time and left engineering unable to prioritize its roadmap. Starting with a clear user group and workflow makes engineering and user experience converge faster.
+
+### Why run user interviews when sign-up and active-user numbers already look strong?
+
+Dashboard traffic and active-user counts do not show where users get stuck during actual steps. In Bardeen's case, cost-effective influencer posts and trend traffic brought in 100,000 to nearly 200,000 users in Chen Chang's account, and traffic and active numbers looked healthy, yet in-depth user interviews revealed that the experience was much rougher than the metrics suggested. Regular user interviews catch gaps in product positioning and usability before downstream conversion drops.
+
+### How should a team pick its first market segment and workflow?
+
+Narrow the target audience first to a single job function, such as sales teams or marketing teams, and pick one high-frequency task from their daily work with clear boundaries and outputs that can be verified on the spot. Instead of handing users a blank screen and asking them to invent use cases, make the core workflow in that market segment work out of the box, and expand to adjacent roles after conversion runs smoothly.
