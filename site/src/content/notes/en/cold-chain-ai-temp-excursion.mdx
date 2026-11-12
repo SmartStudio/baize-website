@@ -1,0 +1,63 @@
+---
+title: 'Cold-Chain Temperature Excursion Alarms: Who Pays for the Damage?'
+seoTitle: "Cold-Chain Temperature Excursions: Who Pays?"
+description: "When a cold-chain temperature excursion alarm occurs with cargo damage, tools align logger data with handoff times while quality, logistics, and legal determine liability under contracts and law."
+lang: en
+pubDate: 2026-11-12
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/cold-chain-ai-temp-excursion-cover.png
+coverAlt: "On a dark teal base, a gray box truck sits on the left beside a green-glowing bell and a handoff post; in the center several insulated boxes rest on a pallet as a gray dot-eyed robot holds a blank board; on the right two small figures stand by a barrier arm, one holding a clipboard, beside a copper-colored book"
+sourceHash: '1570eb74d89b'
+---
+
+When a cold-chain temperature excursion alarm triggers and cargo damage is found upon arrival, liability depends on which handoff segment the temperature anomaly occurred in, whether the consignee raised a written objection within the agreed period, and whether the carrier can produce evidence for exemption. Tools can align temperature logger data with the timestamps of each handoff node to generate a draft segment attribution, without drawing a final liability conclusion; ultimately the quality lead heads a review with logistics and legal to determine who bears the loss under the transport contract terms and the PRC Civil Code.
+
+import noteFig from '../media/cold-chain-ai-temp-excursion-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a green-glowing bell and a dot-eyed robot holding up a blank board; a small figure pushing a cargo box beside a small gray truck; a small figure handing out a blank card at a barrier desk beside an hourglass; and a small figure placing a card into an archive box beside a copper-colored book. Each panel has a label board." caption="Figure: Cold-Chain Temperature Excursion | Temperature Anomaly" width="wide" border />
+
+## Tools first align temperature data with handoff nodes
+
+When cold-chain cargo triggers an in-transit alarm and unpacking upon arrival reveals spoilage or thawing, the first step is to identify the exact moment temperature control was lost. Some tools support reading time-series data exported from vehicle-mounted or box-level temperature loggers and aligning those curves with the timestamps of each handoff node on the waybill, marking which specific segment the temperature anomaly fell into: pre-loading, linehaul transit, intermediate warehouse, last-mile delivery, or unloading wait.
+
+Each handoff segment has a corresponding timestamp or signed document. For example, outbound loading from the shipper's cold storage has a seal time, the linehaul fleet arriving at an intermediate warehouse has inbound and outbound scan logs, and last-mile delivery arriving at the receiving dock has a check-in record. If a vehicle change or fleet reassignment occurred during transit, mid-route transloading also counts as a separate handoff node; for rules and record-keeping on mid-route carrier switches, see <NoteLink slug="transport-dispatch-agent-carrier-switch">A Dispatch Agent Switches Carriers: Do You Need to Tell the Customer?</NoteLink>. The tool compares the start and end times of the temperature excursion against these nodes one by one and generates a draft segment attribution listing which stage the excursion occurred in, how long it lasted, and who held custody of the cargo at the time, handing it over for human verification.
+
+## Which segment had the excursion determines who pays
+
+With the draft segment attribution in hand, liability determination is led by the shipper's quality lead together with logistics and legal staff, checking the facts against the transport contract terms and legal provisions. Under Article 832 of the PRC Civil Code, a carrier bears liability for compensation for the damage to or loss of goods during transport; however, if the carrier proves that the damage to or loss of the goods was caused by force majeure, the natural properties of the goods themselves or reasonable wear and tear, or the fault of the shipper or consignee, the carrier does not bear liability for compensation.
+
+Across different segments, the verification focus differs:
+
+- **Pre-loading stage**: if the logger shows that cargo temperature was already high before loading and sealing, or the shipper's cold storage loaded the cargo without pre-cooling it as required, and the carrier produces temperature records and signed handoff slips from loading that prove fault on the shipper's part, the carrier is not liable for that segment.
+- **Linehaul transit and intermediate warehouse stage**: after cargo is properly loaded, if reefer unit shutdowns, improperly closed trailer doors, or breaks in the cold chain during vehicle transfers occur during linehaul driving, intermediate warehouse storage, or vehicle handoffs, these fall under in-transit control issues, and the carrier must compensate according to the contract if it cannot produce exemption evidence.
+- **Last-mile delivery and unloading wait stage**: after a vehicle arrives at the receiving site on time, if slow dock scheduling by the consignee delays unloading and warehousing so the trailer doors stay open for a long wait and temperature rises, or if the vehicle arrives late and misses the unloading window causing a wait, the parties first need to separate who caused the delay; for splitting responsibility on late arrivals and delivery delays, see <NoteLink slug="delivery-promise-agent-late-order">A Delivery Promise Agent Gave the Date. Who Answers When the Order Is Late?</NoteLink>.
+
+## Receiving objections must be raised within the deadline
+
+Even when the temperature curve clearly marks an in-transit anomaly, pursuing liability becomes very difficult if the consignee fails to raise an objection within the specified period. Under Article 831 of the PRC Civil Code, when taking delivery of goods, the consignee shall inspect the goods within the agreed time limit; where there is no agreement or the agreement is unclear, and it still cannot be determined in accordance with Article 510 of the PRC Civil Code, the consignee shall inspect the goods within a reasonable time limit; failure by the consignee to raise an objection regarding the quantity of or damage to the goods within the agreed time limit or a reasonable time limit is treated as preliminary evidence that the carrier delivered the goods in accordance with the transport documents.
+
+When the shipper's receiving and quality teams discover cargo damage at the pickup site or within the agreed inspection window, they must send a timely written notice of objection to the carrier, attaching the exported temperature logger data, the draft segment attribution, on-site unpacking photos, and inspection results. The specific number of days for the objection window is agreed in advance by both parties in the transport contract; once the agreed deadline passes before a claim is brought to the carrier, the receiving party has to work much harder to overturn the preliminary evidence of delivery as documented.
+
+## Prepare contracts and archives in advance
+
+Many cold-chain cargo damage disputes trace back to discovering only after an incident that the parties had no agreement on temperature measurement tools or settlement rules. When logistics and legal sign a transport contract, they should write five operational details into the clauses: what the compliant temperature range is for the cargo, which party places the vehicle-mounted or box-level temperature loggers, how data is exported and verified upon arrival, who notifies whom when an in-transit temperature anomaly alarm triggers, and what formula calculates compensation once cargo damage is confirmed.
+
+Whenever a cold-chain temperature excursion occurs, the quality and logistics teams should keep a complete file archiving the alarm timestamp, the tool-generated draft segment attribution, site and cargo photos, quality inspection results, and written confirmations from each party together. At the end of each month, the team pulls and summarizes all files from that month by carrier and route to see which routes or fleets repeatedly run into trouble at specific nodes, and uses that record to adjust subsequent route scheduling and carrier evaluations.
+
+## Cold-chain temperature excursion: FAQ
+
+### If the temperature went over for just a short time, does it count as a cold-chain temperature excursion?
+
+That depends on the temperature range and determination rules agreed in the transport contract, as well as the quality lead's inspection conclusion. Tools can mark the start and end times and magnitude of a brief excursion in the draft segment attribution, while the quality team decides whether it constitutes a temperature excursion that affects cargo quality and caused actual damage based on cargo properties, inspection results, and contract terms; the tool does not draw the conclusion on its own.
+
+### If the logger data belongs to the carrier, can the shipper get it?
+
+That depends on what the two parties agreed in the contract. When the shipper and carrier sign the contract, they should state in advance who places the temperature loggers and how data is exported and shared. If the contract states that the carrier's vehicle-mounted logger data must be shared with the shipper upon delivery or upon an alarm, the shipper retrieves it under the contract; to avoid situations where unilateral data cannot be obtained or is disputed, the shipper can also stipulate in the contract that it places its own box-level loggers.
+
+### If a temperature anomaly happened because the shipper did not pre-cool properly, does the carrier still have to pay?
+
+If the temperature anomaly was caused by improper pre-cooling by the shipper before loading, and the carrier can produce evidence, the carrier does not bear liability for compensation. Under Article 832 of the PRC Civil Code, if cargo damage is caused by the fault of the shipper, the carrier does not bear liability for compensation; however, the carrier must prove this ground for exemption itself, for example by producing initial temperature records signed by both parties at the loading handoff.
