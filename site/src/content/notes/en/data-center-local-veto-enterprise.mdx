@@ -1,0 +1,63 @@
+---
+title: 'Data Center Expansion Hits a Local Veto: What Should Companies Do?'
+seoTitle: "Data Center Expansion Vetoes: What Companies Should Do"
+description: "US voters and governors are pausing data center expansion, tightening future compute supply. In compute procurement and annual budgeting, companies need delay, backup-region, and model-tier rules."
+lang: en
+pubDate: 2026-11-12
+category: 案例复盘
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/data-center-local-veto-enterprise-cover.png
+coverAlt: "On a dark teal base, a gray server building model with two cooling towers sits on the left with a lowered barrier arm as a small figure drops a blank card into a ballot box; in the center a gray dot-eyed robot holds a blank clipboard beside a barrier post; on the right a small figure at a desk faces a blank sheet and a copper-colored book next to three blocks of different sizes and a light green bell on the far right"
+sourceHash: '53e7f3de9f66'
+---
+
+Data center expansion faced voter rejections in the US midterm elections, and Ben Thompson viewed this as a new constraint on AI in his November 4, 2026 Stratechery article "AI on the Ballot". Previously, outside observers focused on compute, memory, and power. Now local ballots directly block new facility construction, and compute may stay scarce longer than expected. When companies handle compute procurement and annual budgets, they need to factor in slower capacity expansion, tighter quotas, and higher prices, specify in contracts how delayed capacity delivery is handled along with backup region clauses, select models by task tier, and offload inference that can run on endpoint devices.
+
+import noteFig from '../media/data-center-local-veto-enterprise-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a small figure dropping a card into a ballot box with a barrier arm lowered in front of a server building; a dot-eyed robot holding a clipboard beside a barrier arm; a small figure placing a green block and a copper-colored book on an open contract; and a small figure picking a green-glowing small block from blocks of different sizes. Each panel has a label board." caption="Figure: Data Center Expansion | Compute Procurement" width="wide" border />
+
+## What happened with data centers on the ballot
+
+This note reviews Ben Thompson's article "AI on the Ballot" published on Stratechery. The author watched many campaign ads in Wisconsin, and data centers were the most common topic he saw. Both parties there opposed data centers and accused each other of supporting them during the campaign. That opposition carried directly into gubernatorial races and local ballot measures. According to the author, almost every related local ballot measure opposing data centers won or was winning, and at the time he wrote the article, the only exception was in North Dakota. For the same round of voting, Ballotpedia's count was that of the 41 local measures on November 3, 40 supported limits on data center construction, and the exception was also in North Dakota.
+
+The trend in Texas was just as clear. According to reporting cited in the article, Texas accounts for more than 25% of planned US capacity through 2030. In that major planned-capacity state, the newly elected governor promised to pause data center construction in the state; the author added that the incumbent governor had already announced a pause on new data center permits in September. The author recalled that when data centers were built for the internet in the past, local governments competed for them because construction brought economic gains and operations brought tax revenue. Today's wave of opposition is tied to AI.
+
+## Why the constraint lands on permits
+
+The argument the author makes in the article is that the constraint on AI adoption has shifted repeatedly, first a shortage of compute, then a shortage of memory, approaching a shortage of power, with the final constraint being politics; political constraints are harder to solve and also get in the way of solving the other constraints. He therefore believes compute may remain scarce longer than expected and will have a hard time smoothly turning into a commodity.
+
+The author also noted specifically that he was not claiming this situation is permanent, because election results swing back and forth, and that he was working through what happens if Americans' views on data centers do not change. Under his projection, facilities that already hold permits will become scarcer assets than expected. This directly separates the positions of different providers: emerging compute cloud providers need new sites and new permits and have less political clout than hyperscalers, while hyperscalers already hold more sites that can be retrofitted or rebuilt. The author also mentioned that he had previously argued data center builders should pay communities directly in exchange for construction permits, which at minimum raises the cost of building data centers on the ground.
+
+## What this means for enterprise compute procurement
+
+For how major tech companies place their AI bets, an earlier note covered their paths; see <NoteLink slug="ai-strategy-first-customer">How to Set an Enterprise AI Strategy: Amazon, Apple, and Microsoft's Three Bets</NoteLink>. Today, once upstream new sites and permits tighten, domestic companies also need to watch this: if daily operations use overseas cloud regions or overseas model services, slower upstream expansion and higher prices pass through to their own bills and quotas.
+
+When companies handle compute procurement, they should not assume prices will only move downward. When finance and procurement teams prepare budgets, they should build usage ranges and leave room for both price increases and quota shortfalls; for how to keep annual spending under control with usage-based billing, see <NoteLink slug="ai-usage-pricing-budget">Can an Annual IT Budget Handle Usage-Based AI Pricing?</NoteLink>. When building own facilities or signing long-term contracts to lease compute, treat site permits and expansion progress as procurement risk items:
+
+- **Capacity delay handling**: state clearly in the contract what happens when capacity delivery is delayed, with specific liquidated damages and grace periods set by the company and its legal team.
+- **Backup region switching**: while locking in the primary region, state clearly whether a backup region exists and who has authority to switch when capacity is constrained.
+- **Site permit verification**: before signing a long-term contract, ask whether the provider's promised capacity comes from retrofitting existing permitted sites or from new sites awaiting approval.
+
+## Select models by task tier
+
+Tighter upstream compute supply directly affects how companies select models and deploy inference. Ben Thompson stated two judgments in the article: first, constrained compute and higher prices will push companies to pick models of appropriate size for each task; second, when compute is constrained, running inference on endpoint devices becomes more important.
+
+In daily enterprise management, not every task needs the largest model. Technical teams can classify internal workloads by task tier to select models, keep workloads that can run on endpoint devices or local small models off centralized compute, and reserve centralized compute for high-difficulty tasks. At the same time, the company should assign one person to track compute supply risks, review usage, quotas, unit price changes, and fallback options every quarter, and report the findings to the budget owner.
+
+## Data center expansion: FAQ
+
+### We are outside the US. Does blocked data center expansion affect us?
+
+Yes. If domestic companies use overseas cloud regions or overseas model services, the slower expansion and higher ground construction costs caused by US local ballot rejections and state pauses on new permits pass through to API bills and available quotas, showing up as price increases or harder approvals for new quotas.
+
+### Building our own server rooms vs. leasing cloud compute: how should we choose now?
+
+Look at who holds the site permits. Building your own server rooms or working with emerging compute cloud providers both face the difficulty of securing new sites and new permits; hyperscalers already hold more sites that can be retrofitted or rebuilt and are less exposed to tighter new permits. Workloads that need compute urgently should prioritize providers that already hold existing site permits.
+
+### What extra clauses should go into a compute procurement contract?
+
+Write site permits and expansion progress into the contract risk clauses. A compute procurement contract should state clearly what happens when capacity delivery is delayed, whether a backup region is available, and who has authority to trigger a switch; specific liquidated damages and grace periods for delayed delivery are set by the company and its legal team for each project.
