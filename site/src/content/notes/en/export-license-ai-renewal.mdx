@@ -1,0 +1,73 @@
+---
+title: 'Export License Expiring: Who Handles the Renewal?'
+seoTitle: "Export License Renewal: Who Handles It?"
+description: "When foreign trade companies manage multiple export license records, tools check expiration dates, remaining quantities, and planned shipment dates while documentation staff handle renewals."
+lang: en
+pubDate: 2026-11-12
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/export-license-ai-renewal-cover.png
+coverAlt: "On a dark teal base, a card box with a blank tag and a blank board sit on the left; in the center, a gray dot-eyed robot and a small figure hold blank boards facing each other; on the right, a small figure sits at a desk with a copper-colored document and a green-glowing ink pad beside one gray disc and one green disc"
+sourceHash: 'baf9ab578dca'
+---
+
+Before an export license expires, a tool tracks the expiration date and remaining quantity on the register and sends an advance reminder. Documentation staff follow up on the license renewal, sales coordinators confirm the shipment schedule, and logistics staff confirm vessel sailing dates. The tool only generates expiration reminders and a draft checklist of renewal materials, and it does not submit applications on the company's behalf. Year-end shipments crossing into the new year are scheduled separately, changes to license details go through returning the old license for a new one, and every step is recorded in the register.
+
+import noteFig from '../media/export-license-ai-renewal-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a small figure checking an open blank ledger; a dot-eyed robot handing a blank card to a small figure at a desk; a small figure standing before a two-grid board in gray and green; and a robot placing a copper-colored document onto a green-glowing pad. Each panel has a label board." caption="Figure: Export License | License Renewal" width="wide" border />
+
+## What the register tracks day to day
+
+When a foreign trade company exports goods listed in the catalogue of goods subject to export license administration, it often holds multiple licenses at the same time. The 2026 catalogue of goods subject to export license administration is based on Announcement No. 89 of 2025 issued by the Ministry of Commerce and the General Administration of Customs, and remains in effect. Under Article 6 of the Measures for the Administration of Goods Export Licenses, for goods subject to export quota license administration and export license administration, operators must apply for an export license from the designated issuing body in accordance with regulations before export, and customs accepts declarations and inspects and releases goods against the export license. For how customs clearance against licenses connects with pre-filled declarations, see <NoteLink slug="customs-declaration-ai-hs-code">AI Pre-Fills the Customs Declaration. Who Is Liable for a Wrong HS Code?</NoteLink>.
+
+A company can configure its tool to maintain a license register that records license numbers, goods, expiration dates, and used and remaining quantities, and then compares them against shipping documents:
+
+- **License number and corresponding goods**: log the number, goods name, and administration catalogue item for each export license on hand so multiple licenses are not mixed up.
+- **Expiration date**: under Article 30 of the Measures for the Administration of Goods Export Licenses, the validity period of an export license must not exceed six months at most, and its expiration date must not pass December 31 of that year; it must be used within the validity period, expires automatically once overdue, and customs will not release the goods.
+- **Used quantity and remaining quantity**: update the register after each customs declaration and shipment deduction to calculate how much cargo the license can still cover.
+- **Planned shipment dates of orders on hand**: check the expiration date, remaining quantity, and planned shipment dates of open orders together, start reminders the company-set number of days before expiration, and list which license is affected, how much quantity remains, and which orders will miss the expiration date under the current schedule.
+
+## Who follows up on renewal after the reminder
+
+Once the tool sends an expiration reminder, documentation staff follow up on the license renewal while sales coordinators and logistics staff verify the actual shipment status. Under Article 31 of the Measures for the Administration of Goods Export Licenses, if an export license is unused or only partly used within its validity period for any reason, the operator must apply for an extension to the original issuing body within the validity period; if no extension application is submitted within the validity period, the export license expires automatically once overdue, the issuing body will no longer process an extension, and the quantity on that export license is treated as automatically forfeited by the quota holder. As soon as the reminder triggers, several roles check their records together:
+
+- **Sales coordinators confirm the shipment plan**: sales coordinators check with the customer and the factory whether the planned shipment dates for open orders tied to that license will change and whether the goods can be ready and shipped within the original validity period.
+- **Logistics staff confirm sailing dates and booking**: logistics staff check upcoming vessel schedules and cabin space to confirm whether the goods can be loaded and declared before the original license expires; if the sailing date slips, they provide a new expected shipment window.
+- **Documentation staff follow up on the extension application**: after confirming that the quantity cannot be shipped in full or will miss the vessel before the original license expires, documentation staff submit an extension application to the original issuing body within the validity period. The tool only generates the expiration reminder and a draft checklist of renewal materials so documentation staff can verify the original license number, remaining quantity, and reason for application; it does not submit the application for the company. For pre-filling and reviewing other accompanying shipping documents before departure, see <NoteLink slug="certificate-of-origin-ai-prefill">AI Prefills the Certificate of Origin: Who Rules on Origin?</NoteLink>.
+
+Keep a clear renewal record for each license in the register: who initiated it, when it was submitted, the issuing body's reply, and the new license number after reissuance, so customs affairs staff can check it before declaration.
+
+## How to schedule licenses across the year-end
+
+At the end of the year, documentation staff, sales coordinators, and logistics staff set up a separate year-end schedule. Under Articles 30 and 31 of those Measures, both the original expiration date and any extension of a current-year license cannot go past December 31 of that year, and the license cannot be carried over for use in the next year.
+
+Under Article 29 of those Measures, issuing bodies may issue export licenses for the next year starting from December 10 of the current year, with validity starting on January 1 of the next year. In December, review unused quantities on current-year licenses alongside early-next-year orders and handle them separately by sailing date:
+
+- **Orders declared before year-end**: where logistics staff confirm a sailing date before December 31, documentation staff check the original license validity period; if the original license expires during December, they can apply for an extension within the validity period, with the extended expiration date no later than December 31 of that year.
+- **Orders scheduled for shipment early next year**: where sales coordinators and logistics staff confirm that customs declaration will take place on or after January 1 of the next year, any remaining quantity on the current-year license cannot be used; documentation staff may apply for next year's export license starting December 10 and attach the early-next-year orders to the new license.
+
+## What to do when details on the license change
+
+During routine order follow-up, a customer may change the order quantity at short notice, or logistics staff may switch the port of declaration because of vessel schedules. These cases require returning the license and applying for a new one rather than only editing the internal register.
+
+Under Article 7 of the Measures for the Administration of Goods Export Licenses, an export license must not be bought, sold, transferred, altered, forged, or falsified. Under Article 32 of those Measures, once an export license is issued, no unit or individual may alter the contents on the face of the license without authorization; if changes are needed, the operator must return the export license to the original issuing body within the validity period and apply for a new license.
+
+When details on the face of the license such as quantity or port need to change, sales coordinators or logistics staff raise the change first, the tool marks the original license number and linked orders in the register, and documentation staff return the original license to the original issuing body within the validity period and apply for a new one with the updated information. Once the new license arrives, log the return date, the issuing body's reply, and the new license number in the register, and have customs affairs staff verify the license face before declaring to customs.
+
+## Export license: FAQ
+
+### Can goods still be declared if the export license has expired?
+
+No. The Measures state that an export license must be used within its validity period, expires automatically once overdue, and customs will not release the goods; if an extension application is not submitted within the validity period, the issuing body will no longer process an extension. Documentation staff must complete the extension or reapplication before the expiration date.
+
+### Can unused quantity on a license be kept for next year?
+
+A current-year license cannot be kept for use next year. The Measures state that an extension of a current-year license cannot go past December 31 of that year, and that issuing bodies may issue next year's licenses starting December 10, valid from January 1. For orders scheduled to ship early next year, documentation staff apply for next year's export license starting December 10.
+
+### How many days in advance should license renewal start?
+
+Article 31 of the Measures for the Administration of Goods Export Licenses only states that the operator must submit an extension application to the original issuing body within the validity period, without specifying how many days in advance. The company sets its own lead time for starting license renewal based on vessel schedules, order confirmation cycles, and the issuing body's processing time, configures that reminder lead time in the register, and has documentation staff complete the filing within the validity period.
