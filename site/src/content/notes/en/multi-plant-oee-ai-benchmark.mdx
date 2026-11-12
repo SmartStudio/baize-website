@@ -1,0 +1,78 @@
+---
+title: 'Multi-Plant OEE Benchmarking: Who Owns the Lag?'
+seoTitle: "Multi-Plant OEE Benchmarks: Who Owns the Lag?"
+description: "When a manufacturing group compares equipment effectiveness across plants, group operations first unifies multi-plant OEE definitions, AI converts data and breaks down losses, and plants own fixes."
+lang: en
+pubDate: 2026-11-12
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/multi-plant-oee-ai-benchmark-cover.png
+coverAlt: "On a dark teal base, three gray factory blocks of different heights sit on the left as a small figure measures two of them with a green-glowing caliper; in the center a gray dot-eyed robot holds a blank board beside a box with an empty slot; on the right a small figure hands out a blank card beside a table holding a copper-colored note and a blank board"
+sourceHash: 'bd3b3dbf9c99'
+---
+
+After multi-plant OEE rankings come out, a lower rank does not mean the plant manager failed. When conducting cross-plant capacity benchmarking, group operations first sets a written definition, and plants enter the benchmark table only after confirming it. What AI can do is convert each plant's data under the same definition, flag mismatched definitions and missing data, and rank the largest loss categories. It does not score plant managers or conclude who managed poorly. Lower-ranked plants first break the gap down into specific loss categories, strip out the effects of product mix, equipment age, and order batch size, and then assign the parts the plant can change to specific owners and completion dates, with the group reviewing progress monthly.
+
+import noteFig from '../media/multi-plant-oee-ai-benchmark-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a small figure measuring blocks of different heights with a green-glowing caliper; a dot-eyed robot sorting blocks beside an empty slot; a small figure sorting a stack of blocks with one green block among them; and a small figure holding a blank card with a blank round clock at its feet. Each panel has a label board." caption="Figure: Multi-Plant OEE | Capacity Benchmarking" width="wide" border />
+
+## Set the definitions before benchmarking
+
+When a group pulls the overall equipment effectiveness of several plants into one table for capacity benchmarking, the underlying calculations at each plant often differ. Some plants count routine maintenance and material waiting as planned downtime and exclude them, while others leave them in the denominator; some plants take the equipment nameplate value as the ideal cycle time, while others use historical measured values; how shift calendars are scheduled and how trial runs and rework are counted also follow each plant's own rules. When definitions are not unified, no plant accepts the resulting ranking.
+
+The International Organization for Standardization standard series on key performance indicators for manufacturing operations management defines key performance indicators used in manufacturing operations management. Part 2 lists a selected set of key performance indicators in current practice, describing them through formulas, corresponding elements, time behavior, units or dimensions, and other characteristics, while indicating the user groups and production methodologies to which these indicators apply; where equipment is involved, the indicators correspond to work units. Before benchmarking, group operations first sets a written definition along these elements:
+
+- **Whether planned downtime is excluded**: which stops are deducted from planned time and which stay in the denominator.
+- **Where ideal cycle time comes from**: which cycle-time baseline applies across similar work units and similar products.
+- **How shift calendars are scheduled**: how holidays and single-to-double shift switches convert into operating time in reports.
+- **How trial runs and rework are counted**: how machine hours and output from new-product trial runs and defective-product rework are recorded.
+
+Plants enter the benchmark table only after confirming the written definition. At the same time, group operations places comparable plants in the same benchmark group rather than forcing comparisons across plants with very different products and processes.
+
+## What AI does in benchmarking
+
+Once the written definition is set, each plant submits raw records from production, equipment, and quality for AI to aggregate and convert. Some tools support reading production reports in different formats from each plant and aligning definitions under the group's unified formula, saving the time of compiling tables by hand. For what tasks a tool can handle on its own during daily line operations, see <NoteLink slug="factory-resident-agent-what-to-handle">A Resident Agent Watches the Line: What Can It Do on Its Own?</NoteLink>.
+
+During the benchmarking process, AI mainly does three things:
+
+- **Convert under the same definition**: apply the group's unified planned-downtime rules and ideal cycle-time baseline to the hours, output, and scrap counts reported by each plant to calculate overall equipment effectiveness on the same basis.
+- **Flag mismatched definitions and missing data**: screen which lines omitted shift calendars, which work units entered cycle times that do not match the group baseline, and which time periods lack records, returning them to the plant for verification.
+- **Rank the largest loss categories**: break results down across availability, performance, and quality to rank the top loss categories pulling down a given plant's score.
+
+AI outputs only the converted data table, the missing-data list, and the loss-category ranking. It does not score plant managers or conclude who managed poorly. When the ranking table is shared, it includes the share of each loss category and any definition questions so group operations and plant managers can reconcile the numbers.
+
+## Lower-ranked plants break down the gap before assigning accountability
+
+Once the benchmark table is compiled, a lower rank does not mean the plant manager failed. Differences in product mix, equipment age, and order batch size all widen the gap, and tying performance pay directly from the headline metric makes plant managers who take small orders or run older equipment take the blame.
+
+During reviews, the group lean team and each plant manager first break the gap down into specific loss categories. First look at product mix and order batch size: one plant runs only large-batch standard parts, while another takes high-mix, low-volume orders, so the second plant performs far more line clearances, tooling changes, and first-article checks. If the breakdown shows large changeover losses, the plant can first check whether sequencing line changeovers saves time; see <NoteLink slug="line-changeover-ai-sequence">AI Sequences Line Changeovers: Does It Actually Save Time?</NoteLink>.
+
+Next look at equipment age and work-unit condition: older lines are at a disadvantage against newer lines in speed and failure frequency. Group operations and the equipment department separate out the gap caused by equipment age and order structure and place it under technical upgrade or scheduling topics rather than counting it as a current shop-floor deduction. After stripping out factors the plant manager cannot control, the remaining material waiting, shift-handover idling, setup overruns, and process scrap are the parts the plant can change.
+
+## Assign improvement items to people and deadlines
+
+After isolating the loss categories the plant can change, assign the improvement items to specific owners. The company sets its own gap threshold; when a loss category exceeds the set threshold compared with peer plants in the same group, the lagging plant opens an improvement project and records three things in the table:
+
+- **Specific loss category**: state clearly whether the target to reduce is changeover overruns, upstream material waiting, or defects at a specific station.
+- **In-plant owner**: assign one in-plant owner for each loss category, held by a production supervisor or an equipment or lean engineer.
+- **Completion date and action**: state the work steps, tooling adjustments, or inspection actions to change, and give a completion date.
+
+Once the improvement list is set, the group reviews progress monthly (the company sets its own review frequency). On the review date, AI pulls the new period's data and calculates under the same definition whether that loss category has come down. Items that come down on schedule are closed; for items that have not moved by the deadline, the in-plant owner explains where they are stuck, adjusts the actions, and continues tracking.
+
+## Multi-plant OEE: FAQ
+
+### Can we still compare multi-plant OEE if each plant runs a different system?
+
+Yes, provided statistical definitions are aligned first. Each plant's data tables can have different formats; as long as group operations sets written definitions for whether planned downtime is excluded, where ideal cycle time comes from, how shift calendars are scheduled, and how trial runs and rework are counted, and AI then converts each plant's data under the same definition, multi-plant OEE can be compared in one table. Where definitions do not match or data is missing, flag those items first for the plant to complete.
+
+### Should benchmark results be tied to plant manager performance pay?
+
+The overall ranking is not tied directly, while completion of broken-down improvement items can be tied. Because product mix, equipment age, and order batch size differ across plants, tying performance pay directly from the overall score pushes plants to refuse small-batch orders or pad numbers. After separating out objective differences, check whether the loss categories the plant can change have assigned owners and are reduced on schedule, and measure performance by improvement progress.
+
+### How often should we run capacity benchmarking?
+
+The company sets its own review frequency. A common practice is for the group to run capacity benchmarking and review improvement progress once a month, which makes shift and batch-size changes visible while leaving enough time for in-plant owners to carry out improvement actions; when a new line is introduced or a specific loss spikes, reviews can also be run more frequently on a set cycle.
