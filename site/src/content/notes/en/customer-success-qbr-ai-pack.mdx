@@ -1,0 +1,59 @@
+---
+title: 'Customer Success Quarterly Reports: Who Verifies the Numbers?'
+seoTitle: "Customer Success Quarterly Reports: Who Verifies?"
+description: "Enterprise software teams use generative AI to draft a customer success quarterly report from usage, ticket, and contract records, with customer success, sales ops, and support verifying each number."
+lang: en
+pubDate: 2026-11-12
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/customer-success-qbr-ai-pack-cover.png
+coverAlt: "On a dark teal base, three blank binders and a blank board with raised horizontal bars sit on the left; in the center, a gray dot-eyed robot and a small figure compare two blank boards across a desk, one glowing green; on the right, a small figure holds a blank sheet beside a desk with a copper note and a blank pad"
+sourceHash: '585cc73681dd'
+---
+
+Generative AI can pull records from product backends, ticketing systems, and contract repositories to assemble a first draft of a customer success quarterly report, and before sending it out, each role verifies every number against its source system. Customer success managers check usage and activity against the product backend, sales operations checks renewal amounts and contract scope against signed contracts, and the support team confirms ticket counts and resolution times. The customer success manager rewrites trend judgments and action recommendations in their own words, and the customer success lead signs off on external commitments. When a customer questions a number, the team traces it back through the source log and writes the agreed definition into the template for the next quarter.
+
+import noteFig from '../media/customer-success-qbr-ai-pack-fig-en.png'
+
+<Figure src={noteFig} alt="Four small models left to right: a small figure measuring a blank board with raised horizontal bars using calipers; a dot-eyed robot checking two blank booklets on a desk; a small figure holding a pen before a blank board; and a robot holding a blank stamp beside a copper-colored document, a blank pad, and a file box. Each panel has a label board." caption="Figure: Customer Success Quarterly Report | QBR Materials" width="wide" border />
+
+## Set data definitions and source rules before drafting
+
+Enterprise software and service teams hold quarterly business reviews with major customers every quarter. Many teams use AI to pull records from the product backend, ticketing system, and contract repository to generate a first draft of QBR materials. The NIST generative AI risk management document lists confabulation as a risk of generative AI, referring to the confident generation of erroneous or false content, commonly called hallucinations or fabrications, by which users may be misled or deceived. In a quarterly review, a model may mix numbers from different time windows together or invent a plausible-looking total when a field is missing.
+
+To keep fabricated numbers out of formal reports, the team sets strict data rules before letting the tool generate a draft. Every figure produced by AI must link back to its source, showing which system it came from, what time range it covers, and which calculation rule was applied. Any figure that cannot point to a specific source or match the raw backend report stays out of the QBR materials. Fixing data paths, time boundaries, and calculation rules ahead of time gives human reviewers a consistent baseline to check against. For which metrics reflecting real work completed belong in a review, see <NoteLink slug="agent-value-work-finished-metrics">How to Measure AI Agent Value After Rollout: 4 Metrics Beyond Usage</NoteLink>.
+
+## Which role verifies each category of numbers
+
+Once the first draft is generated, checking it does not fall on a single person reading from top to bottom; verification responsibility is split by data ownership. Routine operational metrics such as product usage, account activation rate, and user activity are checked item by item in the product backend by the customer success manager assigned to that account, confirming that filter conditions and reporting periods match prior quarters and that test accounts and internal trial data have been excluded.
+
+Numbers tied to commercial terms belong to sales operations. Renewal amounts, purchased seats, expansion discounts, and contracted service scope are verified line by line by sales operations against the signed contract and finance ledger. Service delivery metrics such as ticket volume, issue categories, and average resolution time go to the support team to confirm against exported ticketing system records, checking that closed and open tickets have not been mixed across categories. If reviewing usage and ticket data reveals warning signs such as falling activity or a spike in issues, see <NoteLink slug="customer-churn-ai-alert">AI Raised a Churn Alert. Who Works to Keep the Customer?</NoteLink> for how to hand off follow-up. The numbers clear review only after all three roles confirm their sections on the draft.
+
+## Trend judgments and next-quarter recommendations are rewritten by people
+
+Alongside objective numbers, a first draft usually includes a section analyzing quarterly usage trends and proposing next-quarter actions. AI-generated prose in this section tends to extrapolate from surface numbers without knowing the customer's recent reorganization, budget shifts, or changing business priorities, producing generic filler detached from the customer's actual situation or even suggesting features the product does not have.
+
+When the customer success manager receives the draft, they read through the AI-written recommendations and trend judgments and rewrite them based on what they know from regular conversations with the customer. For example, if usage of a feature dropped because the customer's business unit is undergoing an internal merger, the report states that specific reason; uncertain speculation, recommendations that do not fit the customer's current setup, or actions the team cannot deliver are deleted from the draft so machine-generated filler never reaches the customer meeting.
+
+## Final review of external commitments and post-meeting updates
+
+After each role verifies its numbers and the customer success manager rewrites the narrative, the full deck goes to the customer success lead to review external wording before it is sent to the customer. The lead watches for overstepping language: anything touching price adjustments, service-level commitments, custom development schedules, or compensation terms cannot be drafted by AI and sent out directly, and must be agreed with commercial and product teams before being put in writing.
+
+After the quarterly review meeting, if the customer notes during or after the meeting that a figure does not match the customer's own internal tally, the team traces the source log attached to the draft item by item to see whether the difference comes from start and end dates, unremoved test accounts, or field definitions. Once resolved, the team writes the mutually confirmed calculation rule into the next quarter's report template so the next data pull runs on the updated rule and avoids repeating the same discrepancy every quarter.
+
+## Customer success quarterly report: FAQ
+
+### Can AI send the customer success quarterly report directly to the customer?
+
+No. Generative AI carries the risk of outputting erroneous or false content in a confident tone, and statements involving pricing or service commitments cannot be drafted by a tool and sent straight out. After the first draft is generated, the customer success manager, sales operations, and the support team each verify the backend, contract, and ticket figures, and the customer success lead signs off on external wording before the report goes to the customer.
+
+### What if a number in the report differs from the customer's own count?
+
+Trace the source record attached to each figure in the draft item by item, checking the source system, time window, and calculation rule to find where the two counting rules differ and explain the difference clearly to the customer. Once verified, update the agreed definition in the report template for the next quarter so future data pulls follow the same rule.
+
+### Do QBR materials have to be built from scratch every quarter?
+
+No. Teams can lock verified data source paths, system extraction rules, and customer-confirmed calculation definitions into a QBR materials template. When a new quarter arrives, pull the current period's data using the template rules, then run through the role-based number checks, narrative rewrite, and lead sign-off.
