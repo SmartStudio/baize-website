@@ -1,0 +1,73 @@
+---
+title: AGENTS.md 多仓谁维护哪段？
+description: 大型单仓或多仓库并存的工程团队在使用 AGENTS.md 多仓配置时，按目录层级划分平台组与业务模块的维护职责，将各级仓库规则段落纳入代码审查与负责人审批流程，处理上下级文件冲突与临时覆盖。
+pubDate: 2026-11-13
+category: AI编程
+relatedService: consulting
+ctaVariant: consulting
+author: 白泽明理
+draft: false
+cover: ./media/agents-md-monorepo-ownership-cover.png
+coverAlt: 深墨绿底座上：左边一座高大的灰色文件柜，中间较小的文件柜和一叠空白文件夹，圆点眼灰色小机器拿着空白规则卡；右边两个小人站在铜色书面旁，中间有一根灰色闸杆
+---
+
+{/* POST
+H1: AGENTS.md 多仓谁维护哪段？
+slug: agents-md-monorepo-ownership
+主: AGENTS.md 多仓
+辅: 仓库规则
+FAQ#3: 仓库规则写多了，Codex 会漏读吗？
+Figure 要点: 「多层文件拼接」「根与子包分工」「负责人审改动」「冲突与覆盖」
+NoteLink 列表: agents-md-codex-project-rules / codex-skills-install-and-use
+来源: https://learn.chatgpt.com/docs/agent-configuration/agents-md https://agents.md/ https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+等点头后再出图。
+*/}
+
+AGENTS.md 多仓与大仓子目录的维护，按目录层级把段落拆给平台组和业务模块负责人，用 GitHub CODEOWNERS 按路径派发审查，再配合分支保护或规则集以及状态检查落实审批约束。根目录文件归平台组，只写全仓构建测试入口、提交规范和安全红线；子目录文件归对应模块负责人，只写本模块启动命令、单测跑法和目录约定。改动均提拉取请求并经规定流程审批合并；子目录按就近原则覆盖上层约定，但审查时禁止子目录改写或放宽安全红线。
+
+import noteFig from './media/agents-md-monorepo-ownership-fig.png'
+
+<Figure src={noteFig} alt="从左到右四个小模型：圆点眼小机器在桌上叠放空白文件；高矮两座文件柜旁站着两个高度不同的小人；小人把空白改动卡交给坐在桌前的小机器；两张重叠的空白卡立在闸杆前，各配中文标注板" caption="图：「AGENTS.md 多仓」｜「仓库规则」" width="wide" border />
+
+## 先弄清 Codex 怎么拼多份文件
+
+根据 Codex 官方文档，Codex 启动前从项目根目录（通常为 Git 根）沿目录树向下遍历至当前工作目录；每层目录先找 AGENTS.override.md，再找 AGENTS.md，每层最多取一个文件。文件按从根到下的顺序拼接，越靠后的文件离当前目录越近，会覆盖上层同名说明。单份文件写法见 <NoteLink slug="agents-md-codex-project-rules">AGENTS.md 怎么写，Codex 才照做？</NoteLink>。
+
+AGENTS.md 官网说明，大型单仓可在各子包放置 AGENTS.md；多层级冲突时，离被编辑文件最近的 AGENTS.md 生效，而用户在对话中的明确指令优先于所有文件。Codex 官方文档指出，拼接总大小默认上限为三十二 KiB，达到上限后停止追加后续文件；在当前工作目录的祖先链内，把上层说明移到下层子目录仍会参与拼接，不能减少该链上的拼接总量。若接近上限，团队应精简重复或过期说明、把长文外置并在需要时显式读取，或在配置中调大 `project_doc_max_bytes`。
+
+## 根目录和子目录各归谁维护哪段
+
+根目录 AGENTS.md 由平台组维护全仓通用段落；子目录 AGENTS.md 由各模块负责人维护本地命令与目录约定。Codex 官方文档介绍 GitHub 代码审查时给出了相同拆分方式：在离被管代码最近的 AGENTS.md 中添加「Code Review Rules」小节，根目录放全仓通用检查，子目录放服务专用检查。
+
+把仓库规则拆入子目录仅用于划分维护职责与作用域，不作为必然减少拼接字数的办法。为控制三十二 KiB 默认上限内的拼接体积，各模块负责人应定期清理所辖文件中的重复与过期命令；将详细操作手册等长文外置到独立文档，仅在需要时显式读取；或在配置中调整 `project_doc_max_bytes`。跨模块复用的复杂工具流程，可拆为独立技能按需加载，做法见 <NoteLink slug="codex-skills-install-and-use">Codex 技能怎么装？装好后怎么调用</NoteLink>。
+
+## 改哪段仓库规则都走代码审查
+
+根据 GitHub 文档，仓库中的 CODEOWNERS 文件只负责为匹配路径的拉取请求自动请求对应负责人或团队审查；仅配置 CODEOWNERS 本身不能强制拦截合并，须配合分支保护或规则集要求代码负责人审批。即便开启代码负责人审批，当拉取请求同时触及多条路径规则时，GitHub 也不保证平台组与模块负责人必须分别给出批准。GitHub 文档同时建议为 CODEOWNERS 文件自身指定负责人。
+
+团队可将各级 AGENTS.md 和 AGENTS.override.md 路径写入 CODEOWNERS 派发审查，并结合分支保护与自定义检查落实审批制度：
+
+- **根目录文件归属**：根目录 AGENTS.md 与 AGENTS.override.md 在 CODEOWNERS 中指派给平台组，并配置分支保护或规则集要求代码负责人批准后方能合并。
+- **子目录文件归属**：按子包路径将各子目录 AGENTS.md 指派给对应业务模块负责人，同样通过分支保护或规则集要求对应负责人批准。
+- **跨层改动联审**：CODEOWNERS 只负责按路径请求审查，哪怕开启代码负责人审批要求，也不能等同于平台组与模块负责人各有一票。跨层改动的联合审批属于团队额外制度，须配置合并前必过的状态检查，验证平台组及对应模块负责人各有有效批准，并在分支保护或规则集中要求该检查通过，不允许一组批准代替另一组；未配置该约束时，不能称为自动联合审批。
+- **负责人清单自保**：将 CODEOWNERS 文件本身指派给平台组维护并受分支保护约束，防止路径归属被绕过审批篡改。
+
+## 段落冲突和临时覆盖怎么处理
+
+子目录与根目录冲突时，工具按就近原则以子目录为准。构建、测试命令差异可由子目录直接覆盖；但安全红线只放根目录，若子目录跳过安全检查或放宽凭据约定，审查时直接拦截。
+
+同层目录中 AGENTS.override.md 会压过 AGENTS.md，仅用于线上故障排查或构建脚本迁移等临时过渡。提交时须在文件开头注明添加人、事由及预计移除时间；过渡结束后，负责人尽快提拉取请求删除该临时文件，恢复读取常规 AGENTS.md。
+
+## AGENTS.md 多仓：常见问题
+
+### 子目录的 AGENTS.md 能把根目录的规则全推翻吗？
+
+工具读取时，子目录 AGENTS.md 排在拼接结果后面，冲突条款会覆盖根目录。但协作规范上仅允许子目录覆盖本模块构建、测试命令和目录约定；安全红线统一留在根目录，拉取请求若放宽安全规则，代码审查时直接退回。
+
+### 几个仓库想共用一套规则，怎么同步？
+
+在各仓库根目录分别放置 AGENTS.md，由平台组统一维护通用部分。更新公共规则时，平台组向各仓库分别发起拉取请求，经各仓代码审查批准后合并。
+
+### 仓库规则写多了，Codex 会漏读吗？
+
+会。根据 Codex 官方文档，从根向下拼接文件默认上限为三十二 KiB，达到上限即停止追加，排在后面的子目录仓库规则会被截断漏读。在当前工作目录祖先链上把内容从上层移到子目录仍会参与拼接，无法减少总量；接近上限时，应精简重复与过期说明、将长文外置并在需要时显式读取，或在配置中调大 `project_doc_max_bytes`。
