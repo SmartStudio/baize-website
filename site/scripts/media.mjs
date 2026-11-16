@@ -66,13 +66,18 @@ async function retry(fn, tries = 3) {
   }
 }
 
+// 公开地址限速(429/503)时每个请求最多发几次。等待依次是 2、4、8、16、30、30、30 秒,合计 2 分钟。
+const RATE_LIMIT_TRIES = 8;
+
 // 公开读走 HTTP;上传走 wrangler(用本机 `wrangler login` 的授权,或环境里的 CLOUDFLARE_API_TOKEN)。
 // file: 形式把一个本地目录当桶用,测试和离线演练用。
-export function openRemote(baseUrl = DEFAULT_BASE_URL, bucket = DEFAULT_BUCKET) {
+export function openRemote(baseUrl = DEFAULT_BASE_URL, bucket = DEFAULT_BUCKET, { rateLimitBaseMs = 1000 } = {}) {
+  const stats = { rateLimited: 0 };
   if (baseUrl.startsWith('file:')) {
     const root = fileURLToPath(baseUrl);
     return {
       name: root,
+      stats,
       size: async (key) => (existsSync(join(root, key)) ? statSync(join(root, key)).size : null),
       download: async (key, dest) => {
         if (!existsSync(join(root, key))) throw Object.assign(new Error(`no object ${key} in ${root}`), { permanent: true });
@@ -85,16 +90,37 @@ export function openRemote(baseUrl = DEFAULT_BASE_URL, bucket = DEFAULT_BUCKET) 
     };
   }
   const url = (key) => `${baseUrl.replace(/\/$/, '')}/${key}`;
+  // r2.dev 对突发请求限速:GitHub 的构建机 12 秒拉完 703 张,剩下 41 个请求全部 429,各自重试三次也没过。
+  // 一个请求被限速,所有并发请求停到同一个时刻再发。各等各的,请求一直不断,限速窗口结束不了。
+  let pausedUntil = 0;
+  const request = async (target, init = {}) => {
+    for (let attempt = 1; ; attempt++) {
+      const wait = pausedUntil - Date.now();
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      const res = await fetch(target, init);
+      if (res.status !== 429 && res.status !== 503) return res;
+      await res.body?.cancel();
+      stats.rateLimited++;
+      if (attempt >= RATE_LIMIT_TRIES) {
+        // 已经等满了,外层 retry 不必再整轮重来。
+        throw Object.assign(new Error(`${init.method ?? 'GET'} ${target} -> ${res.status}, gave up after ${attempt} tries`), { permanent: true });
+      }
+      const after = Number(res.headers.get('retry-after'));
+      const delay = after > 0 ? Math.min(after, 60) * 1000 : Math.min(2 ** attempt, 30) * rateLimitBaseMs;
+      pausedUntil = Math.max(pausedUntil, Date.now() + delay);
+    }
+  };
   return {
     name: baseUrl,
+    stats,
     size: async (key) => {
-      const res = await fetch(url(key), { method: 'HEAD' });
+      const res = await request(url(key), { method: 'HEAD' });
       if (res.status === 404) return null;
       if (!res.ok) throw new Error(`HEAD ${url(key)} -> ${res.status}`);
       return Number(res.headers.get('content-length'));
     },
     download: async (key, dest) => {
-      const res = await fetch(url(key));
+      const res = await request(url(key));
       // 404 重试也不会有:对象没上传。其他状态码和网络错误才重试。
       if (!res.ok) throw Object.assign(new Error(`GET ${url(key)} -> ${res.status}`), { permanent: res.status === 404 });
       await pipeline(Readable.fromWeb(res.body), createWriteStream(dest));
@@ -319,6 +345,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   if (cmd === 'pull') {
     const r = await pull(ctx, { force: flags.has('--force') });
     console.log(`media: ${r.ok + r.downloaded + r.cached} ready (${r.downloaded} downloaded, ${r.cached} from local cache)`);
+    if (ctx.remote.stats.rateLimited) console.warn(`media: ${ctx.remote.name} rate-limited ${ctx.remote.stats.rateLimited} request(s); backed off and retried`);
     if (r.unpushed.length) console.warn(`media: not uploaded yet, run \`pnpm media:push\`: ${list(r.unpushed)}`);
     for (const f of r.failed) console.error(`media: ${f.name}: ${f.reason}`);
     if (r.failed.length) console.error(`media: ${r.failed.length} file(s) could not be fetched from ${ctx.remote.name}. If the image is new, its author has not run \`pnpm media:push\`.`);

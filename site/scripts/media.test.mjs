@@ -210,6 +210,69 @@ describe('media push / pull', () => {
     }
   });
 
+  // 一个按规则回 429 的公开地址:limited(n, req) 返回要带的响应头就限速,返回 null 就正常给文件。
+  async function throttledServer(limited) {
+    let hits = 0;
+    const server = createServer((req, res) => {
+      const headers = limited(++hits, req);
+      if (headers) { res.writeHead(429, headers).end(); return; }
+      const body = readFileSync(join(bucket, decodeURIComponent(req.url)));
+      res.writeHead(200, { 'content-length': body.length }).end(body);
+    });
+    await new Promise((r) => server.listen(0, '127.0.0.1', r));
+    return { server, base: `http://127.0.0.1:${server.address().port}/`, hits: () => hits };
+  }
+
+  it('公开地址限速(429):退避后重试,全部拉回,不算失败', async () => {
+    const a = checkout('a');
+    for (let i = 0; i < 6; i++) writeFileSync(join(a.dir, `n${i}.webp`), `bytes-${i}`);
+    await push(a);
+    // 前 20 个请求全部被限速:每个文件各自重试三次(共 18 次)是拉不回来的。
+    const { server, base } = await throttledServer((n) => (n <= 20 ? {} : null));
+    try {
+      const ci = { ...checkout('ci'), remote: openRemote(base, undefined, { rateLimitBaseMs: 5 }) };
+      carryPointers(a, ci);
+      expect(await pull(ci)).toMatchObject({ downloaded: 6, failed: [] });
+      expect(readFileSync(join(ci.dir, 'n3.webp'), 'utf8')).toBe('bytes-3');
+      expect(ci.remote.stats.rateLimited).toBe(20);
+    } finally {
+      server.close();
+    }
+  });
+
+  it('一直被限速:试够次数后放弃,原因里写明 429,请求数有上限', async () => {
+    const a = checkout('a');
+    writeFileSync(join(a.dir, 'one.webp'), 'bytes');
+    await push(a);
+    const { server, base, hits } = await throttledServer(() => ({}));
+    try {
+      const ci = { ...checkout('ci'), remote: openRemote(base, undefined, { rateLimitBaseMs: 1 }) };
+      carryPointers(a, ci);
+      const r = await pull(ci);
+      expect(r.failed).toEqual([{ name: 'one.webp', reason: expect.stringMatching(/-> 429, gave up after 8 tries/) }]);
+      expect(hits()).toBe(8);
+      expect(existsSync(join(ci.dir, 'one.webp'))).toBe(false);
+    } finally {
+      server.close();
+    }
+  });
+
+  it('限速响应带 Retry-After:按它给的秒数等', async () => {
+    const a = checkout('a');
+    writeFileSync(join(a.dir, 'one.webp'), 'bytes');
+    await push(a);
+    const { server, base } = await throttledServer((n) => (n === 1 ? { 'retry-after': '2' } : null));
+    try {
+      const ci = { ...checkout('ci'), remote: openRemote(base, undefined, { rateLimitBaseMs: 1 }) };
+      carryPointers(a, ci);
+      const started = Date.now();
+      expect(await pull(ci)).toMatchObject({ downloaded: 1, failed: [] });
+      expect(Date.now() - started).toBeGreaterThanOrEqual(1950);
+    } finally {
+      server.close();
+    }
+  });
+
   it('status 区分新图、改过的图,--remote 查出桶里缺的对象', async () => {
     const a = checkout('a');
     writeFileSync(join(a.dir, 'kept.png'), 'kept');
