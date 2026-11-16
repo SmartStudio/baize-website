@@ -1,0 +1,110 @@
+<!-- @dsCard group="Components" viewport="700x700" name="Core Components" subtitle="Sakana/Fugu-style header, buttons, grid cells, and form primitives" -->
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .stage {
+      display: grid;
+      gap: 24px;
+      padding: 28px;
+      background: var(--bz-bg-page);
+    }
+    .header-sample .bz-site-header {
+      position: static;
+      overflow: hidden;
+      border: var(--bz-border);
+      border-radius: var(--bz-radius-8);
+    }
+    .header-sample .bz-site-header__inner {
+      width: auto;
+      min-height: 58px;
+      padding: 0 16px;
+    }
+    .header-sample .bz-site-header__nav {
+      gap: 12px;
+    }
+    .header-sample .bz-site-header__nav a {
+      font-size: 12px;
+    }
+    .header-sample .bz-button {
+      min-height: 36px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .mini-form {
+      max-width: 360px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const namespaceKey = Object.keys(window).find((key) => key.startsWith("BaizeDesignSystem_"));
+    const { Button, Badge, Card, SectionHeader, ContactForm, SiteHeader } = window[namespaceKey];
+
+    function CorePreview() {
+      return (
+        <main className="stage">
+          <SectionHeader eyebrow="System" title="白泽明理组件基线">
+            使用轻导航、矩形按钮、monospace 标签和 1px 网格单元承载信息。
+          </SectionHeader>
+          <div className="header-sample">
+            <SiteHeader
+              logoSrc="../../assets/baize-mark.png"
+              navItems={[
+                { label: "服务", href: "#" },
+                { label: "明理笔记", href: "#" },
+                { label: "方法论", href: "#" },
+              ]}
+            />
+          </div>
+          <div className="row">
+            <Button size="lg">预约 AI 落地诊断</Button>
+            <Button variant="secondary">查看服务</Button>
+            <Button variant="ghost">阅读明理笔记</Button>
+          </div>
+          <div className="row">
+            <Badge tone="vermilion">AI 中转站</Badge>
+            <Badge tone="jade">安全可信</Badge>
+            <Badge tone="gold">方法论</Badge>
+            <Badge>明理笔记</Badge>
+          </div>
+          <div className="bz-cell-grid bz-cell-grid--3">
+            <article className="bz-cell">
+              <div className="bz-cell__n">01</div>
+              <h3 className="bz-cell__t">AI 中转站</h3>
+              <p className="bz-cell__b">稳定、可控地接入 Codex 与 AI 编程工具。</p>
+            </article>
+            <article className="bz-cell">
+              <div className="bz-cell__n">02</div>
+              <h3 className="bz-cell__t">研发流程</h3>
+              <p className="bz-cell__b">把 AI 编程纳入需求、测试、评审和交付。</p>
+            </article>
+            <article className="bz-cell">
+              <div className="bz-cell__n">03</div>
+              <h3 className="bz-cell__t">Skills 沉淀</h3>
+              <p className="bz-cell__b">把团队经验沉淀成可复用组织资产。</p>
+            </article>
+          </div>
+          <ContactForm className="mini-form" title="预约咨询" description="留下当前问题，我们判断适合从哪里开始。" />
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<CorePreview />);
+  </script>
+</body>
+</html>

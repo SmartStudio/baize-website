@@ -1,0 +1,43 @@
+# Cloudflare Pages 缓存策略(GH Pages 会忽略本文件)。
+# CF Pages 默认给所有静态资源 max-age=14400, must-revalidate —— 对内容哈希
+# 命名的 /_astro/* 来说这是白白浪费:文件名一变就是新 URL,内容永不改变,
+# 所以可以安全地声明 immutable。
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# public/ 下的文件名不带哈希,只能给中等 TTL;换图后最长 30 天生效。
+/favicon.ico
+  Cache-Control: public, max-age=2592000
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=2592000
+
+/og-default.png
+  Cache-Control: public, max-age=2592000
+
+/og-default-en.png
+  Cache-Control: public, max-age=2592000
+
+/favicon-16x16.png
+  Cache-Control: public, max-age=2592000
+
+/favicon-32x32.png
+  Cache-Control: public, max-age=2592000
+
+/icon-192.png
+  Cache-Control: public, max-age=2592000
+
+/icon-512.png
+  Cache-Control: public, max-age=2592000
+
+/site.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=86400
+
+/brand/*
+  Cache-Control: public, max-age=2592000
+
+# scripts/indexnow.mjs 轮询它判断部署是否到位,不能被缓存。
+/build.txt
+  Cache-Control: no-store

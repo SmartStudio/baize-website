@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>白泽明理 · 设计系统规范 Baize Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { background: var(--bz-white); }
+
+    .ds-wrap { width: min(1120px, calc(100vw - 48px)); margin: 0 auto; }
+
+    /* Cover */
+    .ds-cover { padding: clamp(64px, 9vw, 132px) 0 clamp(40px, 5vw, 72px); border-bottom: 1px solid var(--bz-border-subtle); }
+    .ds-eyebrow { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bz-text-muted); }
+    .ds-cover__title { margin: 22px 0 0; font-family: var(--bz-font-display); font-size: clamp(40px, 6vw, 72px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.02; color: var(--bz-ink-900); }
+    .ds-cover__sub { max-width: 640px; margin: 22px 0 0; font-weight: 300; font-size: clamp(17px, 2vw, 22px); line-height: 1.5; color: var(--bz-text-secondary); }
+    .ds-cover__meta { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 32px; font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--bz-text-muted); }
+
+    /* Section scaffold */
+    .ds-section { padding: clamp(56px, 7vw, 96px) 0; border-bottom: 1px solid var(--bz-border-subtle); }
+    .ds-section__head { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: clamp(20px,4vw,56px); align-items: baseline; margin-bottom: clamp(32px, 4vw, 52px); }
+    .ds-section__no { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bz-accent-strong); }
+    .ds-section__title { margin: 0; font-family: var(--bz-font-display); font-size: clamp(26px, 3.4vw, 40px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.12; }
+    .ds-section__desc { max-width: 620px; margin: 12px 0 0; font-size: 15px; line-height: 1.7; color: var(--bz-text-secondary); }
+    .ds-body-col { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: clamp(20px,4vw,56px); }
+    .ds-body-col > .ds-spacer { grid-column: 1; }
+
+    /* Principles */
+    .ds-principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--bz-border-subtle); border: 1px solid var(--bz-border-subtle); }
+    .ds-principle { background: var(--bz-white); padding: 28px 26px; }
+    .ds-principle__n { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-accent-strong); }
+    .ds-principle__t { margin: 16px 0 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+    .ds-principle__b { margin: 10px 0 0; font-size: 14px; line-height: 1.7; color: var(--bz-text-secondary); }
+
+    /* Color */
+    .ds-swatch-group { margin-bottom: 40px; }
+    .ds-swatch-group:last-child { margin-bottom: 0; }
+    .ds-swatch-group__label { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bz-text-muted); margin-bottom: 16px; }
+    .ds-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1px; background: var(--bz-border-subtle); border: 1px solid var(--bz-border-subtle); }
+    .ds-swatch { background: var(--bz-white); }
+    .ds-swatch__chip { height: 84px; }
+    .ds-swatch__meta { padding: 12px 14px; }
+    .ds-swatch__name { font-size: 13px; font-weight: 600; }
+    .ds-swatch__hex { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-text-muted); margin-top: 3px; }
+    .ds-swatch__role { font-size: 12px; color: var(--bz-text-secondary); margin-top: 6px; line-height: 1.4; }
+
+    /* Type */
+    .ds-type-row { display: grid; grid-template-columns: minmax(0,1fr) 220px; gap: 24px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--bz-border-subtle); }
+    .ds-type-row:first-child { border-top: none; }
+    .ds-type-sample { color: var(--bz-ink-900); font-family: var(--bz-font-display); overflow: hidden; text-overflow: ellipsis; }
+    .ds-type-spec { font-family: var(--bz-font-mono); font-size: 12px; line-height: 1.7; color: var(--bz-text-muted); }
+    .ds-type-spec b { color: var(--bz-text-secondary); font-weight: 500; }
+
+    .ds-weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 24px; margin-top: 8px; }
+    .ds-weight__s { font-family: var(--bz-font-display); font-size: 30px; color: var(--bz-ink-900); }
+    .ds-weight__l { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-text-muted); margin-top: 6px; }
+
+    /* Spacing */
+    .ds-space-row { display: flex; align-items: center; gap: 20px; padding: 7px 0; }
+    .ds-space-bar { height: 16px; background: var(--bz-ink-900); }
+    .ds-space-lab { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-text-muted); width: 96px; flex: 0 0 auto; }
+
+    /* Tiles (radius / motion) */
+    .ds-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 20px; }
+    .ds-tile { border: 1px solid var(--bz-border-subtle); padding: 22px; }
+    .ds-tile__demo { height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .ds-tile__box { width: 84px; height: 48px; background: var(--bz-ink-900); }
+    .ds-tile__t { font-size: 14px; font-weight: 600; }
+    .ds-tile__b { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-text-muted); margin-top: 4px; }
+
+    /* Icons / doodles */
+    .ds-glyphs { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; }
+    .ds-glyph { width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--bz-border-subtle); color: var(--bz-ink-900); }
+    .ds-glyph svg { width: 30px; height: 30px; }
+    .ds-doodles-row { display: flex; flex-wrap: wrap; gap: 34px; align-items: center; color: var(--bz-doodle-line); }
+    .ds-doodles-row .ds-dd { width: 90px; }
+    .ds-doodles-row .ds-dd--seal { color: var(--bz-accent); width: 56px; }
+
+    /* Components */
+    .ds-demo { border: 1px solid var(--bz-border-subtle); padding: 30px; margin-bottom: 20px; }
+    .ds-demo__label { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--bz-text-muted); margin-bottom: 18px; }
+    .ds-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+    /* Do / Don't */
+    .ds-dd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1px; background: var(--bz-border-subtle); border: 1px solid var(--bz-border-subtle); }
+    .ds-dd-col { background: var(--bz-white); padding: 28px 26px; }
+    .ds-dd-col__h { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+    .ds-dd-col__h .ds-mk { width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--bz-font-mono); font-size: 13px; }
+    .ds-dd-col--do .ds-mk { color: var(--bz-ink-900); }
+    .ds-dd-col--dont .ds-mk { color: var(--bz-accent-strong); }
+    .ds-dd-col ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+    .ds-dd-col li { font-size: 14px; line-height: 1.6; color: var(--bz-text-secondary); padding-left: 18px; position: relative; }
+    .ds-dd-col li::before { content: "—"; position: absolute; left: 0; color: var(--bz-gray-300); }
+
+    /* Logotype demo (before / after) */
+    .ds-logotype-demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1px; background: var(--bz-border-subtle); border: 1px solid var(--bz-border-subtle); margin-top: 16px; }
+    .ds-lt-cell { background: var(--bz-white); padding: 30px 26px; display: flex; flex-direction: column; gap: 14px; }
+    .ds-lt-cap { font-family: var(--bz-font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--bz-text-muted); }
+    .ds-lt-sample { line-height: 1; }
+    .ds-lt-note { font-size: 12px; line-height: 1.55; color: var(--bz-text-secondary); }
+
+    /* Hero template preview schematics */
+    .ds-hero-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 20px; }
+    .ds-hero-card { border: 1px solid var(--bz-border-subtle); background: var(--bz-white); }
+    .ds-hero-frame { position: relative; aspect-ratio: 8/5; border-bottom: 1px solid var(--bz-border-subtle); overflow: hidden; padding: 16px; display: flex; flex-direction: column; }
+    .ds-mini-mark { width: 36px; height: auto; }
+    .ds-mini-title { color: var(--bz-ink-900); line-height: 1; }
+    .ds-mini-sub { color: var(--bz-text-secondary); font-size: 10px; line-height: 1.4; max-width: 30ch; }
+    .ds-mini-btns { display: flex; gap: 6px; }
+    .ds-mini-btn { width: 54px; height: 15px; border: 1px solid var(--bz-line-300); background: var(--bz-white); }
+    .ds-mini-btn--p { background: var(--bz-ink-900); border-color: var(--bz-ink-900); }
+    .ds-mini-eye { width: 44px; height: 6px; background: var(--bz-orange-100); }
+    /* centered */
+    .ds-hero-frame--center .ds-mini-nav { display: flex; justify-content: center; gap: 12px; }
+    .ds-hero-frame--center .ds-mini-nav span { width: 24px; height: 5px; background: var(--bz-gray-200); }
+    .ds-hero-frame--center .ds-mini-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; text-align: center; }
+    .ds-hero-frame--center .ds-mini-title { font-size: 27px; }
+    /* split */
+    .ds-hero-frame--split .ds-mini-topbar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--bz-border-subtle); }
+    .ds-hero-frame--split .ds-mini-brand { width: 62px; height: 9px; background: var(--bz-ink-900); }
+    .ds-hero-frame--split .ds-mini-navdots { display: flex; gap: 8px; }
+    .ds-hero-frame--split .ds-mini-navdots i { width: 18px; height: 5px; background: var(--bz-gray-200); }
+    .ds-hero-frame--split .ds-mini-splitbody { flex: 1; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px; align-items: center; padding-top: 14px; }
+    .ds-hero-frame--split .ds-mini-copy { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .ds-hero-frame--split .ds-mini-title { font-size: 24px; }
+    .ds-hero-frame--split .ds-mini-visual { display: flex; align-items: center; justify-content: center; }
+    .ds-hero-frame--split .ds-mini-visual img { width: 84px; height: auto; filter: drop-shadow(var(--bz-shadow-mark)); }
+    .ds-hero-meta { padding: 18px 20px; }
+    .ds-hero-meta__n { font-family: var(--bz-font-mono); font-size: 12px; color: var(--bz-accent-strong); letter-spacing: 0.08em; }
+    .ds-hero-meta__t { margin: 8px 0 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--bz-ink-900); }
+    .ds-hero-meta__cls { margin: 8px 0 0; font-family: var(--bz-font-mono); font-size: 11.5px; color: var(--bz-text-muted); }
+    .ds-hero-meta__use { margin: 10px 0 0; font-size: 13px; line-height: 1.6; color: var(--bz-text-secondary); }
+
+    @media (max-width: 767px) {
+      .ds-section__head, .ds-body-col { grid-template-columns: minmax(0,1fr); }
+      .ds-type-row { grid-template-columns: minmax(0,1fr); gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ds-wrap">
+
+    <!-- COVER -->
+    <header class="ds-cover">
+      <div class="ds-eyebrow">Baize Design System · v1.0</div>
+      <h1 class="ds-cover__title">白泽明理设计系统</h1>
+      <p class="ds-cover__sub">克制、冷静、可验证。视觉冲击来自符号与留白，而不是把字放大加粗。</p>
+      <div class="ds-cover__meta">
+        <span>FONT · Poppins + Noto Sans SC</span>
+        <span>ACCENT · #E9961A</span>
+        <span>RADIUS · 0</span>
+        <span>REF · sakana.ai discipline</span>
+      </div>
+    </header>
+
+    <!-- 01 PRINCIPLES -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">01 — Principles</div>
+        <div>
+          <h2 class="ds-section__title">六条原则</h2>
+          <p class="ds-section__desc">每一条都是"拿走东西"，而不是加东西。这是这套系统与模板的根本区别。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div class="ds-principles">
+          <div class="ds-principle"><div class="ds-principle__n">01</div><div class="ds-principle__t">符号优先</div><p class="ds-principle__b">冲击来自白泽 mark 与巨量留白，不靠大字重。文字保持克制。</p></div>
+          <div class="ds-principle"><div class="ds-principle__n">02</div><div class="ds-principle__t">冷灰纪律</div><p class="ds-principle__b">UI 只用冷灰阶（#111827→#E5E7EB），品牌蓝橙只活在 logo 里。</p></div>
+          <div class="ds-principle"><div class="ds-principle__n">03</div><div class="ds-principle__t">一个火花</div><p class="ds-principle__b">全站只有一个强调色：橙 #E9961A。用在最该被看见的地方。</p></div>
+          <div class="ds-principle"><div class="ds-principle__n">04</div><div class="ds-principle__t">全锐角</div><p class="ds-principle__b">按钮、卡片圆角为 0。只有工具 chip 用胶囊形。</p></div>
+          <div class="ds-principle"><div class="ds-principle__n">05</div><div class="ds-principle__t">巨量留白</div><p class="ds-principle__b">留白是主要材料。宁可空，不要挤。</p></div>
+          <div class="ds-principle"><div class="ds-principle__n">06</div><div class="ds-principle__t">可验证</div><p class="ds-principle__b">信息要能被证明：数字、SOP、样例优先于形容词。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 COLOR -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">02 — Color</div>
+        <div>
+          <h2 class="ds-section__title">颜色系统</h2>
+          <p class="ds-section__desc">品牌色只用于 mark；界面用冷灰阶；橙色是唯一的强调火花。数值对齐 sakana 实测的 slate 灰。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-swatch-group">
+            <div class="ds-swatch-group__label">Brand — 仅用于 logo / 插画</div>
+            <div class="ds-swatches">
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#071E5B"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Navy</div><div class="ds-swatch__hex">#071E5B</div><div class="ds-swatch__role">主体轮廓</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#0F62B5"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Blue</div><div class="ds-swatch__hex">#0F62B5</div><div class="ds-swatch__role">渐变中段</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#28A8DF"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Sky</div><div class="ds-swatch__hex">#28A8DF</div><div class="ds-swatch__role">渐变高光</div></div></div>
+            </div>
+          </div>
+          <div class="ds-swatch-group">
+            <div class="ds-swatch-group__label">Neutral — 界面主体</div>
+            <div class="ds-swatches">
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#111827"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Ink 900</div><div class="ds-swatch__hex">#111827</div><div class="ds-swatch__role">正文 / 主按钮</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#374151"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Ink 700</div><div class="ds-swatch__hex">#374151</div><div class="ds-swatch__role">深次级</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#6B7280"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Gray 500</div><div class="ds-swatch__hex">#6B7280</div><div class="ds-swatch__role">次级正文</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#9CA3AF"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Gray 400</div><div class="ds-swatch__hex">#9CA3AF</div><div class="ds-swatch__role">弱化 / 标注</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#D1D5DB"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Gray 300</div><div class="ds-swatch__hex">#D1D5DB</div><div class="ds-swatch__role">强边框</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#E5E7EB"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Gray 200</div><div class="ds-swatch__hex">#E5E7EB</div><div class="ds-swatch__role">细线分隔</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#F7F8FA"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Paper 100</div><div class="ds-swatch__hex">#F7F8FA</div><div class="ds-swatch__role">交替区块</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#FFFFFF;box-shadow:inset 0 0 0 1px #E5E7EB"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">White</div><div class="ds-swatch__hex">#FFFFFF</div><div class="ds-swatch__role">页面 / 卡片</div></div></div>
+            </div>
+          </div>
+          <div class="ds-swatch-group">
+            <div class="ds-swatch-group__label">Accent — 唯一强调火花</div>
+            <div class="ds-swatches">
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#E9961A"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Orange</div><div class="ds-swatch__hex">#E9961A</div><div class="ds-swatch__role">强调 / hover / rule</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#B4740B"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Orange Ink</div><div class="ds-swatch__hex">#B4740B</div><div class="ds-swatch__role">白底上的橙色文字</div></div></div>
+              <div class="ds-swatch"><div class="ds-swatch__chip" style="background:#FBEACF"></div><div class="ds-swatch__meta"><div class="ds-swatch__name">Orange 100</div><div class="ds-swatch__hex">#FBEACF</div><div class="ds-swatch__role">徽章底色</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 TYPOGRAPHY -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">03 — Typography</div>
+        <div>
+          <h2 class="ds-section__title">字体阶梯</h2>
+          <p class="ds-section__desc">Poppins（拉丁）+ Noto Sans SC（中文），JetBrains Mono 做技术标签。字阶克制，字距在大标题上收紧为负值。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:64px;font-weight:600;letter-spacing:-0.02em;line-height:1">白泽明理 Baize</div>
+            <div class="ds-type-spec"><b>Display</b><br>64px · 600 · -0.02em</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:47px;font-weight:600;letter-spacing:-0.02em;line-height:1.04">让复杂 AI 可解释</div>
+            <div class="ds-type-spec"><b>H1</b><br>47px · 600 · -0.02em</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:30px;font-weight:700;letter-spacing:-0.01em;line-height:1.2">先明理，再落地</div>
+            <div class="ds-type-spec"><b>H2</b><br>30px · 700 · -0.01em</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:19px;font-weight:600;line-height:1.45">AI 研发流设计</div>
+            <div class="ds-type-spec"><b>H3</b><br>19px · 600</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:22px;font-weight:300;line-height:1.5;color:var(--bz-text-secondary)">极细副标题，用于首屏 lead</div>
+            <div class="ds-type-spec"><b>Lead</b><br>22px · 300 light</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-size:16px;font-weight:400;line-height:1.65;color:var(--bz-text-secondary)">正文：把 AI 能做什么、不能做什么、谁来审查讲清楚。</div>
+            <div class="ds-type-spec"><b>Body</b><br>16px · 400 · 1.65</div>
+          </div>
+          <div class="ds-type-row">
+            <div class="ds-type-sample" style="font-family:var(--bz-font-mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--bz-text-muted)">SERVICES · 01 / EXPLAIN</div>
+            <div class="ds-type-spec"><b>Label</b><br>mono 12px · 0.12em</div>
+          </div>
+
+          <div class="ds-swatch-group__label" style="margin:44px 0 0">Weights</div>
+          <div class="ds-weights">
+            <div><div class="ds-weight__s" style="font-weight:300">白泽 Baize</div><div class="ds-weight__l">300 Light</div></div>
+            <div><div class="ds-weight__s" style="font-weight:400">白泽 Baize</div><div class="ds-weight__l">400 Regular</div></div>
+            <div><div class="ds-weight__s" style="font-weight:500">白泽 Baize</div><div class="ds-weight__l">500 Medium</div></div>
+            <div><div class="ds-weight__s" style="font-weight:600">白泽 Baize</div><div class="ds-weight__l">600 Semibold</div></div>
+            <div><div class="ds-weight__s" style="font-weight:700">白泽 Baize</div><div class="ds-weight__l">700 Bold</div></div>
+          </div>
+
+          <div class="ds-swatch-group__label" style="margin:44px 0 0">Logotype — 白泽明理 定制字标</div>
+          <div class="ds-logotype-demo">
+            <div class="ds-lt-cell">
+              <div class="ds-lt-cap">Before · 排版文字</div>
+              <div class="ds-lt-sample" style="font-family:var(--bz-font-display);font-weight:400;font-size:46px;color:var(--bz-ink-900)">白泽明理</div>
+              <div class="ds-lt-note">默认全角方格、常规字重、零字距。四个字是"打出来"的独立文本。</div>
+            </div>
+            <div class="ds-lt-cell">
+              <div class="ds-lt-cap">After · 定制字标</div>
+              <div class="ds-lt-sample bz-logotype" style="font-size:46px;color:var(--bz-ink-900)">白泽明理</div>
+              <div class="ds-lt-note">palt 收字面宽 · -0.03em 字距 · 600 字重 · 0.4px 光学描边。四字收拢成一个整体。</div>
+            </div>
+            <div class="ds-lt-cell">
+              <div class="ds-lt-cap">Variant · 印章火花</div>
+              <div class="ds-lt-sample bz-logotype bz-logotype--stamp" style="font-size:46px;color:var(--bz-ink-900)">白泽明理</div>
+              <div class="ds-lt-note">尾随一枚橙色印章点，呼应涂鸦印章。仅用于品牌识别尺度，保持"一个火花"。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 SPACING -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">04 — Spacing</div>
+        <div>
+          <h2 class="ds-section__title">间距与栅格</h2>
+          <p class="ds-section__desc">4pt 基准的间距阶。容器外边距默认等于内部元素间距。页宽上限 1280，正文宽上限 760。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-4</span><span class="ds-space-bar" style="width:4px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-8</span><span class="ds-space-bar" style="width:8px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-12</span><span class="ds-space-bar" style="width:12px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-16</span><span class="ds-space-bar" style="width:16px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-24</span><span class="ds-space-bar" style="width:24px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-32</span><span class="ds-space-bar" style="width:32px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-48</span><span class="ds-space-bar" style="width:48px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-72</span><span class="ds-space-bar" style="width:72px"></span></div>
+          <div class="ds-space-row"><span class="ds-space-lab">space-104</span><span class="ds-space-bar" style="width:104px"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 RADIUS / MOTION -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">05 — Shape & Motion</div>
+        <div>
+          <h2 class="ds-section__title">形态与动效</h2>
+          <p class="ds-section__desc">锐角为默认。深度来自背景色阶与细线，而非阴影。动效安静、统一缓动。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-tiles">
+            <div class="ds-tile"><div class="ds-tile__demo"><div class="ds-tile__box" style="border-radius:0"></div></div><div class="ds-tile__t">Sharp</div><div class="ds-tile__b">radius 0 · 默认</div></div>
+            <div class="ds-tile"><div class="ds-tile__demo"><div class="ds-tile__box" style="border-radius:999px;width:64px"></div></div><div class="ds-tile__t">Pill</div><div class="ds-tile__b">radius 999 · 仅 chip</div></div>
+            <div class="ds-tile"><div class="ds-tile__demo"><div class="ds-tile__box" style="box-shadow:var(--bz-shadow-soft)"></div></div><div class="ds-tile__t">Shadow soft</div><div class="ds-tile__b">仅悬浮 mark</div></div>
+            <div class="ds-tile"><div class="ds-tile__demo" style="font-family:var(--bz-font-mono);font-size:12px;color:var(--bz-text-muted);text-align:center;line-height:1.6">fast 140ms<br>base 220ms<br>slow 480ms</div><div class="ds-tile__t">Motion</div><div class="ds-tile__b">ease (0.2,0,0,1)</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 ICONOGRAPHY -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">06 — Glyphs</div>
+        <div>
+          <h2 class="ds-section__title">图标与涂鸦语言</h2>
+          <p class="ds-section__desc">单线、圆角端点、2px 描边。功能图标用于流程节点；手绘涂鸦（云/山/水/火花/印章）在留白里注入人格，用极淡灰，印章用橙。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-swatch-group__label">Functional icons — 2px stroke</div>
+          <div class="ds-glyphs" style="margin-bottom:40px">
+            <span class="ds-glyph"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l6 6"/></svg></span>
+            <span class="ds-glyph"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8"/><rect x="15" y="3" width="8" height="8"/><rect x="3" y="15" width="8" height="8"/><rect x="15" y="15" width="8" height="8"/></svg></span>
+            <span class="ds-glyph"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l10 5-10 5-10-5z"/><path d="M3 13l10 5 10-5"/><path d="M3 18l10 5 10-5" opacity="0.55"/></svg></span>
+          </div>
+          <div class="ds-swatch-group__label">Hand-drawn doodles — personality layer</div>
+          <div class="ds-doodles-row">
+            <span class="ds-dd"><svg viewBox="0 0 120 56" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 42c-6 0-8-9-1-12 1-9 14-11 19-4 3-10 20-9 22 1 5-6 17-4 16 5 9-1 13 8 5 11z"/></svg></span>
+            <span class="ds-dd"><svg viewBox="0 0 140 78" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 70l32-40 20 24 28-34 40 50z"/><circle cx="106" cy="16" r="6" opacity="0.7"/></svg></span>
+            <span class="ds-dd"><svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M4 12q12-11 24 0t24 0 24 0 24 0"/><path d="M4 27q12-11 24 0t24 0 24 0 24 0" opacity="0.7"/></svg></span>
+            <span class="ds-dd" style="width:52px"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M30 5c2 18 7 23 25 25-18 2-23 7-25 25-2-18-7-23-25-25 18-2 23-7 25-25z"/></svg></span>
+            <span class="ds-dd ds-dd--seal"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="9" width="44" height="43" rx="3"/><path d="M22 22c7 9 7 15 16 18" opacity="0.85"/><circle cx="24" cy="40" r="1.8" fill="currentColor" stroke="none"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 COMPONENTS -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">07 — Components</div>
+        <div>
+          <h2 class="ds-section__title">组件</h2>
+          <p class="ds-section__desc">直接由 tokens 渲染的真实组件。锐角、冷灰、单一橙点睛。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div>
+          <div class="ds-demo">
+            <div class="ds-demo__label">Button</div>
+            <div class="ds-row">
+              <a class="bz-button bz-button--primary" href="#">主按钮</a>
+              <a class="bz-button bz-button--secondary" href="#">次按钮</a>
+              <a class="bz-button bz-button--primary bz-button--lg" href="#">大号 CTA</a>
+              <a class="bz-button bz-button--secondary bz-button--sm" href="#">小号</a>
+            </div>
+          </div>
+          <div class="ds-demo">
+            <div class="ds-demo__label">Badge</div>
+            <div class="ds-row">
+              <span class="bz-badge bz-badge--neutral">Neutral</span>
+              <span class="bz-badge bz-badge--jade">Trust</span>
+              <span class="bz-badge bz-badge--gold">Accent</span>
+            </div>
+          </div>
+          <div class="ds-demo">
+            <div class="ds-demo__label">Card</div>
+            <div class="ds-row" style="align-items:stretch">
+              <div class="bz-card" style="max-width:280px">
+                <div class="bz-card__eyebrow">01 / Method</div>
+                <h3 class="bz-card__title">诊断团队当前 AI 使用状态</h3>
+                <p class="bz-card__body">识别工具分散、流程断点、权限风险和知识不可复用的问题。</p>
+              </div>
+            </div>
+          </div>
+          <div class="ds-demo">
+            <div class="ds-demo__label">Flow node</div>
+            <div class="ds-row" style="gap:40px">
+              <span class="bz-flow__node"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l6 6"/></svg></span>
+              <span class="bz-flow__node"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8"/><rect x="15" y="3" width="8" height="8"/><rect x="3" y="15" width="8" height="8"/><rect x="15" y="15" width="8" height="8"/></svg></span>
+            </div>
+          </div>
+          <div class="ds-demo">
+            <div class="ds-demo__label">Service tier · 价值阶梯（bz-tier + bz-cell__out）</div>
+            <div class="bz-tier">
+              <div class="bz-tier__head">
+                <span class="bz-tier__step">01 · 接入 Access</span>
+                <h3 class="bz-tier__name">先把 AI 稳定、可控、可审计地接进来。</h3>
+              </div>
+              <div class="bz-cell-grid bz-cell-grid--3">
+                <article class="bz-cell">
+                  <div class="bz-cell__n">01</div>
+                  <h3 class="bz-cell__t">Codex 中转站搭建</h3>
+                  <p class="bz-cell__b">给团队一个稳定、可控、可审计的 Codex 使用入口。</p>
+                  <div class="bz-cell__out">交付物 · 接入架构 + 权限规则 + 落地指导</div>
+                </article>
+                <article class="bz-cell">
+                  <div class="bz-cell__n">02</div>
+                  <h3 class="bz-cell__t">LLM API 网关设计</h3>
+                  <p class="bz-cell__b">团队所有 AI 调用的统一入口：鉴权、路由、成本一处管好。</p>
+                  <div class="bz-cell__out">交付物 · 网关蓝图 + 路由降级策略 + 审计设计</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 HERO TEMPLATES -->
+    <section class="ds-section">
+      <div class="ds-section__head">
+        <div class="ds-section__no">08 — Hero templates</div>
+        <div>
+          <h2 class="ds-section__title">两个首屏模板</h2>
+          <p class="ds-section__desc">同一套 token 派生出两种首屏：品牌优先的居中 splash，和转化优先的左对齐非对称。纯品牌页用①，B2B 落地页用②。字标在两版里都以定制 logotype 渲染。</p>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div class="ds-hero-cards">
+          <div class="ds-hero-card">
+            <div class="ds-hero-frame ds-hero-frame--center">
+              <div class="ds-mini-nav"><span></span><span></span><span></span><span></span></div>
+              <div class="ds-mini-body">
+                <img class="ds-mini-mark" src="assets/baize-mark.png" alt="" />
+                <div class="ds-mini-title bz-logotype">白泽明理</div>
+                <div class="ds-mini-sub">让复杂 AI 变得可解释、可验证、可落地</div>
+                <div class="ds-mini-btns"><span class="ds-mini-btn ds-mini-btn--p"></span><span class="ds-mini-btn"></span></div>
+              </div>
+            </div>
+            <div class="ds-hero-meta">
+              <div class="ds-hero-meta__n">① Centered splash</div>
+              <div class="ds-hero-meta__t">居中对称 · 品牌优先</div>
+              <div class="ds-hero-meta__cls">.bz-brand-home</div>
+              <p class="ds-hero-meta__use">mark 居中、标题在下、满屏留白。冲击来自符号与留白，不堆服务卡片。适合纯品牌首页。</p>
+            </div>
+          </div>
+          <div class="ds-hero-card">
+            <div class="ds-hero-frame ds-hero-frame--split">
+              <div class="ds-mini-topbar"><span class="ds-mini-brand"></span><span class="ds-mini-navdots"><i></i><i></i><i></i></span></div>
+              <div class="ds-mini-splitbody">
+                <div class="ds-mini-copy">
+                  <div class="ds-mini-eye"></div>
+                  <div class="ds-mini-title bz-logotype">白泽明理</div>
+                  <div class="ds-mini-sub">让复杂 AI 可解释、可验证、可落地</div>
+                  <div class="ds-mini-btns"><span class="ds-mini-btn ds-mini-btn--p"></span><span class="ds-mini-btn"></span></div>
+                </div>
+                <div class="ds-mini-visual"><img src="assets/baize-mark.png" alt="" /></div>
+              </div>
+            </div>
+            <div class="ds-hero-meta">
+              <div class="ds-hero-meta__n">② Asymmetric split</div>
+              <div class="ds-hero-meta__t">左对齐非对称 · 转化优先</div>
+              <div class="ds-hero-meta__cls">.bz-hero-split + .bz-topbar</div>
+              <p class="ds-hero-meta__use">左文右图、顶栏导航、mark 放大成主视觉，下接服务与方法论长页。信息密度高，适合 B2B 落地页。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 DO / DON'T -->
+    <section class="ds-section" style="border-bottom:none">
+      <div class="ds-section__head">
+        <div class="ds-section__no">09 — Do / Don't</div>
+        <div>
+          <h2 class="ds-section__title">该做与不该做</h2>
+        </div>
+      </div>
+      <div class="ds-body-col">
+        <div class="ds-spacer"></div>
+        <div class="ds-dd-grid">
+          <div class="ds-dd-col ds-dd-col--do">
+            <div class="ds-dd-col__h"><span class="ds-mk">✓</span> Do</div>
+            <ul>
+              <li>用符号 + 留白造冲击；文字保持克制</li>
+              <li>界面只用冷灰阶；品牌蓝橙留给 logo</li>
+              <li>橙色只做唯一点睛，用在价值终点</li>
+              <li>按钮、卡片一律锐角</li>
+              <li>大标题字距收紧为负值（-0.02em）</li>
+            </ul>
+          </div>
+          <div class="ds-dd-col ds-dd-col--dont">
+            <div class="ds-dd-col__h"><span class="ds-mk">✕</span> Don't</div>
+            <ul>
+              <li>用超粗超大字重硬凑气势</li>
+              <li>用暖纸底色或临床纯白之外的杂色</li>
+              <li>同时出现红/橙/蓝多个强调色</li>
+              <li>圆角按钮、投影卡片</li>
+              <li>装饰性科技网点 / 星座连线背景</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

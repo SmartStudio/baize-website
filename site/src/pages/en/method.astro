@@ -1,0 +1,9 @@
+---
+import Method from '../../components/pages/Method.astro';
+import { en } from '../../i18n/method';
+import { alternates, localePath } from '../../lib/i18n';
+
+const zhPath = localePath('/method/', 'zh-CN');
+const enPath = localePath('/method/', 'en');
+---
+<Method lang="en" copy={en} alternates={alternates(zhPath, enPath)} switchPath={zhPath} />

@@ -1,0 +1,6 @@
+---
+// CF Pages 对 /en/ 下不存在的地址就近使用 dist/en/404.html。
+import NotFound from '../../components/pages/NotFound.astro';
+import { en } from '../../i18n/notFound';
+---
+<NotFound lang="en" copy={en} />

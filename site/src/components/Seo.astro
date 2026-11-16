@@ -1,0 +1,111 @@
+---
+// path 必须是「直接返回 200 的终态地址」,不能靠这里自动补斜杠:
+//   - 目录索引页(services/index.html)→ 终态是 /services/,不带斜杠会被 308;
+//   - 根级 .html 文件(404.html)     → 终态是 /404,带斜杠反而会被 308。
+// canonical 指向一个 308 不会让 Google 判错,但白白浪费抓取预算,也和 sitemap 里
+// 的地址对不上。所以由页面自己声明,不在这里做猜测。
+//
+// ogImage 必须传「不带 base 前缀的站点绝对路径」(/_astro/x.jpg 或 /og-default.png),
+// 不传时按语言取默认图(英文页不能露中文品牌图):
+// 这里统一拼到 SITE 域名下。GH 镜像的资源虽然带 /baize-website/ 前缀,但镜像整站
+// noindex、canonical 也指回 CF 主站,分享源恒定是主站,所以 OG 图一律指主站资源。
+//
+// OG 图别用 WebP:Twitter 认,但微信/飞书这类抓取器对 WebP 支持不稳,会退化成无图。
+// 页面里继续用 WebP(省流量),社交预览单独导一份 JPEG(保兼容)——见 NoteLayout。
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  /** Pixel size of ogImage when provided (from getImage attributes). */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  /** Default large image; notes pass "summary" for a small left-side card. */
+  twitterCard?: 'summary' | 'summary_large_image';
+  /** Optional separate twitter:image path (no base). Notes use a shared square mark. */
+  twitterImage?: string;
+  twitterImageAlt?: string;
+  ogType?: 'website' | 'article';
+  article?: { published: string; modified?: string; section?: string; author?: string };
+  noindex?: boolean;
+  lang?: 'zh-CN' | 'en';
+  titleSuffix?: string;
+  alternates?: { hreflang: string; path: string }[];
+}
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
+  twitterCard = 'summary_large_image',
+  twitterImage,
+  twitterImageAlt,
+  ogType = 'website',
+  article,
+  noindex: forceNoindex = false,
+  lang = 'zh-CN',
+  // 英文页不露中文(check:i18n 会拦),所以英文只用品牌的英文半边。
+  titleSuffix = lang === 'en' ? '· Baize AI' : '· 白泽明理 Baize AI',
+  alternates = [],
+} = Astro.props;
+const site = import.meta.env.SITE;
+const canonical = new URL(path, site).href;
+// ?v= 换图时递增,让社交平台和 CDN 按新 URL 重新抓图。
+const DEFAULT_OG = { src: lang === 'en' ? '/og-default-en.png?v=20261026' : '/og-default.png?v=20261026', width: 1200, height: 630 };
+const ogUrl = new URL(ogImage ?? DEFAULT_OG.src, site).href;
+// Notes may pass a shared square mark for twitter:image while og:image stays the landscape cover.
+const twitterUrl = new URL(twitterImage ?? ogImage ?? DEFAULT_OG.src, site).href;
+const twitterAlt = twitterImageAlt ?? ogImageAlt;
+// Default OG keeps 1200×630. Note covers keep real getImage size (typically 1200×675 for 16:9).
+const resolvedOgWidth = ogImage ? ogImageWidth : DEFAULT_OG.width;
+const resolvedOgHeight = ogImage ? ogImageHeight : DEFAULT_OG.height;
+// GH 镜像整站 noindex(去重指向 CF 主站);404 页则无论在哪个 target 都不该被收录
+const noindex = forceNoindex || import.meta.env.PUBLIC_DEPLOY_TARGET === 'ghpages';
+// 首页标题自带品牌名,不加后缀。其他页加上后缀会超过约 60 个半角宽度(中文按 2 计)时也不加:
+// 搜索结果会把尾部截成省略号,被截掉的正好是品牌名,而 WebSite 结构化数据已经给了站点名。
+const displayWidth = (s: string) => [...s].reduce((n, c) => n + (c.charCodeAt(0) > 0x2e7f ? 2 : 1), 0);
+const withSuffix = `${title} ${titleSuffix}`;
+const fullTitle = path === '/' || path === '/en/' || displayWidth(withSuffix) > 60 ? title : withSuffix;
+const locale = lang === 'en' ? 'en_US' : 'zh_CN';
+const hasTwin = alternates.some((a) => a.hreflang === (lang === 'en' ? 'zh-Hans' : 'en'));
+const altLocale = lang === 'en' ? 'zh_CN' : 'en_US';
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{alternates.map((a) => (
+  <link rel="alternate" hreflang={a.hreflang} href={new URL(a.path, site).href} />
+))}
+{noindex && <meta name="robots" content="noindex, follow" />}
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogUrl} />
+{resolvedOgWidth != null && (
+  <meta property="og:image:width" content={String(resolvedOgWidth)} />
+)}
+{resolvedOgHeight != null && (
+  <meta property="og:image:height" content={String(resolvedOgHeight)} />
+)}
+{ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
+<meta property="og:site_name" content={lang === 'en' ? 'Baize AI' : '白泽明理 Baize AI'} />
+<meta property="og:locale" content={locale} />
+{hasTwin && <meta property="og:locale:alternate" content={altLocale} />}
+{article && (
+  <>
+    <meta property="article:published_time" content={article.published} />
+    {article.modified && <meta property="article:modified_time" content={article.modified} />}
+    {article.section && <meta property="article:section" content={article.section} />}
+    {article.author && <meta property="article:author" content={article.author} />}
+  </>
+)}
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={twitterUrl} />
+{twitterAlt && <meta name="twitter:image:alt" content={twitterAlt} />}

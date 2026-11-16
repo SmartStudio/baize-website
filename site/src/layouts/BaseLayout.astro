@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import JsonLd from '../components/JsonLd.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { organizationJsonLd } from '../lib/organization';
+
+const GA_MEASUREMENT_ID = 'G-MWFL1P6ZVP';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  twitterCard?: 'summary' | 'summary_large_image';
+  twitterImage?: string;
+  twitterImageAlt?: string;
+  ogType?: 'website' | 'article';
+  article?: { published: string; modified?: string; section?: string; author?: string };
+  jsonLd?: object | object[];
+  noindex?: boolean;
+  lang?: 'zh-CN' | 'en';
+  titleSuffix?: string;
+  alternates?: { hreflang: string; path: string }[];
+  /** 对应语言版本的路径(不带 base);不传时页头切到对方语言首页。 */
+  switchPath?: string;
+}
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
+  twitterCard,
+  twitterImage,
+  twitterImageAlt,
+  ogType,
+  article,
+  jsonLd,
+  noindex,
+  lang = 'zh-CN',
+  titleSuffix,
+  alternates,
+  switchPath,
+} = Astro.props;
+const org = organizationJsonLd(lang);
+const base = import.meta.env.BASE_URL;
+const feed = lang === 'en'
+  ? { title: 'Baize AI Notes', href: `${base}en/rss.xml` }
+  : { title: '明理笔记 · 白泽明理 Baize AI', href: `${base}rss.xml` };
+const schema = jsonLd ? [org, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : org;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {import.meta.env.PROD && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+        <script define:vars={{ GA_MEASUREMENT_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', GA_MEASUREMENT_ID);
+        </script>
+        <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="GdkhSRJJLTTJ6ZL+2Kb7vQ" async></script>
+      </>
+    )}
+    {/* ?v= 换图时递增:public/ 下的图标按 _headers 缓存 30 天,改名参数才能立即换掉。 */}
+    <link rel="icon" href={`${base}favicon.ico?v=20261026`} sizes="48x48" />
+    <link rel="icon" type="image/png" href={`${base}favicon-32x32.png?v=20261026`} sizes="32x32" />
+    <link rel="icon" type="image/png" href={`${base}favicon-16x16.png?v=20261026`} sizes="16x16" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png?v=20261026`} />
+    <link rel="manifest" href={`${base}site.webmanifest?v=20261026`} />
+    <meta name="theme-color" content="#024B3B" />
+    <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
+      ogImageWidth={ogImageWidth}
+      ogImageHeight={ogImageHeight}
+      twitterCard={twitterCard}
+      twitterImage={twitterImage}
+      twitterImageAlt={twitterImageAlt}
+      ogType={ogType}
+      article={article}
+      noindex={noindex}
+      lang={lang}
+      titleSuffix={titleSuffix}
+      alternates={alternates}
+    />
+    <JsonLd schema={schema} />
+  </head>
+  <body>
+    <SiteHeader lang={lang} switchPath={switchPath} />
+    <main><slot /></main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

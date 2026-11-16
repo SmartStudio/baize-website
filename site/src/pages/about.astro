@@ -1,0 +1,9 @@
+---
+import About from '../components/pages/About.astro';
+import { zh } from '../i18n/about';
+import { alternates, localePath } from '../lib/i18n';
+
+const zhPath = localePath('/about/', 'zh-CN');
+const enPath = localePath('/about/', 'en');
+---
+<About lang="zh-CN" copy={zh} alternates={alternates(zhPath, enPath)} switchPath={enPath} />

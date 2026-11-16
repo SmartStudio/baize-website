@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import { faqFromMdx } from '../../lib/faq';
+import NoteLayout from '../../layouts/NoteLayout.astro';
+import Figure from '../../components/notes/Figure.astro';
+import Figures from '../../components/notes/Figures.astro';
+import Video from '../../components/notes/Video.astro';
+import Callout from '../../components/notes/Callout.astro';
+import NoteLink from '../../components/notes/NoteLink.astro';
+import { relatedNotes } from '../../lib/notes';
+import { alternates, localePath, noteLang, notePath, pairNotes } from '../../lib/i18n';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  const { zh, en } = pairNotes(notes);
+
+  // 相关笔记要在这里算好:布局层拿不到 collection,而每篇的推荐都依赖「其他所有篇」。
+  return [...zh].map(([slug, note]) => {
+    if (note.data.lang !== noteLang(note.id)) {
+      throw new Error(`Note ${note.id} declares lang ${note.data.lang} but its path says ${noteLang(note.id)}`);
+    }
+    const enPath = en.has(slug) ? notePath(slug, 'en') : null;
+    return {
+      params: { slug },
+      props: {
+        note,
+        related: relatedNotes(note, notes),
+        alternates: alternates(notePath(slug, 'zh-CN'), enPath),
+        // 没有英文版时切到英文笔记列表,不切到不存在的页面。
+        switchPath: enPath ?? localePath('/notes/', 'en'),
+        path: notePath(slug, 'zh-CN'),
+      },
+    };
+  });
+}
+
+const { note, related, alternates: alts, switchPath, path } = Astro.props;
+const { Content, headings } = await render(note);
+
+// 通过 components 注入,MDX 里直接用 <Figure>/<Video>/<Figures>/<Callout>/<NoteLink>,无需逐篇 import。
+const mdxComponents = { Figure, Figures, Video, Callout, NoteLink };
+---
+<NoteLayout
+  title={note.data.title}
+  seoTitle={note.data.seoTitle}
+  seoDescription={note.data.seoDescription}
+  description={note.data.description}
+  lang={note.data.lang}
+  alternates={alts}
+  switchPath={switchPath}
+  pubDate={note.data.pubDate}
+  updatedDate={note.data.updatedDate}
+  category={note.data.category}
+  author={note.data.author}
+  relatedService={note.data.relatedService}
+  ctaVariant={note.data.ctaVariant}
+  howto={note.data.howto}
+  faq={faqFromMdx(note.body ?? '')}
+  cover={note.data.cover}
+  coverAlt={note.data.coverAlt}
+  path={path}
+  related={related}
+  headings={headings}
+>
+  <Content components={mdxComponents} />
+</NoteLayout>

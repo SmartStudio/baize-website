@@ -1,0 +1,7 @@
+# All crawlers, including AI search and AI training crawlers, may fetch every page.
+
+User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=yes
+Allow: /
+
+Sitemap: https://fxai.ai/sitemap-index.xml

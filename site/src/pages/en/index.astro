@@ -1,0 +1,9 @@
+---
+import Home from '../../components/pages/Home.astro';
+import { en } from '../../i18n/home';
+import { alternates, localePath } from '../../lib/i18n';
+
+const zhPath = localePath('/', 'zh-CN');
+const enPath = localePath('/', 'en');
+---
+<Home lang="en" copy={en} alternates={alternates(zhPath, enPath)} switchPath={zhPath} />

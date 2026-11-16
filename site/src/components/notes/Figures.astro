@@ -1,0 +1,16 @@
+---
+/**
+ * Figures — 2~3 图并排的图组(对比图、组图)。
+ * 内部直接放多个 <Figure />(它们用默认 content 宽度即可,由本网格排版)。
+ * 整组默认 wide 宽度,给并排图片更多空间;窄屏自动塌成单列。
+ */
+interface Props {
+  columns?: 2 | 3;
+  width?: 'content' | 'wide' | 'full' | 'bleed';
+}
+
+const { columns = 2, width = 'wide' } = Astro.props;
+---
+<div class:list={['bz-media', `bz-media--${width}`, 'bz-figures', `bz-figures--${columns}`]}>
+  <slot />
+</div>

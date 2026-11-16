@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" viewport="700x240" name="Spacing Rhythm" subtitle="4pt scale · whitespace is the primary material, prefer stepping up over crowding" -->
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .spacing-stage { display: grid; gap: 14px; padding: 28px; background: var(--bz-bg-page); font-family: var(--bz-font-sans); }
+    .bar { display: flex; align-items: center; gap: 16px; color: var(--bz-text-secondary); font-size: 13px; }
+    .box { height: 18px; border-radius: 0; background: var(--bz-ink-900); flex: 0 0 auto; }
+    .box--accent { background: var(--bz-accent); }
+    .k { font-family: var(--bz-font-mono); font-size: 11px; color: var(--bz-text-muted); width: 96px; flex: 0 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="spacing-stage">
+    <div class="bar"><span class="k">space-16</span><div class="box" style="width: var(--bz-space-16);"></div><span>表单与紧凑内部间距</span></div>
+    <div class="bar"><span class="k">space-24</span><div class="box" style="width: var(--bz-space-24);"></div><span>cell 内边距与分组</span></div>
+    <div class="bar"><span class="k">space-48</span><div class="box" style="width: var(--bz-space-48);"></div><span>页面侧边 gutter · 小节奏</span></div>
+    <div class="bar"><span class="k">space-72</span><div class="box" style="width: var(--bz-space-72);"></div><span>区块分隔</span></div>
+    <div class="bar"><span class="k">section-y</span><div class="box box--accent" style="width: var(--bz-space-128);"></div><span>大区块纵向节奏 clamp(84→128)</span></div>
+  </div>
+</body>
+</html>

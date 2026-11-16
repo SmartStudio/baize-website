@@ -1,0 +1,37 @@
+---
+/**
+ * 英文分类归档页 /en/notes/category/<slug>/。只为「英文有笔记的分类」出页,slug 与中文相同。
+ * 中文同分类也有页时才配对 hreflang;没有时语言切换落到中文笔记列表。
+ */
+import { getCollection } from 'astro:content';
+import NotesCategory from '../../../../components/pages/NotesCategory.astro';
+import { alternates, localePath, pairNotes } from '../../../../lib/i18n';
+import { CATEGORIES, categorySlug } from '../../../../lib/notes';
+
+export async function getStaticPaths() {
+  const { zh, en } = pairNotes(await getCollection('notes'));
+  const zhNotes = [...zh.values()];
+  const enNotes = [...en.values()];
+  const live = (notes: typeof enNotes) => CATEGORIES.filter((c) => notes.some((n) => n.data.category === c));
+  const zhLive = live(zhNotes);
+  const enLive = live(enNotes);
+
+  return enLive.map((category) => {
+    const enPath = localePath(`/notes/category/${categorySlug(category)}/`, 'en');
+    const zhPath = zhLive.includes(category) ? localePath(`/notes/category/${categorySlug(category)}/`, 'zh-CN') : null;
+    return {
+      params: { category: categorySlug(category) },
+      props: {
+        category,
+        siblings: enLive.filter((c) => c !== category),
+        notes: enNotes.filter((n) => n.data.category === category),
+        alternates: alternates(zhPath, enPath),
+        switchPath: zhPath ?? localePath('/notes/', 'zh-CN'),
+      },
+    };
+  });
+}
+
+const { category, notes, siblings, alternates: alts, switchPath } = Astro.props;
+---
+<NotesCategory lang="en" category={category} notes={notes} siblings={siblings} alternates={alts} switchPath={switchPath} />

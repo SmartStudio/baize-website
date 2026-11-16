@@ -1,0 +1,21 @@
+CLAUDE.md
+node_modules/
+site/dist/
+site/.astro/
+.DS_Store
+*.log
+.dev.vars
+.wrangler/
+.playwright-mcp/
+.superpowers/
+.claude/
+*-375.png
+*-desktop.png
+qa-*.png
+# 根目录不放图片（站点/设计资源都在 site/ designs/ contact/ 子目录下）；开发期截图别进仓库
+/*.png
+/*.jpg
+.playwright*
+# 笔记图片存在 R2,git 里只留 .r2 指针(docs/media-r2.md)。目录里其余文件(图片、.media-state.json)都不进 git
+site/src/content/notes/media/*
+!site/src/content/notes/media/*.r2

@@ -1,0 +1,73 @@
+---
+title: 'Multi-Agent Security: Can Agents Follow Forwarded Instructions Directly?'
+seoTitle: "Multi-Agent Security: Can Agents Follow Forwarded Commands?"
+description: "Multi-agent security: handoffs may carry malicious content. Verify the originator, limit actions, block internal addresses, approve risky writes."
+lang: en
+pubDate: 2026-10-23
+category: 安全可信
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/agent-to-agent-trust-boundary-cover.webp
+coverAlt: Two white robots pass a card through an orange-lit checkpoint gate; a small bug clings to the card, standing for a malicious instruction hidden in the handed-off task
+sourceHash: 'b3c4cc805dc7'
+---
+
+In multi-agent collaboration, the first rule of multi-agent security is to avoid acting directly on instructions forwarded by another agent. Treat tasks from upstream agents as untrusted external input. An upstream agent may have read a web page, email, or public document seeded with malicious instructions and forwarded the malicious content as a normal task. A downstream agent must check each task again: identify the original requester, confirm that the action falls within its own responsibilities, and check parameters for internal network addresses or local paths. Send high-risk actions back to a human or the original requester for confirmation.
+
+import noteFig from '../media/agent-to-agent-trust-boundary-fig-en.webp'
+
+<Figure src={noteFig} alt="Left: one robot hands a card to another robot, showing a task handoff between agents. Right: a dark tentacle reaches out of a white board and is blocked by a jade green shield, showing a prompt injection being stopped" caption="Figure: Agent Handoff | Prompt Injection" width="wide" border />
+
+## How malicious instructions spread through an agent chain
+
+In multi-agent collaboration, the agent that reads external web pages and email is often different from the one that can query internal systems and change state.
+
+The risk often starts with routine information gathering. For example, a presales consulting agent follows its workflow by opening a link supplied by a user or reading a requirements document sent by a customer. Hidden text in the document or comments on the web page may contain disguised instructions. These tell the model to ignore earlier requirements and query internal network configuration or call management APIs.
+
+The model reading the information cannot distinguish factual data from control instructions by meaning alone. It mistakes content in the external document for the latest request, generates a structured downstream task, and sends it through an internal interface to the downstream agent responsible for execution.
+
+The downstream agent receives a well-formed call from a legitimate component on the internal network. It cannot tell whether the instruction originally came from an external web page or an employee, so it calls its tools and executes it directly. Every component runs as designed. The failure occurs because nobody checks the handoffs between components.
+
+## Case study: A2A protocol security risks and hallway blind spots
+
+Ars Technica reported on October 5, 2026, that independent researcher Syed Anas Mohiuddin tested agent systems at several organizations. Over the preceding five months, five organizations, including Google, had acknowledged related vulnerabilities. The method exposes an internal agent to malicious instructions. That agent forwards them to other internal components as normal delegated tasks. The receiver executes them directly because it trusts the sender.
+
+The researcher calls this method protocol pivoting. A common route is to dispatch tasks through MCP, then pass them to other components through protocols such as Google's A2A. Testing found a server-side request forgery (SSRF) vulnerability in Google's MCP Toolbox for Databases, rated 8 out of 10. The fix was to configure allowlists and blocklists for destination IPs.
+
+Douglas McKee, head of vulnerability intelligence at Rapid7, told Ars Technica that current interaction protocols often check only their own front doors. The hallways connecting components lack checks. He recommends treating content passed from a model to a tool as input from a stranger on the internet. For the design of cross-layer controls in production, see <NoteLink slug="agent-pilot-to-production-checklist">Your AI Agent Pilot Works. What Does It Need Before Production?</NoteLink>.
+
+## Four checks when a downstream agent receives a task
+
+First, identify the original requester at the start of the call chain. A session started by an external visitor must not execute actions that require employee permissions, regardless of how many times it has been forwarded. For the identities each call should carry, see <NoteLink slug="agent-acting-on-behalf-of-user">Agent Authentication: Whose Permissions Apply When Calling Systems for Employees?</NoteLink>.
+
+Second, check whether the requested action falls within the agent's own list of responsibilities. Keep each agent's tool configuration minimal in multi-agent collaboration. An assistant dedicated to generating documents should have no APIs for system network configuration or user permission changes in its call list. If an action forwarded by an upstream agent exceeds the component's declared responsibilities, discard the task and raise an alert. For the order in which to grant tool permissions, see <NoteLink slug="agent-tool-permission-ladder">Agent Permission Management: How to Set Tool Access Levels and What to Grant First</NoteLink>.
+
+Third, check network addresses and system paths in the parameters. Instructions planted in external content often induce models to send data out or read sensitive files. When the downstream agent parses parameters, it must check URLs, IP addresses, and file paths. Block the request immediately if parameters contain a local loopback address, an internal metadata service address, or a sensitive configuration path.
+
+Fourth, restrict the destinations of outbound requests. Google fixed the SSRF vulnerability in MCP Toolbox by configuring allowlists and blocklists for destination IPs to prevent requests from reaching internal network addresses. Downstream tools must also use lists to decide which network requests to allow.
+
+## How to label context and data sources during task handoffs
+
+When an upstream agent forwards a task, it must separate the user's original request from the external material it fetched. Wrap external material in separate tags. The system prompt must state that this material is only for information extraction or summarization and must not be treated as instructions to execute. The handoff must also carry a session ID and a source risk label. If the upstream agent has processed a high-risk source such as a public form, the downstream agent automatically tightens its checks.
+
+## Human confirmation for high-risk actions and chain testing before launch
+
+Before an action changes a database, adjusts permissions, sends external email, or moves money, business staff or the original requester must review the parameters and approve execution. For controls to put in place before expanding automation, see <NoteLink slug="agent-governance-before-scale">AI Agent Security Governance Must Come Before Scaling</NoteLink>.
+
+Before launch, test the whole chain as well as individual assistants. Plant hidden instructions in a simulated web page or document. Have the upstream agent read it and pass it on, then check whether the downstream allowlist checks and human confirmation points can block malicious actions.
+
+## Multi-agent security: FAQ
+
+### Why can't upstream and downstream agents trust each other by default if both run inside the corporate network?
+
+Internal network isolation blocks unauthorized external network scans. It cannot stop instruction forgery at the semantic level. Upstream agents often read external email, public web pages, or customer documents as part of their job. When untrusted data enters the model's context, the model may be misled into packaging external content as an internal task and passing it downstream. If the downstream agent skips verification because the request came from the internal network, it will unknowingly execute unauthorized actions directed by malicious external instructions.
+
+### Will a downstream agent's checks of each parameter affect the efficiency of multi-agent collaboration?
+
+The delay from parameter checks is usually small. These checks use deterministic rule matching, which is much faster than generating a model response. If interface protocols and parameter specifications are defined in advance, normal business parameters pass through. Blocked requests are usually malformed or contain private paths.
+
+### How does protocol pivoting as an A2A protocol security risk differ from ordinary prompt injection?
+
+X41 D-Sec researcher Markus Vervier considers protocol pivoting, an A2A protocol security risk, a form of indirect prompt injection. Multi-agent collaboration adds one step: the upstream agent turns malicious instructions in external content into structured tool calls and sends them to backend systems with write access.

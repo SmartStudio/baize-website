@@ -1,0 +1,54 @@
+<!-- @dsCard group="Brand" viewport="700x300" name="Baize Logo" subtitle="Official lockup and usage guidance" -->
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .brand-stage {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 28px;
+      background: #FFFFFF;
+      font-family: var(--bz-font-sans);
+    }
+    .logo-lockup {
+      display: block;
+      width: 230px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(7, 30, 91, 0.08));
+    }
+    .copy {
+      display: grid;
+      gap: 12px;
+    }
+    .copy h2 {
+      margin: 0;
+      font-family: var(--bz-font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--bz-ink-900);
+    }
+    .copy p {
+      margin: 0;
+      color: var(--bz-text-secondary);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-stage">
+    <img class="logo-lockup" src="../assets/baize-logo-lockup.png" alt="白泽明理 Baize Tech Logo" />
+    <div class="copy">
+      <h2>Logo 的白泽线稿是品牌的第一识别资产。</h2>
+      <p>完整锁定图用于 Hero、品牌卡片和对外物料；导航、小尺寸按钮和 favicon 优先使用图形 Mark，避免压缩后文字不可读。</p>
+    </div>
+  </div>
+</body>
+</html>

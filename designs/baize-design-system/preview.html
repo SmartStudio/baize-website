@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baize Tech Design System Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --preview-bg: #ffffff;
+      --preview-surface: #ffffff;
+      --preview-ink: #111827;
+      --preview-muted: #6b7280;
+      --preview-border: #e5e7eb;
+      --preview-accent: #e9961a;
+      --preview-mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+      --preview-sans: "Avenir Next", -apple-system, "SF Pro Text", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--preview-bg);
+      color: var(--preview-ink);
+      font-family: var(--preview-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .preview-shell {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .preview-nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--preview-border);
+      padding: 24px 18px;
+    }
+
+    .preview-nav h1 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 650;
+    }
+
+    .preview-nav p {
+      margin: 0 0 22px;
+      color: var(--preview-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .preview-nav a {
+      display: block;
+      padding: 9px 0;
+      color: var(--preview-muted);
+      font-family: var(--preview-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .preview-nav a:hover {
+      color: var(--preview-accent);
+    }
+
+    .preview-main {
+      display: grid;
+      gap: 32px;
+      padding: 28px;
+    }
+
+    .preview-card {
+      border: 1px solid var(--preview-border);
+      background: var(--preview-surface);
+    }
+
+    .preview-card__head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--preview-border);
+      padding: 12px 14px;
+      color: var(--preview-muted);
+      font-family: var(--preview-mono);
+      font-size: 12px;
+    }
+
+    .preview-card iframe {
+      display: block;
+      width: 100%;
+      border: 0;
+      background: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .preview-shell {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .preview-nav {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--preview-border);
+      }
+
+      .preview-main {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <aside class="preview-nav">
+      <h1>Baize Tech Design System</h1>
+      <p>Live preview reads the source HTML files directly, so cards stay aligned with current tokens.</p>
+      <a href="#home">Website home · 居中</a>
+      <a href="#home-fugu">Website home · Fugu 长页</a>
+      <a href="#brand-card">Brand homepage card</a>
+      <a href="#service-card">Service long page card</a>
+      <a href="#brand">Brand foundation</a>
+      <a href="#type">Typography</a>
+    </aside>
+    <main class="preview-main">
+      <section id="home" class="preview-card">
+        <div class="preview-card__head">
+          <span>Website home · 居中 splash（.bz-brand-home）</span>
+          <a href="ui_kits/website-home/index.html">Open</a>
+        </div>
+        <iframe src="ui_kits/website-home/index.html" title="Website home" height="920"></iframe>
+      </section>
+      <section id="home-fugu" class="preview-card">
+        <div class="preview-card__head">
+          <span>Website home · Fugu 长页（.bz-hero-split + .bz-topbar）</span>
+          <a href="ui_kits/website-home/index-fugu.html">Open</a>
+        </div>
+        <iframe src="ui_kits/website-home/index-fugu.html" title="Website home · Fugu long page" height="2600"></iframe>
+      </section>
+      <section id="brand-card" class="preview-card">
+        <div class="preview-card__head">
+          <span>Brand homepage card</span>
+          <a href="ui_kits/website-home/home.card.html">Open</a>
+        </div>
+        <iframe src="ui_kits/website-home/home.card.html" title="Brand homepage card" height="820"></iframe>
+      </section>
+      <section id="service-card" class="preview-card">
+        <div class="preview-card__head">
+          <span>Service long page card（v2 · 五项服务 + 三层阶梯）</span>
+          <a href="ui_kits/website-home/service-page.card.html">Open</a>
+        </div>
+        <iframe src="ui_kits/website-home/service-page.card.html" title="Service long page card" height="2600"></iframe>
+      </section>
+      <section id="brand" class="preview-card">
+        <div class="preview-card__head">
+          <span>Brand foundation</span>
+          <a href="guidelines/brand.card.html">Open</a>
+        </div>
+        <iframe src="guidelines/brand.card.html" title="Brand foundation" height="360"></iframe>
+      </section>
+      <section id="type" class="preview-card">
+        <div class="preview-card__head">
+          <span>Typography</span>
+          <a href="guidelines/typography.card.html">Open</a>
+        </div>
+        <iframe src="guidelines/typography.card.html" title="Typography" height="340"></iframe>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

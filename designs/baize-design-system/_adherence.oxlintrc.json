@@ -1,0 +1,278 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|tone|className|key|ref|style)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: children, tone, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:neutral|vermilion|jade|gold)$/]",
+        "message": "<Badge> tone must be one of 'neutral' | 'vermilion' | 'jade' | 'gold'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|size|icon|className|as|href|type|disabled|key|ref|style)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: children, variant, size, icon, className, as, href, type, disabled."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|ghost)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'secondary' | 'ghost'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='as'] > Literal[value!=/^(?:button|a)$/]",
+        "message": "<Button> as must be one of 'button' | 'a'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:button|submit|reset)$/]",
+        "message": "<Button> type must be one of 'button' | 'submit' | 'reset'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:eyebrow|title|children|action|className|key|ref|style)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: eyebrow, title, children, action, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ContactForm'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|description|services|className|key|ref|style|children)$/]",
+        "message": "<ContactForm> doesn't accept that prop. Declared props: title, description, services, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SectionHeader'] > JSXAttribute > JSXIdentifier[name!=/^(?:eyebrow|title|children|className|key|ref|style)$/]",
+        "message": "<SectionHeader> doesn't accept that prop. Declared props: eyebrow, title, children, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SiteHeader'] > JSXAttribute > JSXIdentifier[name!=/^(?:navItems|ctaLabel|ctaHref|logoSrc|logoAlt|className|key|ref|style|children)$/]",
+        "message": "<SiteHeader> doesn't accept that prop. Declared props: navItems, ctaLabel, ctaHref, logoSrc, logoAlt, className."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "ContactForm": {
+        "replaces": []
+      },
+      "SectionHeader": {
+        "replaces": []
+      },
+      "SiteHeader": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--bz-action-primary",
+      "--bz-action-primary-hover",
+      "--bz-action-trust",
+      "--bz-bg-alt",
+      "--bz-bg-card",
+      "--bz-bg-page",
+      "--bz-blue-100",
+      "--bz-blue-700",
+      "--bz-border",
+      "--bz-border-subtle",
+      "--bz-focus-ring",
+      "--bz-font-mono",
+      "--bz-font-sans",
+      "--bz-gold-100",
+      "--bz-gold-500",
+      "--bz-gold-600",
+      "--bz-ink-700",
+      "--bz-ink-800",
+      "--bz-ink-900",
+      "--bz-jade-100",
+      "--bz-jade-700",
+      "--bz-jade-800",
+      "--bz-logo-blue",
+      "--bz-logo-navy",
+      "--bz-logo-orange",
+      "--bz-logo-sky",
+      "--bz-neutral-100",
+      "--bz-neutral-200",
+      "--bz-neutral-300",
+      "--bz-neutral-400",
+      "--bz-neutral-500",
+      "--bz-neutral-600",
+      "--bz-page-gutter",
+      "--bz-page-gutter",
+      "--bz-page-max",
+      "--bz-paper-0",
+      "--bz-radius-16",
+      "--bz-radius-4",
+      "--bz-radius-8",
+      "--bz-read-max",
+      "--bz-rice-50",
+      "--bz-shadow-pop",
+      "--bz-shadow-soft",
+      "--bz-space-104",
+      "--bz-space-12",
+      "--bz-space-16",
+      "--bz-space-20",
+      "--bz-space-24",
+      "--bz-space-32",
+      "--bz-space-4",
+      "--bz-space-40",
+      "--bz-space-48",
+      "--bz-space-56",
+      "--bz-space-72",
+      "--bz-space-8",
+      "--bz-text-muted",
+      "--bz-text-primary",
+      "--bz-text-secondary",
+      "--bz-transition-base",
+      "--bz-transition-fast",
+      "--bz-transition-slow",
+      "--bz-type-body-line",
+      "--bz-type-body-size",
+      "--bz-type-caption-line",
+      "--bz-type-caption-size",
+      "--bz-type-display-line",
+      "--bz-type-display-size",
+      "--bz-type-display-size",
+      "--bz-type-h1-line",
+      "--bz-type-h1-size",
+      "--bz-type-h1-size",
+      "--bz-type-h2-line",
+      "--bz-type-h2-size",
+      "--bz-type-h2-size",
+      "--bz-type-h3-line",
+      "--bz-type-h3-size",
+      "--bz-type-h3-size",
+      "--bz-type-small-line",
+      "--bz-type-small-size",
+      "--bz-vermilion-100",
+      "--bz-vermilion-600",
+      "--bz-vermilion-700"
+    ],
+    "tokenKinds": {
+      "--bz-logo-navy": "color",
+      "--bz-logo-blue": "color",
+      "--bz-logo-sky": "color",
+      "--bz-logo-orange": "color",
+      "--bz-ink-900": "color",
+      "--bz-ink-800": "color",
+      "--bz-ink-700": "color",
+      "--bz-neutral-600": "color",
+      "--bz-neutral-500": "color",
+      "--bz-neutral-400": "color",
+      "--bz-neutral-300": "color",
+      "--bz-neutral-200": "color",
+      "--bz-neutral-100": "color",
+      "--bz-rice-50": "color",
+      "--bz-paper-0": "color",
+      "--bz-vermilion-700": "color",
+      "--bz-vermilion-600": "color",
+      "--bz-vermilion-100": "color",
+      "--bz-jade-800": "color",
+      "--bz-jade-700": "color",
+      "--bz-jade-100": "color",
+      "--bz-gold-600": "color",
+      "--bz-gold-500": "color",
+      "--bz-gold-100": "color",
+      "--bz-blue-700": "color",
+      "--bz-blue-100": "color",
+      "--bz-bg-page": "color",
+      "--bz-bg-alt": "color",
+      "--bz-bg-card": "color",
+      "--bz-text-primary": "color",
+      "--bz-text-secondary": "color",
+      "--bz-text-muted": "color",
+      "--bz-border-subtle": "color",
+      "--bz-action-primary": "color",
+      "--bz-action-primary-hover": "color",
+      "--bz-action-trust": "color",
+      "--bz-focus-ring": "color",
+      "--bz-font-sans": "font",
+      "--bz-font-mono": "font",
+      "--bz-type-display-size": "spacing",
+      "--bz-type-display-line": "other",
+      "--bz-type-h1-size": "spacing",
+      "--bz-type-h1-line": "other",
+      "--bz-type-h2-size": "spacing",
+      "--bz-type-h2-line": "other",
+      "--bz-type-h3-size": "spacing",
+      "--bz-type-h3-line": "other",
+      "--bz-type-body-size": "spacing",
+      "--bz-type-body-line": "other",
+      "--bz-type-small-size": "spacing",
+      "--bz-type-small-line": "other",
+      "--bz-type-caption-size": "spacing",
+      "--bz-type-caption-line": "other",
+      "--bz-space-4": "spacing",
+      "--bz-space-8": "spacing",
+      "--bz-space-12": "spacing",
+      "--bz-space-16": "spacing",
+      "--bz-space-20": "spacing",
+      "--bz-space-24": "spacing",
+      "--bz-space-32": "spacing",
+      "--bz-space-40": "spacing",
+      "--bz-space-48": "spacing",
+      "--bz-space-56": "spacing",
+      "--bz-space-72": "spacing",
+      "--bz-space-104": "spacing",
+      "--bz-page-max": "spacing",
+      "--bz-read-max": "spacing",
+      "--bz-page-gutter": "spacing",
+      "--bz-radius-4": "spacing",
+      "--bz-radius-8": "spacing",
+      "--bz-radius-16": "spacing",
+      "--bz-border": "spacing",
+      "--bz-shadow-soft": "shadow",
+      "--bz-shadow-pop": "shadow",
+      "--bz-transition-fast": "other",
+      "--bz-transition-base": "other",
+      "--bz-transition-slow": "other"
+    },
+    "fontFamilies": []
+  }
+}

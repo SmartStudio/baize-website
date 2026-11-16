@@ -1,0 +1,32 @@
+---
+/**
+ * Figure — 明理笔记正文里的配图 + 图注。
+ * src 传「导入的图片」(ImageMetadata)时走 astro:assets 优化(WebP/响应式/哈希);
+ * 传字符串路径时按原样渲染(适合 public/ 下的 SVG 示意图,SVG 无需栅格优化)。
+ * width: content=正文列宽 | wide=更宽 | full=接近页宽 | bleed=贴视口满宽,后三者相对阅读列居中。
+ * zoom: 默认开,正文图可点击放大(lightbox 由 NoteLayout 统一接管;移动端看清大图/示意图很有用)。
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  caption?: string;
+  width?: 'content' | 'wide' | 'full' | 'bleed';
+  border?: boolean;
+  zoom?: boolean;
+}
+
+const { src, alt, caption, width = 'content', border = false, zoom = true } = Astro.props;
+const isImported = typeof src !== 'string';
+const zoomAttr = zoom ? { 'data-zoomable': '' } : {};
+---
+<figure class:list={['bz-media', `bz-media--${width}`, { 'bz-media--border': border }]}>
+  {isImported ? (
+    <Image src={src as ImageMetadata} alt={alt} class="bz-media__img" {...zoomAttr} />
+  ) : (
+    <img src={src as string} alt={alt} class="bz-media__img" loading="lazy" decoding="async" {...zoomAttr} />
+  )}
+  {caption && <figcaption class="bz-figcap">{caption}</figcaption>}
+</figure>

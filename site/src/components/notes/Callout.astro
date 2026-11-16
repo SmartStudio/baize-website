@@ -1,0 +1,17 @@
+---
+/**
+ * Callout — 正文里的提示框(note / tip / warning)。
+ * 克制风格:左侧发丝线强调 + 浅底 + 直角,不用阴影。
+ * type 决定左边线颜色;title 可选,作为小号 mono 标题。
+ */
+interface Props {
+  type?: 'note' | 'tip' | 'warning';
+  title?: string;
+}
+
+const { type = 'note', title } = Astro.props;
+---
+<aside class:list={['bz-callout', `bz-callout--${type}`]}>
+  {title && <p class="bz-callout__title">{title}</p>}
+  <div class="bz-callout__body"><slot /></div>
+</aside>

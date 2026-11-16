@@ -1,0 +1,25 @@
+---
+/**
+ * NoteLinkEn — 英文笔记里的 <NoteLink>,由 /en/notes/[slug] 路由注入。
+ *
+ * 目标有英文版就链英文版;只有中文版时链中文版并标注 "(Chinese)",让读者点之前就知道;
+ * 两边都没有则构建失败。不会链到不存在的英文地址。
+ */
+import { getCollection } from 'astro:content';
+import { notePath, pairNotes, withBase } from '../../lib/i18n';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const { zh, en } = pairNotes(await getCollection('notes'));
+if (!zh.has(slug)) throw new Error(`NoteLink to unknown note: ${slug}`);
+const translated = en.has(slug);
+const href = withBase(import.meta.env.BASE_URL, notePath(slug, translated ? 'en' : 'zh-CN'));
+---
+{translated ? (
+  <a class="bz-text-link" href={href}><slot /></a>
+) : (
+  <><a class="bz-text-link" href={href} hreflang="zh-Hans"><slot /></a><span class="bz-note-link__lang"> (Chinese)</span></>
+)}

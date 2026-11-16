@@ -1,0 +1,9 @@
+---
+import Services from '../../components/pages/Services.astro';
+import { en } from '../../i18n/services';
+import { alternates, localePath } from '../../lib/i18n';
+
+const zhPath = localePath('/services/', 'zh-CN');
+const enPath = localePath('/services/', 'en');
+---
+<Services lang="en" copy={en} alternates={alternates(zhPath, enPath)} switchPath={zhPath} />

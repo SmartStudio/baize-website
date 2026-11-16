@@ -1,0 +1,8 @@
+---
+// 没有这个页面时,CF Pages 会把任意不存在的 URL 回落到 index.html 并返回 200
+// —— 对 Google 就是 soft 404:每个失效链接都被当成一个真实页面收录,白白吃掉抓取预算。
+// 只要 dist 里存在 404.html,CF Pages 就会用它并返回真正的 404 状态码。
+import NotFound from '../components/pages/NotFound.astro';
+import { zh } from '../i18n/notFound';
+---
+<NotFound lang="zh-CN" copy={zh} />

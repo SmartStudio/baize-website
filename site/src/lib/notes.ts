@@ -1,0 +1,97 @@
+import type { CollectionEntry } from 'astro:content';
+
+type Note = CollectionEntry<'notes'>;
+type Category = Note['data']['category'];
+
+/**
+ * 分类的展示顺序(与 content.config.ts 的 enum 一致,但那里是校验、这里是排序)。
+ */
+export const CATEGORIES = [
+  'AI普及',
+  'AI编程',
+  '企业落地',
+  '安全可信',
+  'Loop与方法论',
+  '案例复盘',
+] as const satisfies readonly Category[];
+
+/**
+ * 中文分类 → URL slug。
+ *
+ * 归档页的地址必须用 ASCII slug:中文直接进 URL 会被 percent-encode 成
+ * /notes/category/AI%E7%BC%96%E7%A8%8B/ 这种,又长又不可读,分享出去也难看。
+ */
+export const CATEGORY_SLUGS = {
+  AI普及: 'ai-basics',
+  AI编程: 'ai-coding',
+  企业落地: 'enterprise',
+  安全可信: 'trust-safety',
+  Loop与方法论: 'loop-method',
+  案例复盘: 'case-study',
+} as const satisfies Record<Category, string>;
+
+/**
+ * 每个分类的归档页导语。
+ *
+ * 归档页最大的 SEO 风险是「薄内容」——一堆标题列表、没有独立价值。所以每个分类
+ * 都要有自己的一句话,说清这一类笔记在回答什么问题,而不是套模板。
+ */
+export const CATEGORY_INTROS = {
+  AI普及: '不谈术语堆砌，把 AI 能做什么、不能做什么讲清楚，让非技术岗也能判断该在哪里用它。',
+  AI编程: 'AI 参与写代码之后，工程要跟着变：约束怎么立、边界怎么划、产出怎么验收。',
+  企业落地: '把 AI 接进真实业务流程时，真正卡住的不是模型，而是上下文、权限与流程本身。',
+  安全可信: '权限、审计与可解释——让 AI 的产出敢被采信，出了问题也查得清。',
+  Loop与方法论: '让 AI 先自查再交付：把「计划、执行、观察、纠正」设计成可复用的回路。',
+  案例复盘: '真实项目里的踩坑、取舍与验证过程，包括那些没走通的路。',
+} as const satisfies Record<Category, string>;
+
+/** 英文归档页导语,与 CATEGORY_INTROS 一一对应,按海外读者重写而非逐句翻译。 */
+export const CATEGORY_INTROS_EN = {
+  AI普及: 'What AI can and cannot do today, explained without jargon, so non-technical teams can decide where to use it.',
+  AI编程: 'How engineering practice changes once AI writes code: constraints, boundaries, and how to accept the output.',
+  企业落地: 'Putting AI into real business workflows: the context it needs, the permissions it gets, and the process changes around it.',
+  安全可信: 'Permissions, audit trails, and explainability, so teams can trust AI output and trace problems when they happen.',
+  Loop与方法论: 'Designing plan, execute, observe, and correct loops so AI checks its own work before it hands anything over.',
+  案例复盘: 'Write-ups from real projects: the trade-offs, how results were verified, and the approaches that did not work.',
+} as const satisfies Record<Category, string>;
+
+export const categorySlug = (c: Category): string => CATEGORY_SLUGS[c];
+
+const CATEGORY_LABELS_EN = {
+  AI普及: 'AI Basics',
+  AI编程: 'AI Coding',
+  企业落地: 'Enterprise AI',
+  安全可信: 'AI Safety',
+  Loop与方法论: 'Loops and Methods',
+  案例复盘: 'Case Studies',
+} as const satisfies Record<Category, string>;
+
+export const categoryLabel = (c: Category, lang: 'zh-CN' | 'en' = 'zh-CN'): string =>
+  lang === 'en' ? CATEGORY_LABELS_EN[c] : c;
+
+/**
+ * 相关笔记推荐。
+ *
+ * 11 篇笔记之间原本只有 1 条内链,抓取器进到一篇就走进死胡同,权重传不出去。
+ * 排序意图:同一项服务的笔记关联最紧(读者最可能想连着读)→ 其次同分类 → 最后按
+ * 时间补足,保证任何一篇都拿得满 limit 篇,不会出现空的推荐位。
+ */
+export function relatedNotes(current: Note, all: Note[], limit = 3): Note[] {
+  // 只在同语言里挑:英文页推中文笔记等于把海外读者导进看不懂的页面。
+  const pool = all.filter((n) => n.id !== current.id && !n.data.draft && n.data.lang === current.data.lang);
+
+  const score = (n: Note): number => {
+    let s = 0;
+    if (current.data.relatedService && n.data.relatedService === current.data.relatedService) s += 2;
+    if (n.data.category === current.data.category) s += 1;
+    return s;
+  };
+
+  return pool
+    .sort((a, b) => {
+      const diff = score(b) - score(a);
+      if (diff !== 0) return diff;
+      return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+    })
+    .slice(0, limit);
+}

@@ -1,0 +1,106 @@
+<!-- @dsCard group="Website" viewport="1180x760" name="Brand Homepage" subtitle="Sakana/Fugu-inspired first viewport: symbolic mark, sparse nav, rail-like utility" -->
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .home-stage {
+      min-height: 760px;
+      background: var(--bz-bg-page);
+      font-family: var(--bz-font-sans);
+    }
+
+    .home-stage .bz-brand-home {
+      min-height: 760px;
+    }
+  </style>
+</head>
+<body>
+  <div class="home-stage">
+    <section class="bz-brand-home" aria-label="白泽明理品牌首屏">
+      <div class="bz-doodles" aria-hidden="true">
+        <span class="bz-doodle bz-doodle--cloud">
+          <svg viewBox="0 0 120 56" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 42c-6 0-8-9-1-12 1-9 14-11 19-4 3-10 20-9 22 1 5-6 17-4 16 5 9-1 13 8 5 11z" />
+            <path d="M30 47c6-4 14-4 20 0" opacity="0.55" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--mountain">
+          <svg viewBox="0 0 140 78" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 70l32-40 20 24 28-34 40 50z" />
+            <path d="M38 30l7 9M86 20l7 9" opacity="0.6" />
+            <circle cx="106" cy="16" r="6" opacity="0.7" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--wave">
+          <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+            <path d="M4 12q12-11 24 0t24 0 24 0 24 0" />
+            <path d="M4 27q12-11 24 0t24 0 24 0 24 0" opacity="0.7" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--spark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M30 5c2 18 7 23 25 25-18 2-23 7-25 25-2-18-7-23-25-25 18-2 23-7 25-25z" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--brush">
+          <svg viewBox="0 0 92 56" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 40c22-30 54-32 78-20-18 2-42 10-56 28" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--fish">
+          <svg viewBox="0 0 120 68" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 40c0-20 34-26 54-13 12 8 34 8 46-4-4 18-24 26-40 21 8 10 26 8 34 2" />
+            <circle cx="96" cy="24" r="2.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="bz-doodle bz-doodle--seal">
+          <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="9" width="44" height="43" rx="3" />
+            <path d="M22 22c7 9 7 15 16 18" opacity="0.85" />
+            <circle cx="24" cy="40" r="1.8" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+      </div>
+      <nav class="bz-brand-home__nav" aria-label="主导航">
+        <span class="bz-brand-home__nav-meta">Shanghai / Remote</span>
+        <div class="bz-brand-home__nav-links">
+          <a href="#">服务</a>
+          <a href="#">方法论</a>
+          <a href="#">明理笔记</a>
+          <a href="#">联系我们</a>
+        </div>
+        <a class="bz-brand-home__nav-cta" href="#">预约咨询</a>
+      </nav>
+      <main class="bz-brand-home__hero">
+        <p class="bz-brand-home__kicker">Formal eXplainable AI</p>
+        <div class="bz-brand-home__mark-wrap">
+          <img class="bz-brand-home__logo" src="../../assets/baize-mark.png" alt="白泽明理 Baize Tech 标识" />
+        </div>
+        <h1 class="bz-brand-home__title">白泽明理</h1>
+        <p class="bz-brand-home__tagline">让复杂 AI 变得可解释、可验证、可落地。</p>
+        <p class="bz-brand-home__sub">For teams turning AI experiments into repeatable organizational capability.</p>
+        <div class="bz-home-actions" aria-label="首页行动">
+          <a class="bz-button bz-button--primary bz-button--lg" href="#">预约 AI 落地诊断</a>
+          <a class="bz-button bz-button--secondary bz-button--lg" href="#">查看服务路径</a>
+        </div>
+      </main>
+      <div class="bz-utility">
+        <div class="bz-utility__group">
+          <span>© 2026 Baize Tech</span>
+          <span>Formal AI adoption</span>
+        </div>
+        <div class="bz-utility__group">
+          <a href="#">Method</a>
+          <a href="#">Baize Notes</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

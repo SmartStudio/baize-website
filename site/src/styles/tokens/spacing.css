@@ -1,0 +1,43 @@
+:root {
+  /* ============================================================
+     BAIZE DESIGN SYSTEM · SPACING & LAYOUT
+     4pt base scale. Whitespace is the primary material — prefer
+     the next step up over crowding. Outer container padding
+     defaults to the same value as inner element gap.
+     ============================================================ */
+
+  /* --- Raw scale (4pt base) --- */
+  --bz-space-4: 4px;
+  --bz-space-8: 8px;
+  --bz-space-12: 12px;
+  --bz-space-16: 16px;
+  --bz-space-20: 20px;
+  --bz-space-24: 24px;
+  --bz-space-32: 32px;
+  --bz-space-40: 40px;
+  --bz-space-48: 48px;
+  --bz-space-56: 56px;
+  --bz-space-64: 64px;
+  --bz-space-72: 72px;
+  --bz-space-88: 88px;
+  --bz-space-104: 104px;
+  --bz-space-128: 128px;
+
+  /* --- Semantic layout --- */
+  --bz-page-max: 1280px;                    /* page content width */
+  --bz-read-max: 760px;                     /* readable measure */
+  --bz-rail-col: 184px;                     /* long-page left rail label column */
+  --bz-page-gutter: 48px;                   /* page side padding */
+  --bz-section-y: clamp(84px, 8vw, 128px);  /* section vertical rhythm */
+  --bz-stack-gap: clamp(20px, 3.5vw, 48px); /* vertical stack gap */
+  --bz-inline-gap: 24px;                    /* horizontal group gap */
+  --bz-cell-pad: 28px;                      /* grid cell padding */
+  --bz-grid-hairline: 1px;                  /* cell-grid divider width */
+}
+
+@media (max-width: 767px) {
+  :root {
+    --bz-page-gutter: 20px;
+    --bz-section-y: clamp(56px, 14vw, 84px);
+  }
+}
