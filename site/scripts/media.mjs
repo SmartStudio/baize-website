@@ -97,7 +97,10 @@ export function openRemote(baseUrl = DEFAULT_BASE_URL, bucket = DEFAULT_BUCKET, 
     for (let attempt = 1; ; attempt++) {
       const wait = pausedUntil - Date.now();
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-      const res = await fetch(target, init);
+      // fetch 的网络错误只说 "fetch failed",是 DNS 还是连接被拒写在 cause 里。
+      const res = await fetch(target, init).catch((err) => {
+        throw new Error(`${init.method ?? 'GET'} ${target} failed: ${err.cause?.code ?? err.cause?.message ?? err.message}`, { cause: err });
+      });
       if (res.status !== 429 && res.status !== 503) return res;
       await res.body?.cancel();
       stats.rateLimited++;
@@ -367,7 +370,11 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     console.log(`media: ${r.pushed.length} uploaded${r.pushed.length ? `, now \`git add\` the ${POINTER_EXT} pointers: ${list(r.pushed)}` : ''}`);
     failed = r.failed.length > 0;
   } else if (cmd === 'status') {
-    const r = await status(ctx, { checkRemote: flags.has('--remote') });
+    // --remote 查到一半连不上公开地址:说清楚是哪个请求、什么原因,不甩堆栈。
+    const r = await status(ctx, { checkRemote: flags.has('--remote') }).catch((err) => {
+      console.error(`media: could not check ${ctx.remote.name}: ${err.message}`);
+      process.exit(1);
+    });
     console.log(`media: ${r.ok} ok, ${r.missing.length + r.outdated.length} to pull, ${r.modified.length + r.untracked.length} to push`);
     if (r.modified.length) console.log(`  modified (run media:push): ${list(r.modified)}`);
     if (r.untracked.length) console.log(`  new (run media:push): ${list(r.untracked)}`);

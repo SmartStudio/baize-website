@@ -273,6 +273,23 @@ describe('media push / pull', () => {
     }
   });
 
+  it('公开地址连不上:pull 和 status --remote 报出请求和网络原因,不是一句 fetch failed', async () => {
+    const a = checkout('a');
+    writeFileSync(join(a.dir, 'one.webp'), 'bytes');
+    await push(a);
+    // 起一个服务再关掉,拿到一个确定没人监听的端口。
+    const server = createServer(() => {});
+    await new Promise((r) => server.listen(0, '127.0.0.1', r));
+    const base = `http://127.0.0.1:${server.address().port}/`;
+    await new Promise((r) => server.close(r));
+    const ci = { ...checkout('ci'), remote: openRemote(base) };
+    carryPointers(a, ci);
+    const [pulled, checked] = await Promise.allSettled([pull(ci), status(ci, { checkRemote: true })]);
+    expect(pulled.value.failed).toEqual([{ name: 'one.webp', reason: expect.stringMatching(/^GET http:\/\/127\.0\.0\.1:\d+\/notes\/.+ failed: ECONNREFUSED$/) }]);
+    expect(checked.status).toBe('rejected');
+    expect(checked.reason.message).toMatch(/^HEAD http:\/\/127\.0\.0\.1:\d+\/notes\/.+ failed: ECONNREFUSED$/);
+  });
+
   it('status 区分新图、改过的图,--remote 查出桶里缺的对象', async () => {
     const a = checkout('a');
     writeFileSync(join(a.dir, 'kept.png'), 'kept');
