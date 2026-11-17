@@ -21,6 +21,8 @@ Locked title / slug / 主词 / 辅词 / NoteLink conventions still follow the hu
 
 Note images are not stored in git. They live in Cloudflare R2 as WebP, and git keeps one `.r2` pointer per image. The build pulls them back before `astro build`. Details: `docs/media-r2.md`.
 
+Style comes from one place: fill in the prompt template in `docs/image-prompts.md` and do not write your own style description. All images are bright. The cover has a pale mint background (`#D6F7EC`), matte white objects, one solid jade green (`#14E0A0`) part, no text, and one hero object that belongs to that note only. The body figure has a cool white background (`#F4F6F5`) and 3–5 Chinese labels. No dark backgrounds, no grey or beige clay, no humanoid figures or robots.
+
 Every new or redone image follows these steps:
 
 1. Generate the PNG to `site/src/content/notes/media/<slug>-cover.png` or `<slug>-fig.png`.

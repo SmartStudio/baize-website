@@ -4,7 +4,7 @@
 
 设计规则统一：圆角、细边框、灰色小字图注、翡翠绿 `#14E0A0` 作唯一强调色，和全站白泽青一致。
 
-> **图片怎么来(项目约定)**：明理笔记的**封面和正文配图统一用 `guizang-material-illustration` 技能生成**(Guizang 3D 物料/瑞士编辑风,强调色翡翠绿 `#14E0A0`;封面深墨绿底、配图冷白底),不手写 SVG、不用裸提示词。
+> **图片怎么来(项目约定)**：明理笔记的**封面和正文配图统一用 `guizang-material-illustration` 技能生成**(Guizang 3D 物料/瑞士编辑风,强调色翡翠绿 `#14E0A0`;封面浅薄荷底、配图冷白底,都是亮底,模板见 `docs/image-prompts.md`),不手写 SVG、不用裸提示词。
 > - 正文配图 = 带中文标签的概念图(cycle/pipeline/hub/before-after);封面 = 无字的单一主视觉头图,两者互补。
 > - 出图:`codex exec ... "<让它用内置 image_gen 一次性出图>"`;中文标签给白色标注板就不糊;逐张 QA 后放进 `src/content/notes/media/`,再跑 `pnpm media:push`(转 WebP、上传 R2、生成 `.r2` 指针)并 `git add` 指针。图片本身不进 git,mdx 里引用 `.webp`,见 `docs/media-r2.md`。
 > - 提示词模板见 `docs/image-prompts.md`,约定见仓库根 `CLAUDE.md` 的「明理笔记配图」小节。下面讲的是把图**接进笔记**的写法。
