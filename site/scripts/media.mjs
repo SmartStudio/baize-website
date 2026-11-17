@@ -26,7 +26,7 @@ import { promisify } from 'node:util';
 
 export const POINTER_EXT = '.r2';
 const STATE_FILE = '.media-state.json';
-// 桶 baize-media 绑定的自定义域名,走 Cloudflare 边缘缓存。桶的 r2.dev 地址会限速,只作退路(docs/media-r2.md)。
+// 桶 baize-media 绑定的自定义域名,走 Cloudflare 边缘缓存。桶的 r2.dev 公开地址已关闭(docs/media-r2.md)。
 const DEFAULT_BASE_URL = 'https://media.fxai.ai';
 const DEFAULT_BUCKET = 'baize-media';
 const CONTENT_TYPES = {

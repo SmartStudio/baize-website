@@ -16,3 +16,16 @@ Apply it as hard constraints:
 Do not rely on `CLAUDE.md` for this rule — agy loads this `AGENTS.md` (and `GEMINI.md` / `.agents/rules/*.md`) only.
 
 Locked title / slug / 主词 / 辅词 / NoteLink conventions still follow the human brief and repo content conventions.
+
+## Mingli note images
+
+Note images are not stored in git. They live in Cloudflare R2 as WebP, and git keeps one `.r2` pointer per image. The build pulls them back before `astro build`. Details: `docs/media-r2.md`.
+
+Every new or redone image follows these steps:
+
+1. Generate the PNG to `site/src/content/notes/media/<slug>-cover.png` or `<slug>-fig.png`.
+2. In `site/`, run `pnpm media:push`. It converts each PNG to WebP, deletes the PNG, uploads the WebP to R2, and writes `<name>.webp.r2`.
+3. Reference the WebP in the note: `cover: ./media/<slug>-cover.webp` and `import fig from './media/<slug>-fig.webp'`. English notes under `en/` use `../media/...`.
+4. `git add` the `.webp.r2` pointers. Image files in `media/` are gitignored; do not force-add a PNG or WebP.
+
+The build fails when a note references `.png`, or references an image that was never pushed.

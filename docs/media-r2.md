@@ -32,8 +32,8 @@
 指针是两行文本:
 
 ```
-sha256 db2d99bc6f9c655697217170132884c0f67ce30c0446a50d1cabd01c50b0bc30
-size 518032
+sha256 a771c5d60c0f7820a4715050ee6d0210900f111558c0007039eb5749a6ecd077
+size 69376
 ```
 
 对象按内容寻址。同名图片重做会得到一个新对象,旧对象留在桶里,所以旧提交和别的分支仍然能构建,对象可以缓存一年。**不要删除或改写桶里的对象。**
@@ -90,13 +90,9 @@ CF Pages 和 GitHub Actions 都只执行 `pnpm build`。拉图走公开地址,�
 
 它在 `fxai.ai` 这个 zone 里,zone 上的 WAF 和 Bot 防护规则对它同样生效。构建拉图拿到 403 时先查这些规则。
 
-桶的 r2.dev 地址 `https://pub-bea947fc4b5f406e81051515af55cc8e.r2.dev` 还开着,作退路:
+桶的 r2.dev 公开地址已关闭(读它返回 401)。迁移当天构建走过它:GitHub Actions 第一次构建 12 秒拉完 703 张后,剩下 41 个请求全部 429。所以 `media:pull` 遇到 429/503 会让所有并发请求一起停下,按 2、4、8、16、30 秒递增等待后重试,每个请求最多发 8 次(合计等 2 分钟),日志里会有一行 `rate-limited N request(s)`。等满仍被限速才算失败。这套重试对任何读地址都生效。
 
-```bash
-MEDIA_BASE_URL=https://pub-bea947fc4b5f406e81051515af55cc8e.r2.dev pnpm build
-```
-
-r2.dev 会限速:2026-11-17 GitHub Actions 第一次构建,12 秒拉完 703 张后,剩下 41 个请求全部 429。所以 `media:pull` 遇到 429/503 会让所有并发请求一起停下,按 2、4、8、16、30 秒递增等待后重试,每个请求最多发 8 次(合计等 2 分钟),日志里会有一行 `rate-limited N request(s)`。等满仍被限速才算失败。这套重试对任何读地址都生效。
+`media.fxai.ai` 出问题、需要临时退路时:dashboard 的 R2 → `baize-media` → Settings → Public Development URL 重新打开,构建时设 `MEDIA_BASE_URL=<r2.dev 地址>`。
 
 换读地址不用动指针:对象 key 不变。换之前先跑 `MEDIA_BASE_URL=<新地址> pnpm media:status --remote`,结果里不能有 `NOT on` 行。
 
@@ -108,8 +104,29 @@ r2.dev 会限速:2026-11-17 GitHub Actions 第一次构建,12 秒拉完 703 张�
 | `MEDIA_BUCKET` | `baize-media` | 上传的桶名 |
 | `MEDIA_CACHE_DIR` | `<git 公共目录>/media-cache` | 本机对象缓存。设为空串关闭;`CI`/`CF_PAGES` 下默认关闭 |
 
-## 原始 PNG 归档
+## 原始 PNG
 
-迁移时的 744 张原始 PNG 也在桶里(`notes/<sha256>.png`),不参与构建。文件名到对象的对照表是 `docs/media-png-originals.tsv`。本仓库的历史从迁移之后开始,不含这些 PNG;迁移之前的完整历史(含 PNG)在 `SmartStudio/baize-website-archive`(私有、已归档)。
+R2 里只存 WebP。出图工具给的 PNG 在 `media:push` 转换后就删掉,不上传,也不进 git。原图只在出图那台机器的 `~/.codex/generated_images/`。
 
-迁移之后新出的图只存 WebP,原始 PNG 不归档(codex 的原图在 `~/.codex/generated_images/`)。
+迁移时的 744 张原始 PNG 曾归档在桶里,2026-11-17 已删除。它们还留在 `SmartStudio/baize-website-archive`(私有、已归档)的 git 历史里:`master` 分支的 `site/src/content/notes/media/`。本仓库的历史从迁移之后开始,不含这些 PNG。
+
+## 迁移之前的历史
+
+本仓库 2026-11-17 从一个初始提交重新开始。之前的 592 个提交在 `SmartStudio/baize-website-archive`(只读),更早的提交哈希只在那里能解析。
+
+- 旧 `master` 停在 `ddfb8fb`。
+- 迁移时只存在于本地的 13 个分支以标签留档,名字是 `archive/<原分支名>`。
+- 其中 4 个含当时没发布的笔记,共 19 篇:`archive/notes/1107-b2`、`archive/notes/1109-b1n`、`archive/notes/1109-b2n`、`archive/notes/1110-b2n`。
+
+从归档里取文件不用下载整个 855 MB 的历史。按需克隆只拿提交和目录(不到 1 MB),用到哪个文件才下载哪个:
+
+```bash
+git clone --filter=blob:none --no-checkout https://github.com/SmartStudio/baize-website-archive.git /tmp/baize-archive
+cd /tmp/baize-archive
+# 某个留档分支比旧 master 多了哪些文件(--no-renames:不让 git 为了判断改名去下载图片)
+git diff --no-renames --name-only --diff-filter=A origin/master archive/notes/1110-b2n -- site/src/content/notes
+# 只取要的几个文件
+git checkout archive/notes/1110-b2n -- site/src/content/notes/<slug>.mdx site/src/content/notes/media/<slug>-cover.png
+```
+
+把旧分支上的笔记搬到本仓库:mdx 和它的 PNG 拷到同样的路径 → 在 `site/` 下跑 `pnpm media:push` → mdx 里的 `.png` 改成 `.webp` → 提交 mdx 和 `.webp.r2` 指针。
