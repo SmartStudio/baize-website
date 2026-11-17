@@ -86,15 +86,19 @@ CF Pages 和 GitHub Actions 都只执行 `pnpm build`。拉图走公开地址,�
 
 ## 公开读地址
 
-现在用的是桶的 r2.dev 地址(`scripts/media.mjs` 的 `DEFAULT_BASE_URL`)。Cloudflare 对 r2.dev 限速,也不走边缘缓存。
+`https://media.fxai.ai`(`scripts/media.mjs` 的 `DEFAULT_BASE_URL`)。这是 2026-11-17 绑到桶上的自定义域名(dashboard:R2 → `baize-media` → Settings → Custom Domains),走 Cloudflare 边缘缓存;对象上传时带了 `cache-control: public, max-age=31536000, immutable`。
 
-限速是实际发生的:2026-11-17 GitHub Actions 第一次构建,12 秒拉完 703 张后,剩下 41 个请求全部 429。`media:pull` 现在遇到 429/503 会让所有并发请求一起停下,按 2、4、8、16、30 秒递增等待后重试,每个请求最多发 8 次(合计等 2 分钟),日志里会有一行 `rate-limited N request(s)`。等满仍被限速才算失败。
+它在 `fxai.ai` 这个 zone 里,zone 上的 WAF 和 Bot 防护规则对它同样生效。构建拉图拿到 403 时先查这些规则。
 
-换成自定义域名就没有这个限制。步骤:
+桶的 r2.dev 地址 `https://pub-bea947fc4b5f406e81051515af55cc8e.r2.dev` 还开着,作退路:
 
-1. `npx wrangler r2 bucket domain add baize-media --domain media.fxai.ai --zone-id <fxai.ai 的 zone id>`,或在 dashboard:R2 → `baize-media` → Settings → Custom Domains。
-2. `MEDIA_BASE_URL=https://media.fxai.ai pnpm media:status --remote`,结果里没有 `NOT on` 行。
-3. 把 `DEFAULT_BASE_URL` 改成新地址。对象 key 不变,指针不用动。
+```bash
+MEDIA_BASE_URL=https://pub-bea947fc4b5f406e81051515af55cc8e.r2.dev pnpm build
+```
+
+r2.dev 会限速:2026-11-17 GitHub Actions 第一次构建,12 秒拉完 703 张后,剩下 41 个请求全部 429。所以 `media:pull` 遇到 429/503 会让所有并发请求一起停下,按 2、4、8、16、30 秒递增等待后重试,每个请求最多发 8 次(合计等 2 分钟),日志里会有一行 `rate-limited N request(s)`。等满仍被限速才算失败。这套重试对任何读地址都生效。
+
+换读地址不用动指针:对象 key 不变。换之前先跑 `MEDIA_BASE_URL=<新地址> pnpm media:status --remote`,结果里不能有 `NOT on` 行。
 
 ## 环境变量
 
