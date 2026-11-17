@@ -1,5 +1,7 @@
 # Workspace rules for agy
 
+The full Chinese + English note pipeline (brief → agy draft → review → codex images → wiring → English twin → checks → publish) is in `docs/notes-pipeline.md`. Follow its prompt for the step you are asked to do, and do not run steps you were not asked to run.
+
 ## Mingli note prose
 
 When writing or rewriting `site/src/content/notes/*.mdx` body copy, **every turn** must start from this English instruction:
@@ -21,7 +23,7 @@ Locked title / slug / 主词 / 辅词 / NoteLink conventions still follow the hu
 
 Note images are not stored in git. They live in Cloudflare R2 as WebP, and git keeps one `.r2` pointer per image. The build pulls them back before `astro build`. Details: `docs/media-r2.md`.
 
-Style comes from one place: fill in the prompt template in `docs/image-prompts.md` and do not write your own style description. All images are bright. The cover has a pale mint background (`#D6F7EC`), matte white objects, one solid jade green (`#14E0A0`) part, no text, and one hero object that belongs to that note only. The body figure has a cool white background (`#F4F6F5`) and 3–5 Chinese labels. No dark backgrounds, no grey or beige clay, no humanoid figures or robots.
+Style comes from one place: fill in the prompt template in `docs/image-prompts.md` and do not write your own style description. All images are bright. The cover has a pale mint background (`#D6F7EC`), matte white objects, one solid jade green (`#14E0A0`) part, and no text. Its composition comes from the note's content: pick a composition type, camera and framing from `docs/image-prompts.md` §2, and make it differ from the last two covers (`pnpm notes:covers 8`). The body figure has a cool white background (`#F4F6F5`) and 3–5 Chinese labels. No dark backgrounds, no grey or beige clay, no humanoid figures or robots.
 
 Every new or redone image follows these steps:
 

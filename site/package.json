@@ -20,7 +20,9 @@
     "media:pull": "node scripts/media.mjs pull",
     "media:push": "node scripts/media.mjs push",
     "media:webp": "node scripts/media-webp.mjs",
-    "media:status": "node scripts/media.mjs status"
+    "media:status": "node scripts/media.mjs status",
+    "notes:covers": "node scripts/note-images.mjs recent",
+    "notes:image-check": "node scripts/note-images.mjs check"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.3",
