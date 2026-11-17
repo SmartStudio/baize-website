@@ -1,0 +1,86 @@
+---
+title: 'Bringing an AI Notetaker to External Meetings: Whose Consent Do You Need to Record?'
+description: Recording requirements for AI notetakers in external meetings vary by jurisdiction. US federal law and most states use one-party consent, while California and about a dozen states require all-party consent. Under China's Personal Information Protection Law, organizations must provide notice and establish a legal basis. Corporate policies typically require advance notice, stopping immediately if anyone objects, automated retention limits, and strict access controls for meeting minutes.
+lang: en
+pubDate: 2026-11-17
+category: 企业落地
+relatedService: consulting
+ctaVariant: consulting
+author: Baize AI
+draft: false
+cover: ../media/ai-notetaker-external-meeting-consent-cover.webp
+coverAlt: Top-down view of a white circular conference table with six white chairs on a pale mint background, each seat equipped with a white desktop microphone; one microphone is unplugged, rendered in solid jade green with its cable loose on the table
+sourceHash: '815340b820fe'
+---
+
+When employees bring an AI notetaker into meetings with external clients or vendors, recording rules depend on jurisdiction. US federal law and most states follow one-party consent. California and roughly a dozen other states require all-party consent. Under China's Personal Information Protection Law, data processors must provide notice and establish a lawful basis before processing personal information, with consent being one such basis. For cross-company calls, corporate policies typically enforce a standard rule: notify all participants before recording, and stop immediately if anyone objects. If an external participant objects, employees must turn off transcription or remove the bot from the call. Organizations need four operational controls for external meetings: advance written notice, an immediate right to opt out, scheduled deletion of audio and video recordings by legal and IT teams, and restricted access to generated meeting minutes.
+
+import noteFig from '../media/ai-notetaker-external-meeting-consent-fig-en.webp'
+
+<Figure src={noteFig} alt="Four white objects from left to right: an envelope with a jade green seal in front of a desk calendar; a microphone with its base switch toggled to off; an audio archive box under an hourglass; and a folder secured with a lock and two tags, each labeled with an English callout" caption="Figure: AI notetaker | recording consent" width="wide" border />
+
+## Advance written notice before recording starts
+
+According to court filings compiled by Laxis, roughly a dozen US states, including California, enforce all-party consent laws. These laws require every participant on a call to know about and permit recording. In August 2025, California resident Justin Brewer filed a lawsuit alleging that Otter Notetaker recorded a February 2025 Zoom meeting and extracted his data without his knowledge. The case was consolidated with three similar suits into In re Otter.AI Privacy Litigation (No. 25-cv-06911-EKL, U.S. District Court for the Northern District of California). The plaintiffs allege Otter recorded calls without consent from all participants and used call audio to train automated speech recognition (ASR) and machine learning models. The litigation is pending.
+
+Under China's Personal Information Protection Law (passed August 20, 2021, and effective November 1, 2021), Article 13, Paragraph 1, Item 1 requires personal information processors to obtain individual consent. Article 17 specifies that prior to processing, processors must inform individuals in a prominent, clear, and understandable manner of the processor's identity and contact details, processing purposes, processing methods, categories of personal information processed, and retention periods.
+
+When employees connect an AI notetaker to an external meeting, companies must fulfill notice requirements before the call begins:
+
+- **Calendar invite disclosures**: When meeting organizers send calendar invites through Zoom, Microsoft Teams, or Google Meet, the invite text must state that an AI notetaker will transcribe the session and extract key points, identifying the software vendor by name.
+- **Prevent silent auto-joining**: eWeek reported in August 2025 that lawsuit filings showed bots could automatically join calls if a host synced their calendar, while pre-meeting email alerts remained off by default. IT administrators and employees must check account configurations so bots do not join calls without notice.
+- **Verbal or written confirmation at call start**: Once external attendees enter the meeting room, the host must state verbally or in the meeting chat that an AI assistant is recording the session, giving attendees an opportunity to object before discussions start.
+
+## Anyone can refuse, and recording stops immediately
+
+According to court records compiled by Laxis, the U.S. District Court for the Northern District of California docketed Chamberlain v. Granola (No. 3:26-cv-07926) on July 30, 2026. The plaintiff, an external meeting attendee, alleged that Granola captured system audio without attendees' knowledge. The complaint noted that marketing copy promoted phrases such as "no one else in the room will know it's there." It also alleged that in-meeting notifications and audio watermarks remained disabled by default, leaving external attendees with no separate bot listed in the participant roster.
+
+Article 14 of China's Personal Information Protection Law states that consent for processing personal information must be voluntary, explicit, and given on a fully informed basis.
+
+Operational procedures for external meetings must provide a clear objection and exit path:
+
+- **Immediate opt-out controls**: Court filings cited by eWeek in August 2025 showed that some meeting tools permit any participant, including unregistered external guests, to stop recording and transcription unilaterally. If a chosen tool lacks guest-facing termination controls, employees must manually remove the bot or shut down audio capture as soon as an attendee objects.
+- **Recording must not condition business discussions**: If a client or vendor refuses AI recording, employees cannot condition the conversation on consent. They must switch to manual note-taking and continue the meeting.
+- **Downstream task delegation does not substitute for call consent**: Securing consent during the call is a prerequisite for generating minutes. Follow-up task allocation and ownership occur downstream; see <NoteLink slug="meeting-minutes-ai-action-items">AI Sends the Meeting Minutes: Who Owns a Wrong Action Item?</NoteLink>. Without consent, the AI note-taking workflow stops immediately.
+
+## Automatic retention limits and blocking model training
+
+External meetings involve non-public business information, including client specifications, commercial pricing, vendor engineering details, and contract disputes. Article 19 of China's Personal Information Protection Law requires retention periods to be limited to the minimum time necessary to achieve the processing purpose. Article 14 requires data processors to obtain fresh consent whenever the processing purpose or method changes.
+
+According to eWeek's August 2025 coverage, litigation documents showed that while Otter's privacy policy described using post-meeting pop-up checkboxes to obtain consent for human review of audio, it shifted the legal burden of obtaining attendee consent onto the host. The filings also cited research showing that de-identification techniques for machine learning models are unreliable. Case records compiled by Laxis show that Granola's security documentation stated its standard software tier used user data for model training by default, with training disabled only on Enterprise plans. Once training data enters model parameters, vendors cannot isolate and delete individual records, nor can they guarantee that data was not ingested before an opt-out took effect.
+
+When procuring and configuring AI notetakers, organizations must enforce technical isolation:
+
+- **Block model training rights in vendor agreements**: Enterprise procurement must include a Data Protection Agreement that explicitly prohibits vendors from training models on meeting data. Policies must bar employees from using standard consumer accounts that train on user inputs by default.
+- **Define retention limits for audio and video files**: Based on the minimum necessary retention principle in Article 19 of China's Personal Information Protection Law, legal and IT teams must establish an explicit retention window in corporate policy and schedule automated routines to delete raw audio and video files once that period expires.
+- **Enforce data minimization boundaries**: For specific rules on field filtering, access controls, and de-identification when deploying automated capture tools, see <NoteLink slug="personal-data-agent-minimization">Personal Data Agents: How Far Can Customer Data Go?</NoteLink>.
+
+## Access controls for meeting minutes and blocking post-call chatter
+
+Uncontrolled distribution of transcripts introduces security risks alongside consent and training concerns. eWeek reported in August 2025 that in October 2024, an investment transaction collapsed after an AI transcription tool automatically sent a transcript containing sensitive post-meeting private discussions—recorded after the formal session had ended—to unintended recipients.
+
+To prevent leaks from external meeting records, organizations must restrict access and distribution:
+
+- **Disable automatic sharing to all invitees**: Several AI notetakers automatically email full transcripts and audio links to every calendar invitee once a call ends. Employees must turn off automatic sharing before hosting external meetings.
+- **Prevent capturing post-meeting conversations**: Before conducting internal debriefs or private discussions, employees must verify that the AI bot has left the call, preventing unintended conversation from being transcribed and summarized.
+- **Require human review before external distribution**: Meeting organizers must review generated summaries to remove proprietary commercial data and unredacted personal information. Transcripts must be exported as controlled, read-only documents for targeted distribution rather than shared via public web links.
+
+## AI notetaker: FAQ
+
+### If an external participant joins late, do you need to notify them separately?
+
+Yes. Attendees joining midway miss the verbal disclosure given at the start of the call. When a new participant enters, the host must post a recording notice in the chat or pause to provide a brief verbal disclosure. If the new attendee objects, the host must stop recording or remove the AI notetaker immediately.
+
+### What risks come with automatically emailing minutes to all calendar invitees?
+
+The primary risks are leaking non-public conversations and granting unauthorized access. In August 2025, eWeek reported that an investment deal dissolved after a transcription tool automatically emailed post-meeting private talk. Additionally, calendar invites often include individuals who never attended the call; automatic distribution sends full transcripts to non-attendees, exposing commercial details and personal data beyond the meeting room.
+
+### Does a client's verbal agreement satisfy recording consent requirements?
+
+Verbal consent is valid only when the individual is fully informed and the organization preserves a verifiable record. Under Article 14 of China's Personal Information Protection Law, consent must be voluntary, explicit, and fully informed. Asking a bare question like "Can we record this?" without disclosing AI transcription, third-party cloud processing, or vendor model training fails to meet legal requirements. Compliance requires stating the vendor and processing purposes in the calendar invite and securing explicit verbal assent on the call recording.
+
+## Sources
+
+- [eWeek: Otter.ai Accused of Recording Meeting Participants Without Their Knowledge](https://www.eweek.com/news/otter-transcription-ai-training-lawsuit/)
+- [Laxis: AI Notetakers in Court: What the Granola and Otter Lawsuits Mean for Your Meetings](https://www.laxis.com/blog/ai-notetakers-in-court-granola-otter-lawsuits/)
+- [National People's Congress: Personal Information Protection Law of the People's Republic of China](http://www.npc.gov.cn/npc/c30834/202108/a8c4e3672c74491a80b53a172bb753fe.shtml)
